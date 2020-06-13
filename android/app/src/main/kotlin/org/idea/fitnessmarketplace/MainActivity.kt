@@ -1,4 +1,4 @@
-package org.idea.fitnessmarketplace
+package org.crhsidea.fitnessmarketplace
 
 import io.flutter.embedding.android.FlutterActivity
 
