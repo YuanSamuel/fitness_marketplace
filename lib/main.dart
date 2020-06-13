@@ -1,4 +1,6 @@
 import 'package:fitnessmarketplace/pages/agora_test_index_page.dart';
+import 'package:fitnessmarketplace/pages/login.dart';
+import 'package:fitnessmarketplace/pages/register.dart';
 ***REMOVED***
 
 void main() {
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
 
         visualDensity: VisualDensity.adaptivePlatformDensity,
 ***REMOVED***
-      home: IndexPage(),
+      home: Login(),
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***
