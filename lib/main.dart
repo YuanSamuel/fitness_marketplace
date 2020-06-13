@@ -1,3 +1,4 @@
+import 'package:fitnessmarketplace/pages/agora_test_index_page.dart';
 ***REMOVED***
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
 
         visualDensity: VisualDensity.adaptivePlatformDensity,
 ***REMOVED***
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: IndexPage(),
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***
