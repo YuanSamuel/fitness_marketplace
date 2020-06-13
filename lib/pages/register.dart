@@ -22,6 +22,14 @@ class _RegisterState extends State<Register> {
 
 ***REMOVED***
 ***REMOVED***
+    _name = new TextEditingController();
+    _email = new TextEditingController();
+    _password = new TextEditingController();
+***REMOVED***
+  ***REMOVED***
+
+***REMOVED***
+***REMOVED***
 ***REMOVED***
       body: Column(
         children: [
@@ -84,7 +92,6 @@ class _RegisterState extends State<Register> {
                   //To Home Page
                 ***REMOVED***
               ***REMOVED***);
-              print('Registered '+_email.text+' as User ID '+userid);
             ***REMOVED***,
 ***REMOVED***
           FlatButton(
