@@ -1,4 +1,6 @@
 import 'package:fitnessmarketplace/pages/agora_test_index_page.dart';
+import 'package:fitnessmarketplace/pages/login.dart';
+import 'package:fitnessmarketplace/pages/register.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
 
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: IndexPage(),
+      home: Login(),
     );
   }
 }
