@@ -32,8 +32,8 @@ dependencies:
   image_picker: ^0.6.7+1
   cloud_firestore: ^0.13.6
   video_player: ^0.10.11+1
-  agora_rtc_engine: ^1.0.5
-  permission_handler: ^3.0.0
+  agora_rtc_engine: ^1.0.12
+  permission_handler: ^5.0.1
 
 dev_dependencies:
   flutter_test:

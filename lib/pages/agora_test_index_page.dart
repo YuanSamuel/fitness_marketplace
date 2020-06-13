@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 ***REMOVED***
 ***REMOVED***
-
 import './stream_page.dart';
 
 class IndexPage extends StatefulWidget {
@@ -129,8 +128,7 @@ class IndexState extends State<IndexPage> {
   ***REMOVED***
 
 ***REMOVED***
-    await PermissionHandler().requestPermissions(
-      [PermissionGroup.camera, PermissionGroup.microphone],
+***REMOVED***
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***
