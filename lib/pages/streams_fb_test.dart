@@ -137,8 +137,7 @@ class StreamsState extends State<StreamsPage> {
   ***REMOVED***
 
 ***REMOVED***
-    await PermissionHandler().requestPermissions(
-      [PermissionGroup.camera, PermissionGroup.microphone],
+***REMOVED***
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***

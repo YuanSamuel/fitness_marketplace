@@ -1,5 +1,6 @@
-import 'package:fitnessmarketplace/pages/streams_fb_test.dart';
 ***REMOVED***
+
+import 'package:fitnessmarketplace/pages/video_upload_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,10 +14,10 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-
         visualDensity: VisualDensity.adaptivePlatformDensity,
 ***REMOVED***
-      home: StreamsPage(),
+      debugShowCheckedModeBanner: false,
+      home: VideoUploadPage(),
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***
