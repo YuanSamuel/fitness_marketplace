@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import './stream_page.dart';
 
 class IndexPage extends StatefulWidget {
@@ -129,8 +128,7 @@ class IndexState extends State<IndexPage> {
   }
 
   Future<void> _handleCameraAndMic() async {
-    await PermissionHandler().requestPermissions(
-      [PermissionGroup.camera, PermissionGroup.microphone],
-    );
+    await Permission.camera.request();
+    await Permission.microphone.request();
   }
 }
