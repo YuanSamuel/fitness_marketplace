@@ -137,8 +137,7 @@ class StreamsState extends State<StreamsPage> {
   }
 
   Future<void> _handleCameraAndMic() async {
-    await PermissionHandler().requestPermissions(
-      [PermissionGroup.camera, PermissionGroup.microphone],
-    );
+    await Permission.camera.request();
+    await Permission.microphone.request();
   }
 }
