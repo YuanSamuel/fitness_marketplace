@@ -24,6 +24,7 @@ dependencies:
   firebase:
   cloud_firestore:
   firebase_auth:
+  select_dialog:
   toggle_switch: "^0.1.4"
   flutter:
     sdk: flutter
