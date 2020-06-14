@@ -32,7 +32,7 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                   context: context,
                   builder: (_) => Scaffold(
                     body: SelectDialog(
-                      itemsList: ['Running', 'Martial Arts', 'Cardio', 'Lifting', 'Yoga'],
+                      itemsList: ['Running', 'Martial Arts', 'Cardio', 'Weight Lifting', 'Yoga'],
                       onChange: (String selected) {
                         setState(() {
                           bool hasSelected = false;
