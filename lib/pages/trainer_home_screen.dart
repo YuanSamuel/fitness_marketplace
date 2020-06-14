@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
+import 'package:fitnessmarketplace/models/Trainer.dart';
 
 class TrainerHomeScreen extends StatefulWidget {
   @override
@@ -13,10 +16,13 @@ class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
   List<String> duration = ['45 minutes', '1 hour', '24 hours'];
 
   CalendarController _calendarController;
+  Trainer currentTrainer;
 
   @override
   void initState(){
     _calendarController = CalendarController();
+    setUp();
+    super.initState();
   }
 
   @override
@@ -25,118 +31,134 @@ class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
     super.dispose();
   }
 
+  setUp() async {
+    FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
+    DocumentSnapshot userData = await Firestore.instance.collection('trainers').document(getUser.uid).get();
+    setState(() {
+      currentTrainer = Trainer.fromSnapshot(userData);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body:
-      SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 30.0,),
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0),
-              child: Text('Hello, Lucas', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),),
-            ),
-            Container(child: _buildCalendar()),
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0),
-              child: Text('1 on 1 Sessions', style: TextStyle(
-                fontSize: 25.0,
-                fontWeight: FontWeight.bold
-              ),
-              ),
-            ),
-            Container(
-              height: 300.0,
-              child: ListView.builder(
-                itemCount: names.length,
-                itemBuilder: (BuildContext context, int index){
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 15.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30.0),
-                        color: Color(0xff3B3B3B),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      height: 100.0,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(names[index], style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.white),),
-                              SizedBox(height: 10.0,),
-                              Text(duration[index], style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.white),),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(dates[index].substring(0, dates[index].indexOf(',')), style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: Colors.white),),
-                              SizedBox(height: 10.0,),
-                              Text(dates[index].substring(dates[index].indexOf(',') + 2), style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: Colors.white),),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 10.0,),
-            Text('Your Videos',  style: TextStyle(
-                fontSize: 25.0,
-                fontWeight: FontWeight.bold
-            ),
-            ),
-            Container(
-              height: 300.0,
-              child: ListView.builder(
-                itemCount: 3,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index){
-                  return Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                      height: 300.0,
-                      width: 300.0,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30.0),
-                        color: Colors.blue,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
+    if (currentTrainer == null) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
         ),
-      ),
-    );
+      );
+    }
+    else {
+      return Scaffold(
+        body:
+        SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 30.0,),
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: Text('Hello, ' + currentTrainer.firstName, style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),),
+              ),
+              Container(child: _buildCalendar()),
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: Text('1 on 1 Sessions', style: TextStyle(
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold
+                ),
+                ),
+              ),
+              Container(
+                height: 300.0,
+                child: ListView.builder(
+                  itemCount: names.length,
+                  itemBuilder: (BuildContext context, int index){
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 15.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30.0),
+                          color: Color(0xff3B3B3B),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        height: 100.0,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(names[index], style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.white),),
+                                SizedBox(height: 10.0,),
+                                Text(duration[index], style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.white),),
+                              ],
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(dates[index].substring(0, dates[index].indexOf(',')), style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: Colors.white),),
+                                SizedBox(height: 10.0,),
+                                Text(dates[index].substring(dates[index].indexOf(',') + 2), style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: Colors.white),),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 10.0,),
+              Text('Your Videos',  style: TextStyle(
+                  fontSize: 25.0,
+                  fontWeight: FontWeight.bold
+              ),
+              ),
+              Container(
+                height: 300.0,
+                child: ListView.builder(
+                  itemCount: 3,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (BuildContext context, int index){
+                    return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        height: 300.0,
+                        width: 300.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30.0),
+                          color: Colors.blue,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 
   Widget _buildCalendar() {
