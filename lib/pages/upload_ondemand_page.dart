@@ -7,16 +7,16 @@ import 'package:path/path.dart' as Path;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitnessmarketplace/pages/show_video_page.dart';
 
-class VideoUploadPage extends StatefulWidget {
-  VideoUploadPage({Key key, this.title}) : super(key: key);
+class OnDemandUploadPage extends StatefulWidget {
+  OnDemandUploadPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _VideoUploadPageState createState() => _VideoUploadPageState();
+  _OnDemandUploadPageState createState() => _OnDemandUploadPageState();
 }
 
-class _VideoUploadPageState extends State<VideoUploadPage> {
+class _OnDemandUploadPageState extends State<OnDemandUploadPage> {
   final _picker = ImagePicker();
   File video;
 
@@ -60,37 +60,37 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
             List<String> downloadUrls = snapshot.data;
             return Scaffold(
                 body: Column(
-              children: [
-                SizedBox(height: MediaQuery.of(context).size.height / 10,),
-                RaisedButton(
-                  child: Text('Record Video'),
-                  onPressed: () {
-                    recordAndUploadVideo();
-                  },
-                ),
-                downloadUrls != null
-                    ? Expanded(
-                        child: ListView.builder(
-                            itemCount: downloadUrls.length,
-                            itemBuilder: (context, i) {
-                              return Padding(
-                                padding: EdgeInsets.all(12.0),
-                                child: RaisedButton(
-                                  child: Text(i.toString()),
-                                  onPressed: () {
-                                    print('URL' + downloadUrls[i]);
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => ShowVideoPage(videoDownloadUrl: downloadUrls[i],)),
-                                    );
-                                  },
-                                ),
-                              );
-                            }),
-                      )
-                    : SizedBox.shrink(),
-              ],
-            ));
+                  children: [
+                    SizedBox(height: MediaQuery.of(context).size.height / 10,),
+                    RaisedButton(
+                      child: Text('Record Video'),
+                      onPressed: () {
+                        recordAndUploadVideo();
+                      },
+                    ),
+                    downloadUrls != null
+                        ? Expanded(
+                      child: ListView.builder(
+                          itemCount: downloadUrls.length,
+                          itemBuilder: (context, i) {
+                            return Padding(
+                              padding: EdgeInsets.all(12.0),
+                              child: RaisedButton(
+                                child: Text(i.toString()),
+                                onPressed: () {
+                                  print('URL' + downloadUrls[i]);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => ShowVideoPage(videoDownloadUrl: downloadUrls[i],)),
+                                  );
+                                },
+                              ),
+                            );
+                          }),
+                    )
+                        : SizedBox.shrink(),
+                  ],
+                ));
           }
         });
   }
@@ -98,7 +98,7 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
   Future<List<String>> getVideos() async {
     List<String> downloadUrls = new List<String>();
     QuerySnapshot allVideos =
-        await Firestore.instance.collection('videos').getDocuments();
+    await Firestore.instance.collection('videos').getDocuments();
     for (int i = 0; i < allVideos.documents.length; i++) {
       downloadUrls.add(allVideos.documents[i].data['url']);
     }
