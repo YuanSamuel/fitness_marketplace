@@ -18,7 +18,7 @@ class _RegisterState extends State<Register> {
   TextEditingController _name = new TextEditingController();
   TextEditingController _email = new TextEditingController();
   TextEditingController _password = new TextEditingController();
-  bool _isTrainer;
+  bool _isTrainer = false;
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +68,9 @@ class _RegisterState extends State<Register> {
             onPressed: () {
               FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email.text, password: _password.text).then((currentUser) {
                 Firestore.instance.collection('users').document(currentUser.user.uid).setData({
-                  'name': _name,
+                  'name': _name.text,
                   'uid': currentUser.user.uid,
-                  'email': _email,
+                  'email': _email.text,
                   'istrainer': _isTrainer,
                 });
                 userid = currentUser.user.uid;
