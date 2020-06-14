@@ -1,7 +1,7 @@
 import 'package:fitnessmarketplace/pages/agora_test_index_page.dart';
 ***REMOVED***
 import 'pages/profile_page.dart';
-import 'pages/intro_screen.dart';
+import 'pages/add_new_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
 ***REMOVED***
-      home: IntroScreen(),
+      home: AddNewRecording(),
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***
