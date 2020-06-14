@@ -18,7 +18,7 @@ class _ShowVideoPageState extends State<ShowVideoPage> {
     super.initState();
     _controller = VideoPlayerController.network(widget.videoDownloadUrl)
       ..initialize().then((value) {
-        _controller.setLooping(true);
+        _controller.setLooping(false);
         setState(() {});
       });
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fitnessmarketplace/pages/register_page.dart';
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 import 'package:fitnessmarketplace/pages/register_page.dart';
 import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
