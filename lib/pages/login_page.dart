@@ -1,8 +1,9 @@
-import 'package:fitnessmarketplace/pages/register.dart';
+import 'package:fitnessmarketplace/pages/register_page.dart';
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-import 'register.dart';
+import 'register_page.dart';
+import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
 
 class Login extends StatefulWidget {
 ***REMOVED***
@@ -10,9 +11,9 @@ class Login extends StatefulWidget {
 ***REMOVED***
 
 class _LoginState extends State<Login> {
-
   TextEditingController _email = new TextEditingController();
   TextEditingController _password = new TextEditingController();
+  bool _isTrainer = true;
 
 ***REMOVED***
 ***REMOVED***
@@ -21,31 +22,29 @@ class _LoginState extends State<Login> {
         children: [
           TextField(
             controller: _email,
-            decoration: InputDecoration(
-                hintText: 'Email'
-***REMOVED***
+            decoration: InputDecoration(hintText: 'Email'),
 ***REMOVED***
           TextField(
             controller: _password,
-            decoration: InputDecoration(
-                hintText: 'Password'
-***REMOVED***
+            decoration: InputDecoration(hintText: 'Password'),
 ***REMOVED***
           FlatButton(
             color: Colors.blue,
             child: Text('Login'),
             onPressed: () async {
               print("Attempt Login");
-                FirebaseAuth.instance.signInWithEmailAndPassword(email: _email.text, password: _password.text).then(
-                        (currentUser) {
-                      Firestore.instance.collection('users').document(currentUser.user.uid).get().then(
-                              (value) {
-                            userid = currentUser.user.uid;
-                            //To Home Page
-                          ***REMOVED***);
+              FirebaseAuth.instance
+                  .signInWithEmailAndPassword(
+                      email: _email.text, password: _password.text)
+                  .then((currentUser) {
+                    if (_isTrainer) {
+***REMOVED***
+                        context,
+                        MaterialPageRoute(builder: (context) => TrainerHomeScreen()),
+                  ***REMOVED***
                     ***REMOVED***
-            ***REMOVED***
-                print('Logged in '+_email.text+' as User ID '+userid);
+              ***REMOVED***);
+              print('Logged in ' + _email.text + ' as User ID ' + userid);
             ***REMOVED***,
 ***REMOVED***
           FlatButton(
