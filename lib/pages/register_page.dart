@@ -7,8 +7,6 @@ import 'package:toggle_switch/toggle_switch.dart';
 
 import 'login_page.dart';
 
-String userid;
-
 class Register extends StatefulWidget {
 ***REMOVED***
   _RegisterState createState() => _RegisterState();
@@ -92,6 +90,7 @@ class _RegisterState extends State<Register> {
                     'lastName': _lastNameInputController.text,
                     'uid': currentUser.user.uid,
                     'email': _emailInputController.text,
+                    'profileUrl': '',
                     'trainingTypes': new List<String>(),
                     'rating': 0.0,
                   ***REMOVED***);
@@ -113,7 +112,6 @@ class _RegisterState extends State<Register> {
                     MaterialPageRoute(builder: (context) => UserHomePage()),
               ***REMOVED***
                 ***REMOVED***
-                userid = currentUser.user.uid;
               ***REMOVED***);
             ***REMOVED***,
 ***REMOVED***

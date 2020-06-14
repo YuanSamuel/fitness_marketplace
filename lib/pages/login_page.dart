@@ -14,7 +14,6 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController _email = new TextEditingController();
   TextEditingController _password = new TextEditingController();
-  bool _isTrainer = true;
 
 ***REMOVED***
 ***REMOVED***
