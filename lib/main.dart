@@ -1,5 +1,7 @@
+import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
 ***REMOVED***
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
+import 'package:fitnessmarketplace/pages/register.dart';
 
 ***REMOVED***
 ***REMOVED***
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
 ***REMOVED***
       debugShowCheckedModeBanner: false,
-      home: TrainerHomePage(),
+      home: TrainerHomeScreen(),
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***
