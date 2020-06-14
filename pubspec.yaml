@@ -22,8 +22,12 @@ environment:
 
 dependencies:
   firebase:
-  cloud_firestore:
-  firebase_auth:
+  firebase_auth: ^0.15.5+3
+  video_player: ^0.10.11+1
+  image_picker: ^0.6.7+1
+  firebase_storage: ^3.1.6
+  cloud_firestore: ^0.13.4+2
+  square_in_app_payments: 1.1.0
   select_dialog:
   toggle_switch: "^0.1.4"
   flutter:
