@@ -1,4 +1,5 @@
 import 'package:fitnessmarketplace/pages/login.dart';
+import 'package:fitnessmarketplace/pages/paymentpage.dart';
 import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       debugShowCheckedModeBanner: false,
-      home: Login(),
+      home: PaymentPage(),
     );
   }
 }
