@@ -1,5 +1,6 @@
 ***REMOVED***
 ***REMOVED***
+import 'package:fitnessmarketplace/models/OneOnOneSession.dart';
 ***REMOVED***
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -13,13 +14,12 @@ class TrainerHomePage extends StatefulWidget {
 ***REMOVED***
 
 class _TrainerHomePageState extends State<TrainerHomePage> {
-  List<String> names = ['Johnny Appleseed', 'Samuel Sam', 'John Smith'];
   List<String> dates = ['Jun 15, 5:00 pm', 'July 4, 9:00 pm', 'December 25, 12:00 am'];
-  List<String> duration = ['45 minutes', '1 hour', '24 hours'];
 
   CalendarController _calendarController;
   Trainer currentTrainer;
   List<RecordedVideo> trainerVideos;
+  List<OneOnOneSession>  oneOnOneSessions;
 
 ***REMOVED***
   void initState(){
@@ -36,10 +36,15 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
 
   setUp() async {
     trainerVideos = new List<RecordedVideo>();
+    oneOnOneSessions = new List<OneOnOneSession>();
+
     FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
     DocumentSnapshot userData = await Firestore.instance.collection('trainers').document(getUser.uid).get();
     currentTrainer = Trainer.fromSnapshot(userData);
+
+    await getOneOnOneSessions();
     await getVideos();
+
     setState(() {
       
     ***REMOVED***);
@@ -49,8 +54,15 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
     QuerySnapshot getVideos = await currentTrainer.reference.collection('recordedVideos').getDocuments();
     List<DocumentSnapshot> allVideos = getVideos.documents;
     for (int i = 0; i < allVideos.length; i++) {
-      print('got');
       trainerVideos.add(RecordedVideo.fromSnapshot(allVideos[i]));
+    ***REMOVED***
+  ***REMOVED***
+  
+  getOneOnOneSessions() async {
+    QuerySnapshot getOneOnOneSessions = await currentTrainer.reference.collection('oneOnOneSessions').getDocuments();
+    List<DocumentSnapshot> allOneOnOneSessions = getOneOnOneSessions.documents;
+    for (int i = 0; i < allOneOnOneSessions.length; i++) {
+      oneOnOneSessions.add(OneOnOneSession.fromSnapshot(allOneOnOneSessions[i]));
     ***REMOVED***
   ***REMOVED***
 
@@ -87,8 +99,12 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
               Container(
                 height: 300.0,
                 child: ListView.builder(
-                  itemCount: names.length,
-                  itemBuilder: (BuildContext context, int index){
+                  itemCount: oneOnOneSessions.length,
+                  itemBuilder: (BuildContext context, int i) {
+
+                    DateTime oneOnOneSessionDate = oneOnOneSessions[i].date.toDate().toLocal();
+                    String oneOnOneSessionLength = getLengthFromInt(oneOnOneSessions[i].length);
+
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
@@ -114,18 +130,18 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                   ***REMOVED***
                   ***REMOVED***
-          ***REMOVED***names[index], style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.white),),
+          ***REMOVED***oneOnOneSessions[i].name, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.white),),
           ***REMOVED***height: 10.0,),
-          ***REMOVED***duration[index], style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.white),),
+          ***REMOVED***oneOnOneSessionLength, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.white),),
               ***REMOVED***
               ***REMOVED***,
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.end,
                   ***REMOVED***
-          ***REMOVED***dates[index].substring(0, dates[index].indexOf(',')), style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: Colors.white),),
+          ***REMOVED***oneOnOneSessionDate.month.toString() + '/' + oneOnOneSessionDate.day.toString(), style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: Colors.white),),
           ***REMOVED***height: 10.0,),
-          ***REMOVED***dates[index].substring(dates[index].indexOf(',') + 2), style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: Colors.white),),
+          ***REMOVED***oneOnOneSessionDate.hour.toString() + ':' + oneOnOneSessionDate.minute.toString(), style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: Colors.white),),
               ***REMOVED***
               ***REMOVED***
           ***REMOVED***
@@ -268,6 +284,15 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
+  ***REMOVED***
+
+  String getLengthFromInt(int length) {
+    String returnLength = '';
+    if (length > 60) {
+      returnLength = returnLength + (length ~/ 60).toString() + ' hours ';
+    ***REMOVED***
+    returnLength = returnLength + (length % 60).toString() + ' minutes';
+    return returnLength;
   ***REMOVED***
 
 ***REMOVED***
