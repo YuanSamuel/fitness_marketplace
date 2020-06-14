@@ -7,16 +7,16 @@ import 'package:path/path.dart' as Path;
 ***REMOVED***
 import 'package:fitnessmarketplace/pages/show_video_page.dart';
 
-class VideoUploadPage extends StatefulWidget {
-  VideoUploadPage({Key key, this.title***REMOVED***) : super(key: key);
+class OnDemandUploadPage extends StatefulWidget {
+  OnDemandUploadPage({Key key, this.title***REMOVED***) : super(key: key);
 
   final String title;
 
 ***REMOVED***
-  _VideoUploadPageState createState() => _VideoUploadPageState();
+  _OnDemandUploadPageState createState() => _OnDemandUploadPageState();
 ***REMOVED***
 
-class _VideoUploadPageState extends State<VideoUploadPage> {
+class _OnDemandUploadPageState extends State<OnDemandUploadPage> {
   final _picker = ImagePicker();
   File video;
 
@@ -60,37 +60,37 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
             List<String> downloadUrls = snapshot.data;
         ***REMOVED***
                 body: Column(
+      ***REMOVED***
+      ***REMOVED***height: MediaQuery.of(context).size.height / 10,),
+                    RaisedButton(
+  ***REMOVED***'Record Video'),
   ***REMOVED***
-  ***REMOVED***height: MediaQuery.of(context).size.height / 10,),
-                RaisedButton(
-                  child: Text('Record Video'),
-                  onPressed: () {
-                    recordAndUploadVideo();
-                  ***REMOVED***,
-  ***REMOVED***,
-                downloadUrls != null
-                    ? Expanded(
-                        child: ListView.builder(
-                            itemCount: downloadUrls.length,
-                            itemBuilder: (context, i) {
-                              return Padding(
-                                padding: EdgeInsets.all(12.0),
-                                child: RaisedButton(
-              ***REMOVED***i.toString()),
-              ***REMOVED***
-                                    print('URL' + downloadUrls[i]);
-              ***REMOVED***
+                        recordAndUploadVideo();
+                      ***REMOVED***,
+      ***REMOVED***,
+                    downloadUrls != null
+                        ? Expanded(
+                      child: ListView.builder(
+                          itemCount: downloadUrls.length,
+                          itemBuilder: (context, i) {
+                            return Padding(
+                              padding: EdgeInsets.all(12.0),
+                              child: RaisedButton(
+            ***REMOVED***i.toString()),
             ***REMOVED***
-            ***REMOVED***builder: (context) => ShowVideoPage(videoDownloadUrl: downloadUrls[i],)),
-                                ***REMOVED***
-                                  ***REMOVED***,
-                  ***REMOVED***,
-                          ***REMOVED***
-                            ***REMOVED***),
-        ***REMOVED***
-                    : SizedBox.shrink(),
+                                  print('URL' + downloadUrls[i]);
+            ***REMOVED***
+          ***REMOVED***
+          ***REMOVED***builder: (context) => ShowVideoPage(videoDownloadUrl: downloadUrls[i],)),
+                              ***REMOVED***
+                                ***REMOVED***,
+                ***REMOVED***,
+                        ***REMOVED***
+                          ***REMOVED***),
+      ***REMOVED***
+                        : SizedBox.shrink(),
   ***REMOVED***
-            ));
+  ***REMOVED***);
           ***REMOVED***
         ***REMOVED***);
   ***REMOVED***
@@ -98,7 +98,7 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
   Future<List<String>> getVideos() async {
     List<String> downloadUrls = new List<String>();
     QuerySnapshot allVideos =
-        await Firestore.instance.collection('videos').getDocuments();
+    await Firestore.instance.collection('videos').getDocuments();
     for (int i = 0; i < allVideos.documents.length; i++) {
       downloadUrls.add(allVideos.documents[i].data['url']);
     ***REMOVED***

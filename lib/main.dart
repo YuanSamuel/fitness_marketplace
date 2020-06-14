@@ -1,6 +1,8 @@
+import 'package:fitnessmarketplace/pages/video_compress_test_page.dart';
 ***REMOVED***
+import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 
-import 'package:fitnessmarketplace/pages/video_upload_page.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
 ***REMOVED***
       debugShowCheckedModeBanner: false,
-      home: VideoUploadPage(),
+      home: VideoCompressTestPage(),
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***
@@ -32,13 +34,6 @@ class MyHomePage extends StatefulWidget {
 ***REMOVED***
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    ***REMOVED***);
-  ***REMOVED***
 
 ***REMOVED***
 ***REMOVED***
@@ -46,25 +41,21 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
 ***REMOVED***
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+      body: Column(
+        children: [
+          RaisedButton(
+            child: Text('User'),
 ***REMOVED***
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+          RaisedButton(
+            child: Text('Trainer'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TrainerHomePage()),
+          ***REMOVED***
+            ***REMOVED***,
 ***REMOVED***
-          ],
-***REMOVED***
-***REMOVED***
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-***REMOVED*** // This trailing comma makes auto-formatting nicer for build methods.
-***REMOVED***
+        ],
+      ));
   ***REMOVED***
 ***REMOVED***
