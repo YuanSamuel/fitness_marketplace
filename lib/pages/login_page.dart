@@ -1,5 +1,6 @@
 import 'package:fitnessmarketplace/pages/register_page.dart';
 import 'package:fitnessmarketplace/pages/show_video_page.dart';
+import 'package:fitnessmarketplace/pages/user_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -38,7 +39,7 @@ class _LoginState extends State<Login> {
                   .signInWithEmailAndPassword(
                       email: _email.text, password: _password.text)
                   .then((currentUser) {
-                    if(Firestore.instance.collection('users').document(currentUser.user.uid)!=null){
+                    if(Firestore.instance.collection('students').document(currentUser.user.uid)!=null){
                       _isTrainer = false;
                     }
                     else{
@@ -54,7 +55,7 @@ class _LoginState extends State<Login> {
                     else{
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ShowVideoPage()),
+                        MaterialPageRoute(builder: (context) => UserHomePage()),
                       );
                     }
               });
