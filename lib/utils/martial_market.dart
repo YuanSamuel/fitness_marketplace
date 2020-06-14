@@ -27,7 +27,7 @@ class _MartialMarketState extends State<MartialMarket> {
               video2: 'http://www.telegraph.co.uk/content/dam/health-fitness/2017/11/09/TELEMMGLPICT000146072663-xlarge_trans_NvBQzQNjv4Bqek9vKm18v_rkIPH9w2GMNtm3NAjPW-2_OvjCiS6COCU.jpeg',
               description: "Hey there! My name's Samuel, and I'm here to help you find yourself on your workout journey. I've been dedicated to helping others toward their fitness goals since 2002 and I've never backed down from a challenge. Train with me and I'll give you results you never thought possible!"
 ***REMOVED***),
-        FadeAnimationDown(1.8,makeTrainer(image: 'https://onnitacademy.imgix.net/2015/07/personalt-trainer.jpg',
+        FadeAnimationDown(2.0,makeTrainer(image: 'https://onnitacademy.imgix.net/2015/07/personalt-trainer.jpg',
               name: 'Lucas Cai',
               pay: 19.99,
               category: 'Yoga, Cardio',
@@ -38,7 +38,7 @@ class _MartialMarketState extends State<MartialMarket> {
               video2: 'http://www.telegraph.co.uk/content/dam/health-fitness/2017/11/09/TELEMMGLPICT000146072663-xlarge_trans_NvBQzQNjv4Bqek9vKm18v_rkIPH9w2GMNtm3NAjPW-2_OvjCiS6COCU.jpeg',
               description: 'Lucas holds a BS in Physical Education as well as a MS in Exercise Science and Health Promotion. He is a Certified Strength and Conditioning Specialist (CSCS). He has a background in health and fitness as well as athletic performance training with over 20 years of certification and experience in the field.'),
 ***REMOVED***
-        FadeAnimationDown(1.8,makeTrainer(image: 'https://www.precor.com/sites/default/files/community/iStock_000022826094Large.jpg',
+        FadeAnimationDown(2.2,makeTrainer(image: 'https://www.precor.com/sites/default/files/community/iStock_000022826094Large.jpg',
               name: 'Vincent Do',
               pay: 49.99,
               category: 'Crossfit, Cardio',
