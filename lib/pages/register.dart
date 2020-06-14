@@ -21,6 +21,14 @@ class _RegisterState extends State<Register> {
   bool _isTrainer = false;
 
   @override
+  void initState() {
+    _name = new TextEditingController();
+    _email = new TextEditingController();
+    _password = new TextEditingController();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
@@ -84,7 +92,6 @@ class _RegisterState extends State<Register> {
                   //To Home Page
                 }
               });
-              print('Registered '+_email.text+' as User ID '+userid);
             },
           ),
           FlatButton(
