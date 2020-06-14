@@ -97,7 +97,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                 ),
               ),
               Container(
-                height: 300.0,
+                height: 250.0,
                 child: ListView.builder(
                   itemCount: oneOnOneSessions.length,
                   itemBuilder: (BuildContext context, int i) {
