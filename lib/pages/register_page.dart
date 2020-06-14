@@ -1,10 +1,11 @@
+import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
 import 'package:fitnessmarketplace/pages/trainer_register.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'login.dart';
+import 'login_page.dart';
 
 String userid;
 
@@ -15,16 +16,18 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
 
-  TextEditingController _name = new TextEditingController();
-  TextEditingController _email = new TextEditingController();
-  TextEditingController _password = new TextEditingController();
+  TextEditingController _firstNameInputController;
+  TextEditingController _lastNameInputController;
+  TextEditingController _emailInputController;
+  TextEditingController _passwordInputController;
   bool _isTrainer;
 
   @override
   void initState() {
-    _name = new TextEditingController();
-    _email = new TextEditingController();
-    _password = new TextEditingController();
+    _firstNameInputController = new TextEditingController();
+    _lastNameInputController = new TextEditingController();
+    _emailInputController = new TextEditingController();
+    _passwordInputController = new TextEditingController();
     super.initState();
   }
 
@@ -34,21 +37,27 @@ class _RegisterState extends State<Register> {
       body: Column(
         children: [
           TextField(
-            controller: _name,
+            controller: _firstNameInputController,
             decoration: InputDecoration(
-              hintText: 'Full Name'
+              hintText: 'First Name',
             ),
           ),
           TextField(
-            controller: _email,
+            controller: _lastNameInputController,
             decoration: InputDecoration(
-                hintText: 'Email'
+              hintText: 'Last Name',
             ),
           ),
           TextField(
-            controller: _password,
+            controller: _emailInputController,
             decoration: InputDecoration(
-                hintText: 'Password'
+                hintText: 'Email',
+            ),
+          ),
+          TextField(
+            controller: _passwordInputController,
+            decoration: InputDecoration(
+                hintText: 'Password',
             ),
           ),
           ToggleSwitch(
@@ -74,23 +83,29 @@ class _RegisterState extends State<Register> {
             color: Colors.blue,
             child: Text('Register'),
             onPressed: () {
-              FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email.text, password: _password.text).then((currentUser) {
-                Firestore.instance.collection('users').document(currentUser.user.uid).setData({
-                  'name': _name,
-                  'uid': currentUser.user.uid,
-                  'email': _email,
-                  'istrainer': _isTrainer,
-                });
-                userid = currentUser.user.uid;
-                if(_isTrainer==true){
+              FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailInputController.text, password: _passwordInputController.text).then((currentUser) async {
+                if (_isTrainer) {
+                  await Firestore.instance.collection('trainers').document(currentUser.user.uid).setData({
+                    'firstName': _firstNameInputController.text,
+                    'lastName': _lastNameInputController.text,
+                    'uid': currentUser.user.uid,
+                    'email': _emailInputController.text,
+                    'rating': 0.0,
+                  });
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TrainerRegister()),
+                    MaterialPageRoute(builder: (context) => TrainerHomeScreen()),
                   );
                 }
-                else{
-                  //To Home Page
+                else {
+                  Firestore.instance.collection('students').document(currentUser.user.uid).setData({
+                    'firstName': _firstNameInputController.text,
+                    'lastName': _lastNameInputController.text,
+                    'uid': currentUser.user.uid,
+                    'email': _emailInputController.text,
+                  });
                 }
+                userid = currentUser.user.uid;
               });
             },
           ),
