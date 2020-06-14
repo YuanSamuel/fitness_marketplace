@@ -1,4 +1,5 @@
 import 'package:fitnessmarketplace/pages/register_page.dart';
+import 'package:fitnessmarketplace/pages/show_video_page.dart';
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
@@ -13,7 +14,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController _email = new TextEditingController();
   TextEditingController _password = new TextEditingController();
-  bool _isTrainer = true;
+  bool _isTrainer;
 
 ***REMOVED***
 ***REMOVED***
@@ -37,10 +38,23 @@ class _LoginState extends State<Login> {
                   .signInWithEmailAndPassword(
                       email: _email.text, password: _password.text)
                   .then((currentUser) {
+                    if(Firestore.instance.collection('users').document(currentUser.user.uid)!=null){
+                      _isTrainer = false;
+                    ***REMOVED***
+                ***REMOVED***
+                      _isTrainer = true;
+                    ***REMOVED***
+                    userid = currentUser.user.uid;
                     if (_isTrainer) {
 ***REMOVED***
                         context,
                         MaterialPageRoute(builder: (context) => TrainerHomeScreen()),
+                  ***REMOVED***
+                    ***REMOVED***
+                ***REMOVED***
+***REMOVED***
+                        context,
+                        MaterialPageRoute(builder: (context) => ShowVideoPage()),
                   ***REMOVED***
                     ***REMOVED***
               ***REMOVED***);

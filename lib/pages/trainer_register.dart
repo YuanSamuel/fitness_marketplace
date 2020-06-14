@@ -4,7 +4,7 @@ import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
 import 'package:select_dialog/select_dialog.dart';
 ***REMOVED***
 
-import 'register.dart';
+import 'register_page.dart';
 
 class TrainerRegister extends StatefulWidget {
 ***REMOVED***

@@ -8,6 +8,7 @@ import 'package:toggle_switch/toggle_switch.dart';
 import 'login_page.dart';
 
 String userid;
+bool isTrainer = false;
 
 class Register extends StatefulWidget {
 ***REMOVED***
@@ -20,7 +21,6 @@ class _RegisterState extends State<Register> {
   TextEditingController _lastNameInputController;
   TextEditingController _emailInputController;
   TextEditingController _passwordInputController;
-  bool _isTrainer;
 
 ***REMOVED***
 ***REMOVED***
@@ -71,12 +71,12 @@ class _RegisterState extends State<Register> {
             activeColors: [Colors.blue, Colors.green],
             onToggle: (index) {
               if(index==0){
-                _isTrainer = false;
+                isTrainer = false;
               ***REMOVED***
           ***REMOVED***
-                _isTrainer = true;
+                isTrainer = true;
               ***REMOVED***
-              print('Trainer is '+_isTrainer.toString());
+              print('Trainer is '+isTrainer.toString());
             ***REMOVED***
 ***REMOVED***
           FlatButton(
@@ -84,7 +84,7 @@ class _RegisterState extends State<Register> {
             child: Text('Register'),
             onPressed: () {
               FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailInputController.text, password: _passwordInputController.text).then((currentUser) async {
-                if (_isTrainer) {
+                if (isTrainer) {
                   await Firestore.instance.collection('trainers').document(currentUser.user.uid).setData({
                     'firstName': _firstNameInputController.text,
                     'lastName': _lastNameInputController.text,

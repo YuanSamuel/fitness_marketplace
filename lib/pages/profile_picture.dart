@@ -6,7 +6,7 @@ import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 ***REMOVED***
-import 'register.dart';
+import 'register_page.dart';
 
 class ProfilePic extends StatefulWidget {
 ***REMOVED***
