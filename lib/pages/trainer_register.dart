@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'register.dart';
+import 'register_page.dart';
 
 class TrainerRegister extends StatefulWidget {
   @override
