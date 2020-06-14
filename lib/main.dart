@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
 ***REMOVED***
       debugShowCheckedModeBanner: false,
-      home: TrainerHomePage(),
+      home: Register(),
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***
