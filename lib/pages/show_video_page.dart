@@ -18,7 +18,7 @@ class _ShowVideoPageState extends State<ShowVideoPage> {
 ***REMOVED***
     _controller = VideoPlayerController.network(widget.videoDownloadUrl)
       ..initialize().then((value) {
-        _controller.setLooping(true);
+        _controller.setLooping(false);
   ***REMOVED******REMOVED***);
       ***REMOVED***);
   ***REMOVED***
