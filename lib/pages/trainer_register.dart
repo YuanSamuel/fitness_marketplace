@@ -1,3 +1,5 @@
+import 'package:fitnessmarketplace/pages/profile_picture.dart';
+import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -54,11 +56,14 @@ class _TrainerRegisterState extends State<TrainerRegister> {
               color: Colors.blue,
               child: Text('Continue'),
               onPressed: () {
-                Firestore.instance.collection('users').document(userid).setData({
+                Firestore.instance.collection('trainers').document(userid).setData({
                   'type': _type,
                   'rating': 0,
                 },merge: true);
-                //To Home Page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfilePic()),
+                );
               },
             )
           ],
