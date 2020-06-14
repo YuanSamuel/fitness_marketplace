@@ -1,6 +1,7 @@
 import 'package:fitnessmarketplace/pages/agora_test_index_page.dart';
 import 'package:flutter/material.dart';
 import 'pages/profile_page.dart';
+import 'pages/intro_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: StudentProfilePage(4,5,3,"Michael Mohn"),
+      home: IntroScreen(),
     );
   }
 }
