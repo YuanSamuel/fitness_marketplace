@@ -34,7 +34,7 @@ class _LoginState extends State<Login> {
           FlatButton(
             color: Colors.blue,
             child: Text('Login'),
-            onPressed: () async {
+            onPressed: () {
               print("Attempt Login");
                 FirebaseAuth.instance.signInWithEmailAndPassword(email: _email.text, password: _password.text).then(
                         (currentUser) {
