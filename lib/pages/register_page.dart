@@ -7,8 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'login_page.dart';
 
-String userid;
-
 class Register extends StatefulWidget {
   @override
   _RegisterState createState() => _RegisterState();
@@ -92,6 +90,7 @@ class _RegisterState extends State<Register> {
                     'lastName': _lastNameInputController.text,
                     'uid': currentUser.user.uid,
                     'email': _emailInputController.text,
+                    'profileUrl': '',
                     'trainingTypes': new List<String>(),
                     'rating': 0.0,
                   });
@@ -113,7 +112,6 @@ class _RegisterState extends State<Register> {
                     MaterialPageRoute(builder: (context) => UserHomePage()),
                   );
                 }
-                userid = currentUser.user.uid;
               });
             },
           ),
