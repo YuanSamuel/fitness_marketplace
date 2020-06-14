@@ -1,5 +1,7 @@
+import 'package:fitnessmarketplace/pages/profile_picture.dart';
 import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
 import 'package:fitnessmarketplace/pages/trainer_register.dart';
+import 'package:fitnessmarketplace/pages/user_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -94,7 +96,7 @@ class _RegisterState extends State<Register> {
                   });
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TrainerHomeScreen()),
+                    MaterialPageRoute(builder: (context) => TrainerRegister()),
                   );
                 }
                 else {
@@ -104,6 +106,10 @@ class _RegisterState extends State<Register> {
                     'uid': currentUser.user.uid,
                     'email': _emailInputController.text,
                   });
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => UserHomePage()),
+                  );
                 }
                 userid = currentUser.user.uid;
               });
