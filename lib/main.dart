@@ -1,6 +1,7 @@
+import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
 import 'package:flutter/material.dart';
-
-import 'package:fitnessmarketplace/pages/video_upload_page.dart';
+import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
+import 'package:fitnessmarketplace/pages/register.dart';
 
 import 'package:square_in_app_payments/models.dart';
 import 'package:square_in_app_payments/in_app_payments.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       debugShowCheckedModeBanner: false,
-      home: VideoUploadPage(),
+      home: TrainerHomeScreen(),
     );
   }
 }
@@ -36,13 +37,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,25 +44,21 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+      body: Column(
+        children: [
+          RaisedButton(
+            child: Text('User'),
+          ),
+          RaisedButton(
+            child: Text('Trainer'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TrainerHomePage()),
+              );
+            },
+          ),
+        ],
+      ));
   }
 }
