@@ -1,10 +1,10 @@
-
 import 'package:fitnessmarketplace/pages/register_page.dart';
+import 'package:fitnessmarketplace/pages/user_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'register_page.dart';
-import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
+import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -14,7 +14,6 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController _email = new TextEditingController();
   TextEditingController _password = new TextEditingController();
-  bool _isTrainer = true;
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +36,23 @@ class _LoginState extends State<Login> {
               FirebaseAuth.instance
                   .signInWithEmailAndPassword(
                       email: _email.text, password: _password.text)
-                  .then((currentUser) {
-                    if (_isTrainer) {
+                  .then((currentUser) async {
+                    print(currentUser.user.uid);
+                    DocumentSnapshot snapshot = await Firestore.instance.collection('users').document(currentUser.user.uid).get();
+                    print(snapshot.data);
+                    if (snapshot.data['isTrainer']) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => TrainerHomeScreen()),
+                        MaterialPageRoute(builder: (context) => TrainerHomePage()),
+                      );
+                    }
+                    else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => UserHomePage()),
                       );
                     }
               });
-              print('Logged in ' + _email.text + ' as User ID ' + userid);
             },
           ),
           FlatButton(
