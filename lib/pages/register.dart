@@ -1,3 +1,4 @@
+import 'package:fitnessmarketplace/pages/profile_picture.dart';
 import 'package:fitnessmarketplace/pages/trainer_register.dart';
 ***REMOVED***
 import 'package:toggle_switch/toggle_switch.dart';
@@ -7,6 +8,7 @@ import 'package:toggle_switch/toggle_switch.dart';
 import 'login.dart';
 
 String userid;
+bool isTrainer = false;
 
 class Register extends StatefulWidget {
 ***REMOVED***
@@ -18,7 +20,6 @@ class _RegisterState extends State<Register> {
   TextEditingController _name = new TextEditingController();
   TextEditingController _email = new TextEditingController();
   TextEditingController _password = new TextEditingController();
-  bool _isTrainer = false;
 
 ***REMOVED***
 ***REMOVED***
@@ -62,12 +63,12 @@ class _RegisterState extends State<Register> {
             activeColors: [Colors.blue, Colors.green],
             onToggle: (index) {
               if(index==0){
-                _isTrainer = false;
+                isTrainer = false;
               ***REMOVED***
           ***REMOVED***
-                _isTrainer = true;
+                isTrainer = true;
               ***REMOVED***
-              print('Trainer is '+_isTrainer.toString());
+              print('Trainer is '+isTrainer.toString());
             ***REMOVED***
 ***REMOVED***
           FlatButton(
@@ -75,21 +76,32 @@ class _RegisterState extends State<Register> {
             child: Text('Register'),
             onPressed: () {
               FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email.text, password: _password.text).then((currentUser) {
-                Firestore.instance.collection('users').document(currentUser.user.uid).setData({
-                  'name': _name.text,
-                  'uid': currentUser.user.uid,
-                  'email': _email.text,
-                  'istrainer': _isTrainer,
-                ***REMOVED***);
+                if(isTrainer){
+                  Firestore.instance.collection('trainers').document(currentUser.user.uid).setData({
+                    'name': _name.text,
+                    'uid': currentUser.user.uid,
+                    'email': _email.text,
+                  ***REMOVED***);
+                ***REMOVED***
+            ***REMOVED***
+                  Firestore.instance.collection('users').document(currentUser.user.uid).setData({
+                    'name': _name.text,
+                    'uid': currentUser.user.uid,
+                    'email': _email.text,
+                  ***REMOVED***);
+                ***REMOVED***
                 userid = currentUser.user.uid;
-                if(_isTrainer==true){
+                if(isTrainer==true){
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TrainerRegister()),
               ***REMOVED***
                 ***REMOVED***
             ***REMOVED***
-                  //To Home Page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePic()),
+              ***REMOVED***
                 ***REMOVED***
               ***REMOVED***);
             ***REMOVED***,

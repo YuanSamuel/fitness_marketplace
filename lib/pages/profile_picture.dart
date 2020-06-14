@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
+import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
 ***REMOVED***
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -23,13 +25,37 @@ class _ProfilePicState extends State<ProfilePic> {
     await _uploadTask.onComplete;
 
     url = await _storage.ref().child(filePath).getDownloadURL();
-    Firestore.instance.collection('users').document(userid).setData({
+    String _train;
+    if(isTrainer){
+      _train = 'trainers';
+    ***REMOVED***
+***REMOVED***
+      _train = 'users';
+    ***REMOVED***
+    Firestore.instance.collection(_train).document(userid).setData({
       'url':url,
     ***REMOVED***,merge: true);
   ***REMOVED***
 
 ***REMOVED***
 ***REMOVED***
+***REMOVED***
+      body: Column(
+        children: [
+          if(url!=null)
+            Image.network(url),
+          FlatButton(
+            child: Text('Continue'),
+            onPressed: () async {
+              if(isTrainer){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TrainerHomeScreen()),
+            ***REMOVED***
+              ***REMOVED***
+            ***REMOVED***,
+***REMOVED***
+        ],
 ***REMOVED***
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add_a_photo),
