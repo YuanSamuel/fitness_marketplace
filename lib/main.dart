@@ -1,9 +1,7 @@
-import 'package:fitnessmarketplace/pages/login.dart';
-import 'package:fitnessmarketplace/pages/paymentpage.dart';
-import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
 ***REMOVED***
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
-import 'package:fitnessmarketplace/pages/register.dart';
+import 'package:fitnessmarketplace/pages/register_page.dart';
+import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
 
 ***REMOVED***
 ***REMOVED***
@@ -24,7 +22,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
 ***REMOVED***
       debugShowCheckedModeBanner: false,
-      home: PaymentPage(),
+      home: Register(),
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***

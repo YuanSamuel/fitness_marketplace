@@ -44,7 +44,10 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                   color: Colors.green,
                   ***REMOVED***,
                                 child: GestureDetector(
-              ***REMOVED***i.toString(), style: TextStyle(color: Colors.white),),
+              ***REMOVED***
+                                    i.toString(),
+                ***REMOVED***color: Colors.white),
+                    ***REMOVED***,
                                   onTap: () {
                                     print('tapped');
                                     print(downloadUrls[i]);
@@ -52,8 +55,9 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
             ***REMOVED***
             ***REMOVED***
                                           builder: (context) => ShowVideoPage(
-                                            videoDownloadUrl: downloadUrls[i],
-                            ***REMOVED***),
+                                                videoDownloadUrl:
+                                                    downloadUrls[i],
+                                ***REMOVED***),
                                 ***REMOVED***
                                   ***REMOVED***,
                   ***REMOVED***,
