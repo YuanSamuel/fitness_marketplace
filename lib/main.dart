@@ -1,22 +1,24 @@
 import 'package:fitnessmarketplace/pages/agora_test_index_page.dart';
 ***REMOVED***
+import 'pages/profile_page.dart';
 
 void main() {
   runApp(MyApp());
 ***REMOVED***
 
 class MyApp extends StatelessWidget {
+
   // This widget is the root of your application.
 ***REMOVED***
 ***REMOVED***
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-
         visualDensity: VisualDensity.adaptivePlatformDensity,
 ***REMOVED***
-      home: IndexPage(),
+      home: StudentProfilePage(4,5,3,"Michael Mohn"),
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***
