@@ -7,7 +7,6 @@ import 'package:toggle_switch/toggle_switch.dart';
 
 import 'login_page.dart';
 
-String userid;
 
 class Register extends StatefulWidget {
 ***REMOVED***
