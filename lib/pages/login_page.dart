@@ -1,5 +1,7 @@
 import 'package:fitnessmarketplace/pages/register_page.dart';
+import 'package:fitnessmarketplace/pages/trainer_navigation.dart';
 import 'package:fitnessmarketplace/pages/user_home_page.dart';
+import 'package:fitnessmarketplace/pages/user_navigation.dart';
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
@@ -43,13 +45,13 @@ class _LoginState extends State<Login> {
                     if (snapshot.data['isTrainer']) {
 ***REMOVED***
                         context,
-                        MaterialPageRoute(builder: (context) => TrainerHomePage()),
+                        MaterialPageRoute(builder: (context) => TrainerNavigation()),
                   ***REMOVED***
                     ***REMOVED***
                 ***REMOVED***
 ***REMOVED***
                         context,
-                        MaterialPageRoute(builder: (context) => UserHomePage()),
+                        MaterialPageRoute(builder: (context) => UserNavigation()),
                   ***REMOVED***
                     ***REMOVED***
               ***REMOVED***);
