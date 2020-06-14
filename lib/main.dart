@@ -1,11 +1,6 @@
 ***REMOVED***
-import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 import 'package:fitnessmarketplace/pages/register_page.dart';
-import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
-
-***REMOVED***
-***REMOVED***
-
+import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 
 void main() {
   runApp(MyApp());

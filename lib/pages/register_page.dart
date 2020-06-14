@@ -1,5 +1,5 @@
-import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
-import 'package:fitnessmarketplace/pages/trainer_register.dart';
+import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
+import 'package:fitnessmarketplace/pages/user_home_page.dart';
 ***REMOVED***
 import 'package:toggle_switch/toggle_switch.dart';
 ***REMOVED***
@@ -24,6 +24,7 @@ class _RegisterState extends State<Register> {
 
 ***REMOVED***
 ***REMOVED***
+    _isTrainer = false;
     _firstNameInputController = new TextEditingController();
     _lastNameInputController = new TextEditingController();
     _emailInputController = new TextEditingController();
@@ -85,25 +86,32 @@ class _RegisterState extends State<Register> {
             onPressed: () {
               FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailInputController.text, password: _passwordInputController.text).then((currentUser) async {
                 if (_isTrainer) {
+                  await Firestore.instance.collection('users').document(currentUser.user.uid).setData({'isTrainer': true***REMOVED***);
                   await Firestore.instance.collection('trainers').document(currentUser.user.uid).setData({
                     'firstName': _firstNameInputController.text,
                     'lastName': _lastNameInputController.text,
                     'uid': currentUser.user.uid,
                     'email': _emailInputController.text,
+                    'trainingTypes': new List<String>(),
                     'rating': 0.0,
                   ***REMOVED***);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TrainerHomeScreen()),
+                    MaterialPageRoute(builder: (context) => TrainerHomePage()),
               ***REMOVED***
                 ***REMOVED***
             ***REMOVED***
-                  Firestore.instance.collection('students').document(currentUser.user.uid).setData({
+                  await Firestore.instance.collection('users').document(currentUser.user.uid).setData({'isTrainer': false***REMOVED***);
+                  await Firestore.instance.collection('students').document(currentUser.user.uid).setData({
                     'firstName': _firstNameInputController.text,
                     'lastName': _lastNameInputController.text,
                     'uid': currentUser.user.uid,
                     'email': _emailInputController.text,
                   ***REMOVED***);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => UserHomePage()),
+              ***REMOVED***
                 ***REMOVED***
                 userid = currentUser.user.uid;
               ***REMOVED***);
