@@ -1,5 +1,7 @@
+import 'package:fitnessmarketplace/pages/profile_picture.dart';
 import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
 import 'package:fitnessmarketplace/pages/trainer_register.dart';
+import 'package:fitnessmarketplace/pages/user_home_page.dart';
 ***REMOVED***
 import 'package:toggle_switch/toggle_switch.dart';
 ***REMOVED***
@@ -94,7 +96,7 @@ class _RegisterState extends State<Register> {
                   ***REMOVED***);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TrainerHomeScreen()),
+                    MaterialPageRoute(builder: (context) => TrainerRegister()),
               ***REMOVED***
                 ***REMOVED***
             ***REMOVED***
@@ -104,6 +106,10 @@ class _RegisterState extends State<Register> {
                     'uid': currentUser.user.uid,
                     'email': _emailInputController.text,
                   ***REMOVED***);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => UserHomePage()),
+              ***REMOVED***
                 ***REMOVED***
                 userid = currentUser.user.uid;
               ***REMOVED***);
