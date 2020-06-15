@@ -14,15 +14,13 @@ class TrainerHomePage extends StatefulWidget {
 }
 
 class _TrainerHomePageState extends State<TrainerHomePage> {
-  List<String> dates = ['Jun 15, 5:00 pm', 'July 4, 9:00 pm', 'December 25, 12:00 am'];
-
   CalendarController _calendarController;
   Trainer currentTrainer;
   List<RecordedVideo> trainerVideos;
-  List<OneOnOneSession>  oneOnOneSessions;
+  List<OneOnOneSession> oneOnOneSessions;
 
   @override
-  void initState(){
+  void initState() {
     _calendarController = CalendarController();
     setUp();
     super.initState();
@@ -39,30 +37,36 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
     oneOnOneSessions = new List<OneOnOneSession>();
 
     FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
-    DocumentSnapshot userData = await Firestore.instance.collection('trainers').document(getUser.uid).get();
+    DocumentSnapshot userData = await Firestore.instance
+        .collection('trainers')
+        .document(getUser.uid)
+        .get();
     currentTrainer = Trainer.fromSnapshot(userData);
 
     await getOneOnOneSessions();
     await getVideos();
 
-    setState(() {
-      
-    });
+    setState(() {});
   }
-  
+
   getVideos() async {
-    QuerySnapshot getVideos = await currentTrainer.reference.collection('recordedVideos').getDocuments();
+    QuerySnapshot getVideos = await currentTrainer.reference
+        .collection('recordedVideos')
+        .getDocuments();
     List<DocumentSnapshot> allVideos = getVideos.documents;
     for (int i = 0; i < allVideos.length; i++) {
       trainerVideos.add(RecordedVideo.fromSnapshot(allVideos[i]));
     }
   }
-  
+
   getOneOnOneSessions() async {
-    QuerySnapshot getOneOnOneSessions = await currentTrainer.reference.collection('oneOnOneSessions').getDocuments();
+    QuerySnapshot getOneOnOneSessions = await currentTrainer.reference
+        .collection('oneOnOneSessions')
+        .getDocuments();
     List<DocumentSnapshot> allOneOnOneSessions = getOneOnOneSessions.documents;
     for (int i = 0; i < allOneOnOneSessions.length; i++) {
-      oneOnOneSessions.add(OneOnOneSession.fromSnapshot(allOneOnOneSessions[i]));
+      oneOnOneSessions
+          .add(OneOnOneSession.fromSnapshot(allOneOnOneSessions[i]));
     }
   }
 
@@ -74,26 +78,28 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
           child: CircularProgressIndicator(),
         ),
       );
-    }
-    else {
+    } else {
       return Scaffold(
-        body:
-        SingleChildScrollView(
+        body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 30.0,),
+              SizedBox(
+                height: 30.0,
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 15.0),
-                child: Text('Hello, ' + currentTrainer.firstName, style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),),
+                child: Text(
+                  'Hello, ' + currentTrainer.firstName,
+                  style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),
+                ),
               ),
               Container(child: _buildCalendar()),
               Padding(
                 padding: const EdgeInsets.only(left: 15.0),
-                child: Text('1 on 1 Sessions', style: TextStyle(
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold
-                ),
+                child: Text(
+                  '1 on 1 Sessions',
+                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
                 ),
               ),
               Container(
@@ -101,9 +107,10 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                 child: ListView.builder(
                   itemCount: oneOnOneSessions.length,
                   itemBuilder: (BuildContext context, int i) {
-
-                    DateTime oneOnOneSessionDate = oneOnOneSessions[i].date.toDate().toLocal();
-                    String oneOnOneSessionLength = getLengthFromInt(oneOnOneSessions[i].length);
+                    DateTime oneOnOneSessionDate =
+                        oneOnOneSessions[i].date.toDate().toLocal();
+                    String oneOnOneSessionLength =
+                        getLengthFromInt(oneOnOneSessions[i].length);
 
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -117,7 +124,8 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 5,
                               blurRadius: 7,
-                              offset: Offset(0, 3), // changes position of shadow
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
                             ),
                           ],
                         ),
@@ -130,18 +138,50 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(oneOnOneSessions[i].name, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.white),),
-                                SizedBox(height: 10.0,),
-                                Text(oneOnOneSessionLength, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.white),),
+                                Text(
+                                  oneOnOneSessions[i].name,
+                                  style: TextStyle(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white),
+                                ),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                Text(
+                                  oneOnOneSessionLength,
+                                  style: TextStyle(
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
+                                ),
                               ],
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text(oneOnOneSessionDate.month.toString() + '/' + oneOnOneSessionDate.day.toString(), style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: Colors.white),),
-                                SizedBox(height: 10.0,),
-                                Text(oneOnOneSessionDate.hour.toString() + ':' + oneOnOneSessionDate.minute.toString(), style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: Colors.white),),
+                                Text(
+                                  oneOnOneSessionDate.month.toString() +
+                                      '/' +
+                                      oneOnOneSessionDate.day.toString(),
+                                  style: TextStyle(
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
+                                ),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                Text(
+                                  oneOnOneSessionDate.hour.toString() +
+                                      ':' +
+                                      oneOnOneSessionDate.minute.toString(),
+                                  style: TextStyle(
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
+                                ),
                               ],
                             )
                           ],
@@ -151,18 +191,19 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                   },
                 ),
               ),
-              SizedBox(height: 10.0,),
-              Text('Your Videos',  style: TextStyle(
-                  fontSize: 25.0,
-                  fontWeight: FontWeight.bold
+              SizedBox(
+                height: 10.0,
               ),
+              Text(
+                'Your Videos',
+                style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
               ),
               Container(
                 height: 300.0,
                 child: ListView.builder(
                   itemCount: trainerVideos.length,
                   scrollDirection: Axis.horizontal,
-                  itemBuilder: (BuildContext context, int i){
+                  itemBuilder: (BuildContext context, int i) {
                     print(i);
                     return Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -173,16 +214,18 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ShowVideoPage(
-                                  videoDownloadUrl:
-                                  trainerVideos[i].videoUrl,
-                                )),
+                                      videoDownloadUrl:
+                                          trainerVideos[i].videoUrl,
+                                    )),
                           );
                         },
                         child: Container(
                           height: 300.0,
                           width: 300.0,
                           child: Center(
-                            child: Text(trainerVideos[i].name + '  ' + trainerVideos[i].date.toDate().toString()),
+                            child: Text(trainerVideos[i].name +
+                                '  ' +
+                                trainerVideos[i].date.toDate().toString()),
                           ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30.0),
@@ -192,7 +235,8 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                 color: Colors.grey.withOpacity(0.5),
                                 spreadRadius: 5,
                                 blurRadius: 7,
-                                offset: Offset(0, 3), // changes position of shadow
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
                               ),
                             ],
                           ),
@@ -223,6 +267,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
         formatAnimation: FormatAnimation.slide,
         startingDayOfWeek: StartingDayOfWeek.sunday,
         availableGestures: AvailableGestures.horizontalSwipe,
+        events: getEvents(),
         availableCalendarFormats: const {
           CalendarFormat.month: 'Month',
         },
@@ -295,4 +340,19 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
     return returnLength;
   }
 
+  Map<DateTime, List<String>> getEvents() {
+    Map<DateTime, List<String>> oneOnOneSessionsMap =
+        new Map<DateTime, List<String>>();
+    for (int i = 0; i < oneOnOneSessions.length; i++) {
+      DateTime oneOnOneSessionDate = oneOnOneSessions[i].date.toDate();
+      if (oneOnOneSessionsMap.containsKey(oneOnOneSessionDate)) {
+        oneOnOneSessionsMap[oneOnOneSessionDate].add(oneOnOneSessions[i].name);
+      } else {
+        List<String> oneOnOneSessionsList = new List<String>();
+        oneOnOneSessionsList.add(oneOnOneSessions[i].name);
+        oneOnOneSessionsMap[oneOnOneSessionDate] = oneOnOneSessionsList;
+      }
+    }
+    return oneOnOneSessionsMap;
+  }
 }
