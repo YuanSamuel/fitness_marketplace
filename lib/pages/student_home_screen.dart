@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 
-class TrainerHomeScreen extends StatefulWidget {
+class StudentHomePage extends StatefulWidget {
   @override
-  _TrainerHomeScreenState createState() => _TrainerHomeScreenState();
+  _StudentHomePageState createState() => _StudentHomePageState();
 }
 
-class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
-  List<String> names = ['Johnny Appleseed', 'Samuel Sam', 'John Smith'];
+class _StudentHomePageState extends State<StudentHomePage> {
+  List<String> trainerNames = ['Johnny Appleseed', 'Samuel Sam', 'John Smith'];
+  List<String> sessionNames = ['Yoga', 'Karate', 'HIIT'];
   List<String> dates = ['Jun 15, 5:00 pm', 'July 4, 9:00 pm', 'December 25, 12:00 am'];
   List<String> duration = ['45 minutes', '1 hour', '24 hours'];
 
@@ -36,17 +37,17 @@ class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
           children: [
             SizedBox(height: 30.0,),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: Row(
-                children: [
-                  Text('Trainer: Lucas', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),),
-                  Spacer(),
-                  IconButton(
-                    icon: Icon(Icons.account_circle),
-                    onPressed: (){},
-                  )
-                ],
-              )
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Row(
+                  children: [
+                    Text('Student: Lucas', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),),
+                    Spacer(),
+                    IconButton(
+                      icon: Icon(Icons.account_circle),
+                      onPressed: (){},
+                    )
+                  ],
+                )
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -68,7 +69,7 @@ class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
             Container(
               height: 300.0,
               child: ListView.builder(
-                itemCount: names.length,
+                itemCount: trainerNames.length,
                 itemBuilder: (BuildContext context, int index){
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -95,7 +96,7 @@ class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(names[index], style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.white),),
+                              Text(sessionNames[index] + " | " + trainerNames[index], style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.white),),
                               SizedBox(height: 10.0,),
                               Text(duration[index], style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.white),),
                             ],
@@ -120,35 +121,35 @@ class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
             SizedBox(height: 10.0,),
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.symmetric(
-                 vertical: BorderSide(
-                     width: 0.5,
-                   color: Colors.black26
-                 ),
-                )
+                  color: Colors.white,
+                  border: Border.symmetric(
+                    vertical: BorderSide(
+                        width: 0.5,
+                        color: Colors.black26
+                    ),
+                  )
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 10.0,),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal:15.0),
-                    child:Row(
-                      children: [
-                        Text('Your Videos',  style: TextStyle(
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold
-                        ),
-                        ),
-                        Spacer(),
-                        Text('See All', style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black26
-                        ),),
-                      ],
-                    )
+                      padding: const EdgeInsets.symmetric(horizontal:15.0),
+                      child:Row(
+                        children: [
+                          Text('Your Videos',  style: TextStyle(
+                              fontSize: 25.0,
+                              fontWeight: FontWeight.bold
+                          ),
+                          ),
+                          Spacer(),
+                          Text('See All', style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black26
+                          ),),
+                        ],
+                      )
                   ),
                   Container(
                     color: Colors.white,
@@ -264,5 +265,4 @@ class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
       ),
     );
   }
-
 }
