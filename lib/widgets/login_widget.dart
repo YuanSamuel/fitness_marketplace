@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitnessmarketplace/pages/entry_page.dart';
-import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
 import 'package:fitnessmarketplace/utils/style_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 
 class LoginWidget extends StatefulWidget {
   @override
@@ -151,7 +151,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                           (value) {
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) => (TrainerHomeScreen())),
+                                          MaterialPageRoute(builder: (context) => (TrainerHomePage())),
                                         );
                                       });
                                 }
