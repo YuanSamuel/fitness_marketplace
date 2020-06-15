@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fitnessmarketplace/pages/show_video_page.dart';
 
 class TrainerHomePage extends StatefulWidget {
   TrainerHomePage({Key key, this.title}) : super(key: key);
@@ -48,13 +47,14 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                   onTap: () {
                                     print('tapped');
                                     print(downloadUrls[i]);
-                                    Navigator.push(
+                                    //TODO remember to do whatever is happening here
+                                    /*Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => ShowVideoPage(
                                             videoDownloadUrl: downloadUrls[i],
                                           )),
-                                    );
+                                    );*/
                                   },
                                 ),
                               );
