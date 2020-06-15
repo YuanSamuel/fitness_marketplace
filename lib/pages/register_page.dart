@@ -1,6 +1,5 @@
-import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
-import 'package:fitnessmarketplace/pages/user_home_page.dart';
 import 'package:fitnessmarketplace/pages/trainer_register.dart';
+import 'package:fitnessmarketplace/pages/user_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -121,7 +120,7 @@ class _RegisterState extends State<Register> {
                   });
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UserHomePage()),
+                    MaterialPageRoute(builder: (context) => UserNavigation()),
                   );
                 }
               });
