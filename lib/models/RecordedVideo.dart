@@ -4,10 +4,11 @@ class RecordedVideo {
   String name;
   Timestamp date;
   String videoUrl;
+  int students;
 
   DocumentReference reference;
 
-  RecordedVideo({this.name, this.date, this.videoUrl});
+  RecordedVideo({this.name, this.date, this.videoUrl, this.students, this.reference});
 
   factory RecordedVideo.fromSnapshot(DocumentSnapshot snapshot) {
     RecordedVideo newRecordedVideo = RecordedVideo.fromJson(snapshot.data);
@@ -20,6 +21,7 @@ class RecordedVideo {
       name: json['name'] as String,
       date: json['date'] as Timestamp,
       videoUrl: json['videoUrl'] as String,
+      students: json['students'] as int,
     );
   }
 
@@ -30,6 +32,7 @@ class RecordedVideo {
       'name': instance.name,
       'date': instance.date,
       'videoUrl': instance.videoUrl,
+      'students': instance.students,
     };
   }
 }
