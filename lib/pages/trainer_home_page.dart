@@ -88,13 +88,36 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                 height: 30.0,
 ***REMOVED***,
               Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: Text(
-                  'Hello, ' + currentTrainer.firstName,
-***REMOVED***fontSize: 30.0, fontWeight: FontWeight.w600),
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Row(
+        ***REMOVED***
+***REMOVED***
+                        'Trainer: ' + currentTrainer.firstName,
+    ***REMOVED***
+                            fontSize: 30.0, fontWeight: FontWeight.w600),
+        ***REMOVED***,
+                      Spacer(),
+                      IconButton(
+                        icon: Icon(Icons.account_circle),
+    ***REMOVED******REMOVED***,
+        ***REMOVED***
+    ***REMOVED***
+    ***REMOVED***),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Divider(
+                  height: 10.0,
+                  thickness: 0.75,
   ***REMOVED***,
 ***REMOVED***,
               Container(child: _buildCalendar()),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Divider(
+                  height: 10.0,
+                  thickness: 0.75,
+  ***REMOVED***,
+***REMOVED***,
               Padding(
                 padding: const EdgeInsets.only(left: 15.0),
                 child: Text(
@@ -194,58 +217,93 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
 ***REMOVED***
                 height: 10.0,
 ***REMOVED***,
-              Text(
-                'Your Videos',
-***REMOVED***fontSize: 25.0, fontWeight: FontWeight.bold),
-***REMOVED***,
               Container(
-                height: 300.0,
-                child: ListView.builder(
-                  itemCount: trainerVideos.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (BuildContext context, int i) {
-                    print(i);
-                    return Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          print('tapped');
-    ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-                                builder: (context) => ShowVideoPage(
-                                      videoDownloadUrl:
-                                          trainerVideos[i].videoUrl,
-                      ***REMOVED***),
-                      ***REMOVED***
-                        ***REMOVED***,
-                        child: Container(
-                          height: 300.0,
-                          width: 300.0,
-                          child: Center(
-        ***REMOVED***trainerVideos[i].name +
-                                '  ' +
-                                trainerVideos[i].date.toDate().toString()),
-            ***REMOVED***,
-              ***REMOVED***
-                            borderRadius: BorderRadius.circular(30.0),
-                            color: Colors.blue,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-                                offset:
-                                    Offset(0, 3), // changes position of shadow
+                  height: 340.0,
+      ***REMOVED***
+                      color: Colors.white,
+                      border: Border.symmetric(
+                        vertical: BorderSide(width: 0.5, color: Colors.black26),
+        ***REMOVED***),
+        ***REMOVED***
+        ***REMOVED***
+        ***REMOVED***
+***REMOVED***
+                        height: 10.0,
+        ***REMOVED***,
+                      Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          child: Row(
+                ***REMOVED***
+        ***REMOVED***
+                                'Your Videos',
+            ***REMOVED***
+                                    fontSize: 25.0,
+            ***REMOVED***
+                ***REMOVED***,
+                              Spacer(),
+        ***REMOVED***
+                                'See All',
+            ***REMOVED***
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black26),
                 ***REMOVED***,
             ***REMOVED***
-            ***REMOVED***,
-          ***REMOVED***,
-        ***REMOVED***,
-                ***REMOVED***
+            ***REMOVED***),
+                      Container(
+***REMOVED***
+                        height: 300.0,
+                        child: ListView.builder(
+                          itemCount: trainerVideos.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (BuildContext context, int i) {
+                            print(i);
+                            return Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  print('tapped');
+            ***REMOVED***
+          ***REMOVED***
+          ***REMOVED***
+                                        builder: (context) => ShowVideoPage(
+                                              videoDownloadUrl:
+                                                  trainerVideos[i].videoUrl,
+                              ***REMOVED***),
+                              ***REMOVED***
+                                ***REMOVED***,
+                                child: Container(
+                                  height: 300.0,
+                                  width: 300.0,
+                                  child: Center(
+                ***REMOVED***trainerVideos[i].name +
+                                        '  ' +
+                                        trainerVideos[i]
+                                            .date
+                                            .toDate()
+                                            .toString()),
+                    ***REMOVED***,
+                      ***REMOVED***
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    color: Colors.blue,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 5,
+                                        blurRadius: 7,
+                                        offset: Offset(
+                                            0, 3), // changes position of shadow
+                        ***REMOVED***,
+                    ***REMOVED***
+                    ***REMOVED***,
                   ***REMOVED***,
-  ***REMOVED***,
-***REMOVED***,
+                ***REMOVED***,
+                        ***REMOVED***
+                          ***REMOVED***,
+          ***REMOVED***,
+        ***REMOVED***
+    ***REMOVED***
+    ***REMOVED***),
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***

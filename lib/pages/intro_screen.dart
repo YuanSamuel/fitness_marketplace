@@ -2,7 +2,7 @@
 ***REMOVED***
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:avatar_glow/avatar_glow.dart';
-import 'profile_page.dart';
+import 'user_profile_page.dart';
 
 
 class IntroScreen extends StatefulWidget {

@@ -1,6 +1,6 @@
 ***REMOVED***
 import 'package:fitnessmarketplace/pages/entry_page.dart';
-import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
+import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 import 'package:fitnessmarketplace/utils/style_constants.dart';
 ***REMOVED***
 ***REMOVED***
@@ -202,7 +202,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                             ***REMOVED***);
   ***REMOVED***
 ***REMOVED***
-***REMOVED***builder: (context) => TrainerHomeScreen()),
+***REMOVED***builder: (context) => TrainerHomePage()),
                     ***REMOVED***
                       ***REMOVED***,
                       child: Container(

@@ -1,9 +1,9 @@
 ***REMOVED***
 import 'package:fitnessmarketplace/pages/entry_page.dart';
-import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
 import 'package:fitnessmarketplace/utils/style_constants.dart';
 ***REMOVED***
 ***REMOVED***
+import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 
 class LoginWidget extends StatefulWidget {
 ***REMOVED***
@@ -151,7 +151,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                           (value) {
                   ***REMOVED***
                 ***REMOVED***
-                ***REMOVED***builder: (context) => (TrainerHomeScreen())),
+                ***REMOVED***builder: (context) => (TrainerHomePage())),
                                     ***REMOVED***
                                       ***REMOVED***);
                                 ***REMOVED***
