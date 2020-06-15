@@ -30,6 +30,7 @@ dependencies:
   square_in_app_payments:
   select_dialog:
   firebase:
+  simple_animations:
   toggle_switch: "^0.1.4"
   flutter:
     sdk: flutter
