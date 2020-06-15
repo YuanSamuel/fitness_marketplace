@@ -1,13 +1,8 @@
-import 'package:fitnessmarketplace/pages/login_page.dart';
-import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
-import 'package:fitnessmarketplace/pages/user_marketplace_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/pages/register_page.dart';
+import 'package:fitnessmarketplace/pages/root_page.dart';
+import 'package:flutter/material.dart';
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
-
-import 'package:square_in_app_payments/models.dart';
-import 'package:square_in_app_payments/in_app_payments.dart';
-
 
 void main() {
   runApp(MyApp());
@@ -24,7 +19,10 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       debugShowCheckedModeBanner: false,
-      home: Login(),
+      routes: {
+        '/register': (BuildContext context) => Register(),
+      },
+      home: RootPage(),
     );
   }
 }
@@ -39,28 +37,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Column(
-        children: [
-          RaisedButton(
-            child: Text('User'),
-          ),
-          RaisedButton(
-            child: Text('Trainer'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => TrainerHomePage()),
-              );
-            },
-          ),
-        ],
-      ));
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: Column(
+          children: [
+            RaisedButton(
+              child: Text('User'),
+            ),
+            RaisedButton(
+              child: Text('Trainer'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TrainerHomePage()),
+                );
+              },
+            ),
+          ],
+        ));
   }
 }
