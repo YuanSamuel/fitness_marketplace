@@ -13,61 +13,126 @@ class TrainerRegister extends StatefulWidget {
 
 class _TrainerRegisterState extends State<TrainerRegister> {
 
+  TypeOfExercise(String type){
+    return Container(
+      height: 10,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        color: Colors.blueAccent
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(3),
+        child: Text(type,
+          style: TextStyle(
+              color: Colors.white
+          ),
+        ),
+      ),
+    );
+  }
+
+  TextEditingController _desc = new TextEditingController();
   List<String> _type = new List<String>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Column(
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Text(_type.toString()),
-            ),
-            FlatButton(
-              color: Colors.blue,
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (_) => Scaffold(
-                    body: SelectDialog(
-                      itemsList: ['Running', 'Martial Arts', 'Cardio', 'Weight Lifting', 'Yoga'],
-                      onChange: (String selected) {
-                        setState(() {
-                          bool hasSelected = false;
-                          for(int i=0;i<_type.length;i++){
-                            if(selected==_type[i]){
-                              hasSelected = true;
-                            }
-                          }
-                          if(!hasSelected){
-                            _type.add(selected);
-                          }
-                        });
-                      },
+      body: ListView(
+        children: [
+          Container(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 50,
+                ),
+                SizedBox(
+                  child: Container(
+                    child: Padding(
+                      padding: EdgeInsets.all(5),
+                      child: ListView(
+                        children: [
+                          TextField(
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(top: -20),
+                                hintText: 'Tell us about yourself',
+                                border: InputBorder.none
+                            ),
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                          ),
+                        ],
+                        scrollDirection: Axis.vertical,
+                      ),
                     ),
-                  )
-                );
-              },
-              child: Text('Select Type'),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 3,
+                        color: Colors.blue,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                  ),
+                  width: MediaQuery.of(context).size.width-20,
+                  height: 400,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 15,
+                  child: Row(
+                    children: [
+                      for(int i=0;i<_type.length;i++)
+                        TypeOfExercise(_type[i]),
+                    ],
+                  ),
+                ),
+                FlatButton(
+                  color: Colors.blue,
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) => Scaffold(
+                          body: SelectDialog(
+                            itemsList: ['Running', 'Martial Arts', 'Cardio', 'Weight Lifting', 'Yoga'],
+                            onChange: (String selected) {
+                              setState(() {
+                                bool hasSelected = false;
+                                for(int i=0;i<_type.length;i++){
+                                  if(selected==_type[i]){
+                                    hasSelected = true;
+                                  }
+                                }
+                                if(!hasSelected){
+                                  _type.add(selected);
+                                }
+                              });
+                            },
+                          ),
+                        )
+                    );
+                  },
+                  child: Text('Select Type'),
+                ),
+                FlatButton(
+                  color: Colors.blue,
+                  child: Text('Continue'),
+                  onPressed: () {
+                    Firestore.instance.collection('trainers').document(userid).setData({
+                      'type': _type,
+                      'rating': 0,
+                    },merge: true);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProfilePic()),
+                    );
+                  },
+                )
+              ],
             ),
-            FlatButton(
-              color: Colors.blue,
-              child: Text('Continue'),
-              onPressed: () {
-                Firestore.instance.collection('trainers').document(userid).setData({
-                  'type': _type,
-                  'rating': 0,
-                },merge: true);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfilePic()),
-                );
-              },
-            )
-          ],
-        ),
+          ),
+        ],
+        scrollDirection: Axis.vertical,
       ),
     );
   }
