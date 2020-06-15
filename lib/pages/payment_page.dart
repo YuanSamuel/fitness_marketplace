@@ -1,4 +1,3 @@
-import 'package:fitnessmarketplace/pages/show_video_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:square_in_app_payments/models.dart';
 import 'package:square_in_app_payments/in_app_payments.dart';
