@@ -2,13 +2,14 @@
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 
-class TrainerHomeScreen extends StatefulWidget {
+class UserHomePage extends StatefulWidget {
 ***REMOVED***
-  _TrainerHomeScreenState createState() => _TrainerHomeScreenState();
+  _UserHomePageState createState() => _UserHomePageState();
 ***REMOVED***
 
-class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
-  List<String> names = ['Johnny Appleseed', 'Samuel Sam', 'John Smith'];
+class _UserHomePageState extends State<UserHomePage> {
+  List<String> trainerNames = ['Johnny Appleseed', 'Samuel Sam', 'John Smith'];
+  List<String> sessionNames = ['Yoga', 'Karate', 'HIIT'];
   List<String> dates = ['Jun 15, 5:00 pm', 'July 4, 9:00 pm', 'December 25, 12:00 am'];
   List<String> duration = ['45 minutes', '1 hour', '24 hours'];
 
@@ -36,22 +37,39 @@ class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
           children: [
             SizedBox(height: 30.0,),
             Padding(
-              padding: const EdgeInsets.only(left: 15.0),
-              child: Text('Hello, Lucas', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Row(
+      ***REMOVED***
+                    Text('Student: Lucas', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),),
+                    Spacer(),
+                    IconButton(
+                      icon: Icon(Icons.account_circle),
+                      onPressed: (){***REMOVED***,
+      ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: Divider(height: 10.0, thickness: 0.75,),
 ***REMOVED***
             Container(child: _buildCalendar()),
             Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: Divider(height: 10.0, thickness: 0.75,),
+***REMOVED***
+            Padding(
               padding: const EdgeInsets.only(left: 15.0),
-              child: Text('1 on 1 Sessions', style: TextStyle(
-                fontSize: 25.0,
-                fontWeight: FontWeight.bold
+              child: Text('Upcoming Sessions', style: TextStyle(
+                  fontSize: 25.0,
+                  fontWeight: FontWeight.bold
 ***REMOVED***,
 ***REMOVED***,
 ***REMOVED***
             Container(
               height: 300.0,
               child: ListView.builder(
-                itemCount: names.length,
+                itemCount: trainerNames.length,
                 itemBuilder: (BuildContext context, int index){
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -78,7 +96,7 @@ class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                 ***REMOVED***
                 ***REMOVED***
-        ***REMOVED***names[index], style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.white),),
+        ***REMOVED***sessionNames[index] + " | " + trainerNames[index], style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.white),),
         ***REMOVED***height: 10.0,),
         ***REMOVED***duration[index], style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.white),),
             ***REMOVED***
@@ -99,40 +117,72 @@ class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
                 ***REMOVED***,
 ***REMOVED***,
 ***REMOVED***
+
             SizedBox(height: 10.0,),
-            Text('Your Videos',  style: TextStyle(
-                fontSize: 25.0,
-                fontWeight: FontWeight.bold
-***REMOVED***
-***REMOVED***
             Container(
-              height: 300.0,
-              child: ListView.builder(
-                itemCount: 3,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index){
-                  return Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                      height: 300.0,
-                      width: 300.0,
-          ***REMOVED***
-                        borderRadius: BorderRadius.circular(30.0),
-                        color: Colors.blue,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
-            ***REMOVED***,
-        ***REMOVED***
-        ***REMOVED***,
+  ***REMOVED***
+                  color: Colors.white,
+                  border: Border.symmetric(
+                    vertical: BorderSide(
+                        width: 0.5,
+                        color: Colors.black26
       ***REMOVED***,
-              ***REMOVED***
-                ***REMOVED***,
+    ***REMOVED***
 ***REMOVED***,
+    ***REMOVED***
+    ***REMOVED***
+    ***REMOVED***
+    ***REMOVED***height: 10.0,),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal:15.0),
+                      child:Row(
+            ***REMOVED***
+    ***REMOVED***'Your Videos',  style: TextStyle(
+                              fontSize: 25.0,
+        ***REMOVED***
+            ***REMOVED***,
+            ***REMOVED***,
+                          Spacer(),
+    ***REMOVED***'See All', style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black26
+            ***REMOVED***,),
+        ***REMOVED***
+        ***REMOVED***
+    ***REMOVED***,
+                  Container(
+                    color: Colors.white,
+                    height: 300.0,
+                    child: ListView.builder(
+                      itemCount: 3,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (BuildContext context, int index){
+                        return Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Container(
+                            height: 300.0,
+                            width: 300.0,
+                ***REMOVED***
+                              borderRadius: BorderRadius.circular(30.0),
+                              color: Colors.blue,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: Offset(0, 3), // changes position of shadow
+                  ***REMOVED***,
+              ***REMOVED***
+              ***REMOVED***,
+            ***REMOVED***,
+                    ***REMOVED***
+                      ***REMOVED***,
+      ***REMOVED***,
+    ***REMOVED***,
 ***REMOVED***
+***REMOVED***,
+            )
           ],
 ***REMOVED***
 ***REMOVED***
@@ -215,5 +265,4 @@ class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
 ***REMOVED***
 ***REMOVED***
   ***REMOVED***
-
 ***REMOVED***
