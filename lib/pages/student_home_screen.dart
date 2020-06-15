@@ -2,13 +2,14 @@
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 
-class TrainerHomeScreen extends StatefulWidget {
+class StudentHomePage extends StatefulWidget {
 ***REMOVED***
-  _TrainerHomeScreenState createState() => _TrainerHomeScreenState();
+  _StudentHomePageState createState() => _StudentHomePageState();
 ***REMOVED***
 
-class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
-  List<String> names = ['Johnny Appleseed', 'Samuel Sam', 'John Smith'];
+class _StudentHomePageState extends State<StudentHomePage> {
+  List<String> trainerNames = ['Johnny Appleseed', 'Samuel Sam', 'John Smith'];
+  List<String> sessionNames = ['Yoga', 'Karate', 'HIIT'];
   List<String> dates = ['Jun 15, 5:00 pm', 'July 4, 9:00 pm', 'December 25, 12:00 am'];
   List<String> duration = ['45 minutes', '1 hour', '24 hours'];
 
@@ -36,17 +37,17 @@ class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
           children: [
             SizedBox(height: 30.0,),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: Row(
-    ***REMOVED***
-                  Text('Trainer: Lucas', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),),
-                  Spacer(),
-                  IconButton(
-                    icon: Icon(Icons.account_circle),
-                    onPressed: (){***REMOVED***,
-    ***REMOVED***
-***REMOVED***
-***REMOVED***
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Row(
+      ***REMOVED***
+                    Text('Student: Lucas', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),),
+                    Spacer(),
+                    IconButton(
+                      icon: Icon(Icons.account_circle),
+                      onPressed: (){***REMOVED***,
+      ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***
 ***REMOVED***
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -68,7 +69,7 @@ class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
             Container(
               height: 300.0,
               child: ListView.builder(
-                itemCount: names.length,
+                itemCount: trainerNames.length,
                 itemBuilder: (BuildContext context, int index){
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -95,7 +96,7 @@ class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                 ***REMOVED***
                 ***REMOVED***
-        ***REMOVED***names[index], style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.white),),
+        ***REMOVED***sessionNames[index] + " | " + trainerNames[index], style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.white),),
         ***REMOVED***height: 10.0,),
         ***REMOVED***duration[index], style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.white),),
             ***REMOVED***
@@ -120,35 +121,35 @@ class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
             SizedBox(height: 10.0,),
             Container(
   ***REMOVED***
-                color: Colors.white,
-                border: Border.symmetric(
-                 vertical: BorderSide(
-                     width: 0.5,
-                   color: Colors.black26
-   ***REMOVED***,
-  ***REMOVED***
+                  color: Colors.white,
+                  border: Border.symmetric(
+                    vertical: BorderSide(
+                        width: 0.5,
+                        color: Colors.black26
+      ***REMOVED***,
+    ***REMOVED***
 ***REMOVED***,
     ***REMOVED***
     ***REMOVED***
     ***REMOVED***
     ***REMOVED***height: 10.0,),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal:15.0),
-                    child:Row(
-          ***REMOVED***
-  ***REMOVED***'Your Videos',  style: TextStyle(
-                            fontSize: 25.0,
-      ***REMOVED***
-          ***REMOVED***,
-          ***REMOVED***,
-                        Spacer(),
-  ***REMOVED***'See All', style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black26
-          ***REMOVED***,),
-      ***REMOVED***
-      ***REMOVED***
+                      padding: const EdgeInsets.symmetric(horizontal:15.0),
+                      child:Row(
+            ***REMOVED***
+    ***REMOVED***'Your Videos',  style: TextStyle(
+                              fontSize: 25.0,
+        ***REMOVED***
+            ***REMOVED***,
+            ***REMOVED***,
+                          Spacer(),
+    ***REMOVED***'See All', style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black26
+            ***REMOVED***,),
+        ***REMOVED***
+        ***REMOVED***
     ***REMOVED***,
                   Container(
                     color: Colors.white,
@@ -264,5 +265,4 @@ class _TrainerHomeScreenState extends State<TrainerHomeScreen> {
 ***REMOVED***
 ***REMOVED***
   ***REMOVED***
-
 ***REMOVED***
