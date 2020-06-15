@@ -39,7 +39,9 @@ dependencies:
   supercharged: ^1.5.0
   sa_multi_tween: ^1.1.1
   bottom_navy_bar: ^5.4.0
-
+  cloud_firestore: ^0.13.6
+  firebase_auth: ^0.16.1
+  select_dialog: ^1.1.0
 
 dev_dependencies:
   flutter_test:
