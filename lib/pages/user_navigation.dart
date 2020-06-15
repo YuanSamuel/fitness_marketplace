@@ -1,6 +1,6 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:fitnessmarketplace/pages/user_home_page.dart';
-import 'package:fitnessmarketplace/pages/user_marketplace_screen.dart';
+import 'package:fitnessmarketplace/pages/user_marketplace_page.dart';
 import 'package:flutter/material.dart';
 
 
