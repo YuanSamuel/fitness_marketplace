@@ -15,18 +15,29 @@ class _TrainerRegisterState extends State<TrainerRegister> {
 
   TypeOfExercise(String type){
     return Container(
-      height: 10,
+      height: 30,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        color: Colors.blueAccent
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+        color: Colors.black12,
+        border: Border.all(color: Colors.grey)
 ***REMOVED***
-      child: Padding(
-        padding: EdgeInsets.all(3),
-        child: Text(type,
-          style: TextStyle(
-              color: Colors.white
+      child: FlatButton(
+***REMOVED***
+          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+          child: Text(type,
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Colors.black
 ***REMOVED***
 ***REMOVED***
+***REMOVED***
+        onPressed: () {
+          _type.remove(type);
+    ***REMOVED***
+            TrainerRegister();
+          ***REMOVED***);
+        ***REMOVED***,
 ***REMOVED***
 ***REMOVED***
   ***REMOVED***
@@ -52,6 +63,7 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                       child: ListView(
             ***REMOVED***
                           TextField(
+                            controller: _desc,
                             decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(top: -20),
                                 hintText: 'Tell us about yourself',
@@ -79,13 +91,23 @@ class _TrainerRegisterState extends State<TrainerRegister> {
   ***REMOVED***
   ***REMOVED***,
                 Container(
-                  height: 15,
-                  child: Row(
-        ***REMOVED***
-                      for(int i=0;i<_type.length;i++)
-                        TypeOfExercise(_type[i]),
-    ***REMOVED***
+                  height: 30,
+          ***REMOVED***
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: ListView(
+          ***REMOVED***
+                        for(int i=0;i<_type.length;i++)
+                          Padding(
+                            padding: EdgeInsets.only(right: 10),
+                            child: TypeOfExercise(_type[i]),
+            ***REMOVED***,
+      ***REMOVED***
+                      scrollDirection: Axis.horizontal,
+      ***REMOVED***,
     ***REMOVED***,
+  ***REMOVED***,
+                Container(
+                  height: 5,
   ***REMOVED***,
                 FlatButton(
                   color: Colors.blue,
@@ -121,6 +143,7 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                     Firestore.instance.collection('trainers').document(userid).setData({
                       'type': _type,
                       'rating': 0,
+                      'desc': _desc,
                     ***REMOVED***,merge: true);
                     Navigator.push(
                       context,
