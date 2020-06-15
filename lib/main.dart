@@ -1,4 +1,4 @@
-import 'package:fitnessmarketplace/pages/video_compress_test_page.dart';
+import 'package:fitnessmarketplace/pages/ffmpeg_videos_test_page.dart';
 ***REMOVED***
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
 ***REMOVED***
       debugShowCheckedModeBanner: false,
-      home: VideoCompressTestPage(),
+      home: FfmpegVideosTestPage(),
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***
@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
 ***REMOVED***
 ***REMOVED***
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("Hello"),
 ***REMOVED***
       body: Column(
         children: [

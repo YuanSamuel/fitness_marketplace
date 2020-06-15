@@ -1,6 +1,5 @@
 ***REMOVED***
 ***REMOVED***
-import 'package:fitnessmarketplace/pages/show_video_page.dart';
 
 class TrainerHomePage extends StatefulWidget {
   TrainerHomePage({Key key, this.title***REMOVED***) : super(key: key);
@@ -48,13 +47,14 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                   onTap: () {
                                     print('tapped');
                                     print(downloadUrls[i]);
-              ***REMOVED***
+                                    //TODO remember to do whatever is happening here
+                                    /*Navigator.push(
             ***REMOVED***
             ***REMOVED***
                                           builder: (context) => ShowVideoPage(
                                             videoDownloadUrl: downloadUrls[i],
                             ***REMOVED***),
-                                ***REMOVED***
+                                ***REMOVED****/
                                   ***REMOVED***,
                   ***REMOVED***,
                           ***REMOVED***
