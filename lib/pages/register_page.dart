@@ -1,6 +1,5 @@
-import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
-import 'package:fitnessmarketplace/pages/user_home_page.dart';
 import 'package:fitnessmarketplace/pages/trainer_register.dart';
+import 'package:fitnessmarketplace/pages/user_navigation.dart';
 ***REMOVED***
 import 'package:toggle_switch/toggle_switch.dart';
 ***REMOVED***
@@ -121,7 +120,7 @@ class _RegisterState extends State<Register> {
                   ***REMOVED***);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UserHomePage()),
+                    MaterialPageRoute(builder: (context) => UserNavigation()),
               ***REMOVED***
                 ***REMOVED***
               ***REMOVED***);
