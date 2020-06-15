@@ -1,4 +1,4 @@
-import 'package:fitnessmarketplace/pages/video_compress_test_page.dart';
+import 'package:fitnessmarketplace/pages/ffmpeg_videos_test_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       debugShowCheckedModeBanner: false,
-      home: VideoCompressTestPage(),
+      home: FfmpegVideosTestPage(),
     );
   }
 }
@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("Hello"),
       ),
       body: Column(
         children: [
