@@ -1,13 +1,8 @@
-import 'package:fitnessmarketplace/pages/login_page.dart';
-import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
-import 'package:fitnessmarketplace/pages/user_marketplace_screen.dart';
 ***REMOVED***
 import 'package:fitnessmarketplace/pages/register_page.dart';
+import 'package:fitnessmarketplace/pages/root_page.dart';
+***REMOVED***
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
-
-***REMOVED***
-***REMOVED***
-
 
 void main() {
   runApp(MyApp());
@@ -24,7 +19,10 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
 ***REMOVED***
       debugShowCheckedModeBanner: false,
-      home: Login(),
+      routes: {
+        '/register': (BuildContext context) => Register(),
+      ***REMOVED***,
+      home: RootPage(),
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***
@@ -39,28 +37,27 @@ class MyHomePage extends StatefulWidget {
 ***REMOVED***
 
 class _MyHomePageState extends State<MyHomePage> {
-
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-      appBar: AppBar(
-        title: Text(widget.title),
+        appBar: AppBar(
+          title: Text(widget.title),
 ***REMOVED***
-      body: Column(
-        children: [
-          RaisedButton(
-            child: Text('User'),
+        body: Column(
+          children: [
+            RaisedButton(
+              child: Text('User'),
 ***REMOVED***
-          RaisedButton(
-            child: Text('Trainer'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => TrainerHomePage()),
-          ***REMOVED***
-            ***REMOVED***,
+            RaisedButton(
+              child: Text('Trainer'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TrainerHomePage()),
+            ***REMOVED***
+              ***REMOVED***,
 ***REMOVED***
-        ],
-      ));
+          ],
+        ));
   ***REMOVED***
 ***REMOVED***

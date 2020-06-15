@@ -2,13 +2,13 @@
 
 //The profile system is set up so when you open the page you call either Driver or
 
-class TrainerProfilePage extends StatelessWidget {
+class UserProfilePage extends StatelessWidget {
   int customers;
   int rating;
   int years;
   String name;
 
-  TrainerProfilePage(int cust, int rat, int year, String n) {
+  UserProfilePage(int cust, int rat, int year, String n) {
     customers = cust;
     rating = rat;
     years = year;
@@ -18,13 +18,6 @@ class TrainerProfilePage extends StatelessWidget {
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-        appBar: AppBar(
-            backgroundColor: Colors.black,
-            title: Text("Driver Profile"),
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {***REMOVED***,
-            )),
         body: ListView(
           children: [
             Column(
