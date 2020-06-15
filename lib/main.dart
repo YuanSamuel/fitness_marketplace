@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/pages/register_page.dart';
 import 'package:fitnessmarketplace/pages/root_page.dart';
 import 'package:flutter/material.dart';

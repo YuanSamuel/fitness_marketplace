@@ -88,13 +88,36 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                 height: 30.0,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: Text(
-                  'Hello, ' + currentTrainer.firstName,
-                  style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Trainer: ' + currentTrainer.firstName,
+                        style: TextStyle(
+                            fontSize: 30.0, fontWeight: FontWeight.w600),
+                      ),
+                      Spacer(),
+                      IconButton(
+                        icon: Icon(Icons.account_circle),
+                        onPressed: () {},
+                      )
+                    ],
+                  )),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Divider(
+                  height: 10.0,
+                  thickness: 0.75,
                 ),
               ),
               Container(child: _buildCalendar()),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Divider(
+                  height: 10.0,
+                  thickness: 0.75,
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 15.0),
                 child: Text(
@@ -194,58 +217,93 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
               SizedBox(
                 height: 10.0,
               ),
-              Text(
-                'Your Videos',
-                style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-              ),
               Container(
-                height: 300.0,
-                child: ListView.builder(
-                  itemCount: trainerVideos.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (BuildContext context, int i) {
-                    print(i);
-                    return Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          print('tapped');
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ShowVideoPage(
-                                      videoDownloadUrl:
-                                          trainerVideos[i].videoUrl,
-                                    )),
-                          );
-                        },
-                        child: Container(
-                          height: 300.0,
-                          width: 300.0,
-                          child: Center(
-                            child: Text(trainerVideos[i].name +
-                                '  ' +
-                                trainerVideos[i].date.toDate().toString()),
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            color: Colors.blue,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-                                offset:
-                                    Offset(0, 3), // changes position of shadow
+                  height: 340.0,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.symmetric(
+                        vertical: BorderSide(width: 0.5, color: Colors.black26),
+                      )),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Your Videos',
+                                style: TextStyle(
+                                    fontSize: 25.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Spacer(),
+                              Text(
+                                'See All',
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black26),
                               ),
                             ],
-                          ),
+                          )),
+                      Container(
+                        color: Colors.white,
+                        height: 300.0,
+                        child: ListView.builder(
+                          itemCount: trainerVideos.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (BuildContext context, int i) {
+                            print(i);
+                            return Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  print('tapped');
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ShowVideoPage(
+                                              videoDownloadUrl:
+                                                  trainerVideos[i].videoUrl,
+                                            )),
+                                  );
+                                },
+                                child: Container(
+                                  height: 300.0,
+                                  width: 300.0,
+                                  child: Center(
+                                    child: Text(trainerVideos[i].name +
+                                        '  ' +
+                                        trainerVideos[i]
+                                            .date
+                                            .toDate()
+                                            .toString()),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    color: Colors.blue,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 5,
+                                        blurRadius: 7,
+                                        offset: Offset(
+                                            0, 3), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+                      )
+                    ],
+                  )),
             ],
           ),
         ),
