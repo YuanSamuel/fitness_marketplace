@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 import 'package:fitnessmarketplace/pages/trainer_navigation.dart';
 import 'package:fitnessmarketplace/pages/user_navigation.dart';
 import 'package:flutter/material.dart';
