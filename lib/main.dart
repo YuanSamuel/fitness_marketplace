@@ -1,5 +1,5 @@
+import 'package:fitnessmarketplace/pages/root_page.dart';
 ***REMOVED***
-import 'package:fitnessmarketplace/pages/register_page.dart';
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 
 void main() {
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
 ***REMOVED***
       debugShowCheckedModeBanner: false,
-      home: Register(),
+      home: RootPage(),
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***
