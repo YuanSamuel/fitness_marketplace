@@ -84,6 +84,7 @@ class _RegisterState extends State<Register> {
                       email: _emailInputController.text,
                       password: _passwordInputController.text)
                   .then((currentUser) async {
+                    userid = currentUser.user.uid;
                 if (_isTrainer) {
                   await Firestore.instance
                       .collection('users')
@@ -102,7 +103,7 @@ class _RegisterState extends State<Register> {
                   });
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TrainerRegister()),
+                    MaterialPageRoute(builder: (context) => TrainerRegister(currentUser.user.uid)),
                   );
                 } else {
                   await Firestore.instance
