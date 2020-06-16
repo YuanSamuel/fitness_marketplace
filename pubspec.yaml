@@ -52,6 +52,8 @@ dependencies:
   transparent_image: ^1.0.0
   timeago: ^2.0.21
   flutter_video_compress: ^0.3.7
+  flutter_rating_bar:
+  validators:
 
 dev_dependencies:
   flutter_test:

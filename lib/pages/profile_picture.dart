@@ -71,6 +71,9 @@ class _ProfilePicState extends State<ProfilePic> {
 
   @override
   Widget build(BuildContext context) {
+
+    PickedFile image = new PickedFile('');
+
     if (currentUser == null) {
       return Scaffold(
         body: Center(
@@ -81,38 +84,51 @@ class _ProfilePicState extends State<ProfilePic> {
       return Scaffold(
         body: Column(
           children: [
-            Text('Choose a picture!'),
+            SizedBox(
+              height: 70,
+            ),
+            Text('Choose a Profile Picture', style: TextStyle(fontSize: 30),),
+            Image.asset(image.path),
+            SizedBox(
+              height: 100,
+            ),
+            Center(
+              child: IconButton(
+                  icon: Icon(Icons.add_a_photo),
+                  iconSize: 100,
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) => Scaffold(
+                            body: SizedBox(
+                                width: MediaQuery.of(context).size.width - 10,
+                                child: Column(
+                                  children: [
+                                    FlatButton(
+                                      child: Text('From Camera'),
+                                      onPressed: () async {
+                                        image = await _picker.getImage(
+                                            source: ImageSource.camera);
+                                        Upload(File(image.path));
+                                        ProfilePic();
+                                      },
+                                    ),
+                                    FlatButton(
+                                      child: Text('From Device'),
+                                      onPressed: () async {
+                                        PickedFile image = await _picker.getImage(
+                                            source: ImageSource.gallery);
+                                        Upload(File(image.path));
+                                        ProfilePic();
+                                      },
+                                    ),
+                                  ],
+                                ))));
+                  }
+              ),
+            )
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add_a_photo),
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (_) => Scaffold(
-                      body: SizedBox(
-                          width: MediaQuery.of(context).size.width - 10,
-                          child: Column(
-                            children: [
-                              FlatButton(
-                                child: Text('From Camera'),
-                                onPressed: () async {
-                                  PickedFile image = await _picker.getImage(
-                                      source: ImageSource.camera);
-                                  Upload(File(image.path));
-                                },
-                              ),
-                              FlatButton(
-                                child: Text('From Device'),
-                                onPressed: () async {
-                                  PickedFile image = await _picker.getImage(
-                                      source: ImageSource.gallery);
-                                  Upload(File(image.path));
-                                },
-                              ),
-                            ],
-                          ))));
-            }),
       );
     }
   }
