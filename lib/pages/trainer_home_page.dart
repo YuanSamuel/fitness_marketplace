@@ -1,6 +1,6 @@
 ***REMOVED***
 ***REMOVED***
-import 'package:fitnessmarketplace/models/OneOnOneSession.dart';
+import 'package:fitnessmarketplace/models/PrivateSession.dart';
 ***REMOVED***
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -16,7 +16,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
   CalendarController _calendarController;
   Trainer currentTrainer;
   List<RecordedVideo> trainerVideos;
-  List<OneOnOneSession> oneOnOneSessions;
+  List<PrivateSession> privateSessions;
 
 ***REMOVED***
 ***REMOVED***
@@ -33,7 +33,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
 
   setUp() async {
     trainerVideos = new List<RecordedVideo>();
-    oneOnOneSessions = new List<OneOnOneSession>();
+    privateSessions = new List<PrivateSession>();
 
     FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
     DocumentSnapshot userData = await Firestore.instance
@@ -42,7 +42,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
         .get();
     currentTrainer = Trainer.fromSnapshot(userData);
 
-    await getOneOnOneSessions();
+    await getPrivateSessions();
     await getVideos();
 
     setState(() {***REMOVED***);
@@ -58,14 +58,14 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
     ***REMOVED***
   ***REMOVED***
 
-  getOneOnOneSessions() async {
-    QuerySnapshot getOneOnOneSessions = await currentTrainer.reference
-        .collection('oneOnOneSessions')
+  getPrivateSessions() async {
+    QuerySnapshot getPrivateSessions = await currentTrainer.reference
+        .collection('privateSessions')
         .getDocuments();
-    List<DocumentSnapshot> allOneOnOneSessions = getOneOnOneSessions.documents;
-    for (int i = 0; i < allOneOnOneSessions.length; i++) {
-      oneOnOneSessions
-          .add(OneOnOneSession.fromSnapshot(allOneOnOneSessions[i]));
+    List<DocumentSnapshot> allPrivateSessions = getPrivateSessions.documents;
+    for (int i = 0; i < allPrivateSessions.length; i++) {
+      privateSessions
+          .add(PrivateSession.fromSnapshot(allPrivateSessions[i]));
     ***REMOVED***
   ***REMOVED***
 
@@ -127,12 +127,12 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
               Container(
                 height: 250.0,
                 child: ListView.builder(
-                  itemCount: oneOnOneSessions.length,
+                  itemCount: privateSessions.length,
                   itemBuilder: (BuildContext context, int i) {
-                    DateTime oneOnOneSessionDate =
-                        oneOnOneSessions[i].date.toDate().toLocal();
-                    String oneOnOneSessionLength =
-                        getLengthFromInt(oneOnOneSessions[i].length);
+                    DateTime privateSessionDate =
+                        privateSessions[i].date.toDate().toLocal();
+                    String privateSessionLength =
+                        getLengthFromInt(privateSessions[i].length);
 
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -161,7 +161,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                   ***REMOVED***
                   ***REMOVED***
           ***REMOVED***
-                                  oneOnOneSessions[i].name,
+                                  privateSessions[i].name,
               ***REMOVED***
                                       fontSize: 20.0,
                                       fontWeight: FontWeight.w600,
@@ -171,7 +171,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                   height: 10.0,
                   ***REMOVED***,
           ***REMOVED***
-                                  oneOnOneSessionLength,
+                                  privateSessionLength,
               ***REMOVED***
                                       fontSize: 15.0,
                                       fontWeight: FontWeight.w400,
@@ -184,9 +184,9 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                   ***REMOVED***
           ***REMOVED***
-                                  oneOnOneSessionDate.month.toString() +
+                                  privateSessionDate.month.toString() +
                                       '/' +
-                                      oneOnOneSessionDate.day.toString(),
+                                      privateSessionDate.day.toString(),
               ***REMOVED***
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w400,
@@ -196,9 +196,9 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                   height: 10.0,
                   ***REMOVED***,
           ***REMOVED***
-                                  oneOnOneSessionDate.hour.toString() +
+                                  privateSessionDate.hour.toString() +
                                       ':' +
-                                      oneOnOneSessionDate.minute.toString(),
+                                      privateSessionDate.minute.toString(),
               ***REMOVED***
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w400,
@@ -399,18 +399,18 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
   ***REMOVED***
 
   Map<DateTime, List<String>> getEvents() {
-    Map<DateTime, List<String>> oneOnOneSessionsMap =
+    Map<DateTime, List<String>> privateSessionsMap =
         new Map<DateTime, List<String>>();
-    for (int i = 0; i < oneOnOneSessions.length; i++) {
-      DateTime oneOnOneSessionDate = oneOnOneSessions[i].date.toDate();
-      if (oneOnOneSessionsMap.containsKey(oneOnOneSessionDate)) {
-        oneOnOneSessionsMap[oneOnOneSessionDate].add(oneOnOneSessions[i].name);
+    for (int i = 0; i < privateSessions.length; i++) {
+      DateTime privateSessionDate = privateSessions[i].date.toDate();
+      if (privateSessionsMap.containsKey(privateSessionDate)) {
+        privateSessionsMap[privateSessionDate].add(privateSessions[i].name);
       ***REMOVED*** else {
-        List<String> oneOnOneSessionsList = new List<String>();
-        oneOnOneSessionsList.add(oneOnOneSessions[i].name);
-        oneOnOneSessionsMap[oneOnOneSessionDate] = oneOnOneSessionsList;
+        List<String> privateSessionsList = new List<String>();
+        privateSessionsList.add(privateSessions[i].name);
+        privateSessionsMap[privateSessionDate] = privateSessionsList;
       ***REMOVED***
     ***REMOVED***
-    return oneOnOneSessionsMap;
+    return privateSessionsMap;
   ***REMOVED***
 ***REMOVED***

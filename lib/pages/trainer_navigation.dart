@@ -44,10 +44,7 @@ class _TrainerNavigationState extends State<TrainerNavigation> {
                 _currentIndex = index;
               ***REMOVED***);
             ***REMOVED***,
-***REMOVED***
-              TrainerHomePage(),
-              TrainerProfile(),
-***REMOVED***
+            children: _pageOptions,
 ***REMOVED***
 ***REMOVED***
         bottomNavigationBar: BottomNavyBar(
