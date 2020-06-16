@@ -10,7 +10,7 @@ import '../apis/encoding_provider.dart';
 import '../apis/firebase_provider.dart';
 import 'package:path/path.dart' as p;
 import '../models/video_info.dart';
-import '../widgets/player.dart';
+import 'player.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 
