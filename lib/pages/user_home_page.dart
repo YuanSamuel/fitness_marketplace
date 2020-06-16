@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitnessmarketplace/models/OneOnOneSession.dart';
+import 'package:fitnessmarketplace/models/PrivateSession.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
 import 'package:fitnessmarketplace/pages/show_video_page.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class _UserHomePageState extends State<UserHomePage> {
   List<String> months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   Student currentStudent;
-  List<OneOnOneSession> oneOnOneSessions;
+  List<PrivateSession> privateSessions;
   List<RecordedVideo> recordedVideos;
 
   CalendarController _calendarController;
@@ -42,18 +42,18 @@ class _UserHomePageState extends State<UserHomePage> {
         .document(getUser.uid)
         .get();
     currentStudent = Student.fromSnapshot(userData);
-    await getOneOnOneSessions();
+    await getPrivateSessions();
     await getRecordedVideos();
     setState(() {});
   }
 
-  Future<void> getOneOnOneSessions() async {
-    oneOnOneSessions = new List<OneOnOneSession>();
-    QuerySnapshot allOneOnOneSessions = await currentStudent.reference.collection('oneOnOneSessions').getDocuments();
-    List<DocumentSnapshot> holdOneOnOneSessions = allOneOnOneSessions.documents;
-    for (int i = 0; i < holdOneOnOneSessions.length; i++) {
-      OneOnOneSession currentOneOnOneSession = OneOnOneSession.fromSnapshot(holdOneOnOneSessions[i]);
-      oneOnOneSessions.add(currentOneOnOneSession);
+  Future<void> getPrivateSessions() async {
+    privateSessions = new List<PrivateSession>();
+    QuerySnapshot allPrivateSessions = await currentStudent.reference.collection('privateSessions').getDocuments();
+    List<DocumentSnapshot> holdPrivateSessions = allPrivateSessions.documents;
+    for (int i = 0; i < holdPrivateSessions.length; i++) {
+      PrivateSession currentPrivateSession = PrivateSession.fromSnapshot(holdPrivateSessions[i]);
+      privateSessions.add(currentPrivateSession);
     }
     return;
   }
@@ -129,13 +129,13 @@ class _UserHomePageState extends State<UserHomePage> {
               Container(
                 height: 250.0,
                 child: ListView.builder(
-                  itemCount: oneOnOneSessions.length,
+                  itemCount: privateSessions.length,
                   itemBuilder: (BuildContext context, int i) {
-                    DateTime oneOnOneSessionDate = oneOnOneSessions[i].date.toDate();
-                    DateTime localOneOnOneSessionDate = oneOnOneSessionDate.toLocal();
-                    String oneOnOneSessionDateString = getDateStringFromDateTime(localOneOnOneSessionDate);
-                    String oneOnOneSessionTimeString = getTimeStringFromDateTime(localOneOnOneSessionDate);
-                    String oneOnOneSessionLengthString = getLengthFromInt(oneOnOneSessions[i].length);
+                    DateTime privateSessionDate = privateSessions[i].date.toDate();
+                    DateTime localPrivateSessionDate = privateSessionDate.toLocal();
+                    String privateSessionDateString = getDateStringFromDateTime(localPrivateSessionDate);
+                    String privateSessionTimeString = getTimeStringFromDateTime(localPrivateSessionDate);
+                    String privateSessionLengthString = getLengthFromInt(privateSessions[i].length);
 
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -164,9 +164,9 @@ class _UserHomePageState extends State<UserHomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  oneOnOneSessions[i].name +
+                                  privateSessions[i].name +
                                       " | " +
-                                      oneOnOneSessions[i].trainerName,
+                                      privateSessions[i].trainerName,
                                   style: TextStyle(
                                       fontSize: 20.0,
                                       fontWeight: FontWeight.w600,
@@ -176,7 +176,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                   height: 10.0,
                                 ),
                                 Text(
-                                  oneOnOneSessionLengthString,
+                                  privateSessionLengthString,
                                   style: TextStyle(
                                       fontSize: 15.0,
                                       fontWeight: FontWeight.w400,
@@ -189,7 +189,7 @@ class _UserHomePageState extends State<UserHomePage> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  oneOnOneSessionDateString,
+                                  privateSessionDateString,
                                   style: TextStyle(
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w400,
@@ -199,7 +199,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                   height: 10.0,
                                 ),
                                 Text(
-                                  oneOnOneSessionTimeString,
+                                  privateSessionTimeString,
                                   style: TextStyle(
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w400,
