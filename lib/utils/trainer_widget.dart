@@ -116,7 +116,7 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                 )),
                                 SizedBox(height: 5,),
                                 FadeAnimationUp(1.6,
-                                    Text('add this to the database',
+                                    Text(widget.trainer.description,
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontSize: 14,
