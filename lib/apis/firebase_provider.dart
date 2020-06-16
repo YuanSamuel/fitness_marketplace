@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/models/video_info.dart';
+import 'package:fitnessmarketplace/pages/login_page.dart';
 
 class FirebaseProvider {
-  static saveVideo(VideoInfo video) async {
+  static saveVideo(VideoInfo video, String title, String description, String minutes, int date) async {
     await Firestore.instance.collection('videos').document().setData({
         'videoUrl': video.videoUrl,
         'thumbUrl': video.thumbUrl,
@@ -10,11 +12,35 @@ class FirebaseProvider {
         'aspectRatio': video.aspectRatio,
         'uploadedAt': video.uploadedAt,
         'videoName': video.videoName,
+        'minutes':minutes,
+        'description':description,
+        'date':date,
+        'title':title
       });
+
+    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    final uid = user.uid;
+
+
+    await Firestore.instance.collection('trainers').document(uid).collection("videos").document().setData({
+      'videoUrl': video.videoUrl,
+      'thumbUrl': video.thumbUrl,
+      'coverUrl': video.coverUrl,
+      'aspectRatio': video.aspectRatio,
+      'uploadedAt': video.uploadedAt,
+      'videoName': video.videoName,
+      'minutes':minutes,
+      'description':description,
+      'date':date,
+      'title':title
+    });
   }
 
   static listenToVideos(callback) async {
-    Firestore.instance.collection('videos').snapshots().listen((qs) {
+    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    final uid = user.uid;
+
+    Firestore.instance.collection('trainers').document(uid).collection('videos').snapshots().listen((qs) {
       final videos = mapQueryToVideoInfo(qs);
       callback(videos);
     });
