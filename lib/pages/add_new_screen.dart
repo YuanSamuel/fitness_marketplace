@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/apis/firebase_provider.dart';
 import 'package:fitnessmarketplace/models/video_info.dart';
 import 'package:fitnessmarketplace/pages/trainer_navigation.dart';
@@ -58,8 +60,31 @@ class _AddNewRecordingState extends State<AddNewRecording> {
     super.initState();
   }
 
+  static saveStream(String title, String description, String minutes, int date) async {
+    await Firestore.instance.collection('streams').document().setData({
+      'minutes':minutes,
+      'description':description,
+      'date':date,
+      'title':title
+    });
+
+    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    final uid = user.uid;
+
+
+    await Firestore.instance.collection('trainers').document(uid).collection("streams").document().setData({
+      'minutes':minutes,
+      'description':description,
+      'date':date,
+      'title':title
+    });
+  }
+
+
+
   Future addSession(BuildContext context) async{
     if (dropdownValue=="LiveStream"){
+      await saveStream(namecontroller.text.toString(), descriptcontroller.text.toString(), minscontrolller.text.toString(), date);
 
     }
     else{
