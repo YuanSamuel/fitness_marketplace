@@ -14,7 +14,7 @@ class _UserNavigationState extends State<UserNavigation> {
   int _currentIndex = 0;
   PageController _pageController = PageController(initialPage: 0);
   var _pageOptions = [
-    UserHomePage(userid),
+    UserHomePage(),
     MarketplaceScreen(),
     UserProfilePage(1, 2, 3, 'SamuelY'),
   ];

@@ -1,40 +1,30 @@
 import 'package:fitnessmarketplace/animations/FadeAnimationUp.dart';
+import 'package:fitnessmarketplace/pages/request_private_session_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:validators/sanitizers.dart';
+import 'package:fitnessmarketplace/models/Trainer.dart';
 
-class Trainer extends StatefulWidget {
-  final String uid;
-  final int videoCount;
-  final int sessions;
-  final String video;
-  final String video2;
+class TrainerWidget extends StatefulWidget {
 
-  const Trainer({Key key, this.uid, this.videoCount, this.sessions, this.video, this.video2}) : super(key: key);
+  const TrainerWidget({Key key, this.trainer}) : super(key: key);
+
+  final Trainer trainer;
 
   @override
-  _TrainerState createState() => _TrainerState();
+  _TrainerWidgetState createState() => _TrainerWidgetState();
 }
 
-class _TrainerState extends State<Trainer> {
+class _TrainerWidgetState extends State<TrainerWidget> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: Firestore.instance.collection('trainers').document(widget.uid).snapshots(),
-      builder: (context, snapshot) {
-        if(!snapshot.hasData){
-          return Container(
-            width: 50,
-            height: 50,
-          );
-        }
-        else{
-          return Scaffold(
+    String trainerName = widget.trainer.firstName + ' ' + widget.trainer.lastName;
+    return Scaffold(
             backgroundColor: Colors.black,
             body: Hero(
-              tag: '${snapshot.data['firstName']} ${snapshot.data['lastName']}',
+              tag: trainerName,
               child: Stack(
                 children: [
                   CustomScrollView(
@@ -47,7 +37,7 @@ class _TrainerState extends State<Trainer> {
                           background: Container(
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: NetworkImage(snapshot.data['profileUrl'].toString()),
+                                    image: NetworkImage(widget.trainer.profileUrl),
                                     fit: BoxFit.cover
                                 )
                             ),
@@ -67,7 +57,7 @@ class _TrainerState extends State<Trainer> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    FadeAnimationUp(1, Text('${snapshot.data['firstName']} ${snapshot.data['lastName']}', style: TextStyle(
+                                    FadeAnimationUp(1, Text(trainerName, style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 40,
@@ -76,14 +66,14 @@ class _TrainerState extends State<Trainer> {
                                     Row(
                                       children: [
                                         FadeAnimationUp(1.2,
-                                            Text("Over "+widget.videoCount.toString()+" Videos", style:
+                                            Text("Over 1000 Videos", style:
                                             TextStyle(
                                                 color: Colors.grey,
                                                 fontSize: 16
                                             ),)),
                                         SizedBox(width: 50,),
                                         FadeAnimationUp(1.3,
-                                            Text(widget.sessions.toString()+"+ Live Sessions", style:
+                                            Text("10000 Live Sessions", style:
                                             TextStyle(
                                                 color: Colors.grey,
                                                 fontSize: 16
@@ -109,7 +99,7 @@ class _TrainerState extends State<Trainer> {
                                 FadeAnimationUp(1.5, Row(
                                   children: <Widget>[
                                     RatingBarIndicator(
-                                      rating: toDouble(snapshot.data['rating'].toString()),
+                                      rating: widget.trainer.rating,
                                       itemBuilder: (context, index) => Icon(
                                         Icons.star,
                                         color: Colors.amber,
@@ -119,14 +109,14 @@ class _TrainerState extends State<Trainer> {
                                       direction: Axis.horizontal,
                                     ),
                                     SizedBox(width: 10,),
-                                    Text(snapshot.data['rating'].toString(), style: TextStyle(color: Colors.white70),),
+                                    Text(widget.trainer.rating.toString(), style: TextStyle(color: Colors.white70),),
                                     SizedBox(width: 20,),
                                     Text('(2300)', style: TextStyle(color: Colors.white38, fontSize: 12),),
                                   ],
                                 )),
                                 SizedBox(height: 5,),
                                 FadeAnimationUp(1.6,
-                                    Text(snapshot.data['desc'],
+                                    Text('add this to the database',
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontSize: 14,
@@ -138,7 +128,7 @@ class _TrainerState extends State<Trainer> {
                                 ),
                                 SizedBox(height: 10,),
                                 FadeAnimationUp(1.6,
-                                    Text(snapshot.data['trainingTypes'].toString().substring(1, snapshot.data['trainingTypes'].toString().length), style: TextStyle(color: Colors.grey),)
+                                    Text(widget.trainer.trainingTypes.toString(), style: TextStyle(color: Colors.grey),)
                                 ),
                                 SizedBox(height: 30,),
                                 FadeAnimationUp(1.6,
@@ -150,8 +140,8 @@ class _TrainerState extends State<Trainer> {
                                   child: ListView(
                                     scrollDirection: Axis.horizontal,
                                     children: [
-                                      makeVideo(image: widget.video),
-                                      makeVideo(image: widget.video2),
+                                      makeVideo(image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg'),
+                                      makeVideo(image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg'),
                                     ],
                                   ),
                                 )),
@@ -169,14 +159,22 @@ class _TrainerState extends State<Trainer> {
                       child: Align(
                         alignment: Alignment.bottomCenter,
                         child: FadeAnimationUp(2,
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 30),
-                            height: 50,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: Colors.red[700]
+                          GestureDetector(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 30),
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: Colors.red[700]
+                              ),
+                              child: Align(child: Text("Schedule a Meeting", style: TextStyle(color: Colors.white, fontSize: 20),)),
                             ),
-                            child: Align(child: Text("Schedule a Meeting", style: TextStyle(color: Colors.white, fontSize: 20),)),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => RequestPrivateSessionPage(trainer: widget.trainer,)),
+                              );
+                            },
                           ),
                         ),
                       ),
@@ -186,9 +184,6 @@ class _TrainerState extends State<Trainer> {
               ),
             ),
           );
-        }
-      },
-    );
   }
 
   Widget makeVideo({image}) {
