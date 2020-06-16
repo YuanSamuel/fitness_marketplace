@@ -20,7 +20,6 @@ class _MartialMarketState extends State<MartialMarket> {
               name: 'Samuel Yuan',
               pay: 25,
               category: 'Weight Lifting, Cardio',
-              languages: 'English, Spanish',
               videoCount :150,
               sessions: 25,
               video: 'https://i.ibb.co/4ZZVV4k/trainer.jpg',
@@ -31,7 +30,6 @@ class _MartialMarketState extends State<MartialMarket> {
               name: 'Lucas Cai',
               pay: 19.99,
               category: 'Yoga, Cardio',
-              languages: 'English, Chinese',
               videoCount :100,
               sessions: 18,
               video: 'https://cbsnews1.cbsistatic.com/hub/i/2018/06/01/0e92bb08-8639-465e-a579-d6f4277cbf47/gettyimages-891415940.jpg',
@@ -42,7 +40,6 @@ class _MartialMarketState extends State<MartialMarket> {
               name: 'Vincent Do',
               pay: 49.99,
               category: 'Crossfit, Cardio',
-              languages: 'English, Vietnamese',
               videoCount :200,
               sessions: 55,
               video: 'https://i.ibb.co/4ZZVV4k/trainer.jpg',
@@ -54,21 +51,16 @@ class _MartialMarketState extends State<MartialMarket> {
     );
   }
 
-  Widget makeTrainer({image, name, pay, category, languages, videoCount, sessions, video, video2, description}) {
+  Widget makeTrainer({image, name, pay, category, videoCount, sessions, video, video2, description}) {
     return Hero(
       tag: name,
       child: GestureDetector(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => Trainer(
-            image: image,
-            name: name,
-            category: category,
-            languages: languages,
             videoCount: videoCount,
             sessions: sessions,
             video2: video2,
             video: video,
-            description: description,
           )));
         },
         child: Container(
