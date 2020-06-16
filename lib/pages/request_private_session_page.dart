@@ -19,7 +19,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
   CalendarController _calendarController;
   List<PrivateSession> privateSessionTimes;
   DateTime selectedDate;
-  List<PrivateSession> events;
+  List<dynamic> events;
 
   @override
   void initState() {
