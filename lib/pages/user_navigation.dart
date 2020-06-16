@@ -1,8 +1,8 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:fitnessmarketplace/pages/user_home_page.dart';
-import 'package:fitnessmarketplace/pages/user_marketplace_screen.dart';
+import 'package:fitnessmarketplace/pages/user_marketplace_page.dart';
+import 'package:fitnessmarketplace/pages/user_profile_page.dart';
 import 'package:flutter/material.dart';
-
 
 class UserNavigation extends StatefulWidget {
   @override
@@ -11,12 +11,11 @@ class UserNavigation extends StatefulWidget {
 
 class _UserNavigationState extends State<UserNavigation> {
   int _currentIndex = 0;
-  PageController _pageController = PageController(
-      initialPage: 0
-  );
+  PageController _pageController = PageController(initialPage: 0);
   var _pageOptions = [
     UserHomePage(),
     MarketplaceScreen(),
+    UserProfilePage(1, 2, 3, 'SamuelY'),
   ];
 
   @override
@@ -42,10 +41,7 @@ class _UserNavigationState extends State<UserNavigation> {
                 _currentIndex = index;
               });
             },
-            children: [
-              UserHomePage(),
-              MarketplaceScreen(),
-            ],
+            children: _pageOptions,
           ),
         ),
         bottomNavigationBar: BottomNavyBar(
@@ -66,10 +62,13 @@ class _UserNavigationState extends State<UserNavigation> {
             BottomNavyBarItem(
                 icon: Icon(Icons.shopping_cart),
                 title: Text('Marketplace'),
-                activeColor: Colors.purpleAccent
-            ),
+                activeColor: Colors.purpleAccent),
+            BottomNavyBarItem(
+              icon: Icon(Icons.account_circle),
+              title: Text('Profile'),
+              activeColor: Colors.blue,
+            )
           ],
-        )
-    );
+        ));
   }
 }
