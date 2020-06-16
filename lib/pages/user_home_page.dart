@@ -59,7 +59,7 @@ class _UserHomePageState extends State<UserHomePage> {
 
   Future<void> getRecordedVideos() async {
     recordedVideos = new List<RecordedVideo>();
-    QuerySnapshot allRecordedVideos = await currentStudent.reference.collection('recordedVideos').getDocuments();
+    QuerySnapshot allRecordedVideos = await currentStudent.reference.collection('videos').getDocuments();
     List<DocumentSnapshot> videos = allRecordedVideos.documents;
     for (int i = 0; i < videos.length; i++) {
       RecordedVideo currentVideo = RecordedVideo.fromSnapshot(videos[i]);
@@ -274,7 +274,7 @@ class _UserHomePageState extends State<UserHomePage> {
                     ***REMOVED***
                     ***REMOVED***,
                                   child: Center(
-                ***REMOVED***recordedVideos[i].name + ' ' + recordedVideos[i].date.toDate().toString()),
+                ***REMOVED***recordedVideos[i].name + ' ' + Timestamp.fromMillisecondsSinceEpoch(recordedVideos[i].date).toDate().toString()),
                     ***REMOVED***
                 ***REMOVED***,
                               //TODO set up this so that it works with actual videos / streams

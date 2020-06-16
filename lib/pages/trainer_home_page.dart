@@ -1,6 +1,10 @@
 ***REMOVED***
 ***REMOVED***
+import 'package:fitnessmarketplace/apis/firebase_provider.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
+***REMOVED***
+import 'package:fitnessmarketplace/pages/add_new_screen.dart';
+***REMOVED***
 ***REMOVED***
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -17,9 +21,18 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
   Trainer currentTrainer;
   List<RecordedVideo> trainerVideos;
   List<PrivateSession> privateSessions;
+  List<VideoInfo> _videos = <VideoInfo>[];
+
 
 ***REMOVED***
 ***REMOVED***
+
+    FirebaseProvider.listenToVideos((newVideos) {
+***REMOVED***
+        _videos = newVideos;
+      ***REMOVED***);
+    ***REMOVED***);
+
     _calendarController = CalendarController();
     setUp();
 ***REMOVED***
@@ -50,11 +63,15 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
 
   getVideos() async {
     QuerySnapshot getVideos = await currentTrainer.reference
-        .collection('recordedVideos')
+        .collection('videos')
         .getDocuments();
     List<DocumentSnapshot> allVideos = getVideos.documents;
+    print("NUMBER OF VIDEOS");
+    print(allVideos.length);
     for (int i = 0; i < allVideos.length; i++) {
-      trainerVideos.add(RecordedVideo.fromSnapshot(allVideos[i]));
+***REMOVED***
+        trainerVideos.add(RecordedVideo.fromSnapshot(allVideos[i]));
+      ***REMOVED***);
     ***REMOVED***
   ***REMOVED***
 
@@ -64,8 +81,10 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
         .getDocuments();
     List<DocumentSnapshot> allPrivateSessions = getPrivateSessions.documents;
     for (int i = 0; i < allPrivateSessions.length; i++) {
-      privateSessions
-          .add(PrivateSession.fromSnapshot(allPrivateSessions[i]));
+***REMOVED***
+        privateSessions
+            .add(PrivateSession.fromSnapshot(allPrivateSessions[i]));
+      ***REMOVED***);
     ***REMOVED***
   ***REMOVED***
 
@@ -253,37 +272,80 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
 ***REMOVED***
                         height: 300.0,
                         child: ListView.builder(
-                          itemCount: trainerVideos.length,
+                          itemCount: trainerVideos.length+1,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (BuildContext context, int i) {
                             print(i);
+                            if (i==0){
+                              return Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print('tapped');
+              ***REMOVED***
+          ***REMOVED***
+          ***REMOVED***
+                                        builder: (context) => AddNewRecording( )),
+                              ***REMOVED***
+                                    //TODO make sessions database implementation
+                                  ***REMOVED***,
+                                  child: Container(
+                                    height: 300.0,
+                                    width: 300.0,
+                                    child: Center(
+                                      child: FlatButton(
+                                        child: Icon(Icons.add),
+                        ***REMOVED***
+                      ***REMOVED***,
+                        ***REMOVED***
+                                      borderRadius: BorderRadius.circular(30.0),
+                                      color: Colors.blue,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 5,
+                                          blurRadius: 7,
+                                          offset: Offset(
+                                              0, 3), // changes position of shadow
+                          ***REMOVED***,
+                      ***REMOVED***
+                      ***REMOVED***,
+                    ***REMOVED***,
+                  ***REMOVED***,
+                          ***REMOVED***
+                            ***REMOVED***
+                            print("WHY ISNT STUFF SHOWING");
                             return Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: GestureDetector(
                                 onTap: () {
                                   print('tapped');
-                                  /*Navigator.push(
+            ***REMOVED***
           ***REMOVED***
           ***REMOVED***
-                                        builder: (context) => ShowVideoPage(
-                                              videoDownloadUrl:
-                                                  trainerVideos[i].videoUrl,
+                                        builder: (context) => Player(
+                                              video:
+                                                  _videos[i-1],
                               ***REMOVED***),
-                              ***REMOVED****/
+                              ***REMOVED***
                                   //TODO make sessions database implementation
                                 ***REMOVED***,
                                 child: Container(
                                   height: 300.0,
                                   width: 300.0,
                                   child: Center(
-                ***REMOVED***trainerVideos[i].name +
+                ***REMOVED***trainerVideos[i-1].name +
                                         '  ' +
-                                        trainerVideos[i]
-                                            .date
+                                        Timestamp.fromMillisecondsSinceEpoch(trainerVideos[i-1]
+                                            .date)
                                             .toDate()
                                             .toString()),
                     ***REMOVED***,
                       ***REMOVED***
+                      ***REMOVED***
+                                      image: Image.network(trainerVideos[i-1].videoUrl).image,
+                      ***REMOVED***
+                      ***REMOVED***,
                                     borderRadius: BorderRadius.circular(30.0),
                                     color: Colors.blue,
                                     boxShadow: [

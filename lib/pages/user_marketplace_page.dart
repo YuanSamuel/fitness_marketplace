@@ -37,7 +37,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
   getRecordedVideos() async {
     allVideos = new List<RecordedVideo>();
     QuerySnapshot allVideosSnapshot =
-        await Firestore.instance.collection('recordedVideos').getDocuments();
+        await Firestore.instance.collection('videos').getDocuments();
     List<DocumentSnapshot> allVideosDocuments = allVideosSnapshot.documents;
     for (int i = 0; i < allVideosDocuments.length; i++) {
       allVideos.add(RecordedVideo.fromSnapshot(allVideosDocuments[i]));
@@ -217,8 +217,8 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                     image:
                                         'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
                                     name: allVideos[i].name,
-                                    date: allVideos[i].date.toDate().toString(),
-                                    people: allVideos[i].students),
+                                    date: Timestamp.fromMillisecondsSinceEpoch(allVideos[i].date).toDate().toString(),
+                                    people: "No limit"),
                           ***REMOVED***
                             ***REMOVED***))
                     : SizedBox.shrink(),
