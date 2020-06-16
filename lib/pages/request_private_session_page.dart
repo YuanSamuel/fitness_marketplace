@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
 import 'package:flutter/material.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
@@ -71,9 +72,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
               events: getAvailableTimes(),
               onDaySelected: (DateTime date, List<dynamic> givenEvents) {
                 events = givenEvents;
-                setState(() {
-
-                });
+                setState(() {});
               },
             ),
             Container(
@@ -81,14 +80,21 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
               child: ListView.builder(
                   itemCount: events.length,
                   itemBuilder: (BuildContext context, int i) {
-                    return Container(
-                      child: Column(
-                        children: [
-                          Text(events[i].name),
-                          Text(events[i].trainerName),
-                          Text(events[i].date.toDate().toString()),
-                        ],
+                    return GestureDetector(
+                      child: Container(
+                        child: Column(
+                          children: [
+                            Text(events[i].name),
+                            Text(events[i].trainerName),
+                            Text(events[i].date.toDate().toString()),
+                          ],
+                        ),
                       ),
+                      onTap: () {
+                        events[i].reference.updateData({'available': false});
+                        addToUserPrivateSessions(events[i]);
+                        Navigator.pop(context);
+                      },
                     );
                   }),
             ),
@@ -98,19 +104,28 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
     }
   }
 
+  addToUserPrivateSessions(PrivateSession session) async {
+    FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+    session.available = false;
+    Firestore.instance
+        .collection('students')
+        .document(currentUser.uid)
+        .collection('privateSessions')
+        .add(session.toJson());
+  }
+
   Map<DateTime, List<PrivateSession>> getAvailableTimes() {
-    Map<DateTime, List<PrivateSession>> allTimes = new Map<DateTime, List<PrivateSession>>();
+    Map<DateTime, List<PrivateSession>> allTimes =
+        new Map<DateTime, List<PrivateSession>>();
 
     for (int i = 0; i < privateSessionTimes.length; i++) {
       PrivateSession privateSession = privateSessionTimes[i];
       DateTime privateSessionDate = privateSession.date.toDate().toLocal();
       if (allTimes.containsKey(privateSessionDate)) {
-        allTimes[privateSessionDate]
-            .add(privateSession);
+        allTimes[privateSessionDate].add(privateSession);
       } else {
         List<PrivateSession> privateSessionsList = new List<PrivateSession>();
-        privateSessionsList
-            .add(privateSession);
+        privateSessionsList.add(privateSession);
         allTimes[privateSessionDate] = privateSessionsList;
       }
     }

@@ -20,6 +20,8 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
   List<RecordedVideo> allVideos;
   List<Trainer> allTrainers;
 
+  List<String> trainingTypes = ['Weight Lifting', 'Cardio', 'Martial Arts'];
+
   @override
   void initState() {
     setUp();
@@ -51,11 +53,13 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
     for (int i = 0; i < trainersList.length; i++) {
       allTrainers.add(Trainer.fromSnapshot(trainersList[i]));
     }
-    pages = [
-      TrainerMarket(allTrainers: allTrainers, type: 'Martial Arts',),
-      TrainerMarket(allTrainers: allTrainers, type: 'Cardio',),
-      TrainerMarket(allTrainers: allTrainers, type: 'Weight Lifting',)
-    ];
+    pages = new List<Widget>();
+    for (int i = 0; i < trainingTypes.length; i++) {
+      pages.add(TrainerMarket(
+        allTrainers: allTrainers,
+        type: trainingTypes[i],
+      ));
+    }
   }
 
   @override
@@ -93,27 +97,17 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                     Container(
                       height: 50,
                       child: Expanded(
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            FadeAnimationDown(
-                                1,
-                                makeTraining(
-                                    isActive: true,
-                                    title: 'Weight Lifting',
-                                    page: 0)),
-                            FadeAnimationDown(
-                                1.2,
-                                makeTraining(
-                                    isActive: false, title: 'Cardio', page: 1)),
-                            FadeAnimationDown(
-                                1.4,
-                                makeTraining(
-                                    isActive: false,
-                                    title: 'Martial Arts',
-                                    page: 2)),
-                          ],
-                        ),
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: trainingTypes.length,
+                            itemBuilder: (BuildContext context, int i) {
+                              return FadeAnimationDown(
+                                  1 + i * 0.2,
+                                  makeTraining(
+                                      isActive: true,
+                                      title: trainingTypes[i],
+                                      page: i));
+                            }),
                       ),
                     ),
                     FadeAnimationDown(
