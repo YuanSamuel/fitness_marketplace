@@ -123,6 +123,8 @@ class _UserHomePageState extends State<UserHomePage> {
                   'Upcoming Sessions',
                   style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
                 ),
+
+                
               ),
               Container(
                 height: 250.0,
