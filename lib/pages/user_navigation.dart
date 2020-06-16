@@ -3,6 +3,7 @@ import 'package:fitnessmarketplace/pages/user_home_page.dart';
 import 'package:fitnessmarketplace/pages/user_marketplace_page.dart';
 import 'package:fitnessmarketplace/pages/user_profile_page.dart';
 import 'package:flutter/material.dart';
+import 'login_page.dart';
 
 class UserNavigation extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class _UserNavigationState extends State<UserNavigation> {
   int _currentIndex = 0;
   PageController _pageController = PageController(initialPage: 0);
   var _pageOptions = [
-    UserHomePage(),
+    UserHomePage(userid),
     MarketplaceScreen(),
     UserProfilePage(1, 2, 3, 'SamuelY'),
   ];

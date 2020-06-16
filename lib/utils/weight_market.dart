@@ -60,15 +60,10 @@ class _WeightMarketState extends State<WeightMarket> {
       child: GestureDetector(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => Trainer(
-            image: image,
-            name: name,
-            category: category,
-            languages: languages,
             videoCount: videoCount,
             sessions: sessions,
             video2: video2,
             video: video,
-            description: description,
           )));
         },
         child: Container(
