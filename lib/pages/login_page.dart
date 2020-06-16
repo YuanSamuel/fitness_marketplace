@@ -4,7 +4,8 @@ import 'package:fitnessmarketplace/pages/user_navigation.dart';
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-import 'register_page.dart';
+
+String userid;
 
 class Login extends StatefulWidget {
 ***REMOVED***
@@ -40,6 +41,7 @@ class _LoginState extends State<Login> {
                     print(currentUser.user.uid);
                     DocumentSnapshot snapshot = await Firestore.instance.collection('users').document(currentUser.user.uid).get();
                     print(snapshot.data);
+                    userid = currentUser.user.uid;
                     if (snapshot.data['isTrainer']) {
 ***REMOVED***
                         context,

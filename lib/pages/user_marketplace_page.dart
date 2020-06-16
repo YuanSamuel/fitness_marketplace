@@ -150,67 +150,60 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
         ***REMOVED***,
       ***REMOVED***,
     ***REMOVED***),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Container(
-                  height: 200,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
+              FutureBuilder(
+                future: Firestore.instance.collection('trainers').getDocuments(),
+                builder: (context, snapshot) {
+                  if(snapshot.connectionState != ConnectionState.done){
+                ***REMOVED***
+                      body: Container(
+                        width: 50,
+                        height: 50,
+                        child: Center(
+      ***REMOVED***'Loading'),
+          ***REMOVED***,
         ***REMOVED***
-                      FadeAnimationDown(
-                        2.8,
-                        makeTrending(
-                            image:
-                            'https://www.keepthefaith.co.uk/wp-content/uploads/2018/08/personal_trainer.jpg',
-                            name: 'Carlton Banks',
-                            category: 'Weight Lifting',
-                            languages: 'English, French',
-                            videoCount: 25,
-                            sessions: 14,
-                            video:
-                            'https://cbsnews1.cbsistatic.com/hub/i/2018/06/01/0e92bb08-8639-465e-a579-d6f4277cbf47/gettyimages-891415940.jpg',
-                            video2:
-                            'http://www.telegraph.co.uk/content/dam/health-fitness/2017/11/09/TELEMMGLPICT000146072663-xlarge_trans_NvBQzQNjv4Bqek9vKm18v_rkIPH9w2GMNtm3NAjPW-2_OvjCiS6COCU.jpeg',
-                            description:
-                            'Carlton integrates his knowledge as a strength and conditioning specialist in designing an individualized, progressive program of cardiovascular, mobility, core, and strength training exercises for his clients based on their fitness goals.'),
+                ***REMOVED***
+                  ***REMOVED***
+              ***REMOVED***
+                    List<DocumentSnapshot> docs = snapshot.data.documents;
+                    int listLength;
+                    if(docs.length==null){
+                      listLength = 0;
+                    ***REMOVED***
+                ***REMOVED***
+                      listLength = docs.length;
+                    ***REMOVED***
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Container(
+                        height: 200,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+              ***REMOVED***
+                            for(int i=0;i<listLength;i++)
+                              FadeAnimationDown(
+                                2.8,
+                                makeTrending(
+                                    uid: docs[i].data['uid'],
+                                    image:
+                                    docs[i].data['profileUrl'],
+                                    name: '${docs[i].data['firstName']***REMOVED*** ${docs[i].data['lastName']***REMOVED***',
+                                    category: docs[i].data['trainingTypes'].toString(),
+                                    videoCount: 25,
+                                    sessions: 14,
+                                    video:
+                                    'https://cbsnews1.cbsistatic.com/hub/i/2018/06/01/0e92bb08-8639-465e-a579-d6f4277cbf47/gettyimages-891415940.jpg',
+                                    video2:
+                                    'http://www.telegraph.co.uk/content/dam/health-fitness/2017/11/09/TELEMMGLPICT000146072663-xlarge_trans_NvBQzQNjv4Bqek9vKm18v_rkIPH9w2GMNtm3NAjPW-2_OvjCiS6COCU.jpeg',
+                                    description:
+                                    'Carlton integrates his knowledge as a strength and conditioning specialist in designing an individualized, progressive program of cardiovascular, mobility, core, and strength training exercises for his clients based on their fitness goals.'),
+                ***REMOVED***,
+          ***REMOVED***
+          ***REMOVED***,
         ***REMOVED***,
-                      FadeAnimationDown(
-                        3.0,
-                        makeTrending(
-                            image:
-                            'https://im.indiatimes.in/content/2017/Sep/fb_blackdoctor_org_1504271935_725x725.png',
-                            name: 'Prasann Singhal',
-                            category: 'Yoga',
-                            languages: 'English, French',
-                            videoCount: 35,
-                            sessions: 5,
-                            video:
-                            'https://cbsnews1.cbsistatic.com/hub/i/2018/06/01/0e92bb08-8639-465e-a579-d6f4277cbf47/gettyimages-891415940.jpg',
-                            video2:
-                            'http://www.telegraph.co.uk/content/dam/health-fitness/2017/11/09/TELEMMGLPICT000146072663-xlarge_trans_NvBQzQNjv4Bqek9vKm18v_rkIPH9w2GMNtm3NAjPW-2_OvjCiS6COCU.jpeg',
-                            description:
-                            'Prasann defines his sessions as simple, challenging, and efficient with an emphasis on proper form and mobility. His favorite client is anyone with a goal and a willingness to work towards it!'),
-        ***REMOVED***,
-                      FadeAnimationDown(
-                        3.2,
-                        makeTrending(
-                            image:
-                            'http://www.gymsguide.com.au/wp-content/uploads/2014/08/Mobile-Personal-Training.jpg',
-                            name: 'Samantha Malfoy',
-                            category: 'Crossfit',
-                            languages: 'English, Russian',
-                            videoCount: 15,
-                            sessions: 12,
-                            video:
-                            'https://cbsnews1.cbsistatic.com/hub/i/2018/06/01/0e92bb08-8639-465e-a579-d6f4277cbf47/gettyimages-891415940.jpg',
-                            video2:
-                            'http://www.telegraph.co.uk/content/dam/health-fitness/2017/11/09/TELEMMGLPICT000146072663-xlarge_trans_NvBQzQNjv4Bqek9vKm18v_rkIPH9w2GMNtm3NAjPW-2_OvjCiS6COCU.jpeg',
-                            description:
-                            'Samantha (or Sam for short) is an ACE Certified Personal Trainer and Group Fitness Instructor. She also holds a specialty certification as a Fitness Nutrition Specialist, Spinning Instructor, and TRX Instructor.'),
-        ***REMOVED***,
-    ***REMOVED***
-    ***REMOVED***,
-  ***REMOVED***,
+                ***REMOVED***
+                  ***REMOVED***
+                ***REMOVED***,
 ***REMOVED***,
               FadeAnimationDown(
                   3.4,
@@ -295,27 +288,24 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
       {image,
       name,
       category,
-      languages,
       videoCount,
       sessions,
       video2,
       video,
-      description***REMOVED***) {
+      description,
+      uid***REMOVED***) {
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => Trainer(
-                      image: image,
-                      name: name,
-                      category: category,
-                      languages: languages,
+                      uid: uid,
                       videoCount: videoCount,
                       sessions: sessions,
                       video2: video2,
                       video: video,
-                      description: description,
       ***REMOVED***));
       ***REMOVED***,
       child: Hero(
