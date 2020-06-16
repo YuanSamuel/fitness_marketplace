@@ -1,6 +1,5 @@
 ***REMOVED***
 ***REMOVED***
-import 'package:fitnessmarketplace/animations/FadeAnimationUp.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
 import 'package:fitnessmarketplace/utils/trainer.dart';
 import 'package:fitnessmarketplace/utils/cardio_market.dart';
