@@ -81,7 +81,7 @@ class _ProfilePicState extends State<ProfilePic> {
   ***REMOVED***
         body: Column(
           children: [
-            Text('Choose a picture!'),
+            Text('Choose a picture', style: TextStyle(fontSize: 50),),
           ],
 ***REMOVED***
         floatingActionButton: FloatingActionButton(

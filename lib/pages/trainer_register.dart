@@ -1,12 +1,16 @@
 import 'package:fitnessmarketplace/pages/profile_picture.dart';
-import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
 ***REMOVED***
 import 'package:select_dialog/select_dialog.dart';
 ***REMOVED***
 
-import 'register_page.dart';
+String uid;
 
 class TrainerRegister extends StatefulWidget {
+
+  TrainerRegister(String u) {
+    uid = u;
+  ***REMOVED***
+
 ***REMOVED***
   _TrainerRegisterState createState() => _TrainerRegisterState();
 ***REMOVED***
@@ -35,7 +39,7 @@ class _TrainerRegisterState extends State<TrainerRegister> {
         onPressed: () {
           _type.remove(type);
     ***REMOVED***
-            TrainerRegister();
+            TrainerRegister(uid);
           ***REMOVED***);
         ***REMOVED***,
 ***REMOVED***
@@ -140,10 +144,10 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                   color: Colors.blue,
                   child: Text('Continue'),
                   onPressed: () {
-                    Firestore.instance.collection('trainers').document(userid).setData({
-                      'type': _type,
+                    Firestore.instance.collection('trainers').document(uid).setData({
+                      'trainingTypes': _type.toString(),
                       'rating': 0,
-                      'desc': _desc,
+                      'desc': _desc.text,
                     ***REMOVED***,merge: true);
                     Navigator.push(
                       context,

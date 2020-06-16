@@ -20,9 +20,9 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
   List<OneOnOneSession> oneOnOneSessions;
 
 ***REMOVED***
-***REMOVED***
+  void initState() async {
     _calendarController = CalendarController();
-    setUp();
+    await setUp();
 ***REMOVED***
   ***REMOVED***
 

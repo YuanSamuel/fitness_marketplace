@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/register': (BuildContext context) => Register(),
       ***REMOVED***,
-      home: RootPage(),
+      home: Register(),
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***

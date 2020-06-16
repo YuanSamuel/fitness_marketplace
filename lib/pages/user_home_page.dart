@@ -1,8 +1,17 @@
 ***REMOVED***
+***REMOVED***
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
+***REMOVED***
+
+String uid;
 
 class UserHomePage extends StatefulWidget {
+
+  UserHomePage(String u){
+    uid = u;
+  ***REMOVED***
+
 ***REMOVED***
   _UserHomePageState createState() => _UserHomePageState();
 ***REMOVED***
@@ -29,163 +38,175 @@ class _UserHomePageState extends State<UserHomePage> {
 
 ***REMOVED***
 ***REMOVED***
-***REMOVED***
-      body:
-      SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 30.0,),
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: Row(
-      ***REMOVED***
-                    Text('Student: Lucas', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),),
-                    Spacer(),
-                    IconButton(
-                      icon: Icon(Icons.account_circle),
-                      onPressed: (){***REMOVED***,
-      ***REMOVED***
+    return StreamBuilder(
+      stream: Firestore.instance.collection('students').document(uid).snapshots(),
+      builder: (context, snapshot) {
+        String name;
+        if(snapshot.hasData){
+          name = snapshot.data['firstName'];
+        ***REMOVED***
+    ***REMOVED***
+          name = 'Loading';
+        ***REMOVED***
+    ***REMOVED***
+          body:
+          SingleChildScrollView(
   ***REMOVED***
   ***REMOVED***
-***REMOVED***
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: Divider(height: 10.0, thickness: 0.75,),
-***REMOVED***
-            Container(child: _buildCalendar()),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: Divider(height: 10.0, thickness: 0.75,),
-***REMOVED***
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0),
-              child: Text('Upcoming Sessions', style: TextStyle(
-                  fontSize: 25.0,
-                  fontWeight: FontWeight.bold
-***REMOVED***,
-***REMOVED***,
-***REMOVED***
-            Container(
-              height: 300.0,
-              child: ListView.builder(
-                itemCount: trainerNames.length,
-                itemBuilder: (BuildContext context, int index){
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+  ***REMOVED***
+  ***REMOVED***height: 30.0,),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Row(
           ***REMOVED***
-                        borderRadius: BorderRadius.circular(30.0),
-                        color: Color(0xff3B3B3B),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
-            ***REMOVED***,
-        ***REMOVED***
-        ***REMOVED***,
-                      height: 100.0,
-                      child: Row(
-        ***REMOVED***
-                        crossAxisAlignment: CrossAxisAlignment.center,
-            ***REMOVED***
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                ***REMOVED***
-                ***REMOVED***
-        ***REMOVED***sessionNames[index] + " | " + trainerNames[index], style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.white),),
-        ***REMOVED***height: 10.0,),
-        ***REMOVED***duration[index], style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.white),),
-            ***REMOVED***
-            ***REMOVED***,
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                ***REMOVED***
-        ***REMOVED***dates[index].substring(0, dates[index].indexOf(',')), style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: Colors.white),),
-        ***REMOVED***height: 10.0,),
-        ***REMOVED***dates[index].substring(dates[index].indexOf(',') + 2), style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: Colors.white),),
-            ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***
-        ***REMOVED***,
-      ***REMOVED***,
+  ***REMOVED***'Student: $name', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),),
+                        Spacer(),
+                        IconButton(
+                          icon: Icon(Icons.account_circle),
+                          onPressed: (){***REMOVED***,
+          ***REMOVED***
+      ***REMOVED***
+      ***REMOVED***
+  ***REMOVED***,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Divider(height: 10.0, thickness: 0.75,),
+  ***REMOVED***,
+                Container(child: _buildCalendar()),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Divider(height: 10.0, thickness: 0.75,),
+  ***REMOVED***,
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: Text('Upcoming Sessions', style: TextStyle(
+                      fontSize: 25.0,
+***REMOVED***
+    ***REMOVED***,
+    ***REMOVED***,
+  ***REMOVED***,
+                Container(
+                  height: 300.0,
+                  child: ListView.builder(
+                    itemCount: trainerNames.length,
+                    itemBuilder: (BuildContext context, int index){
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 15.0),
               ***REMOVED***
+                            borderRadius: BorderRadius.circular(30.0),
+                            color: Color(0xff3B3B3B),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: Offset(0, 3), // changes position of shadow
                 ***REMOVED***,
-***REMOVED***,
-***REMOVED***
-
-            SizedBox(height: 10.0,),
-            Container(
-  ***REMOVED***
-                  color: Colors.white,
-                  border: Border.symmetric(
-                    vertical: BorderSide(
-                        width: 0.5,
-                        color: Colors.black26
-      ***REMOVED***,
-    ***REMOVED***
-***REMOVED***,
-    ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***height: 10.0,),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(horizontal:15.0),
-                      child:Row(
             ***REMOVED***
-    ***REMOVED***'Your Videos',  style: TextStyle(
-                              fontSize: 25.0,
-        ***REMOVED***
             ***REMOVED***,
-            ***REMOVED***,
-                          Spacer(),
-    ***REMOVED***'See All', style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black26
-            ***REMOVED***,),
-        ***REMOVED***
-        ***REMOVED***
-    ***REMOVED***,
-                  Container(
-                    color: Colors.white,
-                    height: 300.0,
-                    child: ListView.builder(
-                      itemCount: 3,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (BuildContext context, int index){
-                        return Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Container(
-                            height: 300.0,
-                            width: 300.0,
+                          height: 100.0,
+                          child: Row(
+            ***REMOVED***
+                            crossAxisAlignment: CrossAxisAlignment.center,
                 ***REMOVED***
-                              borderRadius: BorderRadius.circular(30.0),
-                              color: Colors.blue,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 5,
-                                  blurRadius: 7,
-                                  offset: Offset(0, 3), // changes position of shadow
-                  ***REMOVED***,
-              ***REMOVED***
-              ***REMOVED***,
-            ***REMOVED***,
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                     ***REMOVED***
-                      ***REMOVED***,
-      ***REMOVED***,
+                    ***REMOVED***
+            ***REMOVED***sessionNames[index] + " | " + trainerNames[index], style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.white),),
+            ***REMOVED***height: 10.0,),
+            ***REMOVED***duration[index], style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.white),),
+                ***REMOVED***
+                ***REMOVED***,
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                    ***REMOVED***
+            ***REMOVED***dates[index].substring(0, dates[index].indexOf(',')), style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: Colors.white),),
+            ***REMOVED***height: 10.0,),
+            ***REMOVED***dates[index].substring(dates[index].indexOf(',') + 2), style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: Colors.white),),
+                ***REMOVED***
+                ***REMOVED***
+            ***REMOVED***
+            ***REMOVED***,
+          ***REMOVED***,
+                  ***REMOVED***
+                    ***REMOVED***,
     ***REMOVED***,
+  ***REMOVED***,
+
+  ***REMOVED***height: 10.0,),
+                Container(
+      ***REMOVED***
+                      color: Colors.white,
+                      border: Border.symmetric(
+                        vertical: BorderSide(
+                            width: 0.5,
+                            color: Colors.black26
+          ***REMOVED***,
+        ***REMOVED***
+    ***REMOVED***,
+        ***REMOVED***
+        ***REMOVED***
+        ***REMOVED***
+***REMOVED***height: 10.0,),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(horizontal:15.0),
+                          child:Row(
+                ***REMOVED***
+        ***REMOVED***'Your Videos',  style: TextStyle(
+                                  fontSize: 25.0,
+            ***REMOVED***
+                ***REMOVED***,
+                ***REMOVED***,
+                              Spacer(),
+        ***REMOVED***'See All', style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black26
+                ***REMOVED***,),
+            ***REMOVED***
+            ***REMOVED***
+        ***REMOVED***,
+                      Container(
 ***REMOVED***
-***REMOVED***,
-            )
-          ],
+                        height: 300.0,
+                        child: ListView.builder(
+                          itemCount: 3,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (BuildContext context, int index){
+                            return Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Container(
+                                height: 300.0,
+                                width: 300.0,
+                    ***REMOVED***
+                                  borderRadius: BorderRadius.circular(30.0),
+                                  color: Colors.blue,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: Offset(0, 3), // changes position of shadow
+                      ***REMOVED***,
+                  ***REMOVED***
+                  ***REMOVED***,
+                ***REMOVED***,
+                        ***REMOVED***
+                          ***REMOVED***,
+          ***REMOVED***,
+        ***REMOVED***,
+    ***REMOVED***
+    ***REMOVED***,
+  ***REMOVED***
+  ***REMOVED***
 ***REMOVED***
 ***REMOVED***
+    ***REMOVED***
+      ***REMOVED***,
 ***REMOVED***
   ***REMOVED***
 
