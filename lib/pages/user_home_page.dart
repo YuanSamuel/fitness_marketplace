@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
-import 'package:fitnessmarketplace/pages/show_video_page.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -278,12 +277,13 @@ class _UserHomePageState extends State<UserHomePage> {
                                     child: Text(recordedVideos[i].name + ' ' + recordedVideos[i].date.toDate().toString()),
                                   )
                               ),
-                              onTap: () {
+                              //TODO set up this so that it works with actual videos / streams
+                              /*onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => ShowVideoPage(videoDownloadUrl: recordedVideos[i].videoUrl,)),
                                 );
-                              },
+                              },*/
                             ),
                           );
                         },
