@@ -81,7 +81,7 @@ class _ProfilePicState extends State<ProfilePic> {
       return Scaffold(
         body: Column(
           children: [
-            Text('Choose a picture!'),
+            Text('Choose a picture', style: TextStyle(fontSize: 50),),
           ],
         ),
         floatingActionButton: FloatingActionButton(
