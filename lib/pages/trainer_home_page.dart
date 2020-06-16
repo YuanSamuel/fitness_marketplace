@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
-import 'package:fitnessmarketplace/pages/show_video_page.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
 
 class TrainerHomePage extends StatefulWidget {
@@ -263,14 +262,15 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                               child: GestureDetector(
                                 onTap: () {
                                   print('tapped');
-                                  Navigator.push(
+                                  /*Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => ShowVideoPage(
                                               videoDownloadUrl:
                                                   trainerVideos[i].videoUrl,
                                             )),
-                                  );
+                                  );*/
+                                  //TODO make sessions database implementation
                                 },
                                 child: Container(
                                   height: 300.0,
