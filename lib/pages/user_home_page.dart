@@ -2,7 +2,6 @@
 ***REMOVED***
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
-import 'package:fitnessmarketplace/pages/show_video_page.dart';
 ***REMOVED***
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -278,12 +277,13 @@ class _UserHomePageState extends State<UserHomePage> {
                 ***REMOVED***recordedVideos[i].name + ' ' + recordedVideos[i].date.toDate().toString()),
                     ***REMOVED***
                 ***REMOVED***,
-                              onTap: () {
+                              //TODO set up this so that it works with actual videos / streams
+                              /*onTap: () {
           ***REMOVED***
         ***REMOVED***
         ***REMOVED***builder: (context) => ShowVideoPage(videoDownloadUrl: recordedVideos[i].videoUrl,)),
                             ***REMOVED***
-                              ***REMOVED***,
+                              ***REMOVED***,*/
               ***REMOVED***,
                       ***REMOVED***
                         ***REMOVED***,

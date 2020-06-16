@@ -5,7 +5,6 @@ import 'package:fitnessmarketplace/models/PrivateSession.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 ***REMOVED***
-import 'package:fitnessmarketplace/pages/show_video_page.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
 
 class TrainerHomePage extends StatefulWidget {
@@ -263,14 +262,15 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                               child: GestureDetector(
                                 onTap: () {
                                   print('tapped');
-            ***REMOVED***
+                                  /*Navigator.push(
           ***REMOVED***
           ***REMOVED***
                                         builder: (context) => ShowVideoPage(
                                               videoDownloadUrl:
                                                   trainerVideos[i].videoUrl,
                               ***REMOVED***),
-                              ***REMOVED***
+                              ***REMOVED****/
+                                  //TODO make sessions database implementation
                                 ***REMOVED***,
                                 child: Container(
                                   height: 300.0,
