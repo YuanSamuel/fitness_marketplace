@@ -25,7 +25,7 @@ class Trainer {
       lastName: json['lastName'] as String,
       email: json['email'] as String,
       profileUrl: json['profileUrl'] as String,
-      rating: json['rating'] as double,
+      rating: (json['rating'] + 0.0) as double,
       trainingTypes: json['trainingTypes'] as List,
     );
   }

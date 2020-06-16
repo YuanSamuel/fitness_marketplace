@@ -1,14 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
-import 'package:fitnessmarketplace/animations/FadeAnimationUp.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
-import 'package:fitnessmarketplace/utils/trainer.dart';
-import 'package:fitnessmarketplace/utils/cardio_market.dart';
-import 'package:fitnessmarketplace/utils/martial_market.dart';
+import 'package:fitnessmarketplace/utils/trainer_market.dart';
+import 'package:fitnessmarketplace/utils/trainer_widget.dart';
 import 'package:fitnessmarketplace/utils/search_bar.dart';
-import 'package:fitnessmarketplace/utils/weight_market.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fitnessmarketplace/models/Trainer.dart';
 
 class MarketplaceScreen extends StatefulWidget {
   @override
@@ -16,15 +14,22 @@ class MarketplaceScreen extends StatefulWidget {
 }
 
 class _MarketplaceScreenState extends State<MarketplaceScreen> {
-  List<Widget> pages = [WeightMarket(), CardioMarket(), MartialMarket()];
+  List<Widget> pages;
   int pageIndex = 0;
   PageController _pageController = new PageController(initialPage: 0);
   List<RecordedVideo> allVideos;
+  List<Trainer> allTrainers;
 
   @override
   void initState() {
-    getRecordedVideos();
+    setUp();
     super.initState();
+  }
+
+  setUp() async {
+    await getRecordedVideos();
+    await getTrainers();
+    setState(() {});
   }
 
   getRecordedVideos() async {
@@ -36,6 +41,21 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
       allVideos.add(RecordedVideo.fromSnapshot(allVideosDocuments[i]));
     }
     setState(() {});
+  }
+
+  getTrainers() async {
+    allTrainers = new List<Trainer>();
+    QuerySnapshot trainersSnapshot =
+        await Firestore.instance.collection('trainers').getDocuments();
+    List<DocumentSnapshot> trainersList = trainersSnapshot.documents;
+    for (int i = 0; i < trainersList.length; i++) {
+      allTrainers.add(Trainer.fromSnapshot(trainersList[i]));
+    }
+    pages = [
+      TrainerMarket(allTrainers: allTrainers, type: 'Martial Arts',),
+      TrainerMarket(allTrainers: allTrainers, type: 'Cardio',),
+      TrainerMarket(allTrainers: allTrainers, type: 'Weight Lifting',)
+    ];
   }
 
   @override
@@ -100,7 +120,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                         1.6,
                         Padding(
                           padding:
-                          EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 15),
                           child: Text(
                             "Popular Trainers",
                             style: TextStyle(
@@ -118,11 +138,13 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
               ),
               Container(
                 height: MediaQuery.of(context).size.height / 3,
-                child: PageView(
-                  children: pages,
-                  controller: _pageController,
-                  physics: NeverScrollableScrollPhysics(),
-                ),
+                child: pages != null
+                    ? PageView(
+                        children: pages,
+                        controller: _pageController,
+                        physics: NeverScrollableScrollPhysics(),
+                      )
+                    : CircularProgressIndicator(),
               ),
               SizedBox(
                 height: 0,
@@ -137,7 +159,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                         1.8,
                         Padding(
                           padding:
-                          EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 15),
                           child: Text(
                             "Trending Trainers",
                             style: TextStyle(
@@ -150,61 +172,23 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                       ),
                     ),
                   )),
-              FutureBuilder(
-                future: Firestore.instance.collection('trainers').getDocuments(),
-                builder: (context, snapshot) {
-                  if(snapshot.connectionState != ConnectionState.done){
-                    return Scaffold(
-                      body: Container(
-                        width: 50,
-                        height: 50,
-                        child: Center(
-                          child: Text('Loading'),
-                        ),
-                      )
-                    );
-                  }
-                  else{
-                    List<DocumentSnapshot> docs = snapshot.data.documents;
-                    int listLength;
-                    if(docs.length==null){
-                      listLength = 0;
-                    }
-                    else{
-                      listLength = docs.length;
-                    }
-                    return Padding(
+              allTrainers != null
+                  ? Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       child: Container(
-                        height: 200,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            for(int i=0;i<listLength;i++)
-                              FadeAnimationDown(
-                                2.8,
-                                makeTrending(
-                                    uid: docs[i].data['uid'],
-                                    image:
-                                    docs[i].data['profileUrl'],
-                                    name: '${docs[i].data['firstName']} ${docs[i].data['lastName']}',
-                                    category: docs[i].data['trainingTypes'].toString(),
-                                    videoCount: 25,
-                                    sessions: 14,
-                                    video:
-                                    'https://cbsnews1.cbsistatic.com/hub/i/2018/06/01/0e92bb08-8639-465e-a579-d6f4277cbf47/gettyimages-891415940.jpg',
-                                    video2:
-                                    'http://www.telegraph.co.uk/content/dam/health-fitness/2017/11/09/TELEMMGLPICT000146072663-xlarge_trans_NvBQzQNjv4Bqek9vKm18v_rkIPH9w2GMNtm3NAjPW-2_OvjCiS6COCU.jpeg',
-                                    description:
-                                    'Carlton integrates his knowledge as a strength and conditioning specialist in designing an individualized, progressive program of cardiovascular, mobility, core, and strength training exercises for his clients based on their fitness goals.'),
-                              ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }
-                },
-              ),
+                          height: 200,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: allTrainers.length,
+                            itemBuilder: (BuildContext context, int i) {
+                              Trainer currentTrainer = allTrainers[i];
+                              return FadeAnimationDown(
+                                0.5,
+                                makeTrending(givenTrainer: currentTrainer),
+                              );
+                            },
+                          )))
+                  : CircularProgressIndicator(),
               FadeAnimationDown(
                   3.4,
                   Padding(
@@ -213,7 +197,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                       alignment: Alignment.center,
                       child: Padding(
                         padding:
-                        EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+                            EdgeInsets.symmetric(horizontal: 5, vertical: 15),
                         child: Text(
                           "Upcoming Live Sessions",
                           style: TextStyle(
@@ -228,18 +212,21 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: allVideos != null
-                    ? Container(height: 250, child: ListView.builder(
-                    itemCount: allVideos.length,
-                    itemBuilder: (BuildContext context, int i) {
-                      return FadeAnimationDown(
-                        3.4 + i / 10,
-                        liveSession(
-                          image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
-                            name: allVideos[i].name,
-                            date: allVideos[i].date.toDate().toString(),
-                            people: allVideos[i].students),
-                      );
-                    }))
+                    ? Container(
+                        height: 250,
+                        child: ListView.builder(
+                            itemCount: allVideos.length,
+                            itemBuilder: (BuildContext context, int i) {
+                              return FadeAnimationDown(
+                                3.4 + i / 10,
+                                liveSession(
+                                    image:
+                                        'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
+                                    name: allVideos[i].name,
+                                    date: allVideos[i].date.toDate().toString(),
+                                    people: allVideos[i].students),
+                              );
+                            }))
                     : SizedBox.shrink(),
               ),
             ],
@@ -284,32 +271,19 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
     );
   }
 
-  Widget makeTrending(
-      {image,
-      name,
-      category,
-      videoCount,
-      sessions,
-      video2,
-      video,
-      description,
-      uid}) {
-
+  Widget makeTrending({Trainer givenTrainer}) {
+    String trainerName = givenTrainer.firstName + ' ' + givenTrainer.lastName;
     return GestureDetector(
       onTap: () {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => Trainer(
-                      uid: uid,
-                      videoCount: videoCount,
-                      sessions: sessions,
-                      video2: video2,
-                      video: video,
+                builder: (context) => TrainerWidget(
+                      trainer: givenTrainer,
                     )));
       },
       child: Hero(
-        tag: name,
+        tag: trainerName,
         child: Container(
           width: MediaQuery.of(context).size.width / 2.5,
           height: MediaQuery.of(context).size.height / 4,
@@ -317,7 +291,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               image: DecorationImage(
-                image: NetworkImage(image),
+                image: NetworkImage(givenTrainer.profileUrl),
                 fit: BoxFit.cover,
               )),
           child: Container(
@@ -347,7 +321,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        name,
+                        trainerName,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -358,7 +332,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                         height: 5,
                       ),
                       Text(
-                        category,
+                        givenTrainer.trainingTypes.toString(),
                         style: TextStyle(color: Colors.grey, fontSize: 15),
                       )
                     ],

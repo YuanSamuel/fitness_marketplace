@@ -1,42 +1,45 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class OneOnOneSession {
+class PrivateSession {
   String name;
   String studentUid;
   String trainerName;
   String photoUrl;
+  bool available;
   int length;
   Timestamp date;
 
   DocumentReference reference;
 
-  OneOnOneSession({this.name, this.studentUid, this.trainerName, this.photoUrl, this.length, this.date, this.reference});
+  PrivateSession({this.name, this.studentUid, this.trainerName, this.photoUrl, this.available, this.length, this.date, this.reference});
 
-  factory OneOnOneSession.fromSnapshot(DocumentSnapshot snapshot) {
-    OneOnOneSession newOneOnOneSession = OneOnOneSession.fromJson(snapshot.data);
-    newOneOnOneSession.reference = snapshot.reference;
-    return newOneOnOneSession;
+  factory PrivateSession.fromSnapshot(DocumentSnapshot snapshot) {
+    PrivateSession newPrivateSession = PrivateSession.fromJson(snapshot.data);
+    newPrivateSession.reference = snapshot.reference;
+    return newPrivateSession;
   }
 
-  factory OneOnOneSession.fromJson(Map<String, dynamic> json) {
-    return OneOnOneSession(
+  factory PrivateSession.fromJson(Map<String, dynamic> json) {
+    return PrivateSession(
       name: json['name'] as String,
       studentUid: json['studentUid'] as String,
       trainerName: json['trainerName'] as String,
       photoUrl: json['photoUrl'] as String,
+      available: json['available'] as bool,
       length: json['length'] as int,
       date: json['date'] as Timestamp,
     );
   }
 
-  Map<String, dynamic> toJson() => _OneOnOneSessionToJson(this);
+  Map<String, dynamic> toJson() => _PrivateSessionToJson(this);
 
-  _OneOnOneSessionToJson(OneOnOneSession instance) {
+  _PrivateSessionToJson(PrivateSession instance) {
     return <String, dynamic>{
       'name': instance.name,
       'studentUid': instance.studentUid,
       'trainerName': instance.trainerName,
       'photoUrl': instance.photoUrl,
+      'available': instance.available,
       'length': instance.length,
       'date': instance.date
     };
