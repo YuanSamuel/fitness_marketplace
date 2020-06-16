@@ -4,7 +4,8 @@ import 'package:fitnessmarketplace/pages/user_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'register_page.dart';
+
+String userid;
 
 class Login extends StatefulWidget {
   @override
@@ -40,6 +41,7 @@ class _LoginState extends State<Login> {
                     print(currentUser.user.uid);
                     DocumentSnapshot snapshot = await Firestore.instance.collection('users').document(currentUser.user.uid).get();
                     print(snapshot.data);
+                    userid = currentUser.user.uid;
                     if (snapshot.data['isTrainer']) {
                       Navigator.push(
                         context,
