@@ -1,12 +1,10 @@
 ***REMOVED***
 ***REMOVED***
-import 'package:fitnessmarketplace/animations/FadeAnimationUp.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
-import 'package:fitnessmarketplace/utils/trainer.dart';
-import 'package:fitnessmarketplace/utils/cardio_market.dart';
-import 'package:fitnessmarketplace/utils/martial_market.dart';
+import 'package:fitnessmarketplace/utils/trainer_market.dart';
+import 'package:fitnessmarketplace/utils/trainer_widget.dart';
 import 'package:fitnessmarketplace/utils/search_bar.dart';
-import 'package:fitnessmarketplace/utils/weight_market.dart';
+***REMOVED***
 ***REMOVED***
 ***REMOVED***
 
@@ -16,15 +14,22 @@ class MarketplaceScreen extends StatefulWidget {
 ***REMOVED***
 
 class _MarketplaceScreenState extends State<MarketplaceScreen> {
-  List<Widget> pages = [WeightMarket(), CardioMarket(), MartialMarket()];
+  List<Widget> pages;
   int pageIndex = 0;
   PageController _pageController = new PageController(initialPage: 0);
   List<RecordedVideo> allVideos;
+  List<Trainer> allTrainers;
 
 ***REMOVED***
 ***REMOVED***
-    getRecordedVideos();
+    setUp();
 ***REMOVED***
+  ***REMOVED***
+
+  setUp() async {
+    await getRecordedVideos();
+    await getTrainers();
+    setState(() {***REMOVED***);
   ***REMOVED***
 
   getRecordedVideos() async {
@@ -36,6 +41,21 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
       allVideos.add(RecordedVideo.fromSnapshot(allVideosDocuments[i]));
     ***REMOVED***
     setState(() {***REMOVED***);
+  ***REMOVED***
+
+  getTrainers() async {
+    allTrainers = new List<Trainer>();
+    QuerySnapshot trainersSnapshot =
+        await Firestore.instance.collection('trainers').getDocuments();
+    List<DocumentSnapshot> trainersList = trainersSnapshot.documents;
+    for (int i = 0; i < trainersList.length; i++) {
+      allTrainers.add(Trainer.fromSnapshot(trainersList[i]));
+    ***REMOVED***
+    pages = [
+      TrainerMarket(allTrainers: allTrainers, type: 'Martial Arts',),
+      TrainerMarket(allTrainers: allTrainers, type: 'Cardio',),
+      TrainerMarket(allTrainers: allTrainers, type: 'Weight Lifting',)
+    ];
   ***REMOVED***
 
 ***REMOVED***
@@ -100,7 +120,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                         1.6,
                         Padding(
                           padding:
-                          EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 15),
       ***REMOVED***
                             "Popular Trainers",
         ***REMOVED***
@@ -118,11 +138,13 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
 ***REMOVED***,
               Container(
                 height: MediaQuery.of(context).size.height / 3,
-                child: PageView(
-                  children: pages,
-                  controller: _pageController,
-                  physics: NeverScrollableScrollPhysics(),
-  ***REMOVED***,
+                child: pages != null
+                    ? PageView(
+                        children: pages,
+                        controller: _pageController,
+                        physics: NeverScrollableScrollPhysics(),
+        ***REMOVED***
+                    : CircularProgressIndicator(),
 ***REMOVED***,
 ***REMOVED***
                 height: 0,
@@ -137,7 +159,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                         1.8,
                         Padding(
                           padding:
-                          EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 15),
       ***REMOVED***
                             "Trending Trainers",
         ***REMOVED***
@@ -150,61 +172,23 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
         ***REMOVED***,
       ***REMOVED***,
     ***REMOVED***),
-              FutureBuilder(
-                future: Firestore.instance.collection('trainers').getDocuments(),
-                builder: (context, snapshot) {
-                  if(snapshot.connectionState != ConnectionState.done){
-                ***REMOVED***
-                      body: Container(
-                        width: 50,
-                        height: 50,
-                        child: Center(
-      ***REMOVED***'Loading'),
-          ***REMOVED***,
-        ***REMOVED***
-                ***REMOVED***
-                  ***REMOVED***
-              ***REMOVED***
-                    List<DocumentSnapshot> docs = snapshot.data.documents;
-                    int listLength;
-                    if(docs.length==null){
-                      listLength = 0;
-                    ***REMOVED***
-                ***REMOVED***
-                      listLength = docs.length;
-                    ***REMOVED***
-                    return Padding(
+              allTrainers != null
+                  ? Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       child: Container(
-                        height: 200,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-              ***REMOVED***
-                            for(int i=0;i<listLength;i++)
-                              FadeAnimationDown(
-                                2.8,
-                                makeTrending(
-                                    uid: docs[i].data['uid'],
-                                    image:
-                                    docs[i].data['profileUrl'],
-                                    name: '${docs[i].data['firstName']***REMOVED*** ${docs[i].data['lastName']***REMOVED***',
-                                    category: docs[i].data['trainingTypes'].toString(),
-                                    videoCount: 25,
-                                    sessions: 14,
-                                    video:
-                                    'https://cbsnews1.cbsistatic.com/hub/i/2018/06/01/0e92bb08-8639-465e-a579-d6f4277cbf47/gettyimages-891415940.jpg',
-                                    video2:
-                                    'http://www.telegraph.co.uk/content/dam/health-fitness/2017/11/09/TELEMMGLPICT000146072663-xlarge_trans_NvBQzQNjv4Bqek9vKm18v_rkIPH9w2GMNtm3NAjPW-2_OvjCiS6COCU.jpeg',
-                                    description:
-                                    'Carlton integrates his knowledge as a strength and conditioning specialist in designing an individualized, progressive program of cardiovascular, mobility, core, and strength training exercises for his clients based on their fitness goals.'),
-                ***REMOVED***,
-          ***REMOVED***
-          ***REMOVED***,
-        ***REMOVED***,
-                ***REMOVED***
-                  ***REMOVED***
-                ***REMOVED***,
-***REMOVED***,
+                          height: 200,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: allTrainers.length,
+                            itemBuilder: (BuildContext context, int i) {
+                              Trainer currentTrainer = allTrainers[i];
+                              return FadeAnimationDown(
+                                0.5,
+                                makeTrending(givenTrainer: currentTrainer),
+                          ***REMOVED***
+                            ***REMOVED***,
+            ***REMOVED***))
+                  : CircularProgressIndicator(),
               FadeAnimationDown(
                   3.4,
                   Padding(
@@ -213,7 +197,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                       alignment: Alignment.center,
               ***REMOVED***
                         padding:
-                        EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+                            EdgeInsets.symmetric(horizontal: 5, vertical: 15),
     ***REMOVED***
                           "Upcoming Live Sessions",
       ***REMOVED***
@@ -228,18 +212,21 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: allVideos != null
-                    ? Container(height: 250, child: ListView.builder(
-                    itemCount: allVideos.length,
-                    itemBuilder: (BuildContext context, int i) {
-                      return FadeAnimationDown(
-                        3.4 + i / 10,
-                        liveSession(
-                          image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
-                            name: allVideos[i].name,
-                            date: allVideos[i].date.toDate().toString(),
-                            people: allVideos[i].students),
-                  ***REMOVED***
-                    ***REMOVED***))
+                    ? Container(
+                        height: 250,
+                        child: ListView.builder(
+                            itemCount: allVideos.length,
+                            itemBuilder: (BuildContext context, int i) {
+                              return FadeAnimationDown(
+                                3.4 + i / 10,
+                                liveSession(
+                                    image:
+                                        'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
+                                    name: allVideos[i].name,
+                                    date: allVideos[i].date.toDate().toString(),
+                                    people: allVideos[i].students),
+                          ***REMOVED***
+                            ***REMOVED***))
                     : SizedBox.shrink(),
 ***REMOVED***,
 ***REMOVED***
@@ -284,32 +271,19 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
 ***REMOVED***
   ***REMOVED***
 
-  Widget makeTrending(
-      {image,
-      name,
-      category,
-      videoCount,
-      sessions,
-      video2,
-      video,
-      description,
-      uid***REMOVED***) {
-
+  Widget makeTrending({Trainer givenTrainer***REMOVED***) {
+    String trainerName = givenTrainer.firstName + ' ' + givenTrainer.lastName;
     return GestureDetector(
       onTap: () {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => Trainer(
-                      uid: uid,
-                      videoCount: videoCount,
-                      sessions: sessions,
-                      video2: video2,
-                      video: video,
+                builder: (context) => TrainerWidget(
+                      trainer: givenTrainer,
       ***REMOVED***));
       ***REMOVED***,
       child: Hero(
-        tag: name,
+        tag: trainerName,
         child: Container(
           width: MediaQuery.of(context).size.width / 2.5,
           height: MediaQuery.of(context).size.height / 4,
@@ -317,7 +291,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
 ***REMOVED***
-                image: NetworkImage(image),
+                image: NetworkImage(givenTrainer.profileUrl),
 ***REMOVED***
 ***REMOVED***),
           child: Container(
@@ -347,7 +321,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
         ***REMOVED***
         ***REMOVED***
 ***REMOVED***
-                        name,
+                        trainerName,
     ***REMOVED***
   ***REMOVED***
                           fontSize: 20,
@@ -358,7 +332,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                         height: 5,
         ***REMOVED***,
 ***REMOVED***
-                        category,
+                        givenTrainer.trainingTypes.toString(),
     ***REMOVED***color: Colors.grey, fontSize: 15),
         ***REMOVED***
     ***REMOVED***
