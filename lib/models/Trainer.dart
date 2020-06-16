@@ -4,13 +4,14 @@ class Trainer {
   String firstName;
   String lastName;
   String email;
+  String profileUrl;
   double rating;
   List trainingTypes;
 
   DocumentReference reference;
 
   Trainer(
-      {this.firstName, this.lastName, this.email, this.rating, this.trainingTypes, this.reference});
+      {this.firstName, this.lastName, this.email, this.profileUrl, this.rating, this.trainingTypes, this.reference});
 
   factory Trainer.fromSnapshot(DocumentSnapshot snapshot) {
     Trainer newTrainer = Trainer.fromJson(snapshot.data);
@@ -23,6 +24,7 @@ class Trainer {
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
       email: json['email'] as String,
+      profileUrl: json['profileUrl'] as String,
       rating: json['rating'] as double,
       trainingTypes: json['trainingTypes'] as List,
     );
@@ -35,6 +37,7 @@ class Trainer {
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'email': instance.email,
+      'profileUrl': instance.profileUrl,
       'rating': instance.rating,
       'trainingTypes': instance.trainingTypes,
     };

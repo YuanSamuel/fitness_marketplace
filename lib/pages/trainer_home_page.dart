@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitnessmarketplace/models/OneOnOneSession.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -13,16 +14,13 @@ class TrainerHomePage extends StatefulWidget {
 }
 
 class _TrainerHomePageState extends State<TrainerHomePage> {
-  List<String> names = ['Johnny Appleseed', 'Samuel Sam', 'John Smith'];
-  List<String> dates = ['Jun 15, 5:00 pm', 'July 4, 9:00 pm', 'December 25, 12:00 am'];
-  List<String> duration = ['45 minutes', '1 hour', '24 hours'];
-
   CalendarController _calendarController;
   Trainer currentTrainer;
   List<RecordedVideo> trainerVideos;
+  List<OneOnOneSession> oneOnOneSessions;
 
   @override
-  void initState(){
+  void initState() {
     _calendarController = CalendarController();
     setUp();
     super.initState();
@@ -36,21 +34,39 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
 
   setUp() async {
     trainerVideos = new List<RecordedVideo>();
+    oneOnOneSessions = new List<OneOnOneSession>();
+
     FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
-    DocumentSnapshot userData = await Firestore.instance.collection('trainers').document(getUser.uid).get();
+    DocumentSnapshot userData = await Firestore.instance
+        .collection('trainers')
+        .document(getUser.uid)
+        .get();
     currentTrainer = Trainer.fromSnapshot(userData);
+
+    await getOneOnOneSessions();
     await getVideos();
-    setState(() {
-      
-    });
+
+    setState(() {});
   }
-  
+
   getVideos() async {
-    QuerySnapshot getVideos = await currentTrainer.reference.collection('recordedVideos').getDocuments();
+    QuerySnapshot getVideos = await currentTrainer.reference
+        .collection('recordedVideos')
+        .getDocuments();
     List<DocumentSnapshot> allVideos = getVideos.documents;
     for (int i = 0; i < allVideos.length; i++) {
-      print('got');
       trainerVideos.add(RecordedVideo.fromSnapshot(allVideos[i]));
+    }
+  }
+
+  getOneOnOneSessions() async {
+    QuerySnapshot getOneOnOneSessions = await currentTrainer.reference
+        .collection('oneOnOneSessions')
+        .getDocuments();
+    List<DocumentSnapshot> allOneOnOneSessions = getOneOnOneSessions.documents;
+    for (int i = 0; i < allOneOnOneSessions.length; i++) {
+      oneOnOneSessions
+          .add(OneOnOneSession.fromSnapshot(allOneOnOneSessions[i]));
     }
   }
 
@@ -62,33 +78,63 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
           child: CircularProgressIndicator(),
         ),
       );
-    }
-    else {
+    } else {
       return Scaffold(
-        body:
-        SingleChildScrollView(
+        body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 30.0,),
+              SizedBox(
+                height: 30.0,
+              ),
               Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: Text('Hello, ' + currentTrainer.firstName, style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),),
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Trainer: ' + currentTrainer.firstName,
+                        style: TextStyle(
+                            fontSize: 30.0, fontWeight: FontWeight.w600),
+                      ),
+                      Spacer(),
+                      IconButton(
+                        icon: Icon(Icons.account_circle),
+                        onPressed: () {},
+                      )
+                    ],
+                  )),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Divider(
+                  height: 10.0,
+                  thickness: 0.75,
+                ),
               ),
               Container(child: _buildCalendar()),
               Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: Text('1 on 1 Sessions', style: TextStyle(
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Divider(
+                  height: 10.0,
+                  thickness: 0.75,
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: Text(
+                  '1 on 1 Sessions',
+                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
                 ),
               ),
               Container(
-                height: 300.0,
+                height: 250.0,
                 child: ListView.builder(
-                  itemCount: names.length,
-                  itemBuilder: (BuildContext context, int index){
+                  itemCount: oneOnOneSessions.length,
+                  itemBuilder: (BuildContext context, int i) {
+                    DateTime oneOnOneSessionDate =
+                        oneOnOneSessions[i].date.toDate().toLocal();
+                    String oneOnOneSessionLength =
+                        getLengthFromInt(oneOnOneSessions[i].length);
+
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
@@ -101,7 +147,8 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 5,
                               blurRadius: 7,
-                              offset: Offset(0, 3), // changes position of shadow
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
                             ),
                           ],
                         ),
@@ -114,18 +161,50 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(names[index], style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.white),),
-                                SizedBox(height: 10.0,),
-                                Text(duration[index], style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.white),),
+                                Text(
+                                  oneOnOneSessions[i].name,
+                                  style: TextStyle(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white),
+                                ),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                Text(
+                                  oneOnOneSessionLength,
+                                  style: TextStyle(
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
+                                ),
                               ],
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text(dates[index].substring(0, dates[index].indexOf(',')), style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: Colors.white),),
-                                SizedBox(height: 10.0,),
-                                Text(dates[index].substring(dates[index].indexOf(',') + 2), style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: Colors.white),),
+                                Text(
+                                  oneOnOneSessionDate.month.toString() +
+                                      '/' +
+                                      oneOnOneSessionDate.day.toString(),
+                                  style: TextStyle(
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
+                                ),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                Text(
+                                  oneOnOneSessionDate.hour.toString() +
+                                      ':' +
+                                      oneOnOneSessionDate.minute.toString(),
+                                  style: TextStyle(
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
+                                ),
                               ],
                             )
                           ],
@@ -135,57 +214,96 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                   },
                 ),
               ),
-              SizedBox(height: 10.0,),
-              Text('Your Videos',  style: TextStyle(
-                  fontSize: 25.0,
-                  fontWeight: FontWeight.bold
-              ),
+              SizedBox(
+                height: 10.0,
               ),
               Container(
-                height: 300.0,
-                child: ListView.builder(
-                  itemCount: trainerVideos.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (BuildContext context, int i){
-                    print(i);
-                    return Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          print('tapped');
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ShowVideoPage(
-                                  videoDownloadUrl:
-                                  trainerVideos[i].videoUrl,
-                                )),
-                          );
-                        },
-                        child: Container(
-                          height: 300.0,
-                          width: 300.0,
-                          child: Center(
-                            child: Text(trainerVideos[i].name + '  ' + trainerVideos[i].date.toDate().toString()),
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            color: Colors.blue,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-                                offset: Offset(0, 3), // changes position of shadow
+                  height: 340.0,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.symmetric(
+                        vertical: BorderSide(width: 0.5, color: Colors.black26),
+                      )),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Your Videos',
+                                style: TextStyle(
+                                    fontSize: 25.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Spacer(),
+                              Text(
+                                'See All',
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black26),
                               ),
                             ],
-                          ),
+                          )),
+                      Container(
+                        color: Colors.white,
+                        height: 300.0,
+                        child: ListView.builder(
+                          itemCount: trainerVideos.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (BuildContext context, int i) {
+                            print(i);
+                            return Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  print('tapped');
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ShowVideoPage(
+                                              videoDownloadUrl:
+                                                  trainerVideos[i].videoUrl,
+                                            )),
+                                  );
+                                },
+                                child: Container(
+                                  height: 300.0,
+                                  width: 300.0,
+                                  child: Center(
+                                    child: Text(trainerVideos[i].name +
+                                        '  ' +
+                                        trainerVideos[i]
+                                            .date
+                                            .toDate()
+                                            .toString()),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    color: Colors.blue,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 5,
+                                        blurRadius: 7,
+                                        offset: Offset(
+                                            0, 3), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+                      )
+                    ],
+                  )),
             ],
           ),
         ),
@@ -207,6 +325,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
         formatAnimation: FormatAnimation.slide,
         startingDayOfWeek: StartingDayOfWeek.sunday,
         availableGestures: AvailableGestures.horizontalSwipe,
+        events: getEvents(),
         availableCalendarFormats: const {
           CalendarFormat.month: 'Month',
         },
@@ -270,4 +389,28 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
     );
   }
 
+  String getLengthFromInt(int length) {
+    String returnLength = '';
+    if (length > 60) {
+      returnLength = returnLength + (length ~/ 60).toString() + ' hours ';
+    }
+    returnLength = returnLength + (length % 60).toString() + ' minutes';
+    return returnLength;
+  }
+
+  Map<DateTime, List<String>> getEvents() {
+    Map<DateTime, List<String>> oneOnOneSessionsMap =
+        new Map<DateTime, List<String>>();
+    for (int i = 0; i < oneOnOneSessions.length; i++) {
+      DateTime oneOnOneSessionDate = oneOnOneSessions[i].date.toDate();
+      if (oneOnOneSessionsMap.containsKey(oneOnOneSessionDate)) {
+        oneOnOneSessionsMap[oneOnOneSessionDate].add(oneOnOneSessions[i].name);
+      } else {
+        List<String> oneOnOneSessionsList = new List<String>();
+        oneOnOneSessionsList.add(oneOnOneSessions[i].name);
+        oneOnOneSessionsMap[oneOnOneSessionDate] = oneOnOneSessionsList;
+      }
+    }
+    return oneOnOneSessionsMap;
+  }
 }
