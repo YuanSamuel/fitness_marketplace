@@ -20,9 +20,9 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
   List<OneOnOneSession> oneOnOneSessions;
 
   @override
-  void initState() async {
+  void initState() {
     _calendarController = CalendarController();
-    await setUp();
+    setUp();
     super.initState();
   }
 
