@@ -98,6 +98,7 @@ class _RegisterState extends State<Register> {
                     'lastName': _lastNameInputController.text,
                     'uid': currentUser.user.uid,
                     'email': _emailInputController.text,
+                    'description': '',
                     'trainingTypes': new List<String>(),
                     'rating': 0.0,
                   ***REMOVED***);

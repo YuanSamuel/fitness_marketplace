@@ -116,7 +116,7 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                   ***REMOVED***),
           ***REMOVED***height: 5,),
                                 FadeAnimationUp(1.6,
-              ***REMOVED***'add this to the database',
+              ***REMOVED***widget.trainer.description,
                   ***REMOVED***
               ***REMOVED***
                                           fontSize: 14,
