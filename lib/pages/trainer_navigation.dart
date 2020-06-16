@@ -44,10 +44,7 @@ class _TrainerNavigationState extends State<TrainerNavigation> {
                 _currentIndex = index;
               });
             },
-            children: [
-              TrainerHomePage(),
-              TrainerProfile(),
-            ],
+            children: _pageOptions,
           ),
         ),
         bottomNavigationBar: BottomNavyBar(
