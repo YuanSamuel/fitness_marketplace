@@ -91,6 +91,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
 ***REMOVED***
 ***REMOVED***
     if (currentTrainer == null) {
+      TrainerHomePage();
   ***REMOVED***
         body: Center(
           child: CircularProgressIndicator(),

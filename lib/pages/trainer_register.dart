@@ -1,21 +1,20 @@
+import 'package:fitnessmarketplace/pages/price.dart';
 import 'package:fitnessmarketplace/pages/profile_picture.dart';
 ***REMOVED***
 import 'package:select_dialog/select_dialog.dart';
 ***REMOVED***
-
-String uid;
+***REMOVED***
+***REMOVED***
 
 class TrainerRegister extends StatefulWidget {
-
-  TrainerRegister(String u) {
-    uid = u;
-  ***REMOVED***
 
 ***REMOVED***
   _TrainerRegisterState createState() => _TrainerRegisterState();
 ***REMOVED***
 
 class _TrainerRegisterState extends State<TrainerRegister> {
+
+  Trainer currentTrainer;
 
   TypeOfExercise(String type){
     return Container(
@@ -39,7 +38,7 @@ class _TrainerRegisterState extends State<TrainerRegister> {
         onPressed: () {
           _type.remove(type);
     ***REMOVED***
-            TrainerRegister(uid);
+            TrainerRegister();
           ***REMOVED***);
         ***REMOVED***,
 ***REMOVED***
@@ -47,120 +46,161 @@ class _TrainerRegisterState extends State<TrainerRegister> {
   ***REMOVED***
 
   TextEditingController _desc = new TextEditingController();
-  List<String> _type = new List<String>();
+  List _type = new List();
 
 ***REMOVED***
 ***REMOVED***
+    getCurrentTrainer();
 ***REMOVED***
-      body: ListView(
-        children: [
-          Container(
   ***REMOVED***
+
+  void getCurrentTrainer() async {
+    FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
+    DocumentSnapshot trainerData = await Firestore.instance.collection('trainers').document(getUser.uid).get();
+    currentTrainer = Trainer.fromSnapshot(trainerData);
+    setState(() {***REMOVED***);
   ***REMOVED***
+
+***REMOVED***
+***REMOVED***
+    if(currentTrainer==null){
+      TrainerRegister();
   ***REMOVED***
-                  height: 50,
-  ***REMOVED***,
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Container(
+            width: 50,
+            height: 50,
+            child: CircularProgressIndicator(),
+***REMOVED***
+***REMOVED***
   ***REMOVED***
-                  child: Container(
-            ***REMOVED***
-                      padding: EdgeInsets.all(5),
-                      child: ListView(
-            ***REMOVED***
-                          TextField(
-                            controller: _desc,
-                            decoration: InputDecoration(
+    ***REMOVED***
+***REMOVED***
+      _type = currentTrainer.trainingTypes;
+  ***REMOVED***
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+***REMOVED***
+        body: ListView(
+          children: [
+            Container(
+    ***REMOVED***
+    ***REMOVED***
+    ***REMOVED***
+                    height: 20,
+    ***REMOVED***,
+    ***REMOVED***
+                    child: Container(
+              ***REMOVED***
+                        padding: EdgeInsets.all(5),
+                        child: ListView(
+              ***REMOVED***
+                            TextField(
+                              controller: _desc,
+                              decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(top: -20),
                                 hintText: 'Tell us about yourself',
-                                border: InputBorder.none
+                                border: InputBorder.none,
+                ***REMOVED***,
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
               ***REMOVED***,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-            ***REMOVED***,
-        ***REMOVED***
-                        scrollDirection: Axis.vertical,
+          ***REMOVED***
+                          scrollDirection: Axis.vertical,
+          ***REMOVED***,
+        ***REMOVED***,
+          ***REMOVED***
+                        border: Border.all(
+                          width: 3,
+                          color: Colors.blue,
+          ***REMOVED***,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
         ***REMOVED***,
       ***REMOVED***,
+                    width: MediaQuery.of(context).size.width-20,
+                    height: 400,
+    ***REMOVED***,
+    ***REMOVED***
+    ***REMOVED***
+    ***REMOVED***,
+                  Container(
+                    height: 30,
+            ***REMOVED***
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: ListView(
+            ***REMOVED***
+                          for(int i=0;i<_type.length;i++)
+                            Padding(
+                              padding: EdgeInsets.only(right: 10),
+                              child: TypeOfExercise(_type[i]),
+              ***REMOVED***,
         ***REMOVED***
-                      border: Border.all(
-                        width: 3,
-                        color: Colors.blue,
+                        scrollDirection: Axis.horizontal,
         ***REMOVED***,
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
       ***REMOVED***,
     ***REMOVED***,
-                  width: MediaQuery.of(context).size.width-20,
-                  height: 400,
-  ***REMOVED***,
-  ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***,
-                Container(
-                  height: 30,
-          ***REMOVED***
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: ListView(
-          ***REMOVED***
-                        for(int i=0;i<_type.length;i++)
-                          Padding(
-                            padding: EdgeInsets.only(right: 10),
-                            child: TypeOfExercise(_type[i]),
-            ***REMOVED***,
-      ***REMOVED***
-                      scrollDirection: Axis.horizontal,
-      ***REMOVED***,
+                  Container(
+                    height: 5,
     ***REMOVED***,
-  ***REMOVED***,
-                Container(
-                  height: 5,
-  ***REMOVED***,
-                FlatButton(
-                  color: Colors.blue,
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (_) => Scaffold(
-                          body: SelectDialog(
-                            itemsList: ['Running', 'Martial Arts', 'Cardio', 'Weight Lifting', 'Yoga'],
-                            onChange: (String selected) {
-                        ***REMOVED***
-                                bool hasSelected = false;
-                                for(int i=0;i<_type.length;i++){
-                                  if(selected==_type[i]){
-                                    hasSelected = true;
+                  FlatButton(
+                    color: Colors.blue,
+***REMOVED***
+                      showDialog(
+                          context: context,
+                          builder: (_) => Scaffold(
+                            body: SelectDialog(
+                              itemsList: ['Running', 'Martial Arts', 'Cardio', 'Weight Lifting', 'Yoga'],
+                              onChange: (String selected) {
+                          ***REMOVED***
+                                  bool hasSelected = false;
+                                  for(int i=0;i<_type.length;i++){
+                                    if(selected==_type[i]){
+                                      hasSelected = true;
+                                    ***REMOVED***
                                   ***REMOVED***
-                                ***REMOVED***
-                                if(!hasSelected){
-                                  _type.add(selected);
-                                ***REMOVED***
-                              ***REMOVED***);
-                            ***REMOVED***,
-            ***REMOVED***,
-          ***REMOVED***
-                ***REMOVED***
-                  ***REMOVED***,
-                  child: Text('Select Type'),
-  ***REMOVED***,
-                FlatButton(
-                  color: Colors.blue,
-                  child: Text('Continue'),
-                  onPressed: () {
-                    Firestore.instance.collection('trainers').document(uid).setData({
-                      'trainingTypes': _type.toString(),
-                      'rating': 0,
-                      'desc': _desc.text,
-                    ***REMOVED***,merge: true);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ProfilePic()),
-                ***REMOVED***
-                  ***REMOVED***,
+                                  if(!hasSelected){
+                                    _type.add(selected);
+                                  ***REMOVED***
+                                ***REMOVED***);
+                              ***REMOVED***,
+              ***REMOVED***,
+            ***REMOVED***
+                  ***REMOVED***
+                    ***REMOVED***,
+***REMOVED***'Select Type of Exercise'),
+    ***REMOVED***,
+                  FlatButton(
+                    color: Colors.blue,
+***REMOVED***'Continue'),
+                    onPressed: () async {
+                      final _user = await FirebaseAuth.instance.currentUser();
+                      String _uid = _user.uid;
+                      if(_type!=null&&_desc!=null) {
+                        Firestore.instance.collection('trainers').document(_uid).setData({
+                          'trainingTypes': _type,
+                          'rating': 0,
+                          'description': _desc.text,
+                        ***REMOVED***,merge: true);
+                        if(currentTrainer.description!=''){
+                          Navigator.pop(context);
+                        ***REMOVED***
+                    ***REMOVED***
+    ***REMOVED***
   ***REMOVED***
+  ***REMOVED***builder: (context) => PricePage()),
+                      ***REMOVED***
+                        ***REMOVED***
+                      ***REMOVED***
+                    ***REMOVED***,
+    ***REMOVED***,
+***REMOVED***
+***REMOVED***,
+***REMOVED***
+          ],
+          scrollDirection: Axis.vertical,
+***REMOVED***
   ***REMOVED***
-***REMOVED***
-***REMOVED***
-        ],
-        scrollDirection: Axis.vertical,
-***REMOVED***
-***REMOVED***
+    ***REMOVED***
   ***REMOVED***
 ***REMOVED***

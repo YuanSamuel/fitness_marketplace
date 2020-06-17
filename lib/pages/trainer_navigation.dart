@@ -63,9 +63,9 @@ class _TrainerNavigationState extends State<TrainerNavigation> {
               activeColor: Colors.red,
 ***REMOVED***
             BottomNavyBarItem(
-                icon: Icon(Icons.shopping_cart),
-                title: Text('Cool'),
-                activeColor: Colors.purpleAccent
+                icon: Icon(Icons.settings),
+                title: Text('Settings'),
+                activeColor: Colors.black38
 ***REMOVED***
           ],
         )
