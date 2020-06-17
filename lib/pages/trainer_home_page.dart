@@ -1,9 +1,12 @@
 ***REMOVED***
 ***REMOVED***
 import 'package:fitnessmarketplace/apis/firebase_provider.dart';
+import 'package:fitnessmarketplace/helpers/calendar_helper.dart';
+import 'package:fitnessmarketplace/helpers/string_helper.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
 ***REMOVED***
 import 'package:fitnessmarketplace/pages/add_new_screen.dart';
+import 'package:fitnessmarketplace/pages/add_session_page.dart';
 ***REMOVED***
 ***REMOVED***
 import 'package:table_calendar/table_calendar.dart';
@@ -20,19 +23,22 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
   CalendarController _calendarController;
   Trainer currentTrainer;
   List<RecordedVideo> trainerVideos;
-  List<PrivateSession> privateSessions;
+  List<PrivateSession> allPrivateSessions;
+  List<dynamic> privateSessions;
   List<VideoInfo> _videos = <VideoInfo>[];
+  DateTime selectedDate;
 
+  StringHelper _stringHelper = new StringHelper();
+  CalendarHelper _calendarHelper = new CalendarHelper();
 
 ***REMOVED***
 ***REMOVED***
-
     FirebaseProvider.listenToVideos((newVideos) {
 ***REMOVED***
         _videos = newVideos;
       ***REMOVED***);
     ***REMOVED***);
-
+    selectedDate = DateTime.now();
     _calendarController = CalendarController();
     setUp();
 ***REMOVED***
@@ -46,6 +52,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
 
   setUp() async {
     trainerVideos = new List<RecordedVideo>();
+    allPrivateSessions = new List<PrivateSession>();
     privateSessions = new List<PrivateSession>();
 
     FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
@@ -62,29 +69,24 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
   ***REMOVED***
 
   getVideos() async {
-    QuerySnapshot getVideos = await currentTrainer.reference
-        .collection('videos')
-        .getDocuments();
+    QuerySnapshot getVideos =
+        await currentTrainer.reference.collection('videos').getDocuments();
     List<DocumentSnapshot> allVideos = getVideos.documents;
-    print("NUMBER OF VIDEOS");
-    print(allVideos.length);
     for (int i = 0; i < allVideos.length; i++) {
-***REMOVED***
-        trainerVideos.add(RecordedVideo.fromSnapshot(allVideos[i]));
-      ***REMOVED***);
+      trainerVideos.add(RecordedVideo.fromSnapshot(allVideos[i]));
     ***REMOVED***
   ***REMOVED***
 
   getPrivateSessions() async {
+    allPrivateSessions = new List<PrivateSession>();
     QuerySnapshot getPrivateSessions = await currentTrainer.reference
         .collection('privateSessions')
         .getDocuments();
-    List<DocumentSnapshot> allPrivateSessions = getPrivateSessions.documents;
-    for (int i = 0; i < allPrivateSessions.length; i++) {
-***REMOVED***
-        privateSessions
-            .add(PrivateSession.fromSnapshot(allPrivateSessions[i]));
-      ***REMOVED***);
+    List<DocumentSnapshot> allPrivateSessionDocuments =
+        getPrivateSessions.documents;
+    for (int i = 0; i < allPrivateSessionDocuments.length; i++) {
+      allPrivateSessions
+          .add(PrivateSession.fromSnapshot(allPrivateSessionDocuments[i]));
     ***REMOVED***
   ***REMOVED***
 
@@ -138,9 +140,30 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
 ***REMOVED***,
               Padding(
                 padding: const EdgeInsets.only(left: 15.0),
-                child: Text(
-                  '1 on 1 Sessions',
-***REMOVED***fontSize: 25.0, fontWeight: FontWeight.bold),
+                child: Row(
+      ***REMOVED***
+                    Text(
+                      'Private Sessions',
+  ***REMOVED***
+                          fontSize: 25.0, fontWeight: FontWeight.bold),
+      ***REMOVED***,
+                    Spacer(),
+                    IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () async {
+                        await Navigator.push(
+***REMOVED***
+***REMOVED***
+                              builder: (context) => AddSessionPage(
+                                    chosenDate: selectedDate,
+                                    currentTrainer: currentTrainer,
+                    ***REMOVED***),
+                    ***REMOVED***
+                        await getPrivateSessions();
+                  ***REMOVED******REMOVED***);
+                      ***REMOVED***,
+      ***REMOVED***
+  ***REMOVED***
   ***REMOVED***,
 ***REMOVED***,
               Container(
@@ -149,7 +172,9 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                   itemCount: privateSessions.length,
                   itemBuilder: (BuildContext context, int i) {
                     DateTime privateSessionDate =
-                        privateSessions[i].date.toDate().toLocal();
+                        DateTime.fromMillisecondsSinceEpoch(
+                                privateSessions[i].date)
+                            .toLocal();
                     String privateSessionLength =
                         getLengthFromInt(privateSessions[i].length);
 
@@ -159,7 +184,9 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                         padding: EdgeInsets.symmetric(horizontal: 15.0),
             ***REMOVED***
                           borderRadius: BorderRadius.circular(30.0),
-                          color: Color(0xff3B3B3B),
+                          color: privateSessions[i].available
+                              ? Colors.blue
+                              : Color(0xff3B3B3B),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.5),
@@ -180,7 +207,10 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                   ***REMOVED***
                   ***REMOVED***
           ***REMOVED***
-                                  privateSessions[i].name,
+                                  privateSessions[i].available
+                                      ? 'Open Session'
+                                      : 'Private Session with: ' +
+                                          privateSessions[i].studentName,
               ***REMOVED***
                                       fontSize: 20.0,
                                       fontWeight: FontWeight.w600,
@@ -203,9 +233,8 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                   ***REMOVED***
           ***REMOVED***
-                                  privateSessionDate.month.toString() +
-                                      '/' +
-                                      privateSessionDate.day.toString(),
+                                  _stringHelper
+                                      .dateTimeToDateString(privateSessionDate),
               ***REMOVED***
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w400,
@@ -215,9 +244,8 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                   height: 10.0,
                   ***REMOVED***,
           ***REMOVED***
-                                  privateSessionDate.hour.toString() +
-                                      ':' +
-                                      privateSessionDate.minute.toString(),
+                                  _stringHelper
+                                      .dateTimeToTimeString(privateSessionDate),
               ***REMOVED***
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w400,
@@ -272,31 +300,30 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
 ***REMOVED***
                         height: 300.0,
                         child: ListView.builder(
-                          itemCount: trainerVideos.length+1,
+                          itemCount: trainerVideos.length + 1,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (BuildContext context, int i) {
-                            print(i);
-                            if (i==0){
+                            if (i == 0) {
                               return Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: GestureDetector(
                                   onTap: () {
                                     print('tapped');
               ***REMOVED***
-          ***REMOVED***
-          ***REMOVED***
-                                        builder: (context) => AddNewRecording( )),
-                              ***REMOVED***
+            ***REMOVED***
+            ***REMOVED***
+                                          builder: (context) =>
+                                              AddNewRecording()),
+                                ***REMOVED***
                                     //TODO make sessions database implementation
                                   ***REMOVED***,
                                   child: Container(
                                     height: 300.0,
                                     width: 300.0,
                                     child: Center(
-                                      child: FlatButton(
-                                        child: Icon(Icons.add),
-                        ***REMOVED***
-                      ***REMOVED***,
+                                        child: FlatButton(
+                                      child: Icon(Icons.add),
+                      ***REMOVED***),
                         ***REMOVED***
                                       borderRadius: BorderRadius.circular(30.0),
                                       color: Colors.blue,
@@ -305,8 +332,8 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                           color: Colors.grey.withOpacity(0.5),
                                           spreadRadius: 5,
                                           blurRadius: 7,
-                                          offset: Offset(
-                                              0, 3), // changes position of shadow
+                                          offset: Offset(0,
+                                              3), // changes position of shadow
                           ***REMOVED***,
                       ***REMOVED***
                       ***REMOVED***,
@@ -314,7 +341,6 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                   ***REMOVED***,
                           ***REMOVED***
                             ***REMOVED***
-                            print("WHY ISNT STUFF SHOWING");
                             return Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: GestureDetector(
@@ -324,8 +350,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
           ***REMOVED***
           ***REMOVED***
                                         builder: (context) => Player(
-                                              video:
-                                                  _videos[i-1],
+                                              video: _videos[i - 1],
                               ***REMOVED***),
                               ***REMOVED***
                                   //TODO make sessions database implementation
@@ -334,16 +359,18 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                   height: 300.0,
                                   width: 300.0,
                                   child: Center(
-                ***REMOVED***trainerVideos[i-1].name +
+                ***REMOVED***trainerVideos[i - 1].name +
                                         '  ' +
-                                        Timestamp.fromMillisecondsSinceEpoch(trainerVideos[i-1]
-                                            .date)
+                                        Timestamp.fromMillisecondsSinceEpoch(
+                                                trainerVideos[i - 1].date)
                                             .toDate()
                                             .toString()),
                     ***REMOVED***,
                       ***REMOVED***
                       ***REMOVED***
-                                      image: Image.network(trainerVideos[i-1].videoUrl).image,
+                                      image: Image.network(
+                                              trainerVideos[i - 1].videoUrl)
+                                          .image,
                       ***REMOVED***
                       ***REMOVED***,
                                     borderRadius: BorderRadius.circular(30.0),
@@ -379,15 +406,19 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
       //color: Colors.white,
       child: TableCalendar(
         rowHeight: 40.0,
-        //onDaySelected: _onDaySelected,
+        onDaySelected: (DateTime date, List<dynamic> events) {
+    ***REMOVED***
+            selectedDate = date;
+            privateSessions = events;
+          ***REMOVED***);
+        ***REMOVED***,
         locale: 'en_US',
-        //events: _selectedDay,
         calendarController: _calendarController,
         initialCalendarFormat: CalendarFormat.month,
         formatAnimation: FormatAnimation.slide,
         startingDayOfWeek: StartingDayOfWeek.sunday,
         availableGestures: AvailableGestures.horizontalSwipe,
-        events: getEvents(),
+        events: _calendarHelper.privateSessionsToEventMap(allPrivateSessions),
         availableCalendarFormats: const {
           CalendarFormat.month: 'Month',
         ***REMOVED***,
@@ -458,21 +489,5 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
     ***REMOVED***
     returnLength = returnLength + (length % 60).toString() + ' minutes';
     return returnLength;
-  ***REMOVED***
-
-  Map<DateTime, List<String>> getEvents() {
-    Map<DateTime, List<String>> privateSessionsMap =
-        new Map<DateTime, List<String>>();
-    for (int i = 0; i < privateSessions.length; i++) {
-      DateTime privateSessionDate = privateSessions[i].date.toDate();
-      if (privateSessionsMap.containsKey(privateSessionDate)) {
-        privateSessionsMap[privateSessionDate].add(privateSessions[i].name);
-      ***REMOVED*** else {
-        List<String> privateSessionsList = new List<String>();
-        privateSessionsList.add(privateSessions[i].name);
-        privateSessionsMap[privateSessionDate] = privateSessionsList;
-      ***REMOVED***
-    ***REMOVED***
-    return privateSessionsMap;
   ***REMOVED***
 ***REMOVED***

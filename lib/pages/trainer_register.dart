@@ -120,7 +120,7 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                         context: context,
                         builder: (_) => Scaffold(
                           body: SelectDialog(
-                            itemsList: ['Running', 'Martial Arts', 'Cardio', 'Weight Lifting', 'Yoga'],
+                            itemsList: ['Running', 'Martial Arts', 'Cardio', 'Weight Lifting'],
                             onChange: (String selected) {
                         ***REMOVED***
                                 bool hasSelected = false;
@@ -144,11 +144,10 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                   color: Colors.blue,
                   child: Text('Continue'),
                   onPressed: () {
-                    Firestore.instance.collection('trainers').document(uid).setData({
-                      'trainingTypes': _type.toString(),
-                      'rating': 0,
-                      'desc': _desc.text,
-                    ***REMOVED***,merge: true);
+                    Firestore.instance.collection('trainers').document(uid).updateData({
+                      'trainingTypes': _type,
+                      'description': _desc.text,
+                    ***REMOVED***);
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => ProfilePic()),

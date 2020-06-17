@@ -19,7 +19,6 @@ import '../apis/firebase_provider.dart';
 import 'package:path/path.dart' as p;
 import '../models/video_info.dart';
 
-
 class AddNewRecording extends StatefulWidget {
 ***REMOVED***
   _AddNewRecordingState createState() => _AddNewRecordingState();
@@ -30,11 +29,9 @@ class _AddNewRecordingState extends State<AddNewRecording> {
 
   int date;
 
-
   TextEditingController namecontroller;
   TextEditingController descriptcontroller;
   TextEditingController minscontrolller;
-
 
 ***REMOVED***
 ***REMOVED***
@@ -60,36 +57,40 @@ class _AddNewRecordingState extends State<AddNewRecording> {
 ***REMOVED***
   ***REMOVED***
 
-  static saveStream(String title, String description, String minutes, int date) async {
+  static saveStream(
+      String title, String description, String minutes, int date) async {
     await Firestore.instance.collection('streams').document().setData({
-      'minutes':minutes,
-      'description':description,
-      'date':date,
-      'title':title
+      'minutes': minutes,
+      'description': description,
+      'date': date,
+      'title': title
     ***REMOVED***);
 
 ***REMOVED***
     final uid = user.uid;
 
-
-    await Firestore.instance.collection('trainers').document(uid).collection("streams").document().setData({
-      'minutes':minutes,
-      'description':description,
-      'date':date,
-      'title':title
+    await Firestore.instance
+        .collection('trainers')
+        .document(uid)
+        .collection("streams")
+        .document()
+        .setData({
+      'minutes': minutes,
+      'description': description,
+      'date': date,
+      'title': title
     ***REMOVED***);
   ***REMOVED***
 
-
-
-  Future addSession(BuildContext context) async{
-    if (dropdownValue=="LiveStream"){
-      await saveStream(namecontroller.text.toString(), descriptcontroller.text.toString(), minscontrolller.text.toString(), date);
-
-    ***REMOVED***
-***REMOVED***
+  Future addSession(BuildContext context) async {
+    if (dropdownValue == "LiveStream") {
+      await saveStream(
+          namecontroller.text.toString(),
+          descriptcontroller.text.toString(),
+          minscontrolller.text.toString(),
+          date);
+    ***REMOVED*** else {
       await _takeVideo();
-
     ***REMOVED***
     Navigator.push(
       context,
@@ -97,209 +98,210 @@ class _AddNewRecordingState extends State<AddNewRecording> {
 ***REMOVED***
   ***REMOVED***
 
-
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-      body: _processing?Center(child: CircularProgressIndicator(),):Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Colors.black, Colors.black87])),
-        child: Column(
-          children: [
-            SizedBox(height: 40),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-  ***REMOVED***
-  ***REMOVED***width: 10),
-                IconButton(
-                  onPressed: () {***REMOVED***,
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                    size: 30,
-    ***REMOVED***
-  ***REMOVED***,
-  ***REMOVED***width: 20),
-                Text(
-                    "Add a new session",
-***REMOVED***
-                    color: Colors.white,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 32
-    ***REMOVED***,
-  ***REMOVED***,
-
-  ***REMOVED***
-***REMOVED***
-            SizedBox(height: 20),
-            Container(
-  ***REMOVED***
-                borderRadius: BorderRadius.all(Radius.circular(50)),
-                color: Colors.grey[700],
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black,
-                    blurRadius: 2.0,
-                    spreadRadius: 10.0,
-                    offset: Offset(2.0, 2.0), // shadow direction: bottom right
-    ***REMOVED***
-***REMOVED***
-***REMOVED***,
-              height: 500,
-              width: 300,
-    ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***
-                    mainAxisAlignment: MainAxisAlignment.center,
-        ***REMOVED***
-***REMOVED***"Session Type:",
-  ***REMOVED***
-***REMOVED***
-                        fontStyle: FontStyle.italic
-        ***REMOVED***,),
-***REMOVED***width: 20),
-                      DropdownButton<String>(
-                        dropdownColor: Colors.grey,
-                        value: dropdownValue,
-                        icon: Icon(Icons.arrow_downward,
-                        color: Colors.black,),
-                        iconSize: 24,
-                        elevation: 16,
-    ***REMOVED***color: Colors.black),
-                        underline: Container(
-                          height: 2,
-                          color: Colors.black,
-          ***REMOVED***,
-                        onChanged: (String newValue) {
-                    ***REMOVED***
-                            dropdownValue = newValue;
-                          ***REMOVED***);
-                        ***REMOVED***,
-                        items: <String>['LiveStream', 'Video Recording']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-        ***REMOVED***value),
-                      ***REMOVED***
-                        ***REMOVED***).toList(),
-        ***REMOVED***,
-    ***REMOVED***
-    ***REMOVED***,
-
-
-
-                  Container(
-                      height: MediaQuery.of(context).copyWith().size.height / 6,
-          ***REMOVED***
-                        color: Colors.grey,
-        ***REMOVED***,
-                      child: CupertinoDatePicker(
-                        backgroundColor: Colors.white,
-                        initialDateTime: DateTime.now(),
-                        onDateTimeChanged: updateDate,
-                        use24hFormat: false,
-                        maximumDate: new DateTime(2050, 12, 30),
-                        minimumYear: 2010,
-                        maximumYear: 2030,
-                        minuteInterval: 1,
-                        mode: CupertinoDatePickerMode.dateAndTime,
-        ***REMOVED***),
-
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    decoration: StyleConstants.loginBoxDecorationStyle,
-                    height: 60.0,
-                    child: TextFormField(
-                      controller: namecontroller,
-                      keyboardType: TextInputType.text,
-  ***REMOVED***
-                        color: Colors.black,
-                        fontFamily: 'OpenSans',
-        ***REMOVED***,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(top: 14.0),
-
-                        hintText: 'Enter the session title',
-                        hintStyle: StyleConstants.loginHintTextStyle,
-        ***REMOVED***,
-      ***REMOVED***,
-    ***REMOVED***,
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    decoration: StyleConstants.loginBoxDecorationStyle,
-                    height: 60.0,
-                    child: TextFormField(
-                      controller: descriptcontroller,
-                      keyboardType: TextInputType.text,
-  ***REMOVED***
-                        color: Colors.black,
-                        fontFamily: 'OpenSans',
-        ***REMOVED***,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(top: 14.0),
-
-                        hintText: 'Enter the session description',
-                        hintStyle: StyleConstants.loginHintTextStyle,
-        ***REMOVED***,
-      ***REMOVED***,
-    ***REMOVED***,
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    decoration: StyleConstants.loginBoxDecorationStyle,
-                    height: 60.0,
-                    child: TextFormField(
-                      controller: minscontrolller,
-                      keyboardType: TextInputType.number,
-  ***REMOVED***
-                        color: Colors.black,
-                        fontFamily: 'OpenSans',
-        ***REMOVED***,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(top: 14.0),
-
-                        hintText: 'Roughly how many minutes will it last?',
-                        hintStyle: StyleConstants.loginHintTextStyle,
-        ***REMOVED***,
-      ***REMOVED***,
-    ***REMOVED***,
-***REMOVED***
-***REMOVED***,
-
-
-
-***REMOVED***
-            SizedBox(height: 40),
-            SizedBox(
-              height: 60,
-              width: 120,
-              child: FloatingActionButton(
-                elevation: 20,
-                child: Container(
-                  child: dropdownValue=="Video Recording"?Text("Continue",
-***REMOVED***
-                    fontSize: 18
-    ***REMOVED***,):Text("Submit",
-***REMOVED***
-                        fontSize: 18
-      ***REMOVED***,),
-  ***REMOVED***,
-                backgroundColor: Colors.black,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-  ***REMOVED***,
-                onPressed: (){
-                  addSession(context);
-                ***REMOVED***,
-***REMOVED***,
+      body: _processing
+          ? Center(
+              child: CircularProgressIndicator(),
             )
-          ],
+          : Container(
+  ***REMOVED***
+                  gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Colors.black, Colors.black87])),
+    ***REMOVED***
+    ***REMOVED***
+    ***REMOVED***height: 40),
+    ***REMOVED***
+                    mainAxisAlignment: MainAxisAlignment.start,
+        ***REMOVED***
+***REMOVED***width: 10),
+                      IconButton(
+      ***REMOVED******REMOVED***,
+                          icon: Icon(
+                            Icons.arrow_back,
+    ***REMOVED***
+                            size: 30,
+            ***REMOVED***),
+***REMOVED***width: 20),
 ***REMOVED***
+                        "Add a new session",
+    ***REMOVED***
+    ***REMOVED***
+                            fontStyle: FontStyle.italic,
+                            fontSize: 32),
+        ***REMOVED***,
+    ***REMOVED***
+    ***REMOVED***,
+    ***REMOVED***height: 20),
+                  Container(
+        ***REMOVED***
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                      color: Colors.grey[700],
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          blurRadius: 2.0,
+                          spreadRadius: 10.0,
+                          offset: Offset(
+                              2.0, 2.0), // shadow direction: bottom right
+          ***REMOVED***
+      ***REMOVED***
+      ***REMOVED***,
+                    height: 500,
+                    width: 300,
+          ***REMOVED***
+          ***REMOVED***
+          ***REMOVED***
+                          mainAxisAlignment: MainAxisAlignment.center,
+              ***REMOVED***
+      ***REMOVED***
+                              "Session Type:",
+          ***REMOVED***
+          ***REMOVED***
+                                  fontStyle: FontStyle.italic),
+              ***REMOVED***,
+      ***REMOVED***width: 20),
+                            DropdownButton<String>(
+                              dropdownColor: Colors.grey,
+                              value: dropdownValue,
+                              icon: Icon(
+                                Icons.arrow_downward,
+                                color: Colors.black,
+                ***REMOVED***,
+                              iconSize: 24,
+                              elevation: 16,
+          ***REMOVED***color: Colors.black),
+                              underline: Container(
+                                height: 2,
+                                color: Colors.black,
+                ***REMOVED***,
+                              onChanged: (String newValue) {
+                          ***REMOVED***
+                                  dropdownValue = newValue;
+                                ***REMOVED***);
+                              ***REMOVED***,
+                              items: <String>[
+                                'LiveStream',
+                                'Video Recording'
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+              ***REMOVED***value),
+                            ***REMOVED***
+                              ***REMOVED***).toList(),
+              ***REMOVED***,
+          ***REMOVED***
+          ***REMOVED***,
+                        Container(
+                            height:
+                                MediaQuery.of(context).copyWith().size.height /
+                                    6,
+                ***REMOVED***
+  ***REMOVED***
+              ***REMOVED***,
+                            child: CupertinoDatePicker(
+                              backgroundColor: Colors.white,
+                              initialDateTime: DateTime.now(),
+                              onDateTimeChanged: updateDate,
+                              use24hFormat: false,
+                              maximumDate: new DateTime(2050, 12, 30),
+                              minimumYear: 2010,
+                              maximumYear: 2030,
+                              minuteInterval: 1,
+                              mode: CupertinoDatePickerMode.dateAndTime,
+              ***REMOVED***),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          decoration: StyleConstants.loginBoxDecorationStyle,
+                          height: 60.0,
+                          child: TextFormField(
+                            controller: namecontroller,
+                            keyboardType: TextInputType.text,
+        ***REMOVED***
+                              color: Colors.black,
+                              fontFamily: 'OpenSans',
+              ***REMOVED***,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.only(top: 14.0),
+                              hintText: 'Enter the session title',
+                              hintStyle: StyleConstants.loginHintTextStyle,
+              ***REMOVED***,
+            ***REMOVED***,
+          ***REMOVED***,
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          decoration: StyleConstants.loginBoxDecorationStyle,
+                          height: 60.0,
+                          child: TextFormField(
+                            controller: descriptcontroller,
+                            keyboardType: TextInputType.text,
+        ***REMOVED***
+                              color: Colors.black,
+                              fontFamily: 'OpenSans',
+              ***REMOVED***,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.only(top: 14.0),
+                              hintText: 'Enter the session description',
+                              hintStyle: StyleConstants.loginHintTextStyle,
+              ***REMOVED***,
+            ***REMOVED***,
+          ***REMOVED***,
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          decoration: StyleConstants.loginBoxDecorationStyle,
+                          height: 60.0,
+                          child: TextFormField(
+                            controller: minscontrolller,
+                            keyboardType: TextInputType.number,
+        ***REMOVED***
+                              color: Colors.black,
+                              fontFamily: 'OpenSans',
+              ***REMOVED***,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.only(top: 14.0),
+                              hintText:
+                                  'Roughly how many minutes will it last?',
+                              hintStyle: StyleConstants.loginHintTextStyle,
+              ***REMOVED***,
+            ***REMOVED***,
+          ***REMOVED***,
+      ***REMOVED***
+      ***REMOVED***,
+    ***REMOVED***,
+    ***REMOVED***height: 40),
+    ***REMOVED***
+                    height: 60,
+                    width: 120,
+                    child: FloatingActionButton(
+                      elevation: 20,
+                      child: Container(
+                        child: dropdownValue == "Video Recording"
+                            ? Text(
+                                "Continue",
+            ***REMOVED***fontSize: 18),
+                ***REMOVED***
+                            : Text(
+                                "Submit",
+            ***REMOVED***fontSize: 18),
+                ***REMOVED***,
+        ***REMOVED***,
+                      backgroundColor: Colors.black,
+  ***REMOVED***
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+        ***REMOVED***,
+  ***REMOVED***
+                        addSession(context);
+                      ***REMOVED***,
+      ***REMOVED***,
+    ***REMOVED***
+***REMOVED***
+***REMOVED***,
 ***REMOVED***
 ***REMOVED***
   ***REMOVED***
@@ -307,7 +309,6 @@ class _AddNewRecordingState extends State<AddNewRecording> {
   void updateDate(DateTime dt) {
     date = dt.millisecondsSinceEpoch;
   ***REMOVED***
-
 
   final thumbWidth = 100;
   final thumbHeight = 150;
@@ -319,8 +320,6 @@ class _AddNewRecordingState extends State<AddNewRecording> {
   //int _videoDuration = 0;
   String _processPhase = '';
   final bool _debugMode = false;
-
-
 
   void _onUploadProgress(event) {
     if (event.type == StorageTaskEventType.progress) {
@@ -337,7 +336,7 @@ class _AddNewRecordingState extends State<AddNewRecording> {
     final basename = p.basename(filePath);
 
     final StorageReference ref =
-    FirebaseStorage.instance.ref().child(folderName).child(basename);
+        FirebaseStorage.instance.ref().child(folderName).child(basename);
     StorageUploadTask uploadTask = ref.putFile(file);
     uploadTask.events.listen(_onUploadProgress);
     StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
@@ -362,7 +361,7 @@ class _AddNewRecordingState extends State<AddNewRecording> {
       updatedLines.add(updatedLine);
     ***REMOVED***
     final updatedContents =
-    updatedLines.reduce((value, element) => value + '\n' + element);
+        updatedLines.reduce((value, element) => value + '\n' + element);
 
     file.writeAsStringSync(updatedContents);
   ***REMOVED***
@@ -396,11 +395,10 @@ class _AddNewRecordingState extends State<AddNewRecording> {
   ***REMOVED***
 
   Future<void> _processVideo(File rawVideoFile) async {
-
     print("PROCESSING VIDEO");
     final String rand = '${new Random().nextInt(10000)***REMOVED***';
     final videoName = 'video$rand';
-    print("VIDEONAME "+videoName);
+    print("VIDEONAME " + videoName);
     final Directory extDir = await getApplicationDocumentsDirectory();
     final outDirPath = '${extDir.path***REMOVED***/Videos/$videoName';
     final videosDir = new Directory(outDirPath);
@@ -422,7 +420,7 @@ class _AddNewRecordingState extends State<AddNewRecording> {
 
     print("GETTING THUMBNAIL");
     final thumbFilePath =
-    await EncodingProvider.getThumb(rawVideoPath, thumbWidth, thumbHeight);
+        await EncodingProvider.getThumb(rawVideoPath, thumbWidth, thumbHeight);
 
     setState(() {
       _processPhase = 'Encoding video';
@@ -431,7 +429,7 @@ class _AddNewRecordingState extends State<AddNewRecording> {
 
     print("ENCODING VIDEO FOR REAL");
     final encodedFilesDir =
-    await EncodingProvider.encodeHLS(rawVideoPath, outDirPath);
+        await EncodingProvider.encodeHLS(rawVideoPath, outDirPath);
 
     setState(() {
       _processPhase = 'Uploading thumbnail to firebase storage';
@@ -454,7 +452,12 @@ class _AddNewRecordingState extends State<AddNewRecording> {
       _progress = 0.0;
     ***REMOVED***);
 
-    await FirebaseProvider.saveVideo(videoInfo, namecontroller.text.toString(), descriptcontroller.text.toString(), minscontrolller.text.toString(), date);
+    await FirebaseProvider.saveVideo(
+        videoInfo,
+        namecontroller.text.toString(),
+        descriptcontroller.text.toString(),
+        minscontrolller.text.toString(),
+        date);
 
     setState(() {
       _processPhase = '';
@@ -492,11 +495,5 @@ class _AddNewRecordingState extends State<AddNewRecording> {
         _processing = false;
       ***REMOVED***);
     ***REMOVED***
-
-
   ***REMOVED***
-
-
-
-
 ***REMOVED***

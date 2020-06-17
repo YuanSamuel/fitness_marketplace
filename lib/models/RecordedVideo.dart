@@ -4,7 +4,6 @@ class RecordedVideo {
   String name;
   int date;
   String videoUrl;
-
   String videoID;
 
   DocumentReference reference;
@@ -22,7 +21,6 @@ class RecordedVideo {
       name: json['title'] as String,
       date: json['date'] as int,
       videoUrl: json['thumbUrl'] as String,
-
 ***REMOVED***
   ***REMOVED***
 

@@ -172,7 +172,7 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                             onTap: () {
         ***REMOVED***
       ***REMOVED***
-      ***REMOVED***builder: (context) => RequestPrivateSessionPage(trainer: widget.trainer,)),
+      ***REMOVED***builder: (context) => RequestPrivateSessionPage(trainer: widget.trainer)),
                           ***REMOVED***
                             ***REMOVED***,
             ***REMOVED***,

@@ -1,6 +1,8 @@
 ***REMOVED***
 ***REMOVED***
+import 'package:fitnessmarketplace/helpers/calendar_helper.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
+import 'package:fitnessmarketplace/models/Student.dart';
 ***REMOVED***
 ***REMOVED***
 import 'package:table_calendar/table_calendar.dart';
@@ -16,15 +18,19 @@ class RequestPrivateSessionPage extends StatefulWidget {
 ***REMOVED***
 
 class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
+  Student currentStudent;
   CalendarController _calendarController;
   List<PrivateSession> privateSessionTimes;
   DateTime selectedDate;
   List<dynamic> events;
 
+  CalendarHelper _calendarHelper;
+
 ***REMOVED***
 ***REMOVED***
-    events = new List<PrivateSession>();
     _calendarController = new CalendarController();
+    _calendarHelper = new CalendarHelper();
+    events = new List<PrivateSession>();
     getAvailablePrivateSessionTimes();
 ***REMOVED***
   ***REMOVED***
@@ -32,6 +38,21 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
   void dispose() {
     _calendarController.dispose();
     super.dispose();
+  ***REMOVED***
+
+  setUp() async {
+    await getCurrentUser();
+    await getAvailablePrivateSessionTimes();
+    setState(() {***REMOVED***);
+  ***REMOVED***
+
+  getCurrentUser() async {
+    FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
+    DocumentSnapshot userData = await Firestore.instance
+        .collection('students')
+        .document(getUser.uid)
+        .get();
+    currentStudent = Student.fromSnapshot(userData);
   ***REMOVED***
 
   getAvailablePrivateSessionTimes() async {
@@ -69,7 +90,8 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
 ***REMOVED***
             TableCalendar(
               calendarController: _calendarController,
-              events: getAvailableTimes(),
+              events: _calendarHelper
+                  .privateSessionsToEventMap(privateSessionTimes),
               onDaySelected: (DateTime date, List<dynamic> givenEvents) {
                 events = givenEvents;
           ***REMOVED******REMOVED***);
@@ -80,21 +102,31 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
               child: ListView.builder(
                   itemCount: events.length,
                   itemBuilder: (BuildContext context, int i) {
-                    return GestureDetector(
-                      child: Container(
-              ***REMOVED***
-              ***REMOVED***
-      ***REMOVED***events[i].name),
-      ***REMOVED***events[i].trainerName),
-      ***REMOVED***events[i].date.toDate().toString()),
-          ***REMOVED***
+                    return Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        child: Container(
+                ***REMOVED***
+                ***REMOVED***
+        ***REMOVED***events[i].name),
+        ***REMOVED***events[i].trainerName),
+        ***REMOVED***DateTime.fromMillisecondsSinceEpoch(
+                                      events[i].date)
+                                  .toString()),
+            ***REMOVED***
+            ***REMOVED***,
           ***REMOVED***,
+                        onTap: () {
+                          events[i].reference.updateData({
+                            'available': false,
+                            'studentName': currentStudent.firstName +
+                                ' ' +
+                                currentStudent.lastName
+                          ***REMOVED***);
+                          addToUserPrivateSessions(events[i]);
+                          Navigator.pop(context);
+                        ***REMOVED***,
         ***REMOVED***,
-                      onTap: () {
-                        events[i].reference.updateData({'available': false***REMOVED***);
-                        addToUserPrivateSessions(events[i]);
-                        Navigator.pop(context);
-                      ***REMOVED***,
                 ***REMOVED***
                   ***REMOVED***),
 ***REMOVED***
@@ -106,30 +138,13 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
 
   addToUserPrivateSessions(PrivateSession session) async {
     FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
-    session.available = false;
-    Firestore.instance
+    DocumentSnapshot userSnapshot = await Firestore.instance
         .collection('students')
         .document(currentUser.uid)
-        .collection('privateSessions')
-        .add(session.toJson());
-  ***REMOVED***
-
-  Map<DateTime, List<PrivateSession>> getAvailableTimes() {
-    Map<DateTime, List<PrivateSession>> allTimes =
-        new Map<DateTime, List<PrivateSession>>();
-
-    for (int i = 0; i < privateSessionTimes.length; i++) {
-      PrivateSession privateSession = privateSessionTimes[i];
-      DateTime privateSessionDate = privateSession.date.toDate().toLocal();
-      if (allTimes.containsKey(privateSessionDate)) {
-        allTimes[privateSessionDate].add(privateSession);
-      ***REMOVED*** else {
-        List<PrivateSession> privateSessionsList = new List<PrivateSession>();
-        privateSessionsList.add(privateSession);
-        allTimes[privateSessionDate] = privateSessionsList;
-      ***REMOVED***
-    ***REMOVED***
-
-    return allTimes;
+        .get();
+    Student student = Student.fromSnapshot(userSnapshot);
+    session.available = false;
+    session.studentName = student.firstName + ' ' + student.lastName;
+    student.reference.collection('privateSessions').add(session.toJson());
   ***REMOVED***
 ***REMOVED***
