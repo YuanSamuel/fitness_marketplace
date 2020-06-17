@@ -1,21 +1,20 @@
+import 'package:fitnessmarketplace/pages/price.dart';
 import 'package:fitnessmarketplace/pages/profile_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-String uid;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitnessmarketplace/models/Trainer.dart';
 
 class TrainerRegister extends StatefulWidget {
-
-  TrainerRegister(String u) {
-    uid = u;
-  }
 
   @override
   _TrainerRegisterState createState() => _TrainerRegisterState();
 }
 
 class _TrainerRegisterState extends State<TrainerRegister> {
+
+  Trainer currentTrainer;
 
   TypeOfExercise(String type){
     return Container(
@@ -39,7 +38,7 @@ class _TrainerRegisterState extends State<TrainerRegister> {
         onPressed: () {
           _type.remove(type);
           setState(() {
-            TrainerRegister(uid);
+            TrainerRegister();
           });
         },
       ),
@@ -47,28 +46,59 @@ class _TrainerRegisterState extends State<TrainerRegister> {
   }
 
   TextEditingController _desc = new TextEditingController();
-  List<String> _type = new List<String>();
+  List _type = new List();
+
+  @override
+  void initState() {
+    getCurrentTrainer();
+    super.initState();
+  }
+
+  void getCurrentTrainer() async {
+    FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
+    DocumentSnapshot trainerData = await Firestore.instance.collection('trainers').document(getUser.uid).get();
+    currentTrainer = Trainer.fromSnapshot(trainerData);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
-        children: [
-          Container(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 50,
-                ),
-                SizedBox(
-                  child: Container(
-                    child: Padding(
-                      padding: EdgeInsets.all(5),
-                      child: ListView(
-                        children: [
-                          TextField(
-                            controller: _desc,
-                            decoration: InputDecoration(
+    if(currentTrainer==null){
+      TrainerRegister();
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Container(
+            width: 50,
+            height: 50,
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
+    else{
+      _type = currentTrainer.trainingTypes;
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+        ),
+        body: ListView(
+          children: [
+            Container(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    child: Container(
+                      child: Padding(
+                        padding: EdgeInsets.all(5),
+                        child: ListView(
+                          children: [
+                            TextField(
+                              controller: _desc,
+                              decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(top: -20),
                                 hintText: 'Tell us about yourself',
                                 border: InputBorder.none
@@ -138,20 +168,33 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                         )
                     );
                   },
-                  child: Text('Select Type'),
+                  child: Text('Select Type of Exercise'),
                 ),
                 FlatButton(
                   color: Colors.blue,
                   child: Text('Continue'),
-                  onPressed: () {
-                    Firestore.instance.collection('trainers').document(uid).updateData({
-                      'trainingTypes': _type,
-                      'description': _desc.text,
-                    });
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ProfilePic()),
-                    );
+                  onPressed: () async {
+                    final _user = await FirebaseAuth.instance.currentUser();
+                    String _uid = _user.uid;
+                    if(_type!=null&&_desc!=null) {
+                      if(_desc.text==''||_desc.text==null){
+                        _desc = TextEditingController(text: currentTrainer.description);
+                      }
+                      Firestore.instance.collection('trainers').document(_uid).setData({
+                        'trainingTypes': _type,
+                        'rating': 0,
+                        'description': _desc.text,
+                      },merge: true);
+                      if(currentTrainer.description!=''){
+                        Navigator.pop(context);
+                      }
+                      else{
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => PricePage()),
+                        );
+                      }
+                    }
                   },
                 )
               ],

@@ -101,10 +101,13 @@ class _RegisterState extends State<Register> {
                     'description': '',
                     'trainingTypes': new List<String>(),
                     'rating': 0.0,
+                    'videoPrice': 0.0,
+                    'livePrice': 0.0,
+                    'oneOnOnePrice': 0.0
                   });
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TrainerRegister(currentUser.user.uid)),
+                    MaterialPageRoute(builder: (context) => TrainerRegister()),
                   );
                 } else {
                   await Firestore.instance
