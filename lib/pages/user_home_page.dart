@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitnessmarketplace/helpers/string_helper.dart';
+import 'package:fitnessmarketplace/helpers/calendar_helper.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -13,17 +16,22 @@ class UserHomePage extends StatefulWidget {
 }
 
 class _UserHomePageState extends State<UserHomePage> {
-  List<String> months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
   Student currentStudent;
-  List<PrivateSession> privateSessions;
+  List<PrivateSession> allPrivateSessions;
+  List<dynamic> selectedPrivateSessions;
   List<RecordedVideo> recordedVideos;
+  DateTime selectedDate;
 
   CalendarController _calendarController;
+
+  StringHelper _stringHelper;
+  CalendarHelper _calendarHelper;
 
   @override
   void initState() {
     _calendarController = CalendarController();
+    _calendarHelper = new CalendarHelper();
+    _stringHelper = new StringHelper();
     getCurrentStudent();
     super.initState();
   }
@@ -47,19 +55,24 @@ class _UserHomePageState extends State<UserHomePage> {
   }
 
   Future<void> getPrivateSessions() async {
-    privateSessions = new List<PrivateSession>();
-    QuerySnapshot allPrivateSessions = await currentStudent.reference.collection('privateSessions').getDocuments();
-    List<DocumentSnapshot> holdPrivateSessions = allPrivateSessions.documents;
+    allPrivateSessions = new List<PrivateSession>();
+    selectedPrivateSessions = new List<PrivateSession>();
+    QuerySnapshot queryPrivateLessons = await currentStudent.reference
+        .collection('privateSessions')
+        .getDocuments();
+    List<DocumentSnapshot> holdPrivateSessions = queryPrivateLessons.documents;
     for (int i = 0; i < holdPrivateSessions.length; i++) {
-      PrivateSession currentPrivateSession = PrivateSession.fromSnapshot(holdPrivateSessions[i]);
-      privateSessions.add(currentPrivateSession);
+      PrivateSession currentPrivateSession =
+          PrivateSession.fromSnapshot(holdPrivateSessions[i]);
+      allPrivateSessions.add(currentPrivateSession);
     }
     return;
   }
 
   Future<void> getRecordedVideos() async {
     recordedVideos = new List<RecordedVideo>();
-    QuerySnapshot allRecordedVideos = await currentStudent.reference.collection('videos').getDocuments();
+    QuerySnapshot allRecordedVideos =
+        await currentStudent.reference.collection('videos').getDocuments();
     List<DocumentSnapshot> videos = allRecordedVideos.documents;
     for (int i = 0; i < videos.length; i++) {
       RecordedVideo currentVideo = RecordedVideo.fromSnapshot(videos[i]);
@@ -77,6 +90,7 @@ class _UserHomePageState extends State<UserHomePage> {
         ),
       );
     } else {
+      print(allPrivateSessions);
       return Scaffold(
         body: SingleChildScrollView(
           child: Column(
@@ -122,19 +136,23 @@ class _UserHomePageState extends State<UserHomePage> {
                   'Upcoming Sessions',
                   style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
                 ),
-
-                
               ),
               Container(
                 height: 250.0,
                 child: ListView.builder(
-                  itemCount: privateSessions.length,
+                  itemCount: selectedPrivateSessions.length,
                   itemBuilder: (BuildContext context, int i) {
-                    DateTime privateSessionDate = privateSessions[i].date.toDate();
-                    DateTime localPrivateSessionDate = privateSessionDate.toLocal();
-                    String privateSessionDateString = getDateStringFromDateTime(localPrivateSessionDate);
-                    String privateSessionTimeString = getTimeStringFromDateTime(localPrivateSessionDate);
-                    String privateSessionLengthString = getLengthFromInt(privateSessions[i].length);
+                    DateTime privateSessionDate =
+                        DateTime.fromMillisecondsSinceEpoch(
+                            selectedPrivateSessions[i].date);
+                    DateTime localPrivateSessionDate =
+                        privateSessionDate.toLocal();
+                    String privateSessionDateString = _stringHelper
+                        .dateTimeToDateString(localPrivateSessionDate);
+                    String privateSessionTimeString = _stringHelper
+                        .dateTimeToTimeString(localPrivateSessionDate);
+                    String privateSessionLengthString =
+                        getLengthFromInt(selectedPrivateSessions[i].length);
 
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -163,9 +181,8 @@ class _UserHomePageState extends State<UserHomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  privateSessions[i].name +
-                                      " | " +
-                                      privateSessions[i].trainerName,
+                                  'Lesson with: ' +
+                                      selectedPrivateSessions[i].trainerName,
                                   style: TextStyle(
                                       fontSize: 20.0,
                                       fontWeight: FontWeight.w600,
@@ -274,9 +291,13 @@ class _UserHomePageState extends State<UserHomePage> {
                                     ],
                                   ),
                                   child: Center(
-                                    child: Text(recordedVideos[i].name + ' ' + Timestamp.fromMillisecondsSinceEpoch(recordedVideos[i].date).toDate().toString()),
-                                  )
-                              ),
+                                    child: Text(recordedVideos[i].name +
+                                        ' ' +
+                                        Timestamp.fromMillisecondsSinceEpoch(
+                                                recordedVideos[i].date)
+                                            .toDate()
+                                            .toString()),
+                                  )),
                               //TODO set up this so that it works with actual videos / streams
                               /*onTap: () {
                                 Navigator.push(
@@ -305,9 +326,14 @@ class _UserHomePageState extends State<UserHomePage> {
       //color: Colors.white,
       child: TableCalendar(
         rowHeight: 40.0,
-        //onDaySelected: _onDaySelected,
+        onDaySelected: (DateTime date, List<dynamic> events) {
+          setState(() {
+            selectedDate = date;
+            selectedPrivateSessions = events;
+          });
+        },
         locale: 'en_US',
-        //events: _selectedDay,
+        events: _calendarHelper.privateSessionsToEventMap(allPrivateSessions),
         calendarController: _calendarController,
         initialCalendarFormat: CalendarFormat.month,
         formatAnimation: FormatAnimation.slide,
@@ -374,22 +400,6 @@ class _UserHomePageState extends State<UserHomePage> {
         ),
       ),
     );
-  }
-
-  getDateStringFromDateTime(DateTime time) {
-    return months[time.month] + ' ' + time.day.toString();
-  }
-
-  getTimeStringFromDateTime(DateTime time) {
-    if (time.hour > 12) {
-      return (time.hour - 12).toString() +  ':' + time.minute.toString() + ' p.m.';
-    }
-    else {
-      if (time.hour == 0) {
-        return '12:' + time.minute.toString() + 'a.m.';
-      }
-      return time.hour.toString() + ':' + time.minute.toString() + ' a.m.';
-    }
   }
 
   getLengthFromInt(int length) {
