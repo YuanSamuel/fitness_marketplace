@@ -1,4 +1,5 @@
 ***REMOVED***
+***REMOVED***
 
 //The profile system is set up so when you open the page you call either Driver or
 
@@ -133,13 +134,22 @@ class UserProfilePage extends StatelessWidget {
             ***REMOVED***,
         ***REMOVED***
         ***REMOVED***,
+      ***REMOVED***,
+                    FlatButton(
+  ***REMOVED***'Log Out'),
+                      onPressed: () async {
+                        await FirebaseAuth.instance.signOut();
+                        Navigator.popAndPushNamed(context, '/register');
+                      ***REMOVED***,
       ***REMOVED***
   ***REMOVED***
-  ***REMOVED***
+  ***REMOVED***,
   ***REMOVED***
 ***REMOVED***
           ],
         ));
+
+
   ***REMOVED***
 ***REMOVED***
 
