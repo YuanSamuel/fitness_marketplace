@@ -108,7 +108,7 @@ class _ProfilePicState extends State<ProfilePic> {
                                       child: Text('From Camera'),
                                       onPressed: () async {
                                         image = await _picker.getImage(
-                                            source: ImageSource.camera);
+                                            source: ImageSource.camera, imageQuality: 50);
                                         Upload(File(image.path));
                                         ProfilePic();
                                       },
@@ -117,7 +117,7 @@ class _ProfilePicState extends State<ProfilePic> {
                                       child: Text('From Device'),
                                       onPressed: () async {
                                         PickedFile image = await _picker.getImage(
-                                            source: ImageSource.gallery);
+                                            source: ImageSource.gallery, imageQuality: 50);
                                         Upload(File(image.path));
                                         ProfilePic();
                                       },
