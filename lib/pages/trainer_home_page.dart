@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitnessmarketplace/apis/firebase_provider.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
+import 'package:fitnessmarketplace/models/video_info.dart';
+import 'package:fitnessmarketplace/pages/add_new_screen.dart';
+import 'package:fitnessmarketplace/pages/player.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
-import 'package:fitnessmarketplace/pages/show_video_page.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
 
 class TrainerHomePage extends StatefulWidget {
@@ -18,9 +21,18 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
   Trainer currentTrainer;
   List<RecordedVideo> trainerVideos;
   List<PrivateSession> privateSessions;
+  List<VideoInfo> _videos = <VideoInfo>[];
+
 
   @override
   void initState() {
+
+    FirebaseProvider.listenToVideos((newVideos) {
+      setState(() {
+        _videos = newVideos;
+      });
+    });
+
     _calendarController = CalendarController();
     setUp();
     super.initState();
@@ -51,11 +63,15 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
 
   getVideos() async {
     QuerySnapshot getVideos = await currentTrainer.reference
-        .collection('recordedVideos')
+        .collection('videos')
         .getDocuments();
     List<DocumentSnapshot> allVideos = getVideos.documents;
+    print("NUMBER OF VIDEOS");
+    print(allVideos.length);
     for (int i = 0; i < allVideos.length; i++) {
-      trainerVideos.add(RecordedVideo.fromSnapshot(allVideos[i]));
+      setState(() {
+        trainerVideos.add(RecordedVideo.fromSnapshot(allVideos[i]));
+      });
     }
   }
 
@@ -65,8 +81,10 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
         .getDocuments();
     List<DocumentSnapshot> allPrivateSessions = getPrivateSessions.documents;
     for (int i = 0; i < allPrivateSessions.length; i++) {
-      privateSessions
-          .add(PrivateSession.fromSnapshot(allPrivateSessions[i]));
+      setState(() {
+        privateSessions
+            .add(PrivateSession.fromSnapshot(allPrivateSessions[i]));
+      });
     }
   }
 
@@ -254,10 +272,49 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                         color: Colors.white,
                         height: 300.0,
                         child: ListView.builder(
-                          itemCount: trainerVideos.length,
+                          itemCount: trainerVideos.length+1,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (BuildContext context, int i) {
                             print(i);
+                            if (i==0){
+                              return Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print('tapped');
+                                    Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AddNewRecording( )),
+                                  );
+                                    //TODO make sessions database implementation
+                                  },
+                                  child: Container(
+                                    height: 300.0,
+                                    width: 300.0,
+                                    child: Center(
+                                      child: FlatButton(
+                                        child: Icon(Icons.add),
+                                      )
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                      color: Colors.blue,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 5,
+                                          blurRadius: 7,
+                                          offset: Offset(
+                                              0, 3), // changes position of shadow
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            print("WHY ISNT STUFF SHOWING");
                             return Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: GestureDetector(
@@ -266,24 +323,29 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => ShowVideoPage(
-                                              videoDownloadUrl:
-                                                  trainerVideos[i].videoUrl,
+                                        builder: (context) => Player(
+                                              video:
+                                                  _videos[i-1],
                                             )),
                                   );
+                                  //TODO make sessions database implementation
                                 },
                                 child: Container(
                                   height: 300.0,
                                   width: 300.0,
                                   child: Center(
-                                    child: Text(trainerVideos[i].name +
+                                    child: Text(trainerVideos[i-1].name +
                                         '  ' +
-                                        trainerVideos[i]
-                                            .date
+                                        Timestamp.fromMillisecondsSinceEpoch(trainerVideos[i-1]
+                                            .date)
                                             .toDate()
                                             .toString()),
                                   ),
                                   decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: Image.network(trainerVideos[i-1].videoUrl).image,
+                                      fit: BoxFit.cover,
+                                    ),
                                     borderRadius: BorderRadius.circular(30.0),
                                     color: Colors.blue,
                                     boxShadow: [
