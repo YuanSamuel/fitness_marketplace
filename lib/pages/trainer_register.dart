@@ -177,6 +177,9 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                       final _user = await FirebaseAuth.instance.currentUser();
                       String _uid = _user.uid;
                       if(_type!=null&&_desc!=null) {
+                        if(_desc.text==''||_desc.text==null){
+                          _desc = TextEditingController(text: currentTrainer.description);
+                        }
                         Firestore.instance.collection('trainers').document(_uid).setData({
                           'trainingTypes': _type,
                           'rating': 0,
