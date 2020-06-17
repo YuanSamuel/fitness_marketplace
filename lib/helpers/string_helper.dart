@@ -23,5 +23,5 @@ class StringHelper {
       return (date.hour - 12).toString() + ':' + minute + ' p.m.';
     ***REMOVED***
   ***REMOVED***
-  
+
 ***REMOVED***
