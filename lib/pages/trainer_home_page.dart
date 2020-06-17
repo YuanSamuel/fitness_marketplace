@@ -91,6 +91,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
   @override
   Widget build(BuildContext context) {
     if (currentTrainer == null) {
+      TrainerHomePage();
       return Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
