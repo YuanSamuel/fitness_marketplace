@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 //The profile system is set up so when you open the page you call either Driver or
@@ -133,13 +134,22 @@ class UserProfilePage extends StatelessWidget {
                           ),
                         ],
                       ),
+                    ),
+                    FlatButton(
+                      child: Text('Log Out'),
+                      onPressed: () async {
+                        await FirebaseAuth.instance.signOut();
+                        Navigator.popAndPushNamed(context, '/register');
+                      },
                     )
                   ],
-                )
+                ),
               ],
             ),
           ],
         ));
+
+
   }
 }
 
