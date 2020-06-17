@@ -27,9 +27,9 @@ class _PricePageState extends State<PricePage> {
     setState(() {***REMOVED***);
   ***REMOVED***
 
-  TextEditingController _video = new TextEditingController();
-  TextEditingController _live = new TextEditingController();
-  TextEditingController _one = new TextEditingController();
+  double _video = 0;
+  double _live = 0;
+  double _one = 0;
 
 ***REMOVED***
 ***REMOVED***
@@ -57,34 +57,52 @@ class _PricePageState extends State<PricePage> {
                   fontWeight: FontWeight.w400
 ***REMOVED***,
 ***REMOVED***
-            Container(
-              width: 200,
-              child: TextField(
-                controller: _video,
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                decoration: InputDecoration(
-                  labelText: 'Video Price'
-  ***REMOVED***,
-***REMOVED***,
+            Text(
+              'Video Price (per video): ${double.parse(_video.toStringAsFixed(2))***REMOVED***',
 ***REMOVED***
             Container(
-              width: 200,
-              child: TextField(
-                controller: _live,
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                decoration: InputDecoration(
-                  labelText: 'Live Stream Price'
-  ***REMOVED***,
+              width: 300,
+              child: Slider(
+                value: _video,
+                onChanged: (_input) {
+            ***REMOVED***
+                    _video = _input;
+                  ***REMOVED***);
+                ***REMOVED***,
+                min: 0,
+                max: 150,
 ***REMOVED***,
 ***REMOVED***
+            Text(
+              'Live Session Price (per hour): ${double.parse(_live.toStringAsFixed(2))***REMOVED***',
+***REMOVED***
             Container(
-              width: 200,
-              child: TextField(
-                controller: _one,
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                decoration: InputDecoration(
-                  labelText: 'One on One Price'
-  ***REMOVED***,
+              width: 300,
+              child: Slider(
+                value: _live,
+                onChanged: (_input) {
+            ***REMOVED***
+                    _live = _input;
+                  ***REMOVED***);
+                ***REMOVED***,
+                min: 0,
+                max: 150,
+***REMOVED***,
+***REMOVED***
+            Text(
+              'One on One Session Price (per hour): ${double.parse(_one.toStringAsFixed(2))***REMOVED***',
+***REMOVED***
+            Container(
+              width: 300,
+              child: Slider(
+                value: _one,
+                onChanged: (_input) {
+            ***REMOVED***
+                    _one = _input;
+                  ***REMOVED***);
+                ***REMOVED***,
+                min: 0,
+                max: 150,
 ***REMOVED***,
 ***REMOVED***
             FlatButton(
@@ -95,9 +113,9 @@ class _PricePageState extends State<PricePage> {
                 String _uid = _user.uid;
                 if(_video!=null&&_live!=null&&_one!=null) {
                   Firestore.instance.collection('trainers').document(_uid).setData({
-                    'videoPrice': toInt(_video.text),
-                    'livePrice': toInt(_live.text),
-                    'oneOnOnePrice': toInt(_one.text),
+                    'videoPrice': double.parse(_video.toStringAsFixed(2)),
+                    'livePrice': double.parse(_live.toStringAsFixed(2)),
+                    'oneOnOnePrice': double.parse(_one.toStringAsFixed(2)),
                   ***REMOVED***,merge: true);
                   if(currentTrainer.videoPrice!=0.0&&currentTrainer.livePrice!=0.0&&currentTrainer.oneOnOnePrice!=0.0){
                     Navigator.pop(context);
