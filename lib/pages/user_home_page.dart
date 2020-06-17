@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
-import 'package:fitnessmarketplace/pages/show_video_page.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -60,7 +59,7 @@ class _UserHomePageState extends State<UserHomePage> {
 
   Future<void> getRecordedVideos() async {
     recordedVideos = new List<RecordedVideo>();
-    QuerySnapshot allRecordedVideos = await currentStudent.reference.collection('recordedVideos').getDocuments();
+    QuerySnapshot allRecordedVideos = await currentStudent.reference.collection('videos').getDocuments();
     List<DocumentSnapshot> videos = allRecordedVideos.documents;
     for (int i = 0; i < videos.length; i++) {
       RecordedVideo currentVideo = RecordedVideo.fromSnapshot(videos[i]);
@@ -275,15 +274,16 @@ class _UserHomePageState extends State<UserHomePage> {
                                     ],
                                   ),
                                   child: Center(
-                                    child: Text(recordedVideos[i].name + ' ' + recordedVideos[i].date.toDate().toString()),
+                                    child: Text(recordedVideos[i].name + ' ' + Timestamp.fromMillisecondsSinceEpoch(recordedVideos[i].date).toDate().toString()),
                                   )
                               ),
-                              onTap: () {
+                              //TODO set up this so that it works with actual videos / streams
+                              /*onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => ShowVideoPage(videoDownloadUrl: recordedVideos[i].videoUrl,)),
                                 );
-                              },
+                              },*/
                             ),
                           );
                         },
