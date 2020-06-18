@@ -1,6 +1,9 @@
+
+
 ***REMOVED***
 ***REMOVED***
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
+import 'package:fitnessmarketplace/pages/session_preview_page.dart';
 import 'package:fitnessmarketplace/utils/trainer_market.dart';
 import 'package:fitnessmarketplace/utils/trainer_widget.dart';
 import 'package:fitnessmarketplace/utils/search_bar.dart';
@@ -343,78 +346,84 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
   Widget liveSession({image, name, date, people***REMOVED***) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: InkWell(
-        onTap: () {***REMOVED***,
-        child: Container(
-          height: 100,
-          width: 400,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-***REMOVED***
-              //Hero
-              Container(
-                height: 100,
-                width: 60,
-    ***REMOVED***
-      ***REMOVED***
-                      image: NetworkImage(image),
-      ***REMOVED***
-      ***REMOVED***,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-      ***REMOVED***,
-                    boxShadow: [
-                      BoxShadow(
-                          offset: Offset(1, 1), blurRadius: 5, spreadRadius: 1)
-                    ]),
-***REMOVED***,
-***REMOVED***
-                width: 30,
-***REMOVED***,
-              Expanded(
-      ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***,
-                    Text(
-                      name,
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      ***REMOVED***,
-      ***REMOVED***
-                      height: 5,
-      ***REMOVED***,
-                    Text(
-                      date,
-  ***REMOVED***color: Colors.black45),
-      ***REMOVED***,
-      ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***,
-                    Text(
-                      people.toString() + " people to attend",
-  ***REMOVED***color: Colors.black45),
-      ***REMOVED***,
+      child: Hero(
+        tag: image,
+        child: InkWell(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => SessionPreview(
+              image: image,
+            )));
+          ***REMOVED***,
+          child: Container(
+            height: 100,
+            width: 400,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
   ***REMOVED***
+                Container(
+                  height: 100,
+                  width: 60,
+      ***REMOVED***
+        ***REMOVED***
+                        image: NetworkImage(image),
+        ***REMOVED***
+        ***REMOVED***,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+        ***REMOVED***,
+                      boxShadow: [
+                        BoxShadow(
+                            offset: Offset(1, 1), blurRadius: 5, spreadRadius: 1)
+                      ]),
   ***REMOVED***,
-***REMOVED***,
-              Align(
-                alignment: Alignment.centerRight,
-                child: OutlineButton(
-                  child: Text('Register'),
-                  borderSide: BorderSide(color: Colors.red),
-                  onPressed: () {***REMOVED***,
-                  highlightedBorderColor: Colors.red,
-                  splashColor: Colors.redAccent.withOpacity(0.5),
-                  color: Colors.red,
-                  textColor: Colors.red,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
+  ***REMOVED***
+                  width: 30,
   ***REMOVED***,
+                Expanded(
+        ***REMOVED***
+        ***REMOVED***
+        ***REMOVED***
 ***REMOVED***
+        ***REMOVED***
+        ***REMOVED***,
+***REMOVED***
+                        name,
+                        style:
+                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ***REMOVED***,
+***REMOVED***
+                        height: 5,
+        ***REMOVED***,
+***REMOVED***
+                        date,
+    ***REMOVED***color: Colors.black45),
+        ***REMOVED***,
+***REMOVED***
+        ***REMOVED***
+        ***REMOVED***,
+***REMOVED***
+                        people.toString() + " people to attend",
+    ***REMOVED***color: Colors.black45),
+        ***REMOVED***,
+    ***REMOVED***
+    ***REMOVED***,
+  ***REMOVED***,
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: OutlineButton(
+***REMOVED***'Register'),
+***REMOVED*** BorderSide(color: Colors.red),
+***REMOVED******REMOVED***,
+                    highlightedBorderColor: Colors.red,
+                    splashColor: Colors.redAccent.withOpacity(0.5),
+                    color: Colors.red,
+                    textColor: Colors.red,
+***REMOVED***
+                        borderRadius: BorderRadius.circular(30)),
+    ***REMOVED***,
+  ***REMOVED***
+  ***REMOVED***
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
