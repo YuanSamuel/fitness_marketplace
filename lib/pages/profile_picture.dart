@@ -108,7 +108,7 @@ class _ProfilePicState extends State<ProfilePic> {
                   ***REMOVED***'From Camera'),
                                       onPressed: () async {
                                         image = await _picker.getImage(
-                                            source: ImageSource.camera);
+                                            source: ImageSource.camera, imageQuality: 50);
                                         Upload(File(image.path));
                                         ProfilePic();
                                       ***REMOVED***,
@@ -117,7 +117,7 @@ class _ProfilePicState extends State<ProfilePic> {
                   ***REMOVED***'From Device'),
                                       onPressed: () async {
                                         PickedFile image = await _picker.getImage(
-                                            source: ImageSource.gallery);
+                                            source: ImageSource.gallery, imageQuality: 50);
                                         Upload(File(image.path));
                                         ProfilePic();
                                       ***REMOVED***,
