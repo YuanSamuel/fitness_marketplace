@@ -180,13 +180,18 @@ class _UserHomePageState extends State<UserHomePage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'Lesson with: ' +
-                                      selectedPrivateSessions[i].trainerName,
-                                  style: TextStyle(
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white),
+                                Container(
+                                  width: 7 * MediaQuery.of(context).size.width / 10,
+                                  height: 40,
+                                  child: Text(
+                                    'Lesson with: ' +
+                                        selectedPrivateSessions[i].trainerName,
+                                    overflow: TextOverflow.fade,
+                                    style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white),
+                                  ),
                                 ),
                                 SizedBox(
                                   height: 10.0,

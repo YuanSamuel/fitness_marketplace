@@ -1,6 +1,6 @@
 import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
-import 'package:fitnessmarketplace/utils/trainer_widget.dart';
+import 'package:fitnessmarketplace/widgets//trainer_widget.dart';
 import 'package:flutter/material.dart';
 
 class TrainerMarket extends StatefulWidget {
@@ -105,7 +105,7 @@ class _TrainerMarketState extends State<TrainerMarket> {
                         height: 5,
                       ),
                       Text(
-                        "\$ADDTODB each session",
+                        "\$" + trainer.livePrice.toString(),
                         style: TextStyle(color: Colors.white, fontSize: 15),
                       )
                     ],
