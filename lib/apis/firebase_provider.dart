@@ -4,7 +4,7 @@ import 'package:fitnessmarketplace/models/video_info.dart';
 import 'package:fitnessmarketplace/pages/login_page.dart';
 
 class FirebaseProvider {
-  static saveVideo(VideoInfo video, String title, String description, String minutes, int date, double price) async {
+  static saveVideo(VideoInfo video, String title, String description, double minutes, int date, double price) async {
     await Firestore.instance.collection('videos').document().setData({
         'videoUrl': video.videoUrl,
         'thumbUrl': video.thumbUrl,
