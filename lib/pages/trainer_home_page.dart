@@ -117,7 +117,9 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                       Spacer(),
                       IconButton(
                         icon: Icon(Icons.account_circle),
-                        onPressed: () {},
+                        onPressed: () {
+
+                        },
                       )
                     ],
                   )),
@@ -287,7 +289,6 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                     MaterialPageRoute(
                                         builder: (context) => AddNewRecording( )),
                                   );
-                                    //TODO make sessions database implementation
                                   },
                                   child: Container(
                                     height: 300.0,
@@ -314,7 +315,6 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                 ),
                               );
                             }
-                            print("WHY ISNT STUFF SHOWING");
                             return Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: GestureDetector(
@@ -327,6 +327,120 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                               video:
                                                   _videos[i-1],
                                             )),
+                                  );
+                                  //TODO make sessions database implementation
+                                },
+                                child: Container(
+                                  height: 300.0,
+                                  width: 300.0,
+                                  child: Center(
+                                    child: Text(trainerVideos[i-1].name +
+                                        '  ' +
+                                        Timestamp.fromMillisecondsSinceEpoch(trainerVideos[i-1]
+                                            .date)
+                                            .toDate()
+                                            .toString()),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: Image.network(trainerVideos[i-1].videoUrl).image,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    color: Colors.blue,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 5,
+                                        blurRadius: 7,
+                                        offset: Offset(
+                                            0, 3), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Your Videos',
+                                style: TextStyle(
+                                    fontSize: 25.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Spacer(),
+                              Text(
+                                'See All',
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black26),
+                              ),
+                            ],
+                          )),
+                      Container(
+                        color: Colors.white,
+                        height: 300.0,
+                        child: ListView.builder(
+                          itemCount: trainerVideos.length+1,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (BuildContext context, int i) {
+                            print(i);
+                            if (i==0){
+                              return Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print('tapped');
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => AddNewRecording( )),
+                                    );
+                                  },
+                                  child: Container(
+                                    height: 300.0,
+                                    width: 300.0,
+                                    child: Center(
+                                        child: FlatButton(
+                                          child: Icon(Icons.add),
+                                        )
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                      color: Colors.blue,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 5,
+                                          blurRadius: 7,
+                                          offset: Offset(
+                                              0, 3), // changes position of shadow
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            return Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  print('tapped');
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Player(
+                                          video:
+                                          _videos[i-1],
+                                        )),
                                   );
                                   //TODO make sessions database implementation
                                 },
