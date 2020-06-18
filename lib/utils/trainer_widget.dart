@@ -172,7 +172,7 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => RequestPrivateSessionPage(trainer: widget.trainer,)),
+                                MaterialPageRoute(builder: (context) => RequestPrivateSessionPage(trainer: widget.trainer)),
                               );
                             },
                           ),
