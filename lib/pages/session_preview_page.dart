@@ -1,12 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
+import 'package:fitnessmarketplace/pages/payment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 
 class SessionPreview extends StatefulWidget {
-  final String image;
+  //final String image;
 
-  const SessionPreview({Key key, this.image}) : super(key: key);
+  final DocumentReference trainer;
+  const SessionPreview({Key key, this.trainer,}) : super(key: key);
 
   @override
   _SessionPreviewState createState() => _SessionPreviewState();
@@ -25,7 +28,7 @@ class _SessionPreviewState extends State<SessionPreview> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(bottomRight: Radius.circular(20), bottomLeft: Radius.circular(20)),
               image: DecorationImage(
-                image: NetworkImage(widget.image,),
+                image: NetworkImage("https://cnet1.cbsistatic.com/img/sRejNDr7D67rMcvwI11v6xrJcho=/940x0/2019/11/12/e66cc0f3-c6b8-4f6e-9561-e23e08413ce1/gettyimages-1002863304.jpg",),
                 fit: BoxFit.cover,
               )
             ),
@@ -146,7 +149,12 @@ class _SessionPreviewState extends State<SessionPreview> {
                   FadeAnimationDown(2.6,ButtonTheme(
                     minWidth: 160,
                     height: 45,
-                    child: FlatButton.icon(onPressed: (){},
+                    child: FlatButton.icon(onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => PaymentPage()),
+                      );
+                    },
                       icon: Icon(Icons.shopping_basket),
                       label: Text("PURCHASE", style: TextStyle(
                         color: Colors.white,
