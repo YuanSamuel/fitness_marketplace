@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitnessmarketplace/pages/entry_page.dart';
+import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 import 'package:fitnessmarketplace/utils/style_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 
 class LoginWidget extends StatefulWidget {
   @override
@@ -39,8 +39,8 @@ class _LoginWidgetState extends State<LoginWidget> {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
         child: Container(
-            height: double.infinity,
-            width: double.infinity,
+            //height: double.infinity,
+            //width: double.infinity,
             decoration: BoxDecoration(
 
             ),
@@ -51,7 +51,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      Row(
+                      /*Row(
                         children: <Widget>[
                           IconButton(
                             icon: Icon(Icons.arrow_back_ios
@@ -71,7 +71,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             ),
                           ),
                         ],
-                      ),
+                      ),*/
                       Column(
 
                         children: <Widget>[
