@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/apis/firebase_provider.dart';
+import 'package:fitnessmarketplace/helpers/calendar_helper.dart';
+import 'package:fitnessmarketplace/helpers/string_helper.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
 import 'package:fitnessmarketplace/models/video_info.dart';
 import 'package:fitnessmarketplace/pages/add_new_screen.dart';
+import 'package:fitnessmarketplace/pages/add_session_page.dart';
 import 'package:fitnessmarketplace/pages/player.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -20,19 +23,22 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
   CalendarController _calendarController;
   Trainer currentTrainer;
   List<RecordedVideo> trainerVideos;
-  List<PrivateSession> privateSessions;
+  List<PrivateSession> allPrivateSessions;
+  List<dynamic> privateSessions;
   List<VideoInfo> _videos = <VideoInfo>[];
+  DateTime selectedDate;
 
+  StringHelper _stringHelper = new StringHelper();
+  CalendarHelper _calendarHelper = new CalendarHelper();
 
   @override
   void initState() {
-
     FirebaseProvider.listenToVideos((newVideos) {
       setState(() {
         _videos = newVideos;
       });
     });
-
+    selectedDate = DateTime.now();
     _calendarController = CalendarController();
     setUp();
     super.initState();
@@ -46,6 +52,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
 
   setUp() async {
     trainerVideos = new List<RecordedVideo>();
+    allPrivateSessions = new List<PrivateSession>();
     privateSessions = new List<PrivateSession>();
 
     FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
@@ -62,29 +69,24 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
   }
 
   getVideos() async {
-    QuerySnapshot getVideos = await currentTrainer.reference
-        .collection('videos')
-        .getDocuments();
+    QuerySnapshot getVideos =
+        await currentTrainer.reference.collection('videos').getDocuments();
     List<DocumentSnapshot> allVideos = getVideos.documents;
-    print("NUMBER OF VIDEOS");
-    print(allVideos.length);
     for (int i = 0; i < allVideos.length; i++) {
-      setState(() {
-        trainerVideos.add(RecordedVideo.fromSnapshot(allVideos[i]));
-      });
+      trainerVideos.add(RecordedVideo.fromSnapshot(allVideos[i]));
     }
   }
 
   getPrivateSessions() async {
+    allPrivateSessions = new List<PrivateSession>();
     QuerySnapshot getPrivateSessions = await currentTrainer.reference
         .collection('privateSessions')
         .getDocuments();
-    List<DocumentSnapshot> allPrivateSessions = getPrivateSessions.documents;
-    for (int i = 0; i < allPrivateSessions.length; i++) {
-      setState(() {
-        privateSessions
-            .add(PrivateSession.fromSnapshot(allPrivateSessions[i]));
-      });
+    List<DocumentSnapshot> allPrivateSessionDocuments =
+        getPrivateSessions.documents;
+    for (int i = 0; i < allPrivateSessionDocuments.length; i++) {
+      allPrivateSessions
+          .add(PrivateSession.fromSnapshot(allPrivateSessionDocuments[i]));
     }
   }
 
@@ -139,9 +141,30 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 15.0),
-                child: Text(
-                  '1 on 1 Sessions',
-                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+                child: Row(
+                  children: [
+                    Text(
+                      'Private Sessions',
+                      style: TextStyle(
+                          fontSize: 25.0, fontWeight: FontWeight.bold),
+                    ),
+                    Spacer(),
+                    IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddSessionPage(
+                                    chosenDate: selectedDate,
+                                    currentTrainer: currentTrainer,
+                                  )),
+                        );
+                        await getPrivateSessions();
+                        setState(() {});
+                      },
+                    )
+                  ],
                 ),
               ),
               Container(
@@ -150,7 +173,9 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                   itemCount: privateSessions.length,
                   itemBuilder: (BuildContext context, int i) {
                     DateTime privateSessionDate =
-                        privateSessions[i].date.toDate().toLocal();
+                        DateTime.fromMillisecondsSinceEpoch(
+                                privateSessions[i].date)
+                            .toLocal();
                     String privateSessionLength =
                         getLengthFromInt(privateSessions[i].length);
 
@@ -160,7 +185,9 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                         padding: EdgeInsets.symmetric(horizontal: 15.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30.0),
-                          color: Color(0xff3B3B3B),
+                          color: privateSessions[i].available
+                              ? Colors.blue
+                              : Color(0xff3B3B3B),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.5),
@@ -180,12 +207,20 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  privateSessions[i].name,
-                                  style: TextStyle(
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white),
+                                Container(
+                                  width: 7 * MediaQuery.of(context).size.width / 10,
+                                  height: 40,
+                                  child:  Text(
+                                    privateSessions[i].available
+                                        ? 'Open Session'
+                                        : 'Private Session with: ' +
+                                        privateSessions[i].studentName,
+                                    overflow: TextOverflow.fade,
+                                    style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white),
+                                  ),
                                 ),
                                 SizedBox(
                                   height: 10.0,
@@ -204,9 +239,8 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  privateSessionDate.month.toString() +
-                                      '/' +
-                                      privateSessionDate.day.toString(),
+                                  _stringHelper
+                                      .dateTimeToDateString(privateSessionDate),
                                   style: TextStyle(
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w400,
@@ -216,9 +250,8 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                   height: 10.0,
                                 ),
                                 Text(
-                                  privateSessionDate.hour.toString() +
-                                      ':' +
-                                      privateSessionDate.minute.toString(),
+                                  _stringHelper
+                                      .dateTimeToTimeString(privateSessionDate),
                                   style: TextStyle(
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w400,
@@ -273,31 +306,30 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                         color: Colors.white,
                         height: 300.0,
                         child: ListView.builder(
-                          itemCount: trainerVideos.length+1,
+                          itemCount: trainerVideos.length + 1,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (BuildContext context, int i) {
-                            print(i);
-                            if (i==0){
+                            if (i == 0) {
                               return Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: GestureDetector(
                                   onTap: () {
                                     print('tapped');
                                     Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => AddNewRecording( )),
-                                  );
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              AddNewRecording()),
+                                    );
                                     //TODO make sessions database implementation
                                   },
                                   child: Container(
                                     height: 300.0,
                                     width: 300.0,
                                     child: Center(
-                                      child: FlatButton(
-                                        child: Icon(Icons.add),
-                                      )
-                                    ),
+                                        child: FlatButton(
+                                      child: Icon(Icons.add),
+                                    )),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(30.0),
                                       color: Colors.blue,
@@ -306,8 +338,8 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                           color: Colors.grey.withOpacity(0.5),
                                           spreadRadius: 5,
                                           blurRadius: 7,
-                                          offset: Offset(
-                                              0, 3), // changes position of shadow
+                                          offset: Offset(0,
+                                              3), // changes position of shadow
                                         ),
                                       ],
                                     ),
@@ -315,7 +347,6 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                 ),
                               );
                             }
-                            print("WHY ISNT STUFF SHOWING");
                             return Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: GestureDetector(
@@ -325,8 +356,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => Player(
-                                              video:
-                                                  _videos[i-1],
+                                              video: _videos[i - 1],
                                             )),
                                   );
                                   //TODO make sessions database implementation
@@ -335,16 +365,18 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                   height: 300.0,
                                   width: 300.0,
                                   child: Center(
-                                    child: Text(trainerVideos[i-1].name +
+                                    child: Text(trainerVideos[i - 1].name +
                                         '  ' +
-                                        Timestamp.fromMillisecondsSinceEpoch(trainerVideos[i-1]
-                                            .date)
+                                        Timestamp.fromMillisecondsSinceEpoch(
+                                                trainerVideos[i - 1].date)
                                             .toDate()
                                             .toString()),
                                   ),
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: Image.network(trainerVideos[i-1].videoUrl).image,
+                                      image: Image.network(
+                                              trainerVideos[i - 1].videoUrl)
+                                          .image,
                                       fit: BoxFit.cover,
                                     ),
                                     borderRadius: BorderRadius.circular(30.0),
@@ -380,15 +412,19 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
       //color: Colors.white,
       child: TableCalendar(
         rowHeight: 40.0,
-        //onDaySelected: _onDaySelected,
+        onDaySelected: (DateTime date, List<dynamic> events) {
+          setState(() {
+            selectedDate = date;
+            privateSessions = events;
+          });
+        },
         locale: 'en_US',
-        //events: _selectedDay,
         calendarController: _calendarController,
         initialCalendarFormat: CalendarFormat.month,
         formatAnimation: FormatAnimation.slide,
         startingDayOfWeek: StartingDayOfWeek.sunday,
         availableGestures: AvailableGestures.horizontalSwipe,
-        events: getEvents(),
+        events: _calendarHelper.privateSessionsToEventMap(allPrivateSessions),
         availableCalendarFormats: const {
           CalendarFormat.month: 'Month',
         },
@@ -459,21 +495,5 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
     }
     returnLength = returnLength + (length % 60).toString() + ' minutes';
     return returnLength;
-  }
-
-  Map<DateTime, List<String>> getEvents() {
-    Map<DateTime, List<String>> privateSessionsMap =
-        new Map<DateTime, List<String>>();
-    for (int i = 0; i < privateSessions.length; i++) {
-      DateTime privateSessionDate = privateSessions[i].date.toDate();
-      if (privateSessionsMap.containsKey(privateSessionDate)) {
-        privateSessionsMap[privateSessionDate].add(privateSessions[i].name);
-      } else {
-        List<String> privateSessionsList = new List<String>();
-        privateSessionsList.add(privateSessions[i].name);
-        privateSessionsMap[privateSessionDate] = privateSessionsList;
-      }
-    }
-    return privateSessionsMap;
   }
 }

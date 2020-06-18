@@ -54,6 +54,7 @@ dependencies:
   flutter_video_compress: ^0.3.7
   flutter_rating_bar:
   validators:
+  flutter_datetime_picker:
 
 dev_dependencies:
   flutter_test:
