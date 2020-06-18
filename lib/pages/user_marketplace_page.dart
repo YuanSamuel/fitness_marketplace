@@ -1,6 +1,9 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
+import 'package:fitnessmarketplace/pages/session_preview_page.dart';
 import 'package:fitnessmarketplace/utils/trainer_market.dart';
 import 'package:fitnessmarketplace/utils/trainer_widget.dart';
 import 'package:fitnessmarketplace/utils/search_bar.dart';
@@ -343,79 +346,85 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
   Widget liveSession({image, name, date, people}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: InkWell(
-        onTap: () {},
-        child: Container(
-          height: 100,
-          width: 400,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              //Hero
-              Container(
-                height: 100,
-                width: 60,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(image),
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                          offset: Offset(1, 1), blurRadius: 5, spreadRadius: 1)
-                    ]),
-              ),
-              SizedBox(
-                width: 30,
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      name,
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      date,
-                      style: TextStyle(color: Colors.black45),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      people.toString() + " people to attend",
-                      style: TextStyle(color: Colors.black45),
-                    ),
-                  ],
+      child: Hero(
+        tag: image,
+        child: InkWell(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => SessionPreview(
+              image: image,
+            )));
+          },
+          child: Container(
+            height: 100,
+            width: 400,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  height: 100,
+                  width: 60,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(image),
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                            offset: Offset(1, 1), blurRadius: 5, spreadRadius: 1)
+                      ]),
                 ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: OutlineButton(
-                  child: Text('Register'),
-                  borderSide: BorderSide(color: Colors.red),
-                  onPressed: () {},
-                  highlightedBorderColor: Colors.red,
-                  splashColor: Colors.redAccent.withOpacity(0.5),
-                  color: Colors.red,
-                  textColor: Colors.red,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
+                SizedBox(
+                  width: 30,
                 ),
-              )
-            ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        name,
+                        style:
+                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        date,
+                        style: TextStyle(color: Colors.black45),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        people.toString() + " people to attend",
+                        style: TextStyle(color: Colors.black45),
+                      ),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: OutlineButton(
+                    child: Text('Register'),
+                    borderSide: BorderSide(color: Colors.red),
+                    onPressed: () {},
+                    highlightedBorderColor: Colors.red,
+                    splashColor: Colors.redAccent.withOpacity(0.5),
+                    color: Colors.red,
+                    textColor: Colors.red,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
