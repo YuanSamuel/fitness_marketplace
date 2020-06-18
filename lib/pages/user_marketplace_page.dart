@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
-import 'package:fitnessmarketplace/utils/trainer_market.dart';
-import 'package:fitnessmarketplace/utils/trainer_widget.dart';
+import 'package:fitnessmarketplace/widgets/trainer_market.dart';
+import 'package:fitnessmarketplace/widgets//trainer_widget.dart';
 import 'package:fitnessmarketplace/utils/search_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,12 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
   List<RecordedVideo> allVideos;
   List<Trainer> allTrainers;
 
-  List<String> trainingTypes = ['Weight Lifting', 'Cardio', 'Martial Arts'];
+  List<String> trainingTypes = [
+    'Weight Lifting',
+    'Cardio',
+    'Martial Arts',
+    'Running'
+  ];
 
   @override
   void initState() {
@@ -150,7 +155,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: FadeAnimationDown(
-                        1.8,
+                        0.7,
                         Padding(
                           padding:
                               EdgeInsets.symmetric(horizontal: 5, vertical: 15),
@@ -177,7 +182,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                             itemBuilder: (BuildContext context, int i) {
                               Trainer currentTrainer = allTrainers[i];
                               return FadeAnimationDown(
-                                0.5,
+                                0.7,
                                 makeTrending(givenTrainer: currentTrainer),
                               );
                             },
@@ -217,7 +222,10 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                     image:
                                         'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
                                     name: allVideos[i].name,
-                                    date: Timestamp.fromMillisecondsSinceEpoch(allVideos[i].date).toDate().toString(),
+                                    date: Timestamp.fromMillisecondsSinceEpoch(
+                                            allVideos[i].date)
+                                        .toDate()
+                                        .toString(),
                                     people: "No limit"),
                               );
                             }))
