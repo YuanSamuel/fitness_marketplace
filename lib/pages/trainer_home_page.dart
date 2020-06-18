@@ -207,15 +207,20 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  privateSessions[i].available
-                                      ? 'Open Session'
-                                      : 'Private Session with: ' +
-                                          privateSessions[i].studentName,
-                                  style: TextStyle(
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white),
+                                Container(
+                                  width: 7 * MediaQuery.of(context).size.width / 10,
+                                  height: 40,
+                                  child:  Text(
+                                    privateSessions[i].available
+                                        ? 'Open Session'
+                                        : 'Private Session with: ' +
+                                        privateSessions[i].studentName,
+                                    overflow: TextOverflow.fade,
+                                    style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white),
+                                  ),
                                 ),
                                 SizedBox(
                                   height: 10.0,

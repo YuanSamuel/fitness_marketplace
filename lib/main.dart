@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/register': (BuildContext context) => Register(),
       },
-      home: Register(),
+      home: RootPage(),
     );
   }
 }
