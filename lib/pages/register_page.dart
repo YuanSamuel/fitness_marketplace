@@ -84,6 +84,7 @@ class _RegisterState extends State<Register> {
                       email: _emailInputController.text,
                       password: _passwordInputController.text)
                   .then((currentUser) async {
+                    userid = currentUser.user.uid;
                 if (_isTrainer) {
                   await Firestore.instance
                       .collection('users')
@@ -97,8 +98,12 @@ class _RegisterState extends State<Register> {
                     'lastName': _lastNameInputController.text,
                     'uid': currentUser.user.uid,
                     'email': _emailInputController.text,
+                    'description': '',
                     'trainingTypes': new List<String>(),
                     'rating': 0.0,
+                    'videoPrice': 0.0,
+                    'livePrice': 0.0,
+                    'oneOnOnePrice': 0.0
                   });
                   Navigator.push(
                     context,
