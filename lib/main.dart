@@ -1,3 +1,4 @@
+import 'package:fitnessmarketplace/pages/add_new_screen.dart';
 import 'package:fitnessmarketplace/pages/entry_page.dart';
 import 'package:fitnessmarketplace/pages/student_home_screen.dart';
 import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
@@ -24,7 +25,10 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       debugShowCheckedModeBanner: false,
-      home: EntryPage(),
+      routes: {
+        '/register': (BuildContext context) => Register(),
+      },
+      home: AddNewRecording(),
     );
   }
 }
@@ -39,28 +43,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Column(
-        children: [
-          RaisedButton(
-            child: Text('User'),
-          ),
-          RaisedButton(
-            child: Text('Trainer'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => TrainerHomePage()),
-              );
-            },
-          ),
-        ],
-      ));
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: Column(
+          children: [
+            RaisedButton(
+              child: Text('User'),
+            ),
+            RaisedButton(
+              child: Text('Trainer'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TrainerHomePage()),
+                );
+              },
+            ),
+          ],
+        ));
   }
 }
