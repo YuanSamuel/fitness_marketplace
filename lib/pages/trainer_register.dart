@@ -16,13 +16,13 @@ class _TrainerRegisterState extends State<TrainerRegister> {
 
   Trainer currentTrainer;
 
-  TypeOfExercise(String type){
+  TypeOfExercise(String type) {
     return Container(
       height: 30,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-        color: Colors.black12,
-        border: Border.all(color: Colors.grey)
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+          color: Colors.black12,
+          border: Border.all(color: Colors.grey)
       ),
       child: FlatButton(
         child: Padding(
@@ -56,14 +56,15 @@ class _TrainerRegisterState extends State<TrainerRegister> {
 
   void getCurrentTrainer() async {
     FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
-    DocumentSnapshot trainerData = await Firestore.instance.collection('trainers').document(getUser.uid).get();
+    DocumentSnapshot trainerData = await Firestore.instance.collection(
+        'trainers').document(getUser.uid).get();
     currentTrainer = Trainer.fromSnapshot(trainerData);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    if(currentTrainer==null){
+    if (currentTrainer == null) {
       TrainerRegister();
       return Scaffold(
         backgroundColor: Colors.white,
@@ -76,7 +77,7 @@ class _TrainerRegisterState extends State<TrainerRegister> {
         ),
       );
     }
-    else{
+    else {
       _type = currentTrainer.trainingTypes;
       return Scaffold(
         appBar: AppBar(
@@ -99,110 +100,124 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                             TextField(
                               controller: _desc,
                               decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(top: -20),
-                                hintText: 'Tell us about yourself',
-                                border: InputBorder.none
+                                  contentPadding: EdgeInsets.only(top: -20),
+                                  hintText: 'Tell us about yourself',
+                                  border: InputBorder.none
+                              ),
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
                             ),
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                          ),
+                          ],
+                          scrollDirection: Axis.vertical,
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 3,
+                          color: Colors.blue,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                    ),
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width - 20,
+                    height: 400,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    height: 30,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: ListView(
+                        children: [
+                          for(int i = 0; i < _type.length; i++)
+                            Padding(
+                              padding: EdgeInsets.only(right: 10),
+                              child: TypeOfExercise(_type[i]),
+                            ),
                         ],
-                        scrollDirection: Axis.vertical,
+                        scrollDirection: Axis.horizontal,
                       ),
                     ),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 3,
-                        color: Colors.blue,
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
                   ),
-                  width: MediaQuery.of(context).size.width-20,
-                  height: 400,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: 30,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: ListView(
-                      children: [
-                        for(int i=0;i<_type.length;i++)
-                          Padding(
-                            padding: EdgeInsets.only(right: 10),
-                            child: TypeOfExercise(_type[i]),
-                          ),
-                      ],
-                      scrollDirection: Axis.horizontal,
-                    ),
+                  Container(
+                    height: 5,
                   ),
-                ),
-                Container(
-                  height: 5,
-                ),
-                FlatButton(
-                  color: Colors.blue,
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (_) => Scaffold(
-                          body: SelectDialog(
-                            itemsList: ['Running', 'Martial Arts', 'Cardio', 'Weight Lifting'],
-                            onChange: (String selected) {
-                              setState(() {
-                                bool hasSelected = false;
-                                for(int i=0;i<_type.length;i++){
-                                  if(selected==_type[i]){
-                                    hasSelected = true;
-                                  }
-                                }
-                                if(!hasSelected){
-                                  _type.add(selected);
-                                }
-                              });
-                            },
-                          ),
-                        )
-                    );
-                  },
-                  child: Text('Select Type of Exercise'),
-                ),
-                FlatButton(
-                  color: Colors.blue,
-                  child: Text('Continue'),
-                  onPressed: () async {
-                    final _user = await FirebaseAuth.instance.currentUser();
-                    String _uid = _user.uid;
-                    if(_type!=null&&_desc!=null) {
-                      if(_desc.text==''||_desc.text==null){
-                        _desc = TextEditingController(text: currentTrainer.description);
+                  FlatButton(
+                    color: Colors.blue,
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (_) =>
+                              Scaffold(
+                                body: SelectDialog(
+                                  itemsList: [
+                                    'Running',
+                                    'Martial Arts',
+                                    'Cardio',
+                                    'Weight Lifting'
+                                  ],
+                                  onChange: (String selected) {
+                                    setState(() {
+                                      bool hasSelected = false;
+                                      for (int i = 0; i < _type.length; i++) {
+                                        if (selected == _type[i]) {
+                                          hasSelected = true;
+                                        }
+                                      }
+                                      if (!hasSelected) {
+                                        _type.add(selected);
+                                      }
+                                    });
+                                  },
+                                ),
+                              )
+                      );
+                    },
+                    child: Text('Select Type of Exercise'),
+                  ),
+                  FlatButton(
+                    color: Colors.blue,
+                    child: Text('Continue'),
+                    onPressed: () async {
+                      final _user = await FirebaseAuth.instance.currentUser();
+                      String _uid = _user.uid;
+                      if (_type != null && _desc != null) {
+                        if (_desc.text == '' || _desc.text == null) {
+                          _desc = TextEditingController(text: currentTrainer
+                              .description);
+                        }
+                        Firestore.instance.collection('trainers')
+                            .document(_uid)
+                            .setData({
+                          'trainingTypes': _type,
+                          'rating': 0,
+                          'description': _desc.text,
+                        }, merge: true);
+                        if (currentTrainer.description != '') {
+                          Navigator.pop(context);
+                        }
+                        else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>
+                                PricePage()),
+                          );
+                        }
                       }
-                      Firestore.instance.collection('trainers').document(_uid).setData({
-                        'trainingTypes': _type,
-                        'rating': 0,
-                        'description': _desc.text,
-                      },merge: true);
-                      if(currentTrainer.description!=''){
-                        Navigator.pop(context);
-                      }
-                      else{
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => PricePage()),
-                        );
-                      }
-                    }
-                  },
-                )
-              ],
+                    },
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
-        scrollDirection: Axis.vertical,
-      ),
-    );
+          ],
+          scrollDirection: Axis.vertical,
+        ),
+      );
+    }
   }
 }
