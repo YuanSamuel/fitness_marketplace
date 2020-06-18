@@ -45,6 +45,16 @@ dependencies:
   intro_slider: ^2.3.1
   liquid_swipe: ^1.4.3
   avatar_glow: ^1.2.0
+  flutter_ffmpeg: ^0.2.10
+  filesize: ^1.0.4
+  path_provider: ^1.6.10
+  flutter_dotenv: ^2.0.3
+  transparent_image: ^1.0.0
+  timeago: ^2.0.21
+  flutter_video_compress: ^0.3.7
+  flutter_rating_bar:
+  validators:
+  flutter_datetime_picker: ^1.3.8
 
 dev_dependencies:
   flutter_test:

@@ -1,8 +1,6 @@
 ***REMOVED***
 import 'package:fitnessmarketplace/pages/register_page.dart';
 import 'package:fitnessmarketplace/pages/root_page.dart';
-import 'package:fitnessmarketplace/pages/trainer_navigation.dart';
-import 'package:fitnessmarketplace/pages/user_navigation.dart';
 ***REMOVED***
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 
@@ -24,7 +22,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/register': (BuildContext context) => Register(),
       ***REMOVED***,
-      home: RootPage(),
+      home: Register(),
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***

@@ -71,6 +71,9 @@ class _ProfilePicState extends State<ProfilePic> {
 
 ***REMOVED***
 ***REMOVED***
+
+    PickedFile image = new PickedFile('');
+
     if (currentUser == null) {
   ***REMOVED***
         body: Center(
@@ -81,38 +84,51 @@ class _ProfilePicState extends State<ProfilePic> {
   ***REMOVED***
         body: Column(
           children: [
-            Text('Choose a picture!'),
+            SizedBox(
+              height: 70,
+***REMOVED***
+            Text('Choose a Profile Picture', style: TextStyle(fontSize: 30),),
+            Image.asset(image.path),
+            SizedBox(
+              height: 100,
+***REMOVED***
+            Center(
+              child: IconButton(
+                  icon: Icon(Icons.add_a_photo),
+                  iconSize: 100,
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) => Scaffold(
+                            body: SizedBox(
+                                width: MediaQuery.of(context).size.width - 10,
+                      ***REMOVED***
+                      ***REMOVED***
+                                    FlatButton(
+                  ***REMOVED***'From Camera'),
+                                      onPressed: () async {
+                                        image = await _picker.getImage(
+                                            source: ImageSource.camera, imageQuality: 50);
+                                        Upload(File(image.path));
+                                        ProfilePic();
+                                      ***REMOVED***,
+                      ***REMOVED***,
+                                    FlatButton(
+                  ***REMOVED***'From Device'),
+                                      onPressed: () async {
+                                        PickedFile image = await _picker.getImage(
+                                            source: ImageSource.gallery, imageQuality: 50);
+                                        Upload(File(image.path));
+                                        ProfilePic();
+                                      ***REMOVED***,
+                      ***REMOVED***,
+                  ***REMOVED***
+                  ***REMOVED***)));
+                  ***REMOVED***
+***REMOVED***,
+            )
           ],
 ***REMOVED***
-        floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add_a_photo),
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (_) => Scaffold(
-                      body: SizedBox(
-                          width: MediaQuery.of(context).size.width - 10,
-                ***REMOVED***
-                ***REMOVED***
-                              FlatButton(
-            ***REMOVED***'From Camera'),
-                                onPressed: () async {
-                                  PickedFile image = await _picker.getImage(
-                                      source: ImageSource.camera);
-                                  Upload(File(image.path));
-                                ***REMOVED***,
-                ***REMOVED***,
-                              FlatButton(
-            ***REMOVED***'From Device'),
-                                onPressed: () async {
-                                  PickedFile image = await _picker.getImage(
-                                      source: ImageSource.gallery);
-                                  Upload(File(image.path));
-                                ***REMOVED***,
-                ***REMOVED***,
-            ***REMOVED***
-            ***REMOVED***)));
-            ***REMOVED***),
   ***REMOVED***
     ***REMOVED***
   ***REMOVED***
