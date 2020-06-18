@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:square_in_app_payments/models.dart';
 import 'package:square_in_app_payments/in_app_payments.dart';
@@ -12,7 +11,7 @@ import 'package:square_in_app_payments/in_app_payments.dart';
 
  class _PaymentPageState extends State<PaymentPage>{
 
-   void_pay(){
+   void _pay(){
      InAppPayments.setSquareApplicationId('***REMOVED***');
      InAppPayments.startCardEntryFlow(
        onCardNonceRequestSuccess: _onCardNonceRequestSuccess,
