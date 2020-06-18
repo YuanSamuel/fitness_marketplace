@@ -414,7 +414,11 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                   child: OutlineButton(
                     child: Text('Register'),
                     borderSide: BorderSide(color: Colors.red),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => SessionPreview(
+                        image: image,
+                      )));
+                    },
                     highlightedBorderColor: Colors.red,
                     splashColor: Colors.redAccent.withOpacity(0.5),
                     color: Colors.red,
