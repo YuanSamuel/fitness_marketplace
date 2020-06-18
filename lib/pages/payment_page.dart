@@ -1,4 +1,3 @@
-
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
@@ -12,7 +11,7 @@
 
  class _PaymentPageState extends State<PaymentPage>{
 
-   void_pay(){
+ ***REMOVED***
  ***REMOVED***
  ***REMOVED***
  ***REMOVED***

@@ -39,8 +39,8 @@ class _LoginWidgetState extends State<LoginWidget> {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
         child: Container(
-            height: double.infinity,
-            width: double.infinity,
+            //height: double.infinity,
+            //width: double.infinity,
 ***REMOVED***
 
 ***REMOVED***
@@ -51,7 +51,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         ***REMOVED***
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
     ***REMOVED***
-        ***REMOVED***
+                      /*Row(
         ***REMOVED***
                           IconButton(
                             icon: Icon(Icons.arrow_back_ios
@@ -71,7 +71,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               ***REMOVED***,
             ***REMOVED***,
         ***REMOVED***
-        ***REMOVED***,
+        ***REMOVED***,*/
                       Column(
 
         ***REMOVED***

@@ -1,46 +1,38 @@
 ***REMOVED***
 ***REMOVED***
-import 'package:fitnessmarketplace/apis/firebase_provider.dart';
-import 'package:fitnessmarketplace/helpers/calendar_helper.dart';
 import 'package:fitnessmarketplace/helpers/string_helper.dart';
+import 'package:fitnessmarketplace/helpers/calendar_helper.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
-***REMOVED***
-import 'package:fitnessmarketplace/pages/add_new_screen.dart';
-import 'package:fitnessmarketplace/pages/add_session_page.dart';
+import 'package:fitnessmarketplace/models/RecordedVideo.dart';
 ***REMOVED***
 ***REMOVED***
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
-***REMOVED***
-import 'package:fitnessmarketplace/models/RecordedVideo.dart';
+import 'package:fitnessmarketplace/models/Student.dart';
 
-class TrainerHomePage extends StatefulWidget {
+class UserHomePage extends StatefulWidget {
 ***REMOVED***
-  _TrainerHomePageState createState() => _TrainerHomePageState();
+  _UserHomePageState createState() => _UserHomePageState();
 ***REMOVED***
 
-class _TrainerHomePageState extends State<TrainerHomePage> {
-  CalendarController _calendarController;
-  Trainer currentTrainer;
-  List<RecordedVideo> trainerVideos;
+class _UserHomePageState extends State<UserHomePage> {
+  Student currentStudent;
   List<PrivateSession> allPrivateSessions;
-  List<dynamic> privateSessions;
-  List<VideoInfo> _videos = <VideoInfo>[];
+  List<dynamic> selectedPrivateSessions;
+  List<RecordedVideo> recordedVideos;
   DateTime selectedDate;
 
-  StringHelper _stringHelper = new StringHelper();
-  CalendarHelper _calendarHelper = new CalendarHelper();
+  CalendarController _calendarController;
+
+  StringHelper _stringHelper;
+  CalendarHelper _calendarHelper;
 
 ***REMOVED***
 ***REMOVED***
-    FirebaseProvider.listenToVideos((newVideos) {
-***REMOVED***
-        _videos = newVideos;
-      ***REMOVED***);
-    ***REMOVED***);
-    selectedDate = DateTime.now();
     _calendarController = CalendarController();
-    setUp();
+    _calendarHelper = new CalendarHelper();
+    _stringHelper = new StringHelper();
+    getCurrentStudent();
 ***REMOVED***
   ***REMOVED***
 
@@ -50,56 +42,55 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
     super.dispose();
   ***REMOVED***
 
-  setUp() async {
-    trainerVideos = new List<RecordedVideo>();
-    allPrivateSessions = new List<PrivateSession>();
-    privateSessions = new List<PrivateSession>();
-
+  void getCurrentStudent() async {
     FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
     DocumentSnapshot userData = await Firestore.instance
-        .collection('trainers')
+        .collection('students')
         .document(getUser.uid)
         .get();
-    currentTrainer = Trainer.fromSnapshot(userData);
-
+    currentStudent = Student.fromSnapshot(userData);
     await getPrivateSessions();
-    await getVideos();
-
+    await getRecordedVideos();
     setState(() {***REMOVED***);
   ***REMOVED***
 
-  getVideos() async {
-    QuerySnapshot getVideos =
-        await currentTrainer.reference.collection('videos').getDocuments();
-    List<DocumentSnapshot> allVideos = getVideos.documents;
-    for (int i = 0; i < allVideos.length; i++) {
-      trainerVideos.add(RecordedVideo.fromSnapshot(allVideos[i]));
-    ***REMOVED***
-  ***REMOVED***
-
-  getPrivateSessions() async {
+  Future<void> getPrivateSessions() async {
     allPrivateSessions = new List<PrivateSession>();
-    QuerySnapshot getPrivateSessions = await currentTrainer.reference
+    selectedPrivateSessions = new List<PrivateSession>();
+    QuerySnapshot queryPrivateLessons = await currentStudent.reference
         .collection('privateSessions')
         .getDocuments();
-    List<DocumentSnapshot> allPrivateSessionDocuments =
-        getPrivateSessions.documents;
-    for (int i = 0; i < allPrivateSessionDocuments.length; i++) {
-      allPrivateSessions
-          .add(PrivateSession.fromSnapshot(allPrivateSessionDocuments[i]));
+    List<DocumentSnapshot> holdPrivateSessions = queryPrivateLessons.documents;
+    for (int i = 0; i < holdPrivateSessions.length; i++) {
+      PrivateSession currentPrivateSession =
+          PrivateSession.fromSnapshot(holdPrivateSessions[i]);
+      allPrivateSessions.add(currentPrivateSession);
     ***REMOVED***
+    return;
+  ***REMOVED***
+
+  Future<void> getRecordedVideos() async {
+    recordedVideos = new List<RecordedVideo>();
+    QuerySnapshot allRecordedVideos =
+        await currentStudent.reference.collection('videos').getDocuments();
+    List<DocumentSnapshot> videos = allRecordedVideos.documents;
+    for (int i = 0; i < videos.length; i++) {
+      RecordedVideo currentVideo = RecordedVideo.fromSnapshot(videos[i]);
+      recordedVideos.add(currentVideo);
+    ***REMOVED***
+    return;
   ***REMOVED***
 
 ***REMOVED***
 ***REMOVED***
-    if (currentTrainer == null) {
-      TrainerHomePage();
+    if (currentStudent == null) {
   ***REMOVED***
         body: Center(
           child: CircularProgressIndicator(),
 ***REMOVED***
   ***REMOVED***
     ***REMOVED*** else {
+      print(allPrivateSessions);
   ***REMOVED***
   ***REMOVED***
 ***REMOVED***
@@ -113,7 +104,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                   child: Row(
         ***REMOVED***
 ***REMOVED***
-                        'Trainer: ' + currentTrainer.firstName,
+                        'Student: ' + currentStudent.firstName,
     ***REMOVED***
                             fontSize: 30.0, fontWeight: FontWeight.w600),
         ***REMOVED***,
@@ -141,43 +132,27 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
 ***REMOVED***,
               Padding(
                 padding: const EdgeInsets.only(left: 15.0),
-                child: Row(
-      ***REMOVED***
-                    Text(
-                      'Private Sessions',
-  ***REMOVED***
-                          fontSize: 25.0, fontWeight: FontWeight.bold),
-      ***REMOVED***,
-                    Spacer(),
-                    IconButton(
-                      icon: Icon(Icons.add),
-                      onPressed: () async {
-                        await Navigator.push(
-***REMOVED***
-***REMOVED***
-                              builder: (context) => AddSessionPage(
-                                    chosenDate: selectedDate,
-                                    currentTrainer: currentTrainer,
-                    ***REMOVED***),
-                    ***REMOVED***
-                        await getPrivateSessions();
-                  ***REMOVED******REMOVED***);
-                      ***REMOVED***,
-      ***REMOVED***
-  ***REMOVED***
+                child: Text(
+                  'Upcoming Sessions',
+***REMOVED***fontSize: 25.0, fontWeight: FontWeight.bold),
   ***REMOVED***,
 ***REMOVED***,
               Container(
                 height: 250.0,
                 child: ListView.builder(
-                  itemCount: privateSessions.length,
+                  itemCount: selectedPrivateSessions.length,
                   itemBuilder: (BuildContext context, int i) {
                     DateTime privateSessionDate =
                         DateTime.fromMillisecondsSinceEpoch(
-                                privateSessions[i].date)
-                            .toLocal();
-                    String privateSessionLength =
-                        getLengthFromInt(privateSessions[i].length);
+                            selectedPrivateSessions[i].date);
+                    DateTime localPrivateSessionDate =
+                        privateSessionDate.toLocal();
+                    String privateSessionDateString = _stringHelper
+                        .dateTimeToDateString(localPrivateSessionDate);
+                    String privateSessionTimeString = _stringHelper
+                        .dateTimeToTimeString(localPrivateSessionDate);
+                    String privateSessionLengthString =
+                        getLengthFromInt(selectedPrivateSessions[i].length);
 
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -185,9 +160,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                         padding: EdgeInsets.symmetric(horizontal: 15.0),
             ***REMOVED***
                           borderRadius: BorderRadius.circular(30.0),
-                          color: privateSessions[i].available
-                              ? Colors.blue
-                              : Color(0xff3B3B3B),
+                          color: Color(0xff3B3B3B),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.5),
@@ -208,10 +181,8 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                   ***REMOVED***
                   ***REMOVED***
           ***REMOVED***
-                                  privateSessions[i].available
-                                      ? 'Open Session'
-                                      : 'Private Session with: ' +
-                                          privateSessions[i].studentName,
+                                  'Lesson with: ' +
+                                      selectedPrivateSessions[i].trainerName,
               ***REMOVED***
                                       fontSize: 20.0,
                                       fontWeight: FontWeight.w600,
@@ -221,7 +192,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                   height: 10.0,
                   ***REMOVED***,
           ***REMOVED***
-                                  privateSessionLength,
+                                  privateSessionLengthString,
               ***REMOVED***
                                       fontSize: 15.0,
                                       fontWeight: FontWeight.w400,
@@ -234,8 +205,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                   ***REMOVED***
           ***REMOVED***
-                                  _stringHelper
-                                      .dateTimeToDateString(privateSessionDate),
+                                  privateSessionDateString,
               ***REMOVED***
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w400,
@@ -245,8 +215,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                   height: 10.0,
                   ***REMOVED***,
           ***REMOVED***
-                                  _stringHelper
-                                      .dateTimeToTimeString(privateSessionDate),
+                                  privateSessionTimeString,
               ***REMOVED***
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w400,
@@ -265,115 +234,50 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                 height: 10.0,
 ***REMOVED***,
               Container(
-                  height: 340.0,
+    ***REMOVED***
+                    color: Colors.white,
+                    border: Border.symmetric(
+                      vertical: BorderSide(width: 0.5, color: Colors.black26),
+      ***REMOVED***),
       ***REMOVED***
-                      color: Colors.white,
-                      border: Border.symmetric(
-                        vertical: BorderSide(width: 0.5, color: Colors.black26),
-        ***REMOVED***),
-        ***REMOVED***
-        ***REMOVED***
-        ***REMOVED***
-***REMOVED***
-                        height: 10.0,
-        ***REMOVED***,
-                      Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                          child: Row(
-                ***REMOVED***
-        ***REMOVED***
-                                'Your Videos',
-            ***REMOVED***
-                                    fontSize: 25.0,
-            ***REMOVED***
-                ***REMOVED***,
-                              Spacer(),
-        ***REMOVED***
-                                'See All',
-            ***REMOVED***
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black26),
-                ***REMOVED***,
-            ***REMOVED***
-            ***REMOVED***),
-                      Container(
-***REMOVED***
-                        height: 300.0,
-                        child: ListView.builder(
-                          itemCount: trainerVideos.length + 1,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (BuildContext context, int i) {
-                            if (i == 0) {
-                              return Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    print('tapped');
+      ***REMOVED***
+      ***REMOVED***
+      ***REMOVED***
+                      height: 10.0,
+      ***REMOVED***,
+                    Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Row(
               ***REMOVED***
-            ***REMOVED***
-            ***REMOVED***
-                                          builder: (context) =>
-                                              AddNewRecording()),
-                                ***REMOVED***
-                                    //TODO make sessions database implementation
-                                  ***REMOVED***,
-                                  child: Container(
-                                    height: 300.0,
-                                    width: 300.0,
-                                    child: Center(
-                                        child: FlatButton(
-                                      child: Icon(Icons.add),
-                      ***REMOVED***),
-                        ***REMOVED***
-                                      borderRadius: BorderRadius.circular(30.0),
-                                      color: Colors.blue,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 5,
-                                          blurRadius: 7,
-                                          offset: Offset(0,
-                                              3), // changes position of shadow
-                          ***REMOVED***,
-                      ***REMOVED***
-                      ***REMOVED***,
-                    ***REMOVED***,
-                  ***REMOVED***,
-                          ***REMOVED***
-                            ***REMOVED***
-                            return Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  print('tapped');
-            ***REMOVED***
+      ***REMOVED***
+                              'Your Videos',
           ***REMOVED***
+                                  fontSize: 25.0, fontWeight: FontWeight.bold),
+              ***REMOVED***,
+                            Spacer(),
+      ***REMOVED***
+                              'See All',
           ***REMOVED***
-                                        builder: (context) => Player(
-                                              video: _videos[i - 1],
-                              ***REMOVED***),
-                              ***REMOVED***
-                                  //TODO make sessions database implementation
-                                ***REMOVED***,
-                                child: Container(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black26),
+              ***REMOVED***,
+          ***REMOVED***
+          ***REMOVED***),
+                    Container(
+                      color: Colors.white,
+                      height: 300.0,
+                      child: ListView.builder(
+                        itemCount: recordedVideos.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, int i) {
+                          return Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: GestureDetector(
+                              child: Container(
                                   height: 300.0,
                                   width: 300.0,
-                                  child: Center(
-                ***REMOVED***trainerVideos[i - 1].name +
-                                        '  ' +
-                                        Timestamp.fromMillisecondsSinceEpoch(
-                                                trainerVideos[i - 1].date)
-                                            .toDate()
-                                            .toString()),
-                    ***REMOVED***,
                       ***REMOVED***
-                      ***REMOVED***
-                                      image: Image.network(
-                                              trainerVideos[i - 1].videoUrl)
-                                          .image,
-                      ***REMOVED***
-                      ***REMOVED***,
                                     borderRadius: BorderRadius.circular(30.0),
                                     color: Colors.blue,
                                     boxShadow: [
@@ -386,14 +290,29 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                         ***REMOVED***,
                     ***REMOVED***
                     ***REMOVED***,
-                  ***REMOVED***,
-                ***REMOVED***,
-                        ***REMOVED***
-                          ***REMOVED***,
-          ***REMOVED***,
+                                  child: Center(
+                ***REMOVED***recordedVideos[i].name +
+                                        ' ' +
+                                        Timestamp.fromMillisecondsSinceEpoch(
+                                                recordedVideos[i].date)
+                                            .toDate()
+                                            .toString()),
+                    ***REMOVED***),
+                              //TODO set up this so that it works with actual videos / streams
+                              /*onTap: () {
+          ***REMOVED***
         ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***),
+        ***REMOVED***builder: (context) => ShowVideoPage(videoDownloadUrl: recordedVideos[i].videoUrl,)),
+                            ***REMOVED***
+                              ***REMOVED***,*/
+              ***REMOVED***,
+                      ***REMOVED***
+                        ***REMOVED***,
+        ***REMOVED***,
+      ***REMOVED***,
+  ***REMOVED***
+  ***REMOVED***,
+***REMOVED***
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
@@ -410,16 +329,16 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
         onDaySelected: (DateTime date, List<dynamic> events) {
     ***REMOVED***
             selectedDate = date;
-            privateSessions = events;
+            selectedPrivateSessions = events;
           ***REMOVED***);
         ***REMOVED***,
         locale: 'en_US',
+        events: _calendarHelper.privateSessionsToEventMap(allPrivateSessions),
         calendarController: _calendarController,
         initialCalendarFormat: CalendarFormat.month,
         formatAnimation: FormatAnimation.slide,
         startingDayOfWeek: StartingDayOfWeek.sunday,
         availableGestures: AvailableGestures.horizontalSwipe,
-        events: _calendarHelper.privateSessionsToEventMap(allPrivateSessions),
         availableCalendarFormats: const {
           CalendarFormat.month: 'Month',
         ***REMOVED***,
@@ -483,12 +402,12 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
 ***REMOVED***
   ***REMOVED***
 
-  String getLengthFromInt(int length) {
-    String returnLength = '';
+  getLengthFromInt(int length) {
+    String duration = '';
     if (length > 60) {
-      returnLength = returnLength + (length ~/ 60).toString() + ' hours ';
+      duration = duration + (length ~/ 60).toString() + ' hours ';
     ***REMOVED***
-    returnLength = returnLength + (length % 60).toString() + ' minutes';
-    return returnLength;
+    duration = duration + (length % 60).toString() + ' minutes';
+    return duration;
   ***REMOVED***
 ***REMOVED***

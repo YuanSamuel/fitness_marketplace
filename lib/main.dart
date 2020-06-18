@@ -1,3 +1,4 @@
+import 'package:fitnessmarketplace/pages/add_new_screen.dart';
 import 'package:fitnessmarketplace/pages/entry_page.dart';
 import 'package:fitnessmarketplace/pages/student_home_screen.dart';
 import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
@@ -24,7 +25,10 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
 ***REMOVED***
       debugShowCheckedModeBanner: false,
-      home: EntryPage(),
+      routes: {
+        '/register': (BuildContext context) => Register(),
+      ***REMOVED***,
+      home: AddNewRecording(),
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***
@@ -39,28 +43,27 @@ class MyHomePage extends StatefulWidget {
 ***REMOVED***
 
 class _MyHomePageState extends State<MyHomePage> {
-
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-      appBar: AppBar(
-        title: Text(widget.title),
+        appBar: AppBar(
+          title: Text(widget.title),
 ***REMOVED***
-      body: Column(
-        children: [
-          RaisedButton(
-            child: Text('User'),
+        body: Column(
+          children: [
+            RaisedButton(
+              child: Text('User'),
 ***REMOVED***
-          RaisedButton(
-            child: Text('Trainer'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => TrainerHomePage()),
-          ***REMOVED***
-            ***REMOVED***,
+            RaisedButton(
+              child: Text('Trainer'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TrainerHomePage()),
+            ***REMOVED***
+              ***REMOVED***,
 ***REMOVED***
-        ],
-      ));
+          ],
+        ));
   ***REMOVED***
 ***REMOVED***
