@@ -4,6 +4,7 @@ import 'package:fitnessmarketplace/apis/firebase_provider.dart';
 ***REMOVED***
 import 'package:fitnessmarketplace/pages/trainer_navigation.dart';
 import 'package:fitnessmarketplace/utils/style_constants.dart';
+import 'package:fitnessmarketplace/widgets/customslider_widget.dart';
 ***REMOVED***
 ***REMOVED***
 
@@ -58,12 +59,14 @@ class _AddNewRecordingState extends State<AddNewRecording> {
   ***REMOVED***
 
   static saveStream(
-      String title, String description, String minutes, int date) async {
+      String title, String description, double minutes, int date, double price) async {
     await Firestore.instance.collection('streams').document().setData({
       'minutes': minutes,
       'description': description,
       'date': date,
-      'title': title
+      'title': title,
+      'price':price
+
     ***REMOVED***);
 
 ***REMOVED***
@@ -78,17 +81,24 @@ class _AddNewRecordingState extends State<AddNewRecording> {
       'minutes': minutes,
       'description': description,
       'date': date,
-      'title': title
+      'title': title,
+      'price':price
     ***REMOVED***);
   ***REMOVED***
 
+  double time = 0;
+  double price = 0;
+
   Future addSession(BuildContext context) async {
+    print("ATTEMPTED");
     if (dropdownValue == "LiveStream") {
       await saveStream(
           namecontroller.text.toString(),
           descriptcontroller.text.toString(),
-          minscontrolller.text.toString(),
-          date);
+          time*105+5,
+          date,
+          price*95+5
+      ***REMOVED***
     ***REMOVED*** else {
       await _takeVideo();
     ***REMOVED***
@@ -98,110 +108,64 @@ class _AddNewRecordingState extends State<AddNewRecording> {
 ***REMOVED***
   ***REMOVED***
 
+  double _duration = 5.0;
+
 ***REMOVED***
 ***REMOVED***
+
+
 ***REMOVED***
-      body: _processing
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : Container(
-  ***REMOVED***
-                  gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Colors.black, Colors.black87])),
-    ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***height: 40),
-    ***REMOVED***
-                    mainAxisAlignment: MainAxisAlignment.start,
-        ***REMOVED***
-***REMOVED***width: 10),
-                      IconButton(
-      ***REMOVED******REMOVED***,
-                          icon: Icon(
-                            Icons.arrow_back,
-    ***REMOVED***
-                            size: 30,
-            ***REMOVED***),
-***REMOVED***width: 20),
 ***REMOVED***
-                        "Add a new session",
+        child: _processing
+            ? Center(
+                child: CircularProgressIndicator(),
+***REMOVED***
+            : Column(
+          children: [
+            Container(
+                //height: MediaQuery.of(context).size.height,
+                height: 1100,
     ***REMOVED***
-    ***REMOVED***
-                            fontStyle: FontStyle.italic,
-                            fontSize: 32),
-        ***REMOVED***,
-    ***REMOVED***
-    ***REMOVED***,
-    ***REMOVED***height: 20),
-                  Container(
-        ***REMOVED***
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                      color: Colors.grey[700],
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black,
-                          blurRadius: 2.0,
-                          spreadRadius: 10.0,
-                          offset: Offset(
-                              2.0, 2.0), // shadow direction: bottom right
-          ***REMOVED***
+                    gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [Colors.black, Colors.black87])),
       ***REMOVED***
-      ***REMOVED***,
-                    height: 500,
-                    width: 300,
-          ***REMOVED***
-          ***REMOVED***
-          ***REMOVED***
-                          mainAxisAlignment: MainAxisAlignment.center,
-              ***REMOVED***
-      ***REMOVED***
-                              "Session Type:",
-          ***REMOVED***
-          ***REMOVED***
-                                  fontStyle: FontStyle.italic),
-              ***REMOVED***,
-      ***REMOVED***width: 20),
-                            DropdownButton<String>(
-                              dropdownColor: Colors.grey,
-                              value: dropdownValue,
+        ***REMOVED***
+***REMOVED***height: 40),
+        ***REMOVED***
+                        mainAxisAlignment: MainAxisAlignment.start,
+            ***REMOVED***
+    ***REMOVED***width: 10),
+                          IconButton(
+          ***REMOVED******REMOVED***,
                               icon: Icon(
-                                Icons.arrow_downward,
-                                color: Colors.black,
-                ***REMOVED***,
-                              iconSize: 24,
-                              elevation: 16,
-          ***REMOVED***color: Colors.black),
-                              underline: Container(
-                                height: 2,
-                                color: Colors.black,
-                ***REMOVED***,
-                              onChanged: (String newValue) {
-                          ***REMOVED***
-                                  dropdownValue = newValue;
-                                ***REMOVED***);
-                              ***REMOVED***,
-                              items: <String>[
-                                'LiveStream',
-                                'Video Recording'
-                              ].map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-              ***REMOVED***value),
-                            ***REMOVED***
-                              ***REMOVED***).toList(),
-              ***REMOVED***,
-          ***REMOVED***
-          ***REMOVED***,
-                        Container(
-                            height:
-                                MediaQuery.of(context).copyWith().size.height /
-                                    6,
-                ***REMOVED***
+                                Icons.arrow_back,
+        ***REMOVED***
+                                size: 30,
+                ***REMOVED***),
+    ***REMOVED***width: 20),
+    ***REMOVED***
+                            "Add a new session",
+        ***REMOVED***
+        ***REMOVED***
+                                fontWeight: FontWeight.w600,
+                                fontSize: 32),
+            ***REMOVED***,
+        ***REMOVED***
+        ***REMOVED***,
+***REMOVED***height: 20.0,),
+                      Container(
+                          height:
+                          MediaQuery.of(context).copyWith().size.height /
+                              6,
+                          width: 325.0,
+              ***REMOVED***
   ***REMOVED***
-              ***REMOVED***,
+                              borderRadius: BorderRadius.circular(30.0)
+            ***REMOVED***,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(30.0),
                             child: CupertinoDatePicker(
                               backgroundColor: Colors.white,
                               initialDateTime: DateTime.now(),
@@ -212,97 +176,247 @@ class _AddNewRecordingState extends State<AddNewRecording> {
                               maximumYear: 2030,
                               minuteInterval: 1,
                               mode: CupertinoDatePickerMode.dateAndTime,
-              ***REMOVED***),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          decoration: StyleConstants.loginBoxDecorationStyle,
-                          height: 60.0,
-                          child: TextFormField(
-                            controller: namecontroller,
-                            keyboardType: TextInputType.text,
-        ***REMOVED***
-                              color: Colors.black,
-                              fontFamily: 'OpenSans',
               ***REMOVED***,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.only(top: 14.0),
-                              hintText: 'Enter the session title',
-                              hintStyle: StyleConstants.loginHintTextStyle,
-              ***REMOVED***,
-            ***REMOVED***,
-          ***REMOVED***,
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          decoration: StyleConstants.loginBoxDecorationStyle,
-                          height: 60.0,
-                          child: TextFormField(
-                            controller: descriptcontroller,
-                            keyboardType: TextInputType.text,
-        ***REMOVED***
-                              color: Colors.black,
-                              fontFamily: 'OpenSans',
-              ***REMOVED***,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.only(top: 14.0),
-                              hintText: 'Enter the session description',
-                              hintStyle: StyleConstants.loginHintTextStyle,
-              ***REMOVED***,
-            ***REMOVED***,
-          ***REMOVED***,
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          decoration: StyleConstants.loginBoxDecorationStyle,
-                          height: 60.0,
-                          child: TextFormField(
-                            controller: minscontrolller,
-                            keyboardType: TextInputType.number,
-        ***REMOVED***
-                              color: Colors.black,
-                              fontFamily: 'OpenSans',
-              ***REMOVED***,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.only(top: 14.0),
-                              hintText:
-                                  'Roughly how many minutes will it last?',
-                              hintStyle: StyleConstants.loginHintTextStyle,
-              ***REMOVED***,
-            ***REMOVED***,
-          ***REMOVED***,
-      ***REMOVED***
-      ***REMOVED***,
-    ***REMOVED***,
-    ***REMOVED***height: 40),
+            ***REMOVED***
+        ***REMOVED***,
+***REMOVED***height: 20.0,),
+                      Expanded(
+                        child: Container(
+                          width: double.infinity,
+              ***REMOVED***
     ***REMOVED***
-                    height: 60,
-                    width: 120,
-                    child: FloatingActionButton(
-                      elevation: 20,
-                      child: Container(
-                        child: dropdownValue == "Video Recording"
-                            ? Text(
-                                "Continue",
-            ***REMOVED***fontSize: 18),
-                ***REMOVED***
-                            : Text(
-                                "Submit",
-            ***REMOVED***fontSize: 18),
-                ***REMOVED***,
-        ***REMOVED***,
-                      backgroundColor: Colors.black,
-  ***REMOVED***
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-        ***REMOVED***,
-  ***REMOVED***
-                        addSession(context);
+                            borderRadius: BorderRadius.only(topLeft: Radius.circular(50.0), topRight: Radius.circular(50.0)),
+            ***REMOVED***,
+                  ***REMOVED***
+                            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                  ***REMOVED***
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                  ***REMOVED***
+          ***REMOVED***height: 30.0,),
+                  ***REMOVED***
+                      ***REMOVED***
+              ***REMOVED***'Session Type', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),),
+                                    Spacer(),
+                  ***REMOVED***
+                  ***REMOVED***,
+          ***REMOVED***height: 15.0,),
+                                Container(
+                      ***REMOVED***
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        spreadRadius: 2,
+                                        blurRadius: 2,
+                                        offset: Offset(0, 2), // changes position of shadow
+                        ***REMOVED***,
+                    ***REMOVED***
+            ***REMOVED***
+                                    borderRadius: BorderRadius.circular(15.0),
+                    ***REMOVED***,
+                                  width: 400.0,
+                                  child: Center(
+                                    child: DropdownButton<String>(
+                                      dropdownColor: Colors.white,
+                                      value: dropdownValue,
+                                      icon: Icon(
+                                        Icons.arrow_drop_down,
+                                        color: Colors.black,
+                        ***REMOVED***,
+                                      iconSize: 24,
+                                      elevation: 16,
+                  ***REMOVED***color: Colors.black),
+                                      underline: Container(
+                                        height: 1,
+                                        color: Colors.black,
+                        ***REMOVED***,
+                                      onChanged: (String newValue) {
+                                  ***REMOVED***
+                                          dropdownValue = newValue;
+                                        ***REMOVED***);
+                                      ***REMOVED***,
+                                      items: <String>[
+                                        'LiveStream',
+                                        'Video Recording'
+                                      ].map<DropdownMenuItem<String>>((String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                      ***REMOVED***value, style: TextStyle(fontWeight: FontWeight.w400),),
+                                    ***REMOVED***
+                                      ***REMOVED***).toList(),
                       ***REMOVED***,
-      ***REMOVED***,
-    ***REMOVED***
+                    ***REMOVED***,
+                  ***REMOVED***,
+          ***REMOVED***height: 20.0,),
+                  ***REMOVED***
+                      ***REMOVED***
+              ***REMOVED***'Session Title', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),),
+                                    Spacer(),
+                  ***REMOVED***
+                  ***REMOVED***,
+          ***REMOVED***height: 15.0,),
+                                Container(
+                      ***REMOVED***
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        spreadRadius: 2,
+                                        blurRadius: 2,
+                                        offset: Offset(0, 2), // changes position of shadow
+                        ***REMOVED***,
+                    ***REMOVED***
+            ***REMOVED***
+                                    borderRadius: BorderRadius.circular(15.0),
+                    ***REMOVED***,
+                                  width: 400.0,
+                                  child: Center(
+                                    child: TextFormField(
+                                      controller: namecontroller,
+                                      keyboardType: TextInputType.text,
+                  ***REMOVED***
+                                        color: Colors.black,
+                                        fontFamily: 'OpenSans',
+                        ***REMOVED***,
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        contentPadding: EdgeInsets.only(top: 14.0),
+                                        hintText: 'Enter the session title',
+                                        hintStyle: StyleConstants.loginHintTextStyle,
+                        ***REMOVED***,
+                      ***REMOVED***,
+                    ***REMOVED***,
+                  ***REMOVED***,
+          ***REMOVED***height: 20.0,),
+                  ***REMOVED***
+                      ***REMOVED***
+              ***REMOVED***'Description', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),),
+                                    Spacer(),
+                  ***REMOVED***
+                  ***REMOVED***,
+          ***REMOVED***height: 15.0,),
+                                Container(
+                      ***REMOVED***
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        spreadRadius: 2,
+                                        blurRadius: 2,
+                                        offset: Offset(0, 2), // changes position of shadow
+                        ***REMOVED***,
+                    ***REMOVED***
+            ***REMOVED***
+                                    borderRadius: BorderRadius.circular(15.0),
+                    ***REMOVED***,
+                                  width: 400.0,
+                                  height: 200.0,
+                                  child: Center(
+                                    child: TextFormField(
+                                      controller: descriptcontroller,
+                                      keyboardType: TextInputType.text,
+                  ***REMOVED***
+                                        color: Colors.black,
+                                        fontFamily: 'OpenSans',
+                        ***REMOVED***,
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        contentPadding: EdgeInsets.only(top: 14.0),
+                                        hintText: 'Enter the session description',
+                                        hintStyle: StyleConstants.loginHintTextStyle,
+                        ***REMOVED***,
+                      ***REMOVED***,
+                    ***REMOVED***,
+                  ***REMOVED***,
+
+          ***REMOVED***height: 20.0,),
+                  ***REMOVED***
+                      ***REMOVED***
+              ***REMOVED***'Duration - '+((time*115+5)).toString(), style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),),
+                                    Spacer(),
+                  ***REMOVED***
+                  ***REMOVED***,
+          ***REMOVED***height: 15.0,),
+                                Container(
+                      ***REMOVED***
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        spreadRadius: 2,
+                                        blurRadius: 2,
+                                        offset: Offset(0, 2), // changes position of shadow
+                        ***REMOVED***,
+                    ***REMOVED***
+            ***REMOVED***
+                                    borderRadius: BorderRadius.circular(15.0),
+                    ***REMOVED***,
+                                  width: 400.0,
+                                  child: Center(
+                                    child: Slider(
+                                        value: time,
+                                        onChanged: (value) {
+                                    ***REMOVED***
+                                            time = value;
+                                          ***REMOVED***);
+                                        ***REMOVED***),
+                    ***REMOVED***,
+                  ***REMOVED***,
+
+          ***REMOVED***height: 20.0,),
+                  ***REMOVED***
+                      ***REMOVED***
+              ***REMOVED***'Price - '+ (price*95+5).toString(), style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),),
+                                    Spacer(),
+                  ***REMOVED***
+                  ***REMOVED***,
+          ***REMOVED***height: 15.0,),
+                                Container(
+                      ***REMOVED***
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        spreadRadius: 2,
+                                        blurRadius: 2,
+                                        offset: Offset(0, 2), // changes position of shadow
+                        ***REMOVED***,
+                    ***REMOVED***
+            ***REMOVED***
+                                    borderRadius: BorderRadius.circular(15.0),
+                    ***REMOVED***,
+                                  width: 400.0,
+                                  child: Center(
+                                      child: Slider(
+                                          value: price,
+                                          onChanged: (value) {
+                                      ***REMOVED***
+                                              price = value;
+                                            ***REMOVED***);
+                                          ***REMOVED***),
+                    ***REMOVED***,
+                  ***REMOVED***,
+          ***REMOVED***height: 50.0,),
+                                Container(
+                      ***REMOVED***
+                                    borderRadius: BorderRadius.circular(30.0),
+                                      color: Colors.black
+                    ***REMOVED***,
+                                  child: IconButton(
+                                    color: Colors.black,
+                                    icon: Icon(Icons.check, color: Colors.white,),
+                                    onPressed: (){
+                                      addSession(context);
+                                    ***REMOVED***,
+
+                    ***REMOVED***,
+                  ***REMOVED***
+              ***REMOVED***
+              ***REMOVED***,
+            ***REMOVED***,
+          ***REMOVED***,
+        ***REMOVED***
+                    ]
+  ***REMOVED***
 ***REMOVED***
-***REMOVED***,
-***REMOVED***
+          ],
+        )
+      )
 ***REMOVED***
   ***REMOVED***
 
@@ -456,8 +570,9 @@ class _AddNewRecordingState extends State<AddNewRecording> {
         videoInfo,
         namecontroller.text.toString(),
         descriptcontroller.text.toString(),
-        minscontrolller.text.toString(),
-        date);
+        time*105+5,
+        date,
+        price*95+5);
 
     setState(() {
       _processPhase = '';
