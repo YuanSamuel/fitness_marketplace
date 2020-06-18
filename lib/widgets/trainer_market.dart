@@ -1,6 +1,6 @@
 ***REMOVED***
 ***REMOVED***
-import 'package:fitnessmarketplace/utils/trainer_widget.dart';
+import 'package:fitnessmarketplace/widgets//trainer_widget.dart';
 ***REMOVED***
 
 class TrainerMarket extends StatefulWidget {
@@ -105,7 +105,7 @@ class _TrainerMarketState extends State<TrainerMarket> {
                         height: 5,
         ***REMOVED***,
 ***REMOVED***
-                        "\$ADDTODB each session",
+                        "\$" + trainer.livePrice.toString(),
     ***REMOVED***color: Colors.white, fontSize: 15),
         ***REMOVED***
     ***REMOVED***
