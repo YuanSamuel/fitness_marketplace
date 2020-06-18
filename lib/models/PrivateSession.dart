@@ -2,16 +2,16 @@
 
 class PrivateSession {
   String name;
-  String studentUid;
+  String studentName;
   String trainerName;
   String photoUrl;
   bool available;
   int length;
-  Timestamp date;
+  int date;
 
   DocumentReference reference;
 
-  PrivateSession({this.name, this.studentUid, this.trainerName, this.photoUrl, this.available, this.length, this.date, this.reference***REMOVED***);
+  PrivateSession({this.name, this.studentName, this.trainerName, this.photoUrl, this.available, this.length, this.date, this.reference***REMOVED***);
 
   factory PrivateSession.fromSnapshot(DocumentSnapshot snapshot) {
     PrivateSession newPrivateSession = PrivateSession.fromJson(snapshot.data);
@@ -22,12 +22,12 @@ class PrivateSession {
   factory PrivateSession.fromJson(Map<String, dynamic> json) {
     return PrivateSession(
       name: json['name'] as String,
-      studentUid: json['studentUid'] as String,
+      studentName: json['studentName'] as String,
       trainerName: json['trainerName'] as String,
       photoUrl: json['photoUrl'] as String,
       available: json['available'] as bool,
       length: json['length'] as int,
-      date: json['date'] as Timestamp,
+      date: json['date'] as int,
 ***REMOVED***
   ***REMOVED***
 
@@ -36,7 +36,7 @@ class PrivateSession {
   _PrivateSessionToJson(PrivateSession instance) {
     return <String, dynamic>{
       'name': instance.name,
-      'studentUid': instance.studentUid,
+      'studentName': instance.studentName,
       'trainerName': instance.trainerName,
       'photoUrl': instance.photoUrl,
       'available': instance.available,

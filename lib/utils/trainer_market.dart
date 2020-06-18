@@ -24,7 +24,11 @@ class _TrainerMarketState extends State<TrainerMarket> {
 
   void filterTrainers() {
     trainers = new List<Trainer>();
-    trainers = widget.allTrainers;
+    for (int i = 0; i < widget.allTrainers.length; i++) {
+      if (widget.allTrainers[i].trainingTypes.contains(widget.type)) {
+        trainers.add(widget.allTrainers[i]);
+      ***REMOVED***
+    ***REMOVED***
   ***REMOVED***
 
 ***REMOVED***

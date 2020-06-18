@@ -1,4 +1,5 @@
 ***REMOVED***
+import 'package:fitnessmarketplace/pages/price.dart';
 import 'package:fitnessmarketplace/pages/profile_picture.dart';
 import 'package:fitnessmarketplace/pages/trainer_register.dart';
 ***REMOVED***
@@ -32,7 +33,16 @@ class TrainerProfile extends StatelessWidget {
             onPressed:  () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => (TrainerRegister(userid))),
+                MaterialPageRoute(builder: (context) => (TrainerRegister())),
+          ***REMOVED***
+            ***REMOVED***,
+***REMOVED***
+          RaisedButton(
+            child: Text('Change Price of Your Videos'),
+            onPressed:  () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => (PricePage())),
           ***REMOVED***
             ***REMOVED***,
 ***REMOVED***

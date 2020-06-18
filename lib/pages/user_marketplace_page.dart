@@ -20,7 +20,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
   List<RecordedVideo> allVideos;
   List<Trainer> allTrainers;
 
-  List<String> trainingTypes = ['Weight Lifting', 'Cardio', 'Martial Arts'];
+  List<String> trainingTypes = ['Weight Lifting', 'Cardio', 'Martial Arts', 'Running'];
 
 ***REMOVED***
 ***REMOVED***
@@ -150,7 +150,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: FadeAnimationDown(
-                        1.8,
+                        0.7,
                         Padding(
                           padding:
                               EdgeInsets.symmetric(horizontal: 5, vertical: 15),
@@ -177,7 +177,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                             itemBuilder: (BuildContext context, int i) {
                               Trainer currentTrainer = allTrainers[i];
                               return FadeAnimationDown(
-                                0.5,
+                                0.7,
                                 makeTrending(givenTrainer: currentTrainer),
                           ***REMOVED***
                             ***REMOVED***,
