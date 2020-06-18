@@ -5,13 +5,17 @@ class Trainer {
   String lastName;
   String email;
   String profileUrl;
+  String description;
   double rating;
   List trainingTypes;
+  double videoPrice;
+  double livePrice;
+  double oneOnOnePrice;
 
   DocumentReference reference;
 
   Trainer(
-      {this.firstName, this.lastName, this.email, this.profileUrl, this.rating, this.trainingTypes, this.reference});
+      {this.firstName, this.lastName, this.email, this.profileUrl, this.description, this.rating, this.trainingTypes, this.videoPrice, this.livePrice, this.oneOnOnePrice, this.reference});
 
   factory Trainer.fromSnapshot(DocumentSnapshot snapshot) {
     Trainer newTrainer = Trainer.fromJson(snapshot.data);
@@ -25,8 +29,12 @@ class Trainer {
       lastName: json['lastName'] as String,
       email: json['email'] as String,
       profileUrl: json['profileUrl'] as String,
-      rating: json['rating'] as double,
+      description: json['description'] as String,
+      rating: (json['rating'] + 0.0) as double,
       trainingTypes: json['trainingTypes'] as List,
+      videoPrice: (json['videoPrice'] + 0.0) as double,
+      livePrice: (json['livePrice'] + 0.0) as double,
+      oneOnOnePrice: (json['oneOnOnePrice'] + 0.0) as double,
     );
   }
 
@@ -38,8 +46,12 @@ class Trainer {
       'lastName': instance.lastName,
       'email': instance.email,
       'profileUrl': instance.profileUrl,
+      'description': instance.description,
       'rating': instance.rating,
       'trainingTypes': instance.trainingTypes,
+      'videoPrice': instance.videoPrice,
+      'livePrice': instance.videoPrice,
+      'oneOnOnePrice': instance.oneOnOnePrice,
     };
   }
 }

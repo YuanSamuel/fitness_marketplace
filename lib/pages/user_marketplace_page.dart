@@ -1,14 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
-import 'package:fitnessmarketplace/animations/FadeAnimationUp.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
-import 'package:fitnessmarketplace/utils/trainer.dart';
-import 'package:fitnessmarketplace/utils/cardio_market.dart';
-import 'package:fitnessmarketplace/utils/martial_market.dart';
+import 'package:fitnessmarketplace/utils/trainer_market.dart';
+import 'package:fitnessmarketplace/utils/trainer_widget.dart';
 import 'package:fitnessmarketplace/utils/search_bar.dart';
-import 'package:fitnessmarketplace/utils/weight_market.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fitnessmarketplace/models/Trainer.dart';
 
 class MarketplaceScreen extends StatefulWidget {
   @override
@@ -16,26 +14,52 @@ class MarketplaceScreen extends StatefulWidget {
 }
 
 class _MarketplaceScreenState extends State<MarketplaceScreen> {
-  List<Widget> pages = [WeightMarket(), CardioMarket(), MartialMarket()];
+  List<Widget> pages;
   int pageIndex = 0;
   PageController _pageController = new PageController(initialPage: 0);
   List<RecordedVideo> allVideos;
+  List<Trainer> allTrainers;
+
+  List<String> trainingTypes = ['Weight Lifting', 'Cardio', 'Martial Arts', 'Running'];
 
   @override
   void initState() {
-    getRecordedVideos();
+    setUp();
     super.initState();
+  }
+
+  setUp() async {
+    await getRecordedVideos();
+    await getTrainers();
+    setState(() {});
   }
 
   getRecordedVideos() async {
     allVideos = new List<RecordedVideo>();
     QuerySnapshot allVideosSnapshot =
-        await Firestore.instance.collection('recordedVideos').getDocuments();
+        await Firestore.instance.collection('videos').getDocuments();
     List<DocumentSnapshot> allVideosDocuments = allVideosSnapshot.documents;
     for (int i = 0; i < allVideosDocuments.length; i++) {
       allVideos.add(RecordedVideo.fromSnapshot(allVideosDocuments[i]));
     }
     setState(() {});
+  }
+
+  getTrainers() async {
+    allTrainers = new List<Trainer>();
+    QuerySnapshot trainersSnapshot =
+        await Firestore.instance.collection('trainers').getDocuments();
+    List<DocumentSnapshot> trainersList = trainersSnapshot.documents;
+    for (int i = 0; i < trainersList.length; i++) {
+      allTrainers.add(Trainer.fromSnapshot(trainersList[i]));
+    }
+    pages = new List<Widget>();
+    for (int i = 0; i < trainingTypes.length; i++) {
+      pages.add(TrainerMarket(
+        allTrainers: allTrainers,
+        type: trainingTypes[i],
+      ));
+    }
   }
 
   @override
@@ -73,34 +97,24 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                     Container(
                       height: 50,
                       child: Expanded(
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            FadeAnimationDown(
-                                1,
-                                makeTraining(
-                                    isActive: true,
-                                    title: 'Weight Lifting',
-                                    page: 0)),
-                            FadeAnimationDown(
-                                1.2,
-                                makeTraining(
-                                    isActive: false, title: 'Cardio', page: 1)),
-                            FadeAnimationDown(
-                                1.4,
-                                makeTraining(
-                                    isActive: false,
-                                    title: 'Martial Arts',
-                                    page: 2)),
-                          ],
-                        ),
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: trainingTypes.length,
+                            itemBuilder: (BuildContext context, int i) {
+                              return FadeAnimationDown(
+                                  1 + i * 0.2,
+                                  makeTraining(
+                                      isActive: true,
+                                      title: trainingTypes[i],
+                                      page: i));
+                            }),
                       ),
                     ),
                     FadeAnimationDown(
                         1.6,
                         Padding(
                           padding:
-                          EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 15),
                           child: Text(
                             "Popular Trainers",
                             style: TextStyle(
@@ -118,11 +132,13 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
               ),
               Container(
                 height: MediaQuery.of(context).size.height / 3,
-                child: PageView(
-                  children: pages,
-                  controller: _pageController,
-                  physics: NeverScrollableScrollPhysics(),
-                ),
+                child: pages != null
+                    ? PageView(
+                        children: pages,
+                        controller: _pageController,
+                        physics: NeverScrollableScrollPhysics(),
+                      )
+                    : CircularProgressIndicator(),
               ),
               SizedBox(
                 height: 0,
@@ -134,10 +150,10 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: FadeAnimationDown(
-                        1.8,
+                        0.7,
                         Padding(
                           padding:
-                          EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 15),
                           child: Text(
                             "Trending Trainers",
                             style: TextStyle(
@@ -150,68 +166,23 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                       ),
                     ),
                   )),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Container(
-                  height: 200,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      FadeAnimationDown(
-                        2.8,
-                        makeTrending(
-                            image:
-                            'https://www.keepthefaith.co.uk/wp-content/uploads/2018/08/personal_trainer.jpg',
-                            name: 'Carlton Banks',
-                            category: 'Weight Lifting',
-                            languages: 'English, French',
-                            videoCount: 25,
-                            sessions: 14,
-                            video:
-                            'https://cbsnews1.cbsistatic.com/hub/i/2018/06/01/0e92bb08-8639-465e-a579-d6f4277cbf47/gettyimages-891415940.jpg',
-                            video2:
-                            'http://www.telegraph.co.uk/content/dam/health-fitness/2017/11/09/TELEMMGLPICT000146072663-xlarge_trans_NvBQzQNjv4Bqek9vKm18v_rkIPH9w2GMNtm3NAjPW-2_OvjCiS6COCU.jpeg',
-                            description:
-                            'Carlton integrates his knowledge as a strength and conditioning specialist in designing an individualized, progressive program of cardiovascular, mobility, core, and strength training exercises for his clients based on their fitness goals.'),
-                      ),
-                      FadeAnimationDown(
-                        3.0,
-                        makeTrending(
-                            image:
-                            'https://im.indiatimes.in/content/2017/Sep/fb_blackdoctor_org_1504271935_725x725.png',
-                            name: 'Prasann Singhal',
-                            category: 'Yoga',
-                            languages: 'English, French',
-                            videoCount: 35,
-                            sessions: 5,
-                            video:
-                            'https://cbsnews1.cbsistatic.com/hub/i/2018/06/01/0e92bb08-8639-465e-a579-d6f4277cbf47/gettyimages-891415940.jpg',
-                            video2:
-                            'http://www.telegraph.co.uk/content/dam/health-fitness/2017/11/09/TELEMMGLPICT000146072663-xlarge_trans_NvBQzQNjv4Bqek9vKm18v_rkIPH9w2GMNtm3NAjPW-2_OvjCiS6COCU.jpeg',
-                            description:
-                            'Prasann defines his sessions as simple, challenging, and efficient with an emphasis on proper form and mobility. His favorite client is anyone with a goal and a willingness to work towards it!'),
-                      ),
-                      FadeAnimationDown(
-                        3.2,
-                        makeTrending(
-                            image:
-                            'http://www.gymsguide.com.au/wp-content/uploads/2014/08/Mobile-Personal-Training.jpg',
-                            name: 'Samantha Malfoy',
-                            category: 'Crossfit',
-                            languages: 'English, Russian',
-                            videoCount: 15,
-                            sessions: 12,
-                            video:
-                            'https://cbsnews1.cbsistatic.com/hub/i/2018/06/01/0e92bb08-8639-465e-a579-d6f4277cbf47/gettyimages-891415940.jpg',
-                            video2:
-                            'http://www.telegraph.co.uk/content/dam/health-fitness/2017/11/09/TELEMMGLPICT000146072663-xlarge_trans_NvBQzQNjv4Bqek9vKm18v_rkIPH9w2GMNtm3NAjPW-2_OvjCiS6COCU.jpeg',
-                            description:
-                            'Samantha (or Sam for short) is an ACE Certified Personal Trainer and Group Fitness Instructor. She also holds a specialty certification as a Fitness Nutrition Specialist, Spinning Instructor, and TRX Instructor.'),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              allTrainers != null
+                  ? Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Container(
+                          height: 200,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: allTrainers.length,
+                            itemBuilder: (BuildContext context, int i) {
+                              Trainer currentTrainer = allTrainers[i];
+                              return FadeAnimationDown(
+                                0.7,
+                                makeTrending(givenTrainer: currentTrainer),
+                              );
+                            },
+                          )))
+                  : CircularProgressIndicator(),
               FadeAnimationDown(
                   3.4,
                   Padding(
@@ -220,7 +191,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                       alignment: Alignment.center,
                       child: Padding(
                         padding:
-                        EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+                            EdgeInsets.symmetric(horizontal: 5, vertical: 15),
                         child: Text(
                           "Upcoming Live Sessions",
                           style: TextStyle(
@@ -235,18 +206,21 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: allVideos != null
-                    ? Container(height: 250, child: ListView.builder(
-                    itemCount: allVideos.length,
-                    itemBuilder: (BuildContext context, int i) {
-                      return FadeAnimationDown(
-                        3.4 + i / 10,
-                        liveSession(
-                          image: 'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
-                            name: allVideos[i].name,
-                            date: allVideos[i].date.toDate().toString(),
-                            people: allVideos[i].students),
-                      );
-                    }))
+                    ? Container(
+                        height: 250,
+                        child: ListView.builder(
+                            itemCount: allVideos.length,
+                            itemBuilder: (BuildContext context, int i) {
+                              return FadeAnimationDown(
+                                3.4 + i / 10,
+                                liveSession(
+                                    image:
+                                        'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
+                                    name: allVideos[i].name,
+                                    date: Timestamp.fromMillisecondsSinceEpoch(allVideos[i].date).toDate().toString(),
+                                    people: "No limit"),
+                              );
+                            }))
                     : SizedBox.shrink(),
               ),
             ],
@@ -291,35 +265,19 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
     );
   }
 
-  Widget makeTrending(
-      {image,
-      name,
-      category,
-      languages,
-      videoCount,
-      sessions,
-      video2,
-      video,
-      description}) {
+  Widget makeTrending({Trainer givenTrainer}) {
+    String trainerName = givenTrainer.firstName + ' ' + givenTrainer.lastName;
     return GestureDetector(
       onTap: () {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => Trainer(
-                      image: image,
-                      name: name,
-                      category: category,
-                      languages: languages,
-                      videoCount: videoCount,
-                      sessions: sessions,
-                      video2: video2,
-                      video: video,
-                      description: description,
+                builder: (context) => TrainerWidget(
+                      trainer: givenTrainer,
                     )));
       },
       child: Hero(
-        tag: name,
+        tag: trainerName,
         child: Container(
           width: MediaQuery.of(context).size.width / 2.5,
           height: MediaQuery.of(context).size.height / 4,
@@ -327,7 +285,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               image: DecorationImage(
-                image: NetworkImage(image),
+                image: NetworkImage(givenTrainer.profileUrl),
                 fit: BoxFit.cover,
               )),
           child: Container(
@@ -357,7 +315,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        name,
+                        trainerName,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -368,7 +326,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                         height: 5,
                       ),
                       Text(
-                        category,
+                        givenTrainer.trainingTypes.toString(),
                         style: TextStyle(color: Colors.grey, fontSize: 15),
                       )
                     ],
