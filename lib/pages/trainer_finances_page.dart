@@ -17,7 +17,7 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
   Trainer currentTrainer;
   List<RecordedVideo> trainerVideos;
   List<PrivateSession> trainerPrivateSessions;
-  
+
 
   @override
   void initState() {
