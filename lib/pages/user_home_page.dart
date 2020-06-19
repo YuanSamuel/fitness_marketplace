@@ -4,6 +4,7 @@ import 'package:fitnessmarketplace/helpers/string_helper.dart';
 import 'package:fitnessmarketplace/helpers/calendar_helper.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
+import 'package:fitnessmarketplace/models/Stream.dart' as models;
 ***REMOVED***
 ***REMOVED***
 import 'package:table_calendar/table_calendar.dart';
@@ -20,7 +21,10 @@ class _UserHomePageState extends State<UserHomePage> {
   List<PrivateSession> allPrivateSessions;
   List<dynamic> selectedPrivateSessions;
   List<RecordedVideo> recordedVideos;
+  List<models.Stream> allStreams;
+  List<dynamic> selectedStreams;
   DateTime selectedDate;
+  List<dynamic> allEvents;
 
   CalendarController _calendarController;
 
@@ -32,6 +36,7 @@ class _UserHomePageState extends State<UserHomePage> {
     _calendarController = CalendarController();
     _calendarHelper = new CalendarHelper();
     _stringHelper = new StringHelper();
+    allEvents = new List<dynamic>();
     getCurrentStudent();
 ***REMOVED***
   ***REMOVED***
@@ -51,6 +56,7 @@ class _UserHomePageState extends State<UserHomePage> {
     currentStudent = Student.fromSnapshot(userData);
     await getPrivateSessions();
     await getRecordedVideos();
+    await getStreams();
     setState(() {***REMOVED***);
   ***REMOVED***
 
@@ -77,6 +83,17 @@ class _UserHomePageState extends State<UserHomePage> {
     for (int i = 0; i < videos.length; i++) {
       RecordedVideo currentVideo = RecordedVideo.fromSnapshot(videos[i]);
       recordedVideos.add(currentVideo);
+    ***REMOVED***
+    return;
+  ***REMOVED***
+
+  Future<void> getStreams() async {
+    allStreams = new List<models.Stream>();
+    selectedStreams = new List<models.Stream>();
+    QuerySnapshot getStreams = await currentStudent.reference.collection('streams').getDocuments();
+    List<DocumentSnapshot> streamSnapshots = getStreams.documents;
+    for (int i = 0; i < streamSnapshots.length; i++) {
+      allStreams.add(models.Stream.fromSnapshot(streamSnapshots[i]));
     ***REMOVED***
     return;
   ***REMOVED***
@@ -140,19 +157,18 @@ class _UserHomePageState extends State<UserHomePage> {
               Container(
                 height: 250.0,
                 child: ListView.builder(
-                  itemCount: selectedPrivateSessions.length,
+                  itemCount: allEvents.length,
                   itemBuilder: (BuildContext context, int i) {
-                    DateTime privateSessionDate =
-                        DateTime.fromMillisecondsSinceEpoch(
-                            selectedPrivateSessions[i].date);
-                    DateTime localPrivateSessionDate =
-                        privateSessionDate.toLocal();
-                    String privateSessionDateString = _stringHelper
-                        .dateTimeToDateString(localPrivateSessionDate);
-                    String privateSessionTimeString = _stringHelper
-                        .dateTimeToTimeString(localPrivateSessionDate);
-                    String privateSessionLengthString =
-                        getLengthFromInt(selectedPrivateSessions[i].length);
+
+                    bool isStream = allEvents[i] is models.Stream;
+
+                    String length = isStream ? _stringHelper.intToLengthString(allEvents[i].minutes.floor()) :  _stringHelper.intToLengthString(allEvents[i].length);
+
+                    DateTime eventDate = DateTime.fromMillisecondsSinceEpoch(allEvents[i].date).toLocal();
+
+                    String date = _stringHelper.dateTimeToDateString(eventDate);
+
+                    String time = _stringHelper.dateTimeToTimeString(eventDate);
 
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -183,7 +199,15 @@ class _UserHomePageState extends State<UserHomePage> {
                                 Container(
                                   width: 7 * MediaQuery.of(context).size.width / 10,
                                   height: 40,
+                                  child: isStream ? Text(
+                                    allEvents[i].title + ' - Live Class',
+                                    overflow: TextOverflow.fade,
+                ***REMOVED***
               ***REMOVED***
+                                      fontSize: 20.0,
+          ***REMOVED***
+                      ***REMOVED***,
+                    ***REMOVED*** : Text(
                                     'Lesson with: ' +
                                         selectedPrivateSessions[i].trainerName,
                                     overflow: TextOverflow.fade,
@@ -197,7 +221,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                   height: 10.0,
                   ***REMOVED***,
           ***REMOVED***
-                                  privateSessionLengthString,
+                                  length,
               ***REMOVED***
                                       fontSize: 15.0,
                                       fontWeight: FontWeight.w400,
@@ -210,7 +234,7 @@ class _UserHomePageState extends State<UserHomePage> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                   ***REMOVED***
           ***REMOVED***
-                                  privateSessionDateString,
+                                  date,
               ***REMOVED***
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w400,
@@ -220,7 +244,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                   height: 10.0,
                   ***REMOVED***,
           ***REMOVED***
-                                  privateSessionTimeString,
+                                  time,
               ***REMOVED***
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w400,
@@ -332,13 +356,21 @@ class _UserHomePageState extends State<UserHomePage> {
       child: TableCalendar(
         rowHeight: 40.0,
         onDaySelected: (DateTime date, List<dynamic> events) {
+          for (int i = 0; i < events.length; i++) {
+            if (events[i] is models.Stream) {
+              selectedStreams.add(events[i]);
+            ***REMOVED***
+        ***REMOVED***
+              selectedPrivateSessions.add(events[i]);
+            ***REMOVED***
+          ***REMOVED***
     ***REMOVED***
             selectedDate = date;
-            selectedPrivateSessions = events;
+            allEvents = events;
           ***REMOVED***);
         ***REMOVED***,
         locale: 'en_US',
-        events: _calendarHelper.privateSessionsToEventMap(allPrivateSessions),
+        events: _calendarHelper.listToEventMap(allPrivateSessions, allStreams),
         calendarController: _calendarController,
         initialCalendarFormat: CalendarFormat.month,
         formatAnimation: FormatAnimation.slide,
@@ -405,14 +437,5 @@ class _UserHomePageState extends State<UserHomePage> {
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-  ***REMOVED***
-
-  getLengthFromInt(int length) {
-    String duration = '';
-    if (length > 60) {
-      duration = duration + (length ~/ 60).toString() + ' hours ';
-    ***REMOVED***
-    duration = duration + (length % 60).toString() + ' minutes';
-    return duration;
   ***REMOVED***
 ***REMOVED***
