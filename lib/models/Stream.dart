@@ -6,10 +6,11 @@ class Stream {
   double price;
   String title;
   String description;
+  String trainer;
 
   DocumentReference reference;
 
-  Stream({this.date, this.minutes, this.price, this.title, this.description});
+  Stream({this.date, this.minutes, this.price, this.title, this.description, this.trainer});
 
   factory Stream.fromSnapshot(DocumentSnapshot snapshot) {
     Stream newStream = Stream.fromJson(snapshot.data);
@@ -25,6 +26,7 @@ class Stream {
       price: json['price'] as double,
       title: json['title'] as String,
       description: json['description'] as String,
+      trainer: json['trainer'] as String
     );
   }
 
@@ -37,6 +39,7 @@ class Stream {
       'price': instance.price,
       'title': instance.title,
       'description': instance.description,
+      'trainer': instance.trainer
     };
   }
 }
