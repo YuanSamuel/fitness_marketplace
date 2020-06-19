@@ -59,6 +59,8 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
     trainerVideos = new List<RecordedVideo>();
     allPrivateSessions = new List<PrivateSession>();
     privateSessions = new List<PrivateSession>();
+    allStreams = new List<models.Stream>();
+    selectedStreams = new List<models.Stream>();
 
     FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
     DocumentSnapshot userData = await Firestore.instance
@@ -95,10 +97,11 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
           .add(PrivateSession.fromSnapshot(allPrivateSessionDocuments[i]));
     }
   }
-  
+
   getStreams() async {
     allStreams = new List<models.Stream>();
-    QuerySnapshot getStreams = await currentTrainer.reference.collection('streams').getDocuments();
+    QuerySnapshot getStreams =
+        await currentTrainer.reference.collection('streams').getDocuments();
     List<DocumentSnapshot> allStreamDocuments = getStreams.documents;
     for (int i = 0; i < allStreamDocuments.length; i++) {
       allStreams.add(models.Stream.fromSnapshot(allStreamDocuments[i]));
@@ -187,15 +190,15 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                 child: ListView.builder(
                   itemCount: allEvents.length,
                   itemBuilder: (BuildContext context, int i) {
-
                     DateTime date =
-                        DateTime.fromMillisecondsSinceEpoch(
-                                allEvents[i].date)
+                        DateTime.fromMillisecondsSinceEpoch(allEvents[i].date)
                             .toLocal();
-                    String length =
-                        getLengthFromInt(allEvents[i].length);
 
                     bool isStream = allEvents[i] is models.Stream;
+
+                    String length = isStream
+                        ? getLengthFromInt(allEvents[i].minutes.floor())
+                        : getLengthFromInt(allEvents[i].length);
 
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -226,19 +229,31 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  width: 7 * MediaQuery.of(context).size.width / 10,
+                                  width: 7 *
+                                      MediaQuery.of(context).size.width /
+                                      10,
                                   height: 40,
-                                  child:  isStream ? Text('Live Class Scheduled') : Text(
-                                    allEvents[i].available
-                                        ? 'Open Session'
-                                        : 'Private Session with: ' +
-                                        allEvents[i].studentName,
-                                    overflow: TextOverflow.fade,
-                                    style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white),
-                                  ),
+                                  child: isStream
+                                      ? Text(
+                                          allEvents[i].title + ' - Live Class',
+                                          overflow: TextOverflow.fade,
+                                          style: TextStyle(
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                      : Text(
+                                          allEvents[i].available
+                                              ? 'Open Session'
+                                              : 'Private Session with: ' +
+                                                  allEvents[i].studentName,
+                                          overflow: TextOverflow.fade,
+                                          style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white),
+                                        ),
                                 ),
                                 SizedBox(
                                   height: 10.0,
@@ -257,8 +272,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  _stringHelper
-                                      .dateTimeToDateString(date),
+                                  _stringHelper.dateTimeToDateString(date),
                                   style: TextStyle(
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w400,
@@ -268,8 +282,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                   height: 10.0,
                                 ),
                                 Text(
-                                  _stringHelper
-                                      .dateTimeToTimeString(date),
+                                  _stringHelper.dateTimeToTimeString(date),
                                   style: TextStyle(
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w400,
@@ -434,8 +447,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
           for (int i = 0; i < events.length; i++) {
             if (events[i] is PrivateSession) {
               privateSessions.add(events[i]);
-            }
-            else if (events[i] is models.Stream) {
+            } else if (events[i] is models.Stream) {
               selectedStreams.add(events[i]);
             }
           }
