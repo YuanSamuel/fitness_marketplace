@@ -5,6 +5,7 @@ import 'package:fitnessmarketplace/helpers/string_helper.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
 import 'package:fitnessmarketplace/models/Stream.dart' as models;
 import 'package:fitnessmarketplace/models/Student.dart';
+import 'package:fitnessmarketplace/pages/session_preview_page.dart';
 ***REMOVED***
 ***REMOVED***
 import 'package:table_calendar/table_calendar.dart';
@@ -129,7 +130,10 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                     return GestureDetector(
                       onTap: () async {
                         if (isStream) {
-                          await currentStudent.reference.collection('streams').add(events[i].toJson());
+    ***REMOVED***
+  ***REMOVED***
+  ***REMOVED***builder: (context) => SessionPreview(stream: events[i], isStream: true,)),
+                      ***REMOVED***
                         ***REMOVED***
                     ***REMOVED***
                           await events[i].reference.updateData({'available': false, 'studentName': currentStudent.firstName + ' ' + currentStudent.lastName***REMOVED***);

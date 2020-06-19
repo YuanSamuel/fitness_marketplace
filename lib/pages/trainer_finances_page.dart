@@ -18,7 +18,6 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
   List<RecordedVideo> trainerVideos;
   List<PrivateSession> trainerPrivateSessions;
 
-
 ***REMOVED***
 ***REMOVED***
     getUser();

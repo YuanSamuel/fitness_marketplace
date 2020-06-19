@@ -34,7 +34,7 @@
 
    ***REMOVED***
  ***REMOVED***
-
+    Navigator.pop(context);
    ***REMOVED***
 
 ***REMOVED***
@@ -65,9 +65,5 @@
 
 ***REMOVED***
   ***REMOVED***
-
-
-
-
  ***REMOVED***
 
