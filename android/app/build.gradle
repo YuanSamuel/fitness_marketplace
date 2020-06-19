@@ -52,6 +52,11 @@ android {
             signingConfig signingConfigs.debug
         ***REMOVED***
     ***REMOVED***
+
+    aaptOptions {
+        noCompress 'tflite'
+        noCompress 'lite'
+    ***REMOVED***
 ***REMOVED***
 
 flutter {

@@ -1,6 +1,7 @@
 ***REMOVED***
 ***REMOVED***
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
+import 'package:fitnessmarketplace/pages/session_preview_page.dart';
 import 'package:fitnessmarketplace/widgets/trainer_market.dart';
 import 'package:fitnessmarketplace/widgets//trainer_widget.dart';
 import 'package:fitnessmarketplace/utils/search_bar.dart';
@@ -414,7 +415,14 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                 child: OutlineButton(
                   child: Text('Register'),
                   borderSide: BorderSide(color: Colors.red),
-                  onPressed: () {***REMOVED***,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SessionPreview(
+
+        ***REMOVED***),
+                ***REMOVED***
+                  ***REMOVED***,
                   highlightedBorderColor: Colors.red,
                   splashColor: Colors.redAccent.withOpacity(0.5),
                   color: Colors.red,

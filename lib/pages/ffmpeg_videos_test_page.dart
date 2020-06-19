@@ -192,7 +192,7 @@ class _FfmpegVideosTestPageState extends State<FfmpegVideosTestPage> {
       _progress = 0.0;
     ***REMOVED***);
 
-    await FirebaseProvider.saveVideo(videoInfo, null, null, null, null);
+    await FirebaseProvider.saveVideo(videoInfo, null, null, null, null, null);
 
     setState(() {
       _processPhase = '';

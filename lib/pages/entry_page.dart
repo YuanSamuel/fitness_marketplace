@@ -26,7 +26,7 @@ class _EntryPageState extends State<EntryPage> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/img/bckground.png"),
+            image: AssetImage("assets/images/bckground.png"),
             fit: BoxFit.cover,
 ***REMOVED***
 ***REMOVED***
@@ -46,11 +46,74 @@ class _EntryPageState extends State<EntryPage> {
 
                 //child: status == 0 ? _buildEntryPage() : status == 1 ? new LoginWidget() : _buildSignupPage(),
                 child: PageView(
+                  physics: NeverScrollableScrollPhysics(),
                   controller: _controller,
       ***REMOVED***
                     _buildEntryPage(),
-                    LoginWidget(),
-                    SignupWidget(),
+                    SingleChildScrollView(
+            ***REMOVED***
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+            ***REMOVED***
+    ***REMOVED***height: 20.0,),
+            ***REMOVED***
+            ***REMOVED***
+                              IconButton(
+                                icon: Icon(Icons.arrow_back_ios
+                  ***REMOVED***,
+                                onPressed: (){setState(() {
+                                  _controller.jumpToPage(0);
+                                ***REMOVED***);
+                                ***REMOVED***,
+                ***REMOVED***,
+        ***REMOVED***width: 105.0,),
+        ***REMOVED***
+                                'Login',
+            ***REMOVED***
+                                  color: Colors.black,
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 30.0,
+      ***REMOVED***
+                  ***REMOVED***,
+                ***REMOVED***,
+            ***REMOVED***
+            ***REMOVED***,
+                          LoginWidget(),
+        ***REMOVED***
+        ***REMOVED***,
+      ***REMOVED***,
+                    SingleChildScrollView(
+            ***REMOVED***
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+            ***REMOVED***
+    ***REMOVED***height: 20.0,),
+            ***REMOVED***
+            ***REMOVED***
+                              IconButton(
+                                icon: Icon(Icons.arrow_back_ios
+                  ***REMOVED***,
+                                onPressed: (){setState(() {
+                                  _controller.jumpToPage(0);
+                                ***REMOVED***);
+                                ***REMOVED***,
+                ***REMOVED***,
+        ***REMOVED***width: 100.0,),
+        ***REMOVED***
+                                'Signup',
+            ***REMOVED***
+                                  color: Colors.black,
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 30.0,
+      ***REMOVED***
+                  ***REMOVED***,
+                ***REMOVED***,
+            ***REMOVED***
+            ***REMOVED***,
+                          SignupWidget(),
+        ***REMOVED***
+        ***REMOVED***,
+      ***REMOVED***,
+
+
   ***REMOVED***
   ***REMOVED***,
 ***REMOVED***,

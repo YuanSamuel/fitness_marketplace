@@ -1,4 +1,3 @@
-***REMOVED***
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
 ***REMOVED***
 ***REMOVED***
@@ -62,6 +61,7 @@ class _AddSessionPageState extends State<AddSessionPage> {
 ***REMOVED***
 ***REMOVED***
           RaisedButton(
+
             child: Text('Submit'),
             onPressed: () async {
               _lengthController.clear();
