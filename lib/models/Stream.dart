@@ -18,9 +18,10 @@ class Stream {
   }
 
   factory Stream.fromJson(Map<String, dynamic> json) {
+    print(json['minutes']);
     return Stream(
       date: json['date'] as int,
-      minutes: json['minutes'] as double,
+      minutes: (json['minutes'] + 0.0) as double,
       price: json['price'] as double,
       title: json['title'] as String,
       description: json['description'] as String,
