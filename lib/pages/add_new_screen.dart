@@ -60,17 +60,20 @@ class _AddNewRecordingState extends State<AddNewRecording> {
 
   static saveStream(
       String title, String description, double minutes, int date, double price) async {
+
+***REMOVED***
+    final uid = user.uid;
+
     await Firestore.instance.collection('streams').document().setData({
       'minutes': minutes,
       'description': description,
       'date': date,
       'title': title,
-      'price':price
-
+      'price':price,
+      'trainer':uid
     ***REMOVED***);
 
-***REMOVED***
-    final uid = user.uid;
+
 
     await Firestore.instance
         .collection('trainers')
