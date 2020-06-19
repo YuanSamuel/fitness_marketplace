@@ -50,8 +50,8 @@ class _SignupWidgetState extends State<SignupWidget> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
       child: Container(
-          height: double.infinity,
-          width: double.infinity,
+          //height: double.infinity,
+          //width: double.infinity,
           decoration: BoxDecoration(
 
           ),
@@ -62,6 +62,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
+                    /*
                     Row(
                       children: <Widget>[
                         IconButton(
@@ -83,6 +84,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                         ),
                       ],
                     ),
+                    */
                     Column(
 
                       children: <Widget>[
