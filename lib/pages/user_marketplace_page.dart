@@ -443,6 +443,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                       context,
                       MaterialPageRoute(builder: (context) => SessionPreview(
                         stream: stream,
+                        isStream: true,
         ***REMOVED***),
                 ***REMOVED***
                   ***REMOVED***,
