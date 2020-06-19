@@ -1,6 +1,8 @@
 ***REMOVED***
 ***REMOVED***
+import 'package:fitnessmarketplace/helpers/string_helper.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
+import 'package:fitnessmarketplace/models/Stream.dart' as models;
 import 'package:fitnessmarketplace/pages/session_preview_page.dart';
 import 'package:fitnessmarketplace/widgets/trainer_market.dart';
 import 'package:fitnessmarketplace/widgets//trainer_widget.dart';
@@ -20,6 +22,9 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
   PageController _pageController = new PageController(initialPage: 0);
   List<RecordedVideo> allVideos;
   List<Trainer> allTrainers;
+  List<models.Stream> allStreams;
+
+  StringHelper _stringHelper;
 
   List<String> trainingTypes = [
     'Weight Lifting',
@@ -30,12 +35,15 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
 
 ***REMOVED***
 ***REMOVED***
+    allStreams = new List<models.Stream>();
+    _stringHelper = new StringHelper();
     setUp();
 ***REMOVED***
   ***REMOVED***
 
   setUp() async {
     await getRecordedVideos();
+    await getAllStreams();
     await getTrainers();
     setState(() {***REMOVED***);
   ***REMOVED***
@@ -65,6 +73,22 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
         allTrainers: allTrainers,
         type: trainingTypes[i],
       ));
+    ***REMOVED***
+  ***REMOVED***
+
+  getAllStreams() async {
+    QuerySnapshot getTrainers =
+        await Firestore.instance.collection('trainers').getDocuments();
+    List<DocumentSnapshot> trainerSnapshots = getTrainers.documents;
+    for (int i = 0; i < trainerSnapshots.length; i++) {
+      QuerySnapshot getSessions = await trainerSnapshots[i]
+          .reference
+          .collection('streams')
+          .getDocuments();
+      List<DocumentSnapshot> sessionSnapshots = getSessions.documents;
+      for (int i = 0; i < sessionSnapshots.length; i++) {
+        allStreams.add(models.Stream.fromSnapshot(sessionSnapshots[i]));
+      ***REMOVED***
     ***REMOVED***
   ***REMOVED***
 
@@ -211,22 +235,27 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
     ***REMOVED***),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: allVideos != null
+                child: allStreams != null
                     ? Container(
                         height: 250,
                         child: ListView.builder(
-                            itemCount: allVideos.length,
+                            itemCount: allStreams.length,
                             itemBuilder: (BuildContext context, int i) {
                               return FadeAnimationDown(
-                                3.4 + i / 10,
+                                1.2 + i / 10,
                                 liveSession(
                                     image:
                                         'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
-                                    name: allVideos[i].name,
-                                    date: Timestamp.fromMillisecondsSinceEpoch(
-                                            allVideos[i].date)
-                                        .toDate()
-                                        .toString(),
+                                    name: allStreams[i].title,
+                                    date: _stringHelper.dateTimeToDateString(
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                                    allStreams[i].date)
+                                                .toLocal()) +
+                                        ' at ' +
+                                        _stringHelper.dateTimeToTimeString(
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                                    allStreams[i].date)
+                                                .toLocal()),
                                     people: "No limit"),
                           ***REMOVED***
                             ***REMOVED***))
@@ -418,9 +447,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SessionPreview(
-
-        ***REMOVED***),
+                      MaterialPageRoute(builder: (context) => SessionPreview()),
                 ***REMOVED***
                   ***REMOVED***,
                   highlightedBorderColor: Colors.red,
