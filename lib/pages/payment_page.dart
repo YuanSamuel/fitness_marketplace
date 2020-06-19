@@ -15,7 +15,7 @@ import 'package:fitnessmarketplace/pages/stream_page.dart';
 
 
    _PaymentPageState createState() => _PaymentPageState();
- ***REMOVED***
+   final String stream;
  ***REMOVED***
  ***REMOVED***
 
@@ -101,7 +101,7 @@ import 'package:fitnessmarketplace/pages/stream_page.dart';
      if (widget.isStream){
        Navigator.push(
          context,
-         MaterialPageRoute(builder: (context) => StreamPage(role: ClientRole.Broadcaster,channelName: widget.stream.reference.documentID,)),
+         MaterialPageRoute(builder: (context) => StreamPage(role: ClientRole.Broadcaster,channelName: widget.stream,)),
    ***REMOVED***
      ***REMOVED***
  ***REMOVED***

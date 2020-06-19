@@ -81,7 +81,7 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PaymentPage(isStream: widget.isStream, video: widget.video, stream: widget.stream,)),
+      MaterialPageRoute(builder: (context) => PaymentPage(isStream: widget.isStream, video: widget.video, stream: widget.stream.reference.documentID,)),
 ***REMOVED***
   ***REMOVED***
 
