@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
@@ -29,11 +28,10 @@ class _SessionPreviewState extends State<SessionPreview> {
   String trainer = "";
   int rating = 0;
   int comments = 0;
-  Trainer t = null;
+  Trainer t;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     print("HELO");
 
@@ -46,24 +44,27 @@ class _SessionPreviewState extends State<SessionPreview> {
   }
 
   Future getTrainerInfo() async{
+    print(widget.stream.title);
+    print(widget.stream.trainer);
     print("TRAINER ID"+ widget.stream.trainer);
     await Firestore.instance.collection("trainers").document(widget.stream.trainer).get().then((value){
       setState(() {
-
         trainer = value.data["firstName"]+" "+value.data["lastName"];
-        rating = value.data["rating"];
+        rating = (value.data["rating"] + 0.0).round();
         print("TRAINER IS"+trainer);
         t = Trainer.fromSnapshot(value);
       });
     });
   }
 
-  Future makeTransaction(BuildContext context)async{
+  Future makeTransaction(BuildContext context) async {
 
     final FirebaseUser user = await FirebaseAuth.instance.currentUser();
     final uid = user.uid;
 
-    await Firestore.instance.collection('users').document(uid).collection("transactions").document().setData({
+    print(uid);
+
+    await Firestore.instance.collection('students').document(uid).collection('transactions').add({
       'type':widget.isStream?"stream":"ondemand",
       'sessionID':widget.isStream?widget.stream.reference.documentID:widget.video.documentID,
       'price':widget.isStream?widget.stream.price:widget.video.data["price"],
@@ -71,9 +72,7 @@ class _SessionPreviewState extends State<SessionPreview> {
     });
 
 
-
-
-    await Firestore.instance.collection('trainers').document(widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID).collection("transactions").document().setData({
+    await Firestore.instance.collection('trainers').document(widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID).collection("transactions").add({
       'type':widget.isStream?"stream":"ondemand",
       'sessionID':widget.isStream?widget.stream.reference.documentID:widget.video.documentID,
       'price':widget.isStream?widget.stream.price:widget.video.data["price"],
