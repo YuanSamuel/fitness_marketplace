@@ -77,9 +77,9 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
   }
 
   getAllStreams() async {
-    QuerySnapshot getTrainers =
+    QuerySnapshot getStreams =
         await Firestore.instance.collection('streams').getDocuments();
-    List<DocumentSnapshot> trainerSnapshots = getTrainers.documents;
+    List<DocumentSnapshot> trainerSnapshots = getStreams.documents;
     for (int i = 0; i < trainerSnapshots.length; i++) {
         allStreams.add(models.Stream.fromSnapshot(trainerSnapshots[i]));
     }
@@ -234,6 +234,8 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                         child: ListView.builder(
                             itemCount: allStreams.length,
                             itemBuilder: (BuildContext context, int i) {
+                              print(allStreams[i].title);
+                              print(allStreams[i].trainer);
                               return FadeAnimationDown(
                                 1.2 + i / 10,
                                 liveSession(
@@ -250,7 +252,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                                     allStreams[i].date)
                                                 .toLocal()),
                                     people: "No limit",
-                                stream:allStreams[i]),
+                                stream: allStreams[i]),
                               );
                             }))
                     : SizedBox.shrink(),
