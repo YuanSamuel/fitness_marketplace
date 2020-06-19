@@ -1,11 +1,14 @@
+import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
 import 'package:fitnessmarketplace/animations/FadeAnimationUp.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
 import 'package:fitnessmarketplace/pages/request_private_session_page.dart';
+import 'package:fitnessmarketplace/pages/session_preview_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:validators/sanitizers.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
 
@@ -19,7 +22,7 @@ class TrainerWidget extends StatefulWidget {
 }
 
 class _TrainerWidgetState extends State<TrainerWidget> {
-  List<RecordedVideo> trainerVideos;
+  List<DocumentSnapshot> trainerVideos;
 
   @override
   void initState() {
@@ -28,14 +31,13 @@ class _TrainerWidgetState extends State<TrainerWidget> {
   }
 
   getRecordedVideos() async {
-    trainerVideos = new List<RecordedVideo>();
     QuerySnapshot queryVideos = await widget.trainer.reference
         .collection('recordedVideos')
         .getDocuments();
     List<DocumentSnapshot> videoData = queryVideos.documents;
-    for (int i = 0; i < videoData.length; i++) {
-      trainerVideos.add(RecordedVideo.fromSnapshot(videoData[i]));
-    }
+    setState(() {
+      trainerVideos = videoData;
+    });
     setState(() {});
   }
 
@@ -208,20 +210,20 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                           ),
                           FadeAnimationUp(
                               1.8,
-                              Container(
-                                height: 200,
-                                child: ListView(
-                                  scrollDirection: Axis.horizontal,
-                                  children: [
-                                    makeVideo(
-                                        image:
-                                            'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg'),
-                                    makeVideo(
-                                        image:
-                                            'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg'),
-                                  ],
-                                ),
-                              )),
+                               trainerVideos!= null
+                                  ? Container(
+                                  height: 200,
+                                  child: ListView.builder(
+                                      itemCount: trainerVideos.length,
+                                      itemBuilder: (BuildContext context, int i) {
+                                        return FadeAnimationDown(
+                                          1.2 + i / 10,
+                                          makeVideo(
+                                              image:
+                                              trainerVideos[i].data["thumbUr"],
+                                              vidReference: trainerVideos[i]),
+                                        );
+                          }),):CircularProgressIndicator()),
                           SizedBox(
                             height: 80,
                           )
@@ -271,26 +273,34 @@ class _TrainerWidgetState extends State<TrainerWidget> {
     );
   }
 
-  Widget makeVideo({image}) {
-    return AspectRatio(
-      aspectRatio: 1.5 / 1,
-      child: Container(
-        margin: EdgeInsets.only(right: 20),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            image:
-                DecorationImage(image: NetworkImage(image), fit: BoxFit.cover)),
+  Widget makeVideo({image, vidReference}) {
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SessionPreview(video: vidReference,isStream: false,trainer: widget.trainer,)),
+        );
+      },
+      child: AspectRatio(
+        aspectRatio: 1.5 / 1,
         child: Container(
+          margin: EdgeInsets.only(right: 20),
           decoration: BoxDecoration(
-              gradient: LinearGradient(begin: Alignment.bottomRight, colors: [
-            Colors.black.withOpacity(.9),
-            Colors.black.withOpacity(.3)
-          ])),
-          child: Align(
-            child: Icon(
-              Icons.play_arrow,
-              color: Colors.white,
-              size: 70,
+              borderRadius: BorderRadius.circular(20),
+              image:
+                  DecorationImage(image: NetworkImage(image), fit: BoxFit.cover)),
+          child: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(begin: Alignment.bottomRight, colors: [
+              Colors.black.withOpacity(.9),
+              Colors.black.withOpacity(.3)
+            ])),
+            child: Align(
+              child: Icon(
+                Icons.play_arrow,
+                color: Colors.white,
+                size: 70,
+              ),
             ),
           ),
         ),

@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
 import 'package:fitnessmarketplace/models/Stream.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
@@ -15,8 +16,9 @@ class SessionPreview extends StatefulWidget {
 
   final Stream stream;
   final bool isStream;
-  final VideoInfo video;
-  const SessionPreview({Key key, this.stream, this.isStream, this.video,}) : super(key: key);
+  final Trainer trainer;
+  final DocumentSnapshot video;
+  const SessionPreview({Key key, this.stream, this.isStream, this.video, this.trainer,}) : super(key: key);
 
   @override
   _SessionPreviewState createState() => _SessionPreviewState();
@@ -35,7 +37,12 @@ class _SessionPreviewState extends State<SessionPreview> {
     super.initState();
     print("HELO");
 
-    getTrainerInfo();
+    if(widget.isStream)
+      getTrainerInfo();
+    else{
+      trainer = widget.trainer.firstName+" "+widget.trainer.lastName;
+      rating = widget.trainer.rating.round();
+    }
   }
 
   Future getTrainerInfo() async{
@@ -51,6 +58,34 @@ class _SessionPreviewState extends State<SessionPreview> {
     });
   }
 
+  Future makeTransaction(BuildContext context)async{
+
+    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    final uid = user.uid;
+
+    await Firestore.instance.collection('users').document(uid).collection("transactions").document().setData({
+      'type':widget.isStream?"stream":"ondemand",
+      'sessionID':widget.isStream?widget.stream.reference.documentID:widget.video.documentID,
+      'price':widget.isStream?widget.stream.price:widget.video.data["price"],
+      'trainer': widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID
+    });
+
+
+
+
+    await Firestore.instance.collection('trainers').document(widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID).collection("transactions").document().setData({
+      'type':widget.isStream?"stream":"ondemand",
+      'sessionID':widget.isStream?widget.stream.reference.documentID:widget.video.documentID,
+      'price':widget.isStream?widget.stream.price:widget.video.data["price"],
+      'trainer': widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID
+    });
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => PaymentPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +98,8 @@ class _SessionPreviewState extends State<SessionPreview> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(bottomRight: Radius.circular(20), bottomLeft: Radius.circular(20)),
               image: DecorationImage(
-                image: NetworkImage("https://cnet1.cbsistatic.com/img/sRejNDr7D67rMcvwI11v6xrJcho=/940x0/2019/11/12/e66cc0f3-c6b8-4f6e-9561-e23e08413ce1/gettyimages-1002863304.jpg",),
+                image: widget.isStream?NetworkImage("https://cnet1.cbsistatic.com/img/sRejNDr7D67rMcvwI11v6xrJcho=/940x0/2019/11/12/e66cc0f3-c6b8-4f6e-9561-e23e08413ce1/gettyimages-1002863304.jpg",):
+                NetworkImage(widget.video.data["thumbUrl"]),
                 fit: BoxFit.cover,
               )
             ),
@@ -80,7 +116,7 @@ class _SessionPreviewState extends State<SessionPreview> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   FadeAnimationDown(1.2,Text(
-                    widget.stream.title,
+                    widget.isStream?widget.stream.title:widget.video.data["title"],
                     style: TextStyle(
                         color: Colors.black.withOpacity(0.8),
                         fontSize: 25,
@@ -166,7 +202,8 @@ class _SessionPreviewState extends State<SessionPreview> {
               ),),
               SizedBox(height: 8,),
               FadeAnimationDown(2.2,Text(
-                widget.stream.description,style: TextStyle(color: Colors.grey, height: 1.5,
+                widget.isStream?widget.stream.description:widget.video.data["description"],
+                style: TextStyle(color: Colors.grey, height: 1.5,
                 fontSize: 14),
               ),),
               SizedBox(height: 10,),
@@ -180,7 +217,7 @@ class _SessionPreviewState extends State<SessionPreview> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   FadeAnimationDown(2.5,Container(
-                    child: Text("Cost: "+(widget.stream.price.round()).toString(), style: TextStyle(
+                    child: Text("Cost: "+(widget.isStream?widget.stream.price.round():widget.video.data["price"].round()).toString(), style: TextStyle(
                       fontSize: 22,
                       color: Colors.black.withOpacity(0.8),
                       fontWeight: FontWeight.bold
@@ -190,10 +227,7 @@ class _SessionPreviewState extends State<SessionPreview> {
                     minWidth: 160,
                     height: 45,
                     child: FlatButton.icon(onPressed: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => PaymentPage()),
-                      );
+                      makeTransaction(context);
                     },
                       icon: Icon(Icons.shopping_basket),
                       label: Text("PURCHASE", style: TextStyle(
