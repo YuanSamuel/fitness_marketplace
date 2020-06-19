@@ -5,6 +5,7 @@ import 'package:fitnessmarketplace/helpers/string_helper.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
 import 'package:fitnessmarketplace/models/Stream.dart' as models;
 import 'package:fitnessmarketplace/models/Student.dart';
+import 'package:fitnessmarketplace/pages/payment_page.dart';
 import 'package:fitnessmarketplace/pages/session_preview_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
@@ -244,5 +245,31 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
     session.available = false;
     session.studentName = currentStudent.firstName + ' ' + currentStudent.lastName;
     currentStudent.reference.collection('privateSessions').add(session.toJson());
+    makeTransaction( session);
+
+  }
+
+  Future makeTransaction(PrivateSession session) async {
+
+    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    final uid = user.uid;
+
+    print(uid);
+
+    await Firestore.instance.collection('students').document(uid).collection('transactions').add({
+      'type':"private",
+      'sessionID':session.reference.documentID,
+      'price':widget.trainer.oneOnOnePrice,
+      'trainer': widget.trainer.reference.documentID
+    });
+
+
+    await Firestore.instance.collection('trainers').document(widget.trainer.reference.documentID).collection("transactions").add({
+      'type':"private",
+      'sessionID':session.reference.documentID,
+      'price':widget.trainer.oneOnOnePrice,
+      'trainer': widget.trainer.reference.documentID
+    });
+
   }
 }

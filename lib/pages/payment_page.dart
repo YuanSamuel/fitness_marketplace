@@ -15,7 +15,7 @@ import 'package:square_in_app_payments/in_app_payments.dart';
 
 
    _PaymentPageState createState() => _PaymentPageState();
-   final Stream stream;
+   final String stream;
    final DocumentSnapshot video;
    final bool isStream;
 
@@ -101,7 +101,7 @@ import 'package:square_in_app_payments/in_app_payments.dart';
      if (widget.isStream){
        Navigator.push(
          context,
-         MaterialPageRoute(builder: (context) => StreamPage(role: ClientRole.Broadcaster,channelName: widget.stream.reference.documentID,)),
+         MaterialPageRoute(builder: (context) => StreamPage(role: ClientRole.Broadcaster,channelName: widget.stream,)),
        );
      }
      else{
