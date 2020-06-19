@@ -1,6 +1,12 @@
+
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
 ***REMOVED***
 ***REMOVED***
 import 'package:fitnessmarketplace/pages/payment_page.dart';
+***REMOVED***
 ***REMOVED***
 ***REMOVED***
 
@@ -8,14 +14,78 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 ***REMOVED***
   //final String image;
 
-  final DocumentReference trainer;
-  const SessionPreview({Key key, this.trainer,***REMOVED***) : super(key: key);
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+  const SessionPreview({Key key, this.stream, this.isStream, this.video, this.trainer,***REMOVED***) : super(key: key);
 
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
 
 ***REMOVED***
+
+***REMOVED***
+***REMOVED***
+***REMOVED***
+  Trainer t = null;
+
+***REMOVED***
+***REMOVED***
+    // TODO: implement initState
+***REMOVED***
+***REMOVED***
+
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+
+***REMOVED***
+        rating = value.data["rating"];
+***REMOVED***
+***REMOVED***
+      ***REMOVED***);
+    ***REMOVED***);
+  ***REMOVED***
+
+  Future makeTransaction(BuildContext context)async{
+
+***REMOVED***
+    final uid = user.uid;
+
+    await Firestore.instance.collection('users').document(uid).collection("transactions").document().setData({
+***REMOVED***
+***REMOVED***
+***REMOVED***
+      'trainer': widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID
+    ***REMOVED***);
+
+
+
+
+    await Firestore.instance.collection('trainers').document(widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID).collection("transactions").document().setData({
+***REMOVED***
+***REMOVED***
+***REMOVED***
+      'trainer': widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID
+    ***REMOVED***);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => PaymentPage()),
+***REMOVED***
+  ***REMOVED***
+
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
@@ -28,7 +98,8 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-                image: NetworkImage("https://cnet1.cbsistatic.com/img/sRejNDr7D67rMcvwI11v6xrJcho=/940x0/2019/11/12/e66cc0f3-c6b8-4f6e-9561-e23e08413ce1/gettyimages-1002863304.jpg",),
+***REMOVED***
+***REMOVED***
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
@@ -45,7 +116,7 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 ***REMOVED***
     ***REMOVED***
 ***REMOVED***
-                    "Gigantic Glute Workout",
+***REMOVED***
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
@@ -54,7 +125,7 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 ***REMOVED***
 ***REMOVED***,
 ***REMOVED***
-              FadeAnimationDown(1.4,Text("with Michael Reeves",
+***REMOVED***
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
@@ -74,7 +145,7 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 ***REMOVED***
         ***REMOVED***,
 ***REMOVED***
-                        "4.0",
+***REMOVED***
     ***REMOVED***
 ***REMOVED***
 ***REMOVED***
@@ -84,7 +155,7 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 ***REMOVED***
         ***REMOVED***,
 ***REMOVED***
-                        "(2460)",
+***REMOVED***
     ***REMOVED***
 ***REMOVED***
 ***REMOVED***
@@ -107,6 +178,12 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
       ***REMOVED***,
 ***REMOVED***
 ***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+                ***REMOVED***));
+***REMOVED***
                     ***REMOVED***,
     ***REMOVED***),
 ***REMOVED***
@@ -125,7 +202,7 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 ***REMOVED***,),
 ***REMOVED***
 ***REMOVED***
-                "Reeves is back at it again with his classic glutes workout, ready to take you into a new level of satisfaction and fitness. He's ready to twist it, bop it, pull it, anything you think is necessary to get you a rocking hot body. This workout focuses on the glutes, and strecthing them into the curves you have so desperately desired.",
+***REMOVED***
 ***REMOVED***color: Colors.grey, height: 1.5,
 ***REMOVED***
 ***REMOVED***,),
@@ -140,7 +217,7 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-***REMOVED***"Cost: \$25", style: TextStyle(
+***REMOVED***"Cost: "+(widget.isStream?widget.stream.price.round():widget.video.data["price"].round()).toString(), style: TextStyle(
   ***REMOVED***
 ***REMOVED***
 ***REMOVED***
@@ -151,9 +228,6 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-                        context,
-                        MaterialPageRoute(builder: (context) => PaymentPage()),
-                  ***REMOVED***
                     ***REMOVED***,
 ***REMOVED***
 ***REMOVED***
