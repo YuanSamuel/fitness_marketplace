@@ -334,7 +334,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                         height: 5,
                       ),
                       Text(
-                        givenTrainer.trainingTypes.toString(),
+                        givenTrainer.trainingTypes.toString().replaceAll('[', '').replaceAll(']', ''),
                         style: TextStyle(color: Colors.grey, fontSize: 15),
                       )
                     ],
