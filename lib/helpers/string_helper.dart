@@ -24,4 +24,13 @@ class StringHelper {
     }
   }
 
+  String intToLengthString(int minutes) {
+    String returnLength = '';
+    if (minutes > 60) {
+      returnLength = (minutes ~/ 60).toString() + ' hours ';
+    }
+    returnLength = returnLength + (minutes % 60).toString() + ' minutes';
+    return returnLength;
+  }
+
 }
