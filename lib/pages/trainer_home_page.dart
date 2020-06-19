@@ -197,8 +197,9 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                     bool isStream = allEvents[i] is models.Stream;
 
                     String length = isStream
-                        ? getLengthFromInt(allEvents[i].minutes.floor())
-                        : getLengthFromInt(allEvents[i].length);
+                        ? _stringHelper
+                            .intToLengthString(allEvents[i].minutes.floor())
+                        : _stringHelper.intToLengthString(allEvents[i].length);
 
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -524,14 +525,5 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-  ***REMOVED***
-
-  String getLengthFromInt(int length) {
-    String returnLength = '';
-    if (length > 60) {
-      returnLength = returnLength + (length ~/ 60).toString() + ' hours ';
-    ***REMOVED***
-    returnLength = returnLength + (length % 60).toString() + ' minutes';
-    return returnLength;
   ***REMOVED***
 ***REMOVED***

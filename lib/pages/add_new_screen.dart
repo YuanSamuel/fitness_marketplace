@@ -64,13 +64,13 @@ class _AddNewRecordingState extends State<AddNewRecording> {
 ***REMOVED***
     final uid = user.uid;
 
-    await Firestore.instance.collection('streams').document().setData({
+    await Firestore.instance.collection('streams').add({
       'minutes': minutes,
       'description': description,
       'date': date,
       'title': title,
       'price':price,
-      'trainer':uid
+      'trainer':uid,
     ***REMOVED***);
 
 

@@ -1,4 +1,3 @@
-
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
@@ -29,11 +28,10 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-  Trainer t = null;
+***REMOVED***
 
 ***REMOVED***
 ***REMOVED***
-    // TODO: implement initState
 ***REMOVED***
 ***REMOVED***
 
@@ -49,21 +47,24 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-
 ***REMOVED***
-        rating = value.data["rating"];
+***REMOVED***
+***REMOVED***
+***REMOVED***
 ***REMOVED***
 ***REMOVED***
       ***REMOVED***);
     ***REMOVED***);
   ***REMOVED***
 
-  Future makeTransaction(BuildContext context)async{
+***REMOVED***
 
 ***REMOVED***
     final uid = user.uid;
 
-    await Firestore.instance.collection('users').document(uid).collection("transactions").document().setData({
+    print(uid);
+
+    await Firestore.instance.collection('students').document(uid).collection('transactions').add({
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
@@ -71,9 +72,7 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
     ***REMOVED***);
 
 
-
-
-    await Firestore.instance.collection('trainers').document(widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID).collection("transactions").document().setData({
+    await Firestore.instance.collection('trainers').document(widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID).collection("transactions").add({
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
