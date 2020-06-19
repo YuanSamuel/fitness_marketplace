@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +61,7 @@ class _AddSessionPageState extends State<AddSessionPage> {
             ),
           ),
           RaisedButton(
+
             child: Text('Submit'),
             onPressed: () async {
               _lengthController.clear();
