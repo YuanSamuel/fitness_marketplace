@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/animations/FadeAnimationUp.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
 import 'package:fitnessmarketplace/pages/request_private_session_page.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:validators/sanitizers.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class TrainerWidget extends StatefulWidget {
   const TrainerWidget({Key key, this.trainer}) : super(key: key);
@@ -20,11 +22,38 @@ class TrainerWidget extends StatefulWidget {
 
 class _TrainerWidgetState extends State<TrainerWidget> {
   List<RecordedVideo> trainerVideos;
+  List<DocumentSnapshot> trainerComments;
+  int commentAmount;
+  double rate;
 
   @override
   void initState() {
     getRecordedVideos();
+    getRate();
     super.initState();
+  }
+
+  getRate() async {
+    QuerySnapshot rateQuery = await Firestore.instance.collection('comments').getDocuments();
+    List<DocumentSnapshot> rateDoc = rateQuery.documents;
+    int _amount = 0;
+    int totalStar = 0;
+    for(int i=0;i<rateDoc.length;i++) {
+      if(rateDoc[i].data['uidTrainer']==widget.trainer.uid) {
+        int newTotalStar = rateDoc[i].data['rating'];
+        totalStar+=newTotalStar;
+        _amount = _amount + 1;
+      }
+    }
+    commentAmount = _amount;
+    print(1.0*totalStar/commentAmount);
+    rate = 1.0*totalStar/commentAmount;
+    if(totalStar==0&&commentAmount==0) {
+      rate = 0;
+    }
+    Firestore.instance.collection('trainers').document(widget.trainer.uid).setData({
+      'rating': rate,
+    },merge: true);
   }
 
   getRecordedVideos() async {
@@ -43,6 +72,11 @@ class _TrainerWidgetState extends State<TrainerWidget> {
   Widget build(BuildContext context) {
     String trainerName =
         widget.trainer.firstName + ' ' + widget.trainer.lastName;
+
+    TextEditingController _comment = new TextEditingController();
+
+    int rating = 5;
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Hero(
@@ -131,28 +165,62 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                               1.5,
                               Row(
                                 children: <Widget>[
-                                  RatingBarIndicator(
-                                    rating: widget.trainer.rating,
-                                    itemBuilder: (context, index) => Icon(
-                                      Icons.star,
-                                      color: Colors.amber,
-                                    ),
-                                    itemCount: 5,
-                                    itemSize: 15,
-                                    direction: Axis.horizontal,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    widget.trainer.rating.toString(),
-                                    style: TextStyle(color: Colors.white70),
+                                  FutureBuilder(
+                                    future: Firestore.instance.collection('trainers').document(widget.trainer.uid).get(),
+                                    builder: (context, snapshot) {
+                                      if(snapshot.hasData) {
+                                        return Row(
+                                          children: [
+                                            RatingBarIndicator(
+                                              rating: snapshot.data['rating'],
+                                              itemBuilder: (context, index) => Icon(
+                                                Icons.star,
+                                                color: Colors.amber,
+                                              ),
+                                              itemCount: 5,
+                                              itemSize: 15,
+                                              direction: Axis.horizontal,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              snapshot.data['rating'].toStringAsFixed(2),
+                                              style: TextStyle(color: Colors.white70),
+                                            ),
+                                          ],
+                                        );
+                                      }
+                                      else {
+                                        return Row(
+                                          children: [
+                                            RatingBarIndicator(
+                                              rating: 0,
+                                              itemBuilder: (context, index) => Icon(
+                                                Icons.star,
+                                                color: Colors.amber,
+                                              ),
+                                              itemCount: 5,
+                                              itemSize: 15,
+                                              direction: Axis.horizontal,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              '0',
+                                              style: TextStyle(color: Colors.white70),
+                                            ),
+                                          ],
+                                        );
+                                      }
+                                    },
                                   ),
                                   SizedBox(
                                     width: 20,
                                   ),
                                   Text(
-                                    '(2300)',
+                                    '($commentAmount)',
                                     style: TextStyle(
                                         color: Colors.white38, fontSize: 12),
                                   ),
@@ -188,7 +256,7 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                           FadeAnimationUp(
                               1.6,
                               Text(
-                                widget.trainer.trainingTypes.toString(),
+                                widget.trainer.trainingTypes.toString().replaceAll('[', '').replaceAll(']', ''),
                                 style: TextStyle(color: Colors.grey),
                               )),
                           SizedBox(
@@ -224,11 +292,162 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                               )),
                           SizedBox(
                             height: 80,
-                          )
-                        ],
-                      ),
-                    )
-                  ]),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height-50,
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 100,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            child: TextField(
+                                              controller: _comment,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                              decoration: InputDecoration(
+                                                hintText: 'Add a Comment',
+                                                enabledBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors.lightBlue
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            width: 300,
+                                          ),
+                                          Container(
+                                            width: 50,
+                                            height: 50,
+                                            child: FlatButton(
+                                              child: Icon(
+                                                Icons.send,
+                                                color: Colors.lightBlue,
+                                              ),
+                                              onPressed: () async {
+                                                String currentUid;
+                                                await FirebaseAuth.instance.currentUser().then((currentUser) => currentUid = currentUser.uid);
+                                                Firestore.instance.collection('comments').document().setData({
+                                                  'comment': _comment.text,
+                                                  'rating': rating,
+                                                  'uidStudent': currentUid,
+                                                  'uidTrainer': widget.trainer.uid,
+                                                });
+                                                _comment.clear();
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Container(
+                                        height: 10,
+                                      ),
+                                      RatingBar(
+                                        initialRating: 5,
+                                        minRating: 1,
+                                        direction: Axis.horizontal,
+                                        itemCount: 5,
+                                        itemBuilder: (context, _) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                        onRatingUpdate: (newRating) {
+                                          rating = newRating.toInt();
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                StreamBuilder(
+                                  stream: Firestore.instance.collection('comments').snapshots(),
+                                  builder: (context, snapshot) {
+                                    List<DocumentSnapshot> commentDocs = snapshot.data.documents;
+                                    if(snapshot.hasData) {
+                                      return SizedBox(
+                                        height: MediaQuery.of(context).size.height-150,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.vertical,
+                                          itemCount: commentDocs.length,
+                                          // ignore: missing_return
+                                          itemBuilder: (BuildContext context, int i) {
+                                            if(commentDocs[i].data['uidTrainer']==widget.trainer.uid){
+                                              return Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      FutureBuilder(
+                                                        future: Firestore.instance.collection('students').document(commentDocs[i].data['uidStudent']).get(),
+                                                        builder: (context, snapshot) {
+                                                          if(snapshot.hasData) {
+
+                                                            //First and Last Name of the User
+                                                            return Text(
+                                                              snapshot.data['firstName']+' '+snapshot.data['lastName'],
+                                                              style: TextStyle(
+                                                                fontWeight: FontWeight.w500,
+                                                                color: Colors.white,
+                                                                fontSize: 25,
+                                                              ),
+                                                              textAlign: TextAlign.left,
+                                                            );
+                                                          }
+                                                          else {
+                                                            return SizedBox.shrink();
+                                                          }
+                                                        },
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      RatingBarIndicator(
+                                                        rating: toDouble(commentDocs[i].data['rating'].toString()),
+                                                        itemBuilder: (context, index) => Icon(
+                                                          Icons.star,
+                                                          color: Colors.amber,
+                                                        ),
+                                                        itemCount: 5,
+                                                        itemSize: 15,
+                                                        direction: Axis.horizontal,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(
+                                                    commentDocs[i].data['comment'],
+                                                    style: TextStyle(
+                                                        color: Colors.white
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    height: 25,
+                                                  ),
+                                                ],
+                                              );
+                                            }
+                                            },
+                                          ),
+                                        );
+                                      }
+                                      else {
+                                        return SizedBox.shrink();
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ]
+                  ),
                 )
               ],
             ),
