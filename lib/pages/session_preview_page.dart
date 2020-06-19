@@ -1,6 +1,11 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
+import 'package:fitnessmarketplace/models/Stream.dart';
+import 'package:fitnessmarketplace/models/Trainer.dart';
+import 'package:fitnessmarketplace/models/video_info.dart';
 import 'package:fitnessmarketplace/pages/payment_page.dart';
+import 'package:fitnessmarketplace/widgets/trainer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -8,14 +13,44 @@ import 'package:flutter/cupertino.dart';
 class SessionPreview extends StatefulWidget {
   //final String image;
 
-  final DocumentReference trainer;
-  const SessionPreview({Key key, this.trainer,}) : super(key: key);
+  final Stream stream;
+  final bool isStream;
+  final VideoInfo video;
+  const SessionPreview({Key key, this.stream, this.isStream, this.video,}) : super(key: key);
 
   @override
   _SessionPreviewState createState() => _SessionPreviewState();
 }
 
 class _SessionPreviewState extends State<SessionPreview> {
+
+  String trainer = "";
+  int rating = 0;
+  int comments = 0;
+  Trainer t = null;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("HELO");
+
+    getTrainerInfo();
+  }
+
+  Future getTrainerInfo() async{
+    print("TRAINER ID"+ widget.stream.trainer);
+    await Firestore.instance.collection("trainers").document(widget.stream.trainer).get().then((value){
+      setState(() {
+
+        trainer = value.data["firstName"]+" "+value.data["lastName"];
+        rating = value.data["rating"];
+        print("TRAINER IS"+trainer);
+        t = Trainer.fromSnapshot(value);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +80,7 @@ class _SessionPreviewState extends State<SessionPreview> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   FadeAnimationDown(1.2,Text(
-                    "Gigantic Glute Workout",
+                    widget.stream.title,
                     style: TextStyle(
                         color: Colors.black.withOpacity(0.8),
                         fontSize: 25,
@@ -54,7 +89,7 @@ class _SessionPreviewState extends State<SessionPreview> {
                 ],
               ),
               SizedBox(height: 7,),
-              FadeAnimationDown(1.4,Text("with Michael Reeves",
+              FadeAnimationDown(1.4,Text("with "+trainer,
                   style: TextStyle(
                     fontSize: 17,
                     color: Colors.black54,
@@ -74,7 +109,7 @@ class _SessionPreviewState extends State<SessionPreview> {
                         width: 5,
                       ),
                       Text(
-                        "4.0",
+                        rating.toString(),
                         style: TextStyle(
                             color: Colors.orange.shade700,
                             fontWeight: FontWeight.bold,
@@ -84,7 +119,7 @@ class _SessionPreviewState extends State<SessionPreview> {
                         width: 5,
                       ),
                       Text(
-                        "(2460)",
+                        "25",
                         style: TextStyle(
                             color: Colors.grey,
                             fontSize: 15,
@@ -106,6 +141,12 @@ class _SessionPreviewState extends State<SessionPreview> {
                       ),
                     ),
                     onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TrainerWidget(
+                                trainer: t,
+                              )));
                       //do something, maybe open up trainer page
                     },
                   )),
@@ -125,8 +166,7 @@ class _SessionPreviewState extends State<SessionPreview> {
               ),),
               SizedBox(height: 8,),
               FadeAnimationDown(2.2,Text(
-                "Reeves is back at it again with his classic glutes workout, ready to take you into a new level of satisfaction and fitness. He's ready to twist it, bop it, pull it, anything you think is necessary to get you a rocking hot body. This workout focuses on the glutes, and strecthing them into the curves you have so desperately desired.",
-                style: TextStyle(color: Colors.grey, height: 1.5,
+                widget.stream.description,style: TextStyle(color: Colors.grey, height: 1.5,
                 fontSize: 14),
               ),),
               SizedBox(height: 10,),
@@ -140,7 +180,7 @@ class _SessionPreviewState extends State<SessionPreview> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   FadeAnimationDown(2.5,Container(
-                    child: Text("Cost: \$25", style: TextStyle(
+                    child: Text("Cost: "+(widget.stream.price.round()).toString(), style: TextStyle(
                       fontSize: 22,
                       color: Colors.black.withOpacity(0.8),
                       fontWeight: FontWeight.bold

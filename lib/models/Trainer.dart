@@ -12,6 +12,7 @@ class Trainer {
   double oneOnOnePrice;
   List trainingTypes;
 
+
   DocumentReference reference;
 
   Trainer(
