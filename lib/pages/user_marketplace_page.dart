@@ -78,17 +78,10 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
 
   getAllStreams() async {
     QuerySnapshot getTrainers =
-        await Firestore.instance.collection('trainers').getDocuments();
+        await Firestore.instance.collection('streams').getDocuments();
     List<DocumentSnapshot> trainerSnapshots = getTrainers.documents;
     for (int i = 0; i < trainerSnapshots.length; i++) {
-      QuerySnapshot getSessions = await trainerSnapshots[i]
-          .reference
-          .collection('streams')
-          .getDocuments();
-      List<DocumentSnapshot> sessionSnapshots = getSessions.documents;
-      for (int i = 0; i < sessionSnapshots.length; i++) {
-        allStreams.add(models.Stream.fromSnapshot(sessionSnapshots[i]));
-      }
+        allStreams.add(models.Stream.fromSnapshot(trainerSnapshots[i]));
     }
   }
 
@@ -256,7 +249,8 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                             DateTime.fromMillisecondsSinceEpoch(
                                                     allStreams[i].date)
                                                 .toLocal()),
-                                    people: "No limit"),
+                                    people: "No limit",
+                                stream:allStreams[i]),
                               );
                             }))
                     : SizedBox.shrink(),
@@ -378,7 +372,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
     );
   }
 
-  Widget liveSession({image, name, date, people}) {
+  Widget liveSession({image, name, date, people, stream}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: InkWell(
@@ -447,7 +441,10 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SessionPreview()),
+                      MaterialPageRoute(builder: (context) => SessionPreview(
+                        stream: stream,
+                        isStream: true,
+                      )),
                     );
                   },
                   highlightedBorderColor: Colors.red,
