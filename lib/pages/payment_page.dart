@@ -10,13 +10,15 @@ import 'package:fitnessmarketplace/pages/stream_page.dart';
 
 
  class PaymentPage extends StatefulWidget{
-  const PaymentPage({Key key, this.stream, this.video, this.isStream***REMOVED***) : super(key: key);
+  const PaymentPage({Key key, this.stream, this.video, this.isStream, this.isPrivate***REMOVED***) : super(key: key);
 
 
    _PaymentPageState createState() => _PaymentPageState();
    final String stream;
  ***REMOVED***
  ***REMOVED***
+ ***REMOVED***
+
 
  ***REMOVED***
 
@@ -100,7 +102,7 @@ import 'package:fitnessmarketplace/pages/stream_page.dart';
      if (widget.isStream){
        Navigator.push(
          context,
-         MaterialPageRoute(builder: (context) => StreamPage(role: ClientRole.Audience,channelName: widget.stream,)),
+         MaterialPageRoute(builder: (context) => StreamPage(role: widget.isPrivate?ClientRole.Broadcaster:ClientRole.Audience,channelName: widget.stream,isTrainer: false,)),
    ***REMOVED***
      ***REMOVED***
  ***REMOVED***

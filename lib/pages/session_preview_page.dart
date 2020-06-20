@@ -18,7 +18,8 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-  const SessionPreview({Key key, this.stream, this.isStream, this.video, this.trainer,***REMOVED***) : super(key: key);
+***REMOVED***
+***REMOVED***
 
 ***REMOVED***
 ***REMOVED***
@@ -86,7 +87,7 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PaymentPage(isStream: widget.isStream, video: widget.video, stream: widget.stream.trainer,)),
+      MaterialPageRoute(builder: (context) => PaymentPage(isStream: widget.isStream, video: widget.video, stream: widget.stream.trainer,isPrivate:widget.isPrivate!=null)),
 ***REMOVED***
   ***REMOVED***
 
