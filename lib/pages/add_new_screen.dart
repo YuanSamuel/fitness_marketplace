@@ -390,7 +390,6 @@ class _AddNewRecordingState extends State<AddNewRecording> {
                                     color: Colors.black,
                                     icon: Icon(Icons.check, color: Colors.white,),
                                     onPressed: (){***REMOVED***,
-
                     ***REMOVED***,
                   ***REMOVED***
               ***REMOVED***

@@ -1,6 +1,7 @@
 import 'package:fitnessmarketplace/pages/add_new_screen.dart';
 import 'package:fitnessmarketplace/pages/entry_page.dart';
 import 'package:fitnessmarketplace/pages/student_home_screen.dart';
+import 'package:fitnessmarketplace/pages/testingscreen.dart';
 import 'package:fitnessmarketplace/pages/trainer_home_screen.dart';
 ***REMOVED***
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/register': (BuildContext context) => Register(),
       ***REMOVED***,
-      home: AddNewRecording(),
+      home: TestingScreen(),
 ***REMOVED***
   ***REMOVED***
 ***REMOVED***
