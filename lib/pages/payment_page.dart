@@ -2,7 +2,6 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-***REMOVED***
 import 'package:fitnessmarketplace/pages/stream_page.dart';
 ***REMOVED***
 ***REMOVED***
@@ -101,7 +100,7 @@ import 'package:fitnessmarketplace/pages/stream_page.dart';
      if (widget.isStream){
        Navigator.push(
          context,
-         MaterialPageRoute(builder: (context) => StreamPage(role: ClientRole.Broadcaster,channelName: widget.stream,)),
+         MaterialPageRoute(builder: (context) => StreamPage(role: ClientRole.Audience,channelName: widget.stream,)),
    ***REMOVED***
      ***REMOVED***
  ***REMOVED***

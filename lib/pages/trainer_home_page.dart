@@ -1,3 +1,4 @@
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 ***REMOVED***
 ***REMOVED***
 import 'package:fitnessmarketplace/apis/firebase_provider.dart';
@@ -9,6 +10,7 @@ import 'package:fitnessmarketplace/models/Stream.dart' as models;
 import 'package:fitnessmarketplace/pages/add_new_screen.dart';
 import 'package:fitnessmarketplace/pages/add_session_page.dart';
 ***REMOVED***
+import 'package:fitnessmarketplace/pages/stream_page.dart';
 ***REMOVED***
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -201,97 +203,108 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                             .intToLengthString(allEvents[i].minutes.floor())
                         : _stringHelper.intToLengthString(allEvents[i].length);
 
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 15.0),
-            ***REMOVED***
-                          borderRadius: BorderRadius.circular(30.0),
-                          color: isStream || allEvents[i].available
-                              ? Colors.blue
-                              : Color(0xff3B3B3B),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 5,
-                              blurRadius: 7,
-                              offset:
-                                  Offset(0, 3), // changes position of shadow
-              ***REMOVED***,
-          ***REMOVED***
-          ***REMOVED***,
-                        height: 100.0,
-                        child: Row(
-          ***REMOVED***
-                          crossAxisAlignment: CrossAxisAlignment.center,
-              ***REMOVED***
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                  ***REMOVED***
-                  ***REMOVED***
-                                Container(
-                                  width: 7 *
-                                      MediaQuery.of(context).size.width /
-                                      10,
-                                  height: 40,
-                                  child: isStream
-                                      ? Text(
-                                          allEvents[i].title + ' - Live Class',
-                                          overflow: TextOverflow.fade,
-                      ***REMOVED***
-                                            fontSize: 20.0,
-                ***REMOVED***
+                    return GestureDetector(
+                      onTap:() {
+
+                        // Within the `FirstRoute` widget
+  ***REMOVED***
+***REMOVED***
+***REMOVED***builder: (context) => StreamPage(channelName:"HAPPY" /*currentTrainer.reference.documentID*/,role: ClientRole.Broadcaster,)),
                     ***REMOVED***
-                            ***REMOVED***,
-                          ***REMOVED***
-                                      : Text(
-                                          allEvents[i].available
-                                              ? 'Open Session'
-                                              : 'Private Session with: ' +
-                                                  allEvents[i].studentName,
-                                          overflow: TextOverflow.fade,
-                      ***REMOVED***
+
+                      ***REMOVED***,
+              ***REMOVED***
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 15.0),
+              ***REMOVED***
+                            borderRadius: BorderRadius.circular(30.0),
+                            color: isStream || allEvents[i].available
+                                ? Colors.blue
+                                : Color(0xff3B3B3B),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                ***REMOVED***,
+            ***REMOVED***
+            ***REMOVED***,
+                          height: 100.0,
+                          child: Row(
+            ***REMOVED***
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                ***REMOVED***
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                    ***REMOVED***
+                    ***REMOVED***
+                                  Container(
+                                    width: 7 *
+                                        MediaQuery.of(context).size.width /
+                                        10,
+                                    height: 40,
+                                    child: isStream
+                                        ? Text(
+                                            allEvents[i].title + ' - Live Class',
+                                            overflow: TextOverflow.fade,
+                        ***REMOVED***
                                               fontSize: 20.0,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.white),
-                          ***REMOVED***,
-                  ***REMOVED***,
-          ***REMOVED***
-                                  height: 10.0,
-                  ***REMOVED***,
-          ***REMOVED***
-                                  length,
-              ***REMOVED***
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white),
-                  ***REMOVED***,
-              ***REMOVED***
-              ***REMOVED***,
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.end,
                   ***REMOVED***
-          ***REMOVED***
-                                  _stringHelper.dateTimeToDateString(date),
-              ***REMOVED***
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white),
-                  ***REMOVED***,
-          ***REMOVED***
-                                  height: 10.0,
-                  ***REMOVED***,
-          ***REMOVED***
-                                  _stringHelper.dateTimeToTimeString(date),
-              ***REMOVED***
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white),
-                  ***REMOVED***,
-              ***REMOVED***
-              ***REMOVED***
-          ***REMOVED***
+                      ***REMOVED***
+                              ***REMOVED***,
+                            ***REMOVED***
+                                        : Text(
+                                            allEvents[i].available
+                                                ? 'Open Session'
+                                                : 'Private Session with: ' +
+                                                    allEvents[i].studentName,
+                                            overflow: TextOverflow.fade,
+                        ***REMOVED***
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white),
+                            ***REMOVED***,
+                    ***REMOVED***,
+            ***REMOVED***
+                                    height: 10.0,
+                    ***REMOVED***,
+            ***REMOVED***
+                                    length,
+                ***REMOVED***
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white),
+                    ***REMOVED***,
+                ***REMOVED***
+                ***REMOVED***,
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                    ***REMOVED***
+            ***REMOVED***
+                                    _stringHelper.dateTimeToDateString(date),
+                ***REMOVED***
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white),
+                    ***REMOVED***,
+            ***REMOVED***
+                                    height: 10.0,
+                    ***REMOVED***,
+            ***REMOVED***
+                                    _stringHelper.dateTimeToTimeString(date),
+                ***REMOVED***
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white),
+                    ***REMOVED***,
+                ***REMOVED***
+                ***REMOVED***
+            ***REMOVED***
+            ***REMOVED***,
           ***REMOVED***,
         ***REMOVED***,
                 ***REMOVED***

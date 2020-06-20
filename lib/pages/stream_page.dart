@@ -65,6 +65,7 @@ class _StreamPageState extends State<StreamPage> {
   Future<void> _initAgoraRtcEngine() async {
     await AgoraRtcEngine.create(APP_ID);
     await AgoraRtcEngine.enableVideo();
+    print("VIDEO ENABLED");
     await AgoraRtcEngine.setChannelProfile(ChannelProfile.LiveBroadcasting);
     await AgoraRtcEngine.setClientRole(widget.role);
   ***REMOVED***
