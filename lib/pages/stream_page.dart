@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 ***REMOVED***
+import 'package:fitnessmarketplace/widgets/curretnexericse_widget.dart';
 ***REMOVED***
 
 import '../utils/settings.dart';
@@ -44,11 +45,19 @@ class _StreamPageState extends State<StreamPage> {
 
 ***REMOVED***
 ***REMOVED***
+
 ***REMOVED***
-    // initialize agora sdk
-    initialize();
+
     scrollController = new ScrollController();
     addTextController = new TextEditingController();
+
+
+    // initialize agora sdk
+    initialize();
+
+
+
+
   ***REMOVED***
 
   Future<void> initialize() async {
@@ -69,6 +78,12 @@ class _StreamPageState extends State<StreamPage> {
     configuration.dimensions = Size(1920, 1080);
     await AgoraRtcEngine.setVideoEncoderConfiguration(configuration);
     await AgoraRtcEngine.joinChannel(null, widget.channelName, null, 0);
+
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 300),
+***REMOVED***
   ***REMOVED***
 
   /// Create agora sdk instance and initialize
@@ -204,68 +219,133 @@ class _StreamPageState extends State<StreamPage> {
 
   TextEditingController addTextController = new TextEditingController();
 
+  int reps = 1;
+  int mins = 1;
 
   /// Toolbar layout
   Widget _addview() {
     if (widget.role == ClientRole.Audience) return Container();
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Container(
-        height: 100,
-        decoration: BoxDecoration(
-          color: Colors.blue,
+    return Container(
+      width: 350.0,
+      height: 200.0,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30.0),
+          color: Colors.black54
 ***REMOVED***
-        alignment: Alignment.center,
-        child: TextField(
-          controller: addTextController,
-          decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: 'Enter the next exercise, click the + button to submit'
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: TextField(
+                controller: addTextController,
+***REMOVED***color: Colors.white),
+                cursorColor: Colors.white,
+                decoration: InputDecoration(
+                  hintText: 'Enter Exercise Name',
+                  enabledBorder: UnderlineInputBorder(
+***REMOVED*** BorderSide(
+                        color: Colors.white
+      ***REMOVED***,
+    ***REMOVED***,
+                  focusColor: Colors.white,
+  ***REMOVED***,
+***REMOVED***,
 ***REMOVED***
-        )
+            Text('Reps', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.white),),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+  ***REMOVED***
+                IconButton(
+                  icon: Icon(Icons.chevron_left, color: Colors.white,),
+                  onPressed: (){
+              ***REMOVED***
+                      reps-=1;
+                    ***REMOVED***);
+                  ***REMOVED***,
+  ***REMOVED***,
+                Text(reps.toString(), style: TextStyle(color: Colors.white),),
+                IconButton(
+                  icon: Icon(Icons.chevron_right, color: Colors.white,),
+                  onPressed: (){
+              ***REMOVED***
+                      reps+=1;
+                    ***REMOVED***);
+                  ***REMOVED***,
+  ***REMOVED***,
+  ***REMOVED***
+***REMOVED***
+            Text('Minutes', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.white),),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+  ***REMOVED***
+                IconButton(
+                  icon: Icon(Icons.chevron_left, color: Colors.white,),
+                  onPressed: (){
+              ***REMOVED***
+                      mins-=1;
+                    ***REMOVED***);
+                  ***REMOVED***,
+  ***REMOVED***,
+                Text(mins.toString(), style: TextStyle(color: Colors.white),),
+                IconButton(
+                  icon: Icon(Icons.chevron_right, color: Colors.white,),
+                  onPressed: (){
+              ***REMOVED***
+                      mins+=1;
+                    ***REMOVED***);
+                  ***REMOVED***,
+  ***REMOVED***,
+  ***REMOVED***
+***REMOVED***
+          ],
+***REMOVED***
 ***REMOVED***
 ***REMOVED***
   ***REMOVED***
 
+
   /// Toolbar layout
   Widget _topview() {
-    if (widget.role == ClientRole.Audience) return Container();
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Container(
-        height: 100,
-        decoration: BoxDecoration(
-          color: Colors.blue,
-***REMOVED***
-        alignment: Alignment.center,
-        child: Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: Firestore.instance
-                  .collection("streamactions")
-                  .document(widget.channelName)
-                  .collection("actions")
-                  .orderBy("date")
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData)
-                  return Center(
-                    child: CircularProgressIndicator(),
-              ***REMOVED***
-                List<DocumentSnapshot> docs = snapshot.data.documents;
-
-                List<Widget> messages = new List<Widget>();
-
-                for (DocumentSnapshot d in docs) {
-                      messages.add(Text(
-                        d.data["exercise"],
-        ***REMOVED***);
+    return SingleChildScrollView(
+      controller: scrollController,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Container(
+          height: 100,
+          alignment: Alignment.center,
+          child: Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: Firestore.instance
+                    .collection("streamactions")
+                    .document(widget.channelName)
+                    .collection("actions")
+                    .orderBy("date")
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData)
+                    return Center(
+                      child: CircularProgressIndicator(),
                 ***REMOVED***
-                return ListView(
-                  controller: scrollController,
-                  children: messages,
-            ***REMOVED***
-              ***REMOVED***,
-            )),
+                  List<DocumentSnapshot> docs = snapshot.data.documents;
+
+                  List<Widget> messages = new List<Widget>();
+
+                  for (DocumentSnapshot d in docs) {
+                        messages.add(CurrentExerciseWidget(name: d.data['exercise'],mins: d.data["mins"],reps: d.data["reps"],));
+                  ***REMOVED***
+                  return ListView(
+
+                    children: messages,
+              ***REMOVED***
+                ***REMOVED***,
+***REMOVED***),
+***REMOVED***
 ***REMOVED***
 ***REMOVED***
   ***REMOVED***
@@ -345,23 +425,33 @@ class _StreamPageState extends State<StreamPage> {
         .document(widget.channelName)
         .collection("actions").document().setData({
       'exercise':addTextController.text.toString(),
-      'date':DateTime.now().millisecondsSinceEpoch
+      'date':DateTime.now().millisecondsSinceEpoch,
+      'mins':mins,
+      'reps':reps
     ***REMOVED***);
 
+    addTextController.clear();
+
+
+
     setState(() {
+      mins =1;
+      reps = 1;
       addAction=!addAction;
 
     ***REMOVED***);
 
     setState(() {
-      scrollController.animateTo(
-        scrollController.position.maxScrollExtent,
-        curve: Curves.easeOut,
-        duration: const Duration(milliseconds: 300),
-  ***REMOVED***
+
     ***REMOVED***);
 
-    addTextController.clear();
+    scrollController.animateTo(
+      scrollController.position.minScrollExtent,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 300),
+***REMOVED***
+
+
 
 
 
