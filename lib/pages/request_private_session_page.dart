@@ -133,7 +133,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                         if (isStream) {
     ***REMOVED***
   ***REMOVED***
-  ***REMOVED***builder: (context) => SessionPreview(stream: events[i], isStream: true,)),
+  ***REMOVED***builder: (context) => SessionPreview(stream: events[i], isStream: true,isPrivate: true,)),
                       ***REMOVED***
                         ***REMOVED***
                     ***REMOVED***
