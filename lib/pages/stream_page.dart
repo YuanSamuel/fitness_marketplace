@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+***REMOVED***
 ***REMOVED***
 
 import '../utils/settings.dart';
@@ -24,6 +26,10 @@ class _StreamPageState extends State<StreamPage> {
   final _infoStrings = <String>[];
   bool muted = false;
 
+
+  List<DocumentSnapshot> actions = [];
+
+  bool addAction = false;
 ***REMOVED***
   void dispose() {
     // clear users
@@ -39,6 +45,8 @@ class _StreamPageState extends State<StreamPage> {
 ***REMOVED***
     // initialize agora sdk
     initialize();
+    scrollController = new ScrollController();
+    addTextController = new TextEditingController();
   ***REMOVED***
 
   Future<void> initialize() async {
@@ -189,6 +197,77 @@ class _StreamPageState extends State<StreamPage> {
     return Container();
   ***REMOVED***
 
+
+  ScrollController scrollController = new ScrollController();
+
+  TextEditingController addTextController = new TextEditingController();
+
+
+  /// Toolbar layout
+  Widget _addview() {
+    if (widget.role == ClientRole.Audience) return Container();
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Container(
+        height: 100,
+        decoration: BoxDecoration(
+          color: Colors.blue,
+***REMOVED***
+        alignment: Alignment.center,
+        child: TextField(
+          controller: addTextController,
+          decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: 'Enter the next exercise, click the + button to submit'
+***REMOVED***
+        )
+***REMOVED***
+***REMOVED***
+  ***REMOVED***
+
+  /// Toolbar layout
+  Widget _topview() {
+    if (widget.role == ClientRole.Audience) return Container();
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Container(
+        height: 100,
+        decoration: BoxDecoration(
+          color: Colors.blue,
+***REMOVED***
+        alignment: Alignment.center,
+        child: Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: Firestore.instance
+                  .collection("streamactions")
+                  .document(widget.channelName)
+                  .collection("actions")
+                  .orderBy("date")
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData)
+                  return Center(
+                    child: CircularProgressIndicator(),
+              ***REMOVED***
+                List<DocumentSnapshot> docs = snapshot.data.documents;
+
+                List<Widget> messages = new List<Widget>();
+
+                for (DocumentSnapshot d in docs) {
+                      messages.add(Text(
+                        d.data["exercise"],
+        ***REMOVED***);
+                ***REMOVED***
+                return ListView(
+                  controller: scrollController,
+                  children: messages,
+            ***REMOVED***
+              ***REMOVED***,
+            )),
+***REMOVED***
+***REMOVED***
+  ***REMOVED***
+
   /// Toolbar layout
   Widget _toolbar() {
     if (widget.role == ClientRole.Audience) return Container();
@@ -233,10 +312,57 @@ class _StreamPageState extends State<StreamPage> {
             elevation: 2.0,
             fillColor: Colors.white,
             padding: const EdgeInsets.all(12.0),
+***REMOVED***
+          RawMaterialButton(
+            onPressed: (){
+        ***REMOVED***
+                if (addAction)
+                  addActiontoFB();
+                else
+                  addAction=!addAction;
+              ***REMOVED***);
+            ***REMOVED***,
+            child: Icon(
+              Icons.add,
+              color: Colors.blueAccent,
+              size: 20.0,
+***REMOVED***
+            shape: CircleBorder(),
+            elevation: 2.0,
+            fillColor: Colors.white,
+            padding: const EdgeInsets.all(12.0),
           )
         ],
 ***REMOVED***
 ***REMOVED***
+  ***REMOVED***
+
+
+  Future addActiontoFB() async{
+    await Firestore.instance.collection("streamactions")
+        .document(widget.channelName)
+        .collection("actions").document().setData({
+      'exercise':addTextController.text.toString(),
+      'date':DateTime.now().millisecondsSinceEpoch
+    ***REMOVED***);
+
+    setState(() {
+      addAction=!addAction;
+
+    ***REMOVED***);
+
+    setState(() {
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        curve: Curves.easeOut,
+        duration: const Duration(milliseconds: 300),
+  ***REMOVED***
+    ***REMOVED***);
+
+    addTextController.clear();
+
+
+
   ***REMOVED***
 
   /// Info panel to show logs
@@ -316,6 +442,7 @@ class _StreamPageState extends State<StreamPage> {
           children: <Widget>[
             _viewRows(),
             _panel(),
+            addAction?_addview():_topview(),
             _toolbar(),
           ],
 ***REMOVED***

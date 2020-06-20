@@ -155,7 +155,7 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
                               show: true,
                               bottomTitles: SideTitles(
                                 showTitles: true,
-                                interval: (endDate - startDate) ~/ 5,
+                                //interval: (endDate - startDate) ~/ 5,
                                 getTitles: (double givenDay) {
                                   return _calendarHelper
                                       .intToDateString(givenDay.round());
