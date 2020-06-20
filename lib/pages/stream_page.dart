@@ -14,8 +14,10 @@ class StreamPage extends StatefulWidget {
   /// non-modifiable client role of the page
   final ClientRole role;
 
+  final bool isTrainer;
+
   /// Creates a call page with given channel name.
-  const StreamPage({Key key, this.channelName, this.role}) : super(key: key);
+  const StreamPage({Key key, this.channelName, this.role, this.isTrainer}) : super(key: key);
 
   @override
   _StreamPageState createState() => _StreamPageState();
@@ -313,7 +315,7 @@ class _StreamPageState extends State<StreamPage> {
             fillColor: Colors.white,
             padding: const EdgeInsets.all(12.0),
           ),
-          RawMaterialButton(
+          widget.isTrainer?RawMaterialButton(
             onPressed: (){
               setState(() {
                 if (addAction)
@@ -331,7 +333,7 @@ class _StreamPageState extends State<StreamPage> {
             elevation: 2.0,
             fillColor: Colors.white,
             padding: const EdgeInsets.all(12.0),
-          )
+          ):Container(height: 0,width: 0,)
         ],
       ),
     );

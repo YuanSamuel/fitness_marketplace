@@ -209,7 +209,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                         // Within the `FirstRoute` widget
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => StreamPage(channelName:"HAPPY" /*currentTrainer.reference.documentID*/,role: ClientRole.Broadcaster,)),
+                          MaterialPageRoute(builder: (context) => StreamPage(channelName:"HAPPY" /*currentTrainer.reference.documentID*/,role: ClientRole.Broadcaster,isTrainer: true,)),
                         );
 
                       },

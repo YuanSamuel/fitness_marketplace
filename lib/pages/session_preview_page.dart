@@ -18,7 +18,8 @@ class SessionPreview extends StatefulWidget {
   final bool isStream;
   final Trainer trainer;
   final DocumentSnapshot video;
-  const SessionPreview({Key key, this.stream, this.isStream, this.video, this.trainer,}) : super(key: key);
+  final bool isPrivate;
+  const SessionPreview({Key key, this.stream, this.isStream, this.video, this.trainer, this.isPrivate,}) : super(key: key);
 
   @override
   _SessionPreviewState createState() => _SessionPreviewState();
@@ -86,7 +87,7 @@ class _SessionPreviewState extends State<SessionPreview> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PaymentPage(isStream: widget.isStream, video: widget.video, stream: widget.stream.trainer,)),
+      MaterialPageRoute(builder: (context) => PaymentPage(isStream: widget.isStream, video: widget.video, stream: widget.stream.trainer,isPrivate:widget.isPrivate!=null)),
     );
   }
 
