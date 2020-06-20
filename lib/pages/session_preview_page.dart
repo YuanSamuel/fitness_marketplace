@@ -83,7 +83,7 @@ class _SessionPreviewState extends State<SessionPreview> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PaymentPage()),
+      MaterialPageRoute(builder: (context) => PaymentPage(isStream: widget.isStream, video: widget.video, stream: widget.stream.reference.documentID,)),
     );
   }
 
