@@ -68,7 +68,8 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-      'trainer': widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID
+***REMOVED***
+      'date': DateTime.now().millisecondsSinceEpoch,
     ***REMOVED***);
 
 
@@ -76,7 +77,8 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-      'trainer': widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID
+***REMOVED***
+      'date': DateTime.now().millisecondsSinceEpoch,
     ***REMOVED***);
 
     Navigator.push(
