@@ -1,6 +1,5 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fitnessmarketplace/models/Stream.dart';
 import 'package:fitnessmarketplace/models/video_info.dart';
 import 'package:fitnessmarketplace/pages/player.dart';
 import 'package:fitnessmarketplace/pages/stream_page.dart';
@@ -101,7 +100,7 @@ import 'package:square_in_app_payments/in_app_payments.dart';
      if (widget.isStream){
        Navigator.push(
          context,
-         MaterialPageRoute(builder: (context) => StreamPage(role: ClientRole.Broadcaster,channelName: widget.stream,)),
+         MaterialPageRoute(builder: (context) => StreamPage(role: ClientRole.Audience,channelName: widget.stream,)),
        );
      }
      else{
