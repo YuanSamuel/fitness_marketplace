@@ -2,7 +2,7 @@ class StringHelper {
   List<String> months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   String dateTimeToDateString(DateTime date) {
-    return months[date.month] + ' ' + date.day.toString();
+    return months[date.month - 1] + ' ' + date.day.toString();
   }
 
   String dateTimeToTimeString(DateTime date) {

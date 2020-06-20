@@ -69,7 +69,8 @@ class _SessionPreviewState extends State<SessionPreview> {
       'type':widget.isStream?"stream":"ondemand",
       'sessionID':widget.isStream?widget.stream.reference.documentID:widget.video.documentID,
       'price':widget.isStream?widget.stream.price:widget.video.data["price"],
-      'trainer': widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID
+      'trainer': widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID,
+      'date': DateTime.now().millisecondsSinceEpoch,
     });
 
 
@@ -77,7 +78,8 @@ class _SessionPreviewState extends State<SessionPreview> {
       'type':widget.isStream?"stream":"ondemand",
       'sessionID':widget.isStream?widget.stream.reference.documentID:widget.video.documentID,
       'price':widget.isStream?widget.stream.price:widget.video.data["price"],
-      'trainer': widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID
+      'trainer': widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID,
+      'date': DateTime.now().millisecondsSinceEpoch,
     });
 
     await _handleCameraAndMic();
