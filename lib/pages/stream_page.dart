@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fitnessmarketplace/widgets/curretnexericse_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/settings.dart';
@@ -12,8 +15,10 @@ class StreamPage extends StatefulWidget {
   /// non-modifiable client role of the page
   final ClientRole role;
 
+  final bool isTrainer;
+
   /// Creates a call page with given channel name.
-  const StreamPage({Key key, this.channelName, this.role}) : super(key: key);
+  const StreamPage({Key key, this.channelName, this.role, this.isTrainer}) : super(key: key);
 
   @override
   _StreamPageState createState() => _StreamPageState();
@@ -24,6 +29,10 @@ class _StreamPageState extends State<StreamPage> {
   final _infoStrings = <String>[];
   bool muted = false;
 
+
+  List<DocumentSnapshot> actions = [];
+
+  bool addAction = false;
   @override
   void dispose() {
     // clear users
@@ -36,9 +45,19 @@ class _StreamPageState extends State<StreamPage> {
 
   @override
   void initState() {
+
     super.initState();
+
+    scrollController = new ScrollController();
+    addTextController = new TextEditingController();
+
+
     // initialize agora sdk
     initialize();
+
+
+
+
   }
 
   Future<void> initialize() async {
@@ -59,12 +78,19 @@ class _StreamPageState extends State<StreamPage> {
     configuration.dimensions = Size(1920, 1080);
     await AgoraRtcEngine.setVideoEncoderConfiguration(configuration);
     await AgoraRtcEngine.joinChannel(null, widget.channelName, null, 0);
+
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 300),
+    );
   }
 
   /// Create agora sdk instance and initialize
   Future<void> _initAgoraRtcEngine() async {
     await AgoraRtcEngine.create(APP_ID);
     await AgoraRtcEngine.enableVideo();
+    print("VIDEO ENABLED");
     await AgoraRtcEngine.setChannelProfile(ChannelProfile.LiveBroadcasting);
     await AgoraRtcEngine.setClientRole(widget.role);
   }
@@ -188,6 +214,142 @@ class _StreamPageState extends State<StreamPage> {
     return Container();
   }
 
+
+  ScrollController scrollController = new ScrollController();
+
+  TextEditingController addTextController = new TextEditingController();
+
+  int reps = 1;
+  int mins = 1;
+
+  /// Toolbar layout
+  Widget _addview() {
+    if (widget.role == ClientRole.Audience) return Container();
+    return Container(
+      width: 350.0,
+      height: 200.0,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30.0),
+          color: Colors.black54
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: TextField(
+                controller: addTextController,
+                style: TextStyle(color: Colors.white),
+                cursorColor: Colors.white,
+                decoration: InputDecoration(
+                  hintText: 'Enter Exercise Name',
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Colors.white
+                    ),
+                  ),
+                  focusColor: Colors.white,
+                ),
+              ),
+            ),
+            Text('Reps', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.white),),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.chevron_left, color: Colors.white,),
+                  onPressed: (){
+                    setState(() {
+                      reps-=1;
+                    });
+                  },
+                ),
+                Text(reps.toString(), style: TextStyle(color: Colors.white),),
+                IconButton(
+                  icon: Icon(Icons.chevron_right, color: Colors.white,),
+                  onPressed: (){
+                    setState(() {
+                      reps+=1;
+                    });
+                  },
+                ),
+              ],
+            ),
+            Text('Minutes', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.white),),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.chevron_left, color: Colors.white,),
+                  onPressed: (){
+                    setState(() {
+                      mins-=1;
+                    });
+                  },
+                ),
+                Text(mins.toString(), style: TextStyle(color: Colors.white),),
+                IconButton(
+                  icon: Icon(Icons.chevron_right, color: Colors.white,),
+                  onPressed: (){
+                    setState(() {
+                      mins+=1;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+
+  /// Toolbar layout
+  Widget _topview() {
+    return SingleChildScrollView(
+      controller: scrollController,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Container(
+          height: 100,
+          alignment: Alignment.center,
+          child: Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: Firestore.instance
+                    .collection("streamactions")
+                    .document(widget.channelName)
+                    .collection("actions")
+                    .orderBy("date")
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData)
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  List<DocumentSnapshot> docs = snapshot.data.documents;
+
+                  List<Widget> messages = new List<Widget>();
+
+                  for (DocumentSnapshot d in docs) {
+                        messages.add(CurrentExerciseWidget(name: d.data['exercise'],mins: d.data["mins"],reps: d.data["reps"],));
+                  }
+                  return ListView(
+
+                    children: messages,
+                  );
+                },
+              )),
+        ),
+      ),
+    );
+  }
+
   /// Toolbar layout
   Widget _toolbar() {
     if (widget.role == ClientRole.Audience) return Container();
@@ -232,10 +394,67 @@ class _StreamPageState extends State<StreamPage> {
             elevation: 2.0,
             fillColor: Colors.white,
             padding: const EdgeInsets.all(12.0),
-          )
+          ),
+          widget.isTrainer?RawMaterialButton(
+            onPressed: (){
+              setState(() {
+                if (addAction)
+                  addActiontoFB();
+                else
+                  addAction=!addAction;
+              });
+            },
+            child: Icon(
+              Icons.add,
+              color: Colors.blueAccent,
+              size: 20.0,
+            ),
+            shape: CircleBorder(),
+            elevation: 2.0,
+            fillColor: Colors.white,
+            padding: const EdgeInsets.all(12.0),
+          ):Container(height: 0,width: 0,)
         ],
       ),
     );
+  }
+
+
+  Future addActiontoFB() async{
+    await Firestore.instance.collection("streamactions")
+        .document(widget.channelName)
+        .collection("actions").document().setData({
+      'exercise':addTextController.text.toString(),
+      'date':DateTime.now().millisecondsSinceEpoch,
+      'mins':mins,
+      'reps':reps
+    });
+
+    addTextController.clear();
+
+
+
+    setState(() {
+      mins =1;
+      reps = 1;
+      addAction=!addAction;
+
+    });
+
+    setState(() {
+
+    });
+
+    scrollController.animateTo(
+      scrollController.position.minScrollExtent,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 300),
+    );
+
+
+
+
+
   }
 
   /// Info panel to show logs
@@ -315,6 +534,7 @@ class _StreamPageState extends State<StreamPage> {
           children: <Widget>[
             _viewRows(),
             _panel(),
+            addAction?_addview():_topview(),
             _toolbar(),
           ],
         ),
