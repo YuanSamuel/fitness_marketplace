@@ -8,6 +8,7 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 import 'package:fitnessmarketplace/widgets/trainer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 
 class SessionPreview extends StatefulWidget {
@@ -79,10 +80,17 @@ class _SessionPreviewState extends State<SessionPreview> {
       'trainer': widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID
     });
 
+    await _handleCameraAndMic();
+
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PaymentPage(isStream: widget.isStream, video: widget.video, stream: widget.stream.reference.documentID,)),
+      MaterialPageRoute(builder: (context) => PaymentPage(isStream: widget.isStream, video: widget.video, stream: widget.stream.trainer,)),
     );
+  }
+
+  Future<void> _handleCameraAndMic() async {
+    await Permission.camera.request();
+    await Permission.microphone.request();
   }
 
   @override
