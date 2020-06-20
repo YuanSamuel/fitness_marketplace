@@ -133,7 +133,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                         if (isStream) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => SessionPreview(stream: events[i], isStream: true,)),
+                            MaterialPageRoute(builder: (context) => SessionPreview(stream: events[i], isStream: true,isPrivate: true,)),
                           );
                         }
                         else {

@@ -10,13 +10,15 @@ import 'package:square_in_app_payments/in_app_payments.dart';
 
 
  class PaymentPage extends StatefulWidget{
-  const PaymentPage({Key key, this.stream, this.video, this.isStream}) : super(key: key);
+  const PaymentPage({Key key, this.stream, this.video, this.isStream, this.isPrivate}) : super(key: key);
 
 
    _PaymentPageState createState() => _PaymentPageState();
    final String stream;
    final DocumentSnapshot video;
    final bool isStream;
+   final bool isPrivate;
+
 
  }
 
@@ -100,7 +102,7 @@ import 'package:square_in_app_payments/in_app_payments.dart';
      if (widget.isStream){
        Navigator.push(
          context,
-         MaterialPageRoute(builder: (context) => StreamPage(role: ClientRole.Audience,channelName: widget.stream,)),
+         MaterialPageRoute(builder: (context) => StreamPage(role: widget.isPrivate?ClientRole.Broadcaster:ClientRole.Audience,channelName: widget.stream,isTrainer: false,)),
        );
      }
      else{
