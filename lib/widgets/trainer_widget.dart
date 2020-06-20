@@ -1,15 +1,29 @@
+<<<<<<< HEAD
 ***REMOVED***
 import 'package:fitnessmarketplace/animations/FadeAnimationUp.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
 import 'package:fitnessmarketplace/pages/request_private_session_page.dart';
+=======
+***REMOVED***
+import 'package:fitnessmarketplace/animations/FadeAnimationUp.dart';
+import 'package:fitnessmarketplace/models/RecordedVideo.dart';
+import 'package:fitnessmarketplace/pages/request_private_session_page.dart';
+import 'package:fitnessmarketplace/pages/session_preview_page.dart';
+>>>>>>> cc496090ba55f98356968332d4768446637a6e76
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+<<<<<<< HEAD
 import 'package:validators/sanitizers.dart';
 ***REMOVED***
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+=======
+import 'package:image_picker/image_picker.dart';
+import 'package:validators/sanitizers.dart';
+***REMOVED***
+>>>>>>> cc496090ba55f98356968332d4768446637a6e76
 
 class TrainerWidget extends StatefulWidget {
   const TrainerWidget({Key key, this.trainer***REMOVED***) : super(key: key);
@@ -21,14 +35,19 @@ class TrainerWidget extends StatefulWidget {
 ***REMOVED***
 
 class _TrainerWidgetState extends State<TrainerWidget> {
+<<<<<<< HEAD
   List<RecordedVideo> trainerVideos;
   List<DocumentSnapshot> trainerComments;
   int commentAmount;
   double rate;
+=======
+  List<DocumentSnapshot> trainerVideos;
+>>>>>>> cc496090ba55f98356968332d4768446637a6e76
 
 ***REMOVED***
 ***REMOVED***
     getRecordedVideos();
+<<<<<<< HEAD
     getRate();
 ***REMOVED***
   ***REMOVED***
@@ -58,13 +77,25 @@ class _TrainerWidgetState extends State<TrainerWidget> {
 
   getRecordedVideos() async {
     trainerVideos = new List<RecordedVideo>();
+=======
+***REMOVED***
+  ***REMOVED***
+
+  getRecordedVideos() async {
+>>>>>>> cc496090ba55f98356968332d4768446637a6e76
     QuerySnapshot queryVideos = await widget.trainer.reference
         .collection('recordedVideos')
         .getDocuments();
     List<DocumentSnapshot> videoData = queryVideos.documents;
+<<<<<<< HEAD
     for (int i = 0; i < videoData.length; i++) {
       trainerVideos.add(RecordedVideo.fromSnapshot(videoData[i]));
     ***REMOVED***
+=======
+    setState(() {
+      trainerVideos = videoData;
+    ***REMOVED***);
+>>>>>>> cc496090ba55f98356968332d4768446637a6e76
     setState(() {***REMOVED***);
   ***REMOVED***
 
@@ -72,11 +103,14 @@ class _TrainerWidgetState extends State<TrainerWidget> {
 ***REMOVED***
     String trainerName =
         widget.trainer.firstName + ' ' + widget.trainer.lastName;
+<<<<<<< HEAD
 
     TextEditingController _comment = new TextEditingController();
 
     int rating = 5;
 
+=======
+>>>>>>> cc496090ba55f98356968332d4768446637a6e76
 ***REMOVED***
       backgroundColor: Colors.black,
       body: Hero(
@@ -276,6 +310,27 @@ class _TrainerWidgetState extends State<TrainerWidget> {
             ***REMOVED***,
                           FadeAnimationUp(
                               1.8,
+                               trainerVideos!= null
+                                  ? Container(
+                                  height: 200,
+                                  child: ListView.builder(
+                                      itemCount: trainerVideos.length,
+                                      itemBuilder: (BuildContext context, int i) {
+                                        return FadeAnimationDown(
+                                          1.2 + i / 10,
+                                          makeVideo(
+                                              image:
+                                              trainerVideos[i].data["thumbUr"],
+                                              vidReference: trainerVideos[i]),
+                                    ***REMOVED***
+                          ***REMOVED***),):CircularProgressIndicator()),
+    ***REMOVED***
+                            height: 80,
+            ***REMOVED***
+        ***REMOVED***
+        ***REMOVED***,
+      ***REMOVED***
+                  ]),
                               Container(
                                 height: 200,
                                 child: ListView(
@@ -490,26 +545,34 @@ class _TrainerWidgetState extends State<TrainerWidget> {
 ***REMOVED***
   ***REMOVED***
 
-  Widget makeVideo({image***REMOVED***) {
-    return AspectRatio(
-      aspectRatio: 1.5 / 1,
-      child: Container(
-        margin: EdgeInsets.only(right: 20),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            image:
-                DecorationImage(image: NetworkImage(image), fit: BoxFit.cover)),
+  Widget makeVideo({image, vidReference***REMOVED***) {
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SessionPreview(video: vidReference,isStream: false,trainer: widget.trainer,)),
+    ***REMOVED***
+      ***REMOVED***,
+      child: AspectRatio(
+        aspectRatio: 1.5 / 1,
         child: Container(
+          margin: EdgeInsets.only(right: 20),
           decoration: BoxDecoration(
-              gradient: LinearGradient(begin: Alignment.bottomRight, colors: [
-            Colors.black.withOpacity(.9),
-            Colors.black.withOpacity(.3)
-          ])),
-          child: Align(
-            child: Icon(
-              Icons.play_arrow,
-              color: Colors.white,
-              size: 70,
+              borderRadius: BorderRadius.circular(20),
+              image:
+                  DecorationImage(image: NetworkImage(image), fit: BoxFit.cover)),
+          child: Container(
+***REMOVED***
+                gradient: LinearGradient(begin: Alignment.bottomRight, colors: [
+              Colors.black.withOpacity(.9),
+              Colors.black.withOpacity(.3)
+            ])),
+            child: Align(
+              child: Icon(
+                Icons.play_arrow,
+                color: Colors.white,
+                size: 70,
+***REMOVED***,
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***

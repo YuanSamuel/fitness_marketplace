@@ -2,7 +2,7 @@ class StringHelper {
   List<String> months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   String dateTimeToDateString(DateTime date) {
-    return months[date.month] + ' ' + date.day.toString();
+    return months[date.month - 1] + ' ' + date.day.toString();
   ***REMOVED***
 
   String dateTimeToTimeString(DateTime date) {
@@ -22,6 +22,15 @@ class StringHelper {
       ***REMOVED***
       return (date.hour - 12).toString() + ':' + minute + ' p.m.';
     ***REMOVED***
+  ***REMOVED***
+
+  String intToLengthString(int minutes) {
+    String returnLength = '';
+    if (minutes > 60) {
+      returnLength = (minutes ~/ 60).toString() + ' hours ';
+    ***REMOVED***
+    returnLength = returnLength + (minutes % 60).toString() + ' minutes';
+    return returnLength;
   ***REMOVED***
 
 ***REMOVED***

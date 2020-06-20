@@ -33,7 +33,7 @@ class PrivateSession {
 
   Map<String, dynamic> toJson() => _PrivateSessionToJson(this);
 
-  _PrivateSessionToJson(PrivateSession instance) {
+  Map<String, dynamic> _PrivateSessionToJson(PrivateSession instance) {
     return <String, dynamic>{
       'name': instance.name,
       'studentName': instance.studentName,

@@ -1,4 +1,5 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:fitnessmarketplace/pages/trainer_finances_page.dart';
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 import 'package:fitnessmarketplace/pages/trainer_profile_page.dart';
 ***REMOVED***
@@ -18,6 +19,7 @@ class _TrainerNavigationState extends State<TrainerNavigation> {
   );
   var _pageOptions = [
     TrainerHomePage(),
+    TrainerFinancesPage(),
     TrainerProfile(),
   ];
 
@@ -61,6 +63,11 @@ class _TrainerNavigationState extends State<TrainerNavigation> {
               icon: Icon(Icons.home),
               title: Text('Home'),
               activeColor: Colors.red,
+***REMOVED***
+            BottomNavyBarItem(
+              icon: Icon(Icons.sort),
+              title: Text('Stats'),
+              activeColor: Colors.orange,
 ***REMOVED***
             BottomNavyBarItem(
                 icon: Icon(Icons.settings),

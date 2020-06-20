@@ -1,13 +1,16 @@
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 ***REMOVED***
 ***REMOVED***
 import 'package:fitnessmarketplace/apis/firebase_provider.dart';
 import 'package:fitnessmarketplace/helpers/calendar_helper.dart';
 import 'package:fitnessmarketplace/helpers/string_helper.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
+import 'package:fitnessmarketplace/models/Stream.dart' as models;
 ***REMOVED***
 import 'package:fitnessmarketplace/pages/add_new_screen.dart';
 import 'package:fitnessmarketplace/pages/add_session_page.dart';
 ***REMOVED***
+import 'package:fitnessmarketplace/pages/stream_page.dart';
 ***REMOVED***
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -26,7 +29,10 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
   List<PrivateSession> allPrivateSessions;
   List<dynamic> privateSessions;
   List<VideoInfo> _videos = <VideoInfo>[];
+  List<models.Stream> allStreams;
+  List<dynamic> selectedStreams;
   DateTime selectedDate;
+  List<dynamic> allEvents;
 
   StringHelper _stringHelper = new StringHelper();
   CalendarHelper _calendarHelper = new CalendarHelper();
@@ -40,6 +46,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
     ***REMOVED***);
     selectedDate = DateTime.now();
     _calendarController = CalendarController();
+    allEvents = new List<dynamic>();
     setUp();
 ***REMOVED***
   ***REMOVED***
@@ -54,6 +61,8 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
     trainerVideos = new List<RecordedVideo>();
     allPrivateSessions = new List<PrivateSession>();
     privateSessions = new List<PrivateSession>();
+    allStreams = new List<models.Stream>();
+    selectedStreams = new List<models.Stream>();
 
     FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
     DocumentSnapshot userData = await Firestore.instance
@@ -63,6 +72,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
     currentTrainer = Trainer.fromSnapshot(userData);
 
     await getPrivateSessions();
+    await getStreams();
     await getVideos();
 
     setState(() {***REMOVED***);
@@ -87,6 +97,16 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
     for (int i = 0; i < allPrivateSessionDocuments.length; i++) {
       allPrivateSessions
           .add(PrivateSession.fromSnapshot(allPrivateSessionDocuments[i]));
+    ***REMOVED***
+  ***REMOVED***
+
+  getStreams() async {
+    allStreams = new List<models.Stream>();
+    QuerySnapshot getStreams =
+        await currentTrainer.reference.collection('streams').getDocuments();
+    List<DocumentSnapshot> allStreamDocuments = getStreams.documents;
+    for (int i = 0; i < allStreamDocuments.length; i++) {
+      allStreams.add(models.Stream.fromSnapshot(allStreamDocuments[i]));
     ***REMOVED***
   ***REMOVED***
 
@@ -163,103 +183,128 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                         await getPrivateSessions();
                   ***REMOVED******REMOVED***);
                       ***REMOVED***,
-      ***REMOVED***
+      ***REMOVED***,
   ***REMOVED***
   ***REMOVED***,
 ***REMOVED***,
               Container(
                 height: 250.0,
                 child: ListView.builder(
-                  itemCount: privateSessions.length,
+                  itemCount: allEvents.length,
                   itemBuilder: (BuildContext context, int i) {
-                    DateTime privateSessionDate =
-                        DateTime.fromMillisecondsSinceEpoch(
-                                privateSessions[i].date)
+                    DateTime date =
+                        DateTime.fromMillisecondsSinceEpoch(allEvents[i].date)
                             .toLocal();
-                    String privateSessionLength =
-                        getLengthFromInt(privateSessions[i].length);
 
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 15.0),
-            ***REMOVED***
-                          borderRadius: BorderRadius.circular(30.0),
-                          color: privateSessions[i].available
-                              ? Colors.blue
-                              : Color(0xff3B3B3B),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 5,
-                              blurRadius: 7,
-                              offset:
-                                  Offset(0, 3), // changes position of shadow
-              ***REMOVED***,
-          ***REMOVED***
-          ***REMOVED***,
-                        height: 100.0,
-                        child: Row(
-          ***REMOVED***
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                    bool isStream = allEvents[i] is models.Stream;
+
+                    String length = isStream
+                        ? _stringHelper
+                            .intToLengthString(allEvents[i].minutes.floor())
+                        : _stringHelper.intToLengthString(allEvents[i].length);
+
+                    return GestureDetector(
+                      onTap:() {
+
+                        // Within the `FirstRoute` widget
+  ***REMOVED***
+***REMOVED***
+***REMOVED***builder: (context) => StreamPage(channelName:"HAPPY" /*currentTrainer.reference.documentID*/,role: ClientRole.Broadcaster,isTrainer: true,)),
+                    ***REMOVED***
+
+                      ***REMOVED***,
               ***REMOVED***
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                  ***REMOVED***
-                  ***REMOVED***
-                                Container(
-                                  width: 7 * MediaQuery.of(context).size.width / 10,
-                                  height: 40,
-                                  child:  Text(
-                                    privateSessions[i].available
-                                        ? 'Open Session'
-                                        : 'Private Session with: ' +
-                                        privateSessions[i].studentName,
-                                    overflow: TextOverflow.fade,
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 15.0),
+              ***REMOVED***
+                            borderRadius: BorderRadius.circular(30.0),
+                            color: isStream || allEvents[i].available
+                                ? Colors.blue
+                                : Color(0xff3B3B3B),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                ***REMOVED***,
+            ***REMOVED***
+            ***REMOVED***,
+                          height: 100.0,
+                          child: Row(
+            ***REMOVED***
+                            crossAxisAlignment: CrossAxisAlignment.center,
                 ***REMOVED***
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.w600,
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                    ***REMOVED***
+                    ***REMOVED***
+                                  Container(
+                                    width: 7 *
+                                        MediaQuery.of(context).size.width /
+                                        10,
+                                    height: 40,
+                                    child: isStream
+                                        ? Text(
+                                            allEvents[i].title + ' - Live Class',
+                                            overflow: TextOverflow.fade,
+                        ***REMOVED***
+                                              fontSize: 20.0,
+                  ***REMOVED***
+                      ***REMOVED***
+                              ***REMOVED***,
+                            ***REMOVED***
+                                        : Text(
+                                            allEvents[i].available
+                                                ? 'Open Session'
+                                                : 'Private Session with: ' +
+                                                    allEvents[i].studentName,
+                                            overflow: TextOverflow.fade,
+                        ***REMOVED***
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white),
+                            ***REMOVED***,
+                    ***REMOVED***,
+            ***REMOVED***
+                                    height: 10.0,
+                    ***REMOVED***,
+            ***REMOVED***
+                                    length,
+                ***REMOVED***
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.w400,
                                         color: Colors.white),
                     ***REMOVED***,
-                  ***REMOVED***,
-          ***REMOVED***
-                                  height: 10.0,
-                  ***REMOVED***,
-          ***REMOVED***
-                                  privateSessionLength,
-              ***REMOVED***
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white),
-                  ***REMOVED***,
-              ***REMOVED***
-              ***REMOVED***,
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                  ***REMOVED***
-          ***REMOVED***
-                                  _stringHelper
-                                      .dateTimeToDateString(privateSessionDate),
-              ***REMOVED***
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white),
-                  ***REMOVED***,
-          ***REMOVED***
-                                  height: 10.0,
-                  ***REMOVED***,
-          ***REMOVED***
-                                  _stringHelper
-                                      .dateTimeToTimeString(privateSessionDate),
-              ***REMOVED***
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white),
-                  ***REMOVED***,
-              ***REMOVED***
-              ***REMOVED***
-          ***REMOVED***
+                ***REMOVED***
+                ***REMOVED***,
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                    ***REMOVED***
+            ***REMOVED***
+                                    _stringHelper.dateTimeToDateString(date),
+                ***REMOVED***
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white),
+                    ***REMOVED***,
+            ***REMOVED***
+                                    height: 10.0,
+                    ***REMOVED***,
+            ***REMOVED***
+                                    _stringHelper.dateTimeToTimeString(date),
+                ***REMOVED***
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white),
+                    ***REMOVED***,
+                ***REMOVED***
+                ***REMOVED***
+            ***REMOVED***
+            ***REMOVED***,
           ***REMOVED***,
         ***REMOVED***,
                 ***REMOVED***
@@ -413,9 +458,16 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
       child: TableCalendar(
         rowHeight: 40.0,
         onDaySelected: (DateTime date, List<dynamic> events) {
+          for (int i = 0; i < events.length; i++) {
+            if (events[i] is PrivateSession) {
+              privateSessions.add(events[i]);
+            ***REMOVED*** else if (events[i] is models.Stream) {
+              selectedStreams.add(events[i]);
+            ***REMOVED***
+          ***REMOVED***
     ***REMOVED***
             selectedDate = date;
-            privateSessions = events;
+            allEvents = events;
           ***REMOVED***);
         ***REMOVED***,
         locale: 'en_US',
@@ -424,7 +476,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
         formatAnimation: FormatAnimation.slide,
         startingDayOfWeek: StartingDayOfWeek.sunday,
         availableGestures: AvailableGestures.horizontalSwipe,
-        events: _calendarHelper.privateSessionsToEventMap(allPrivateSessions),
+        events: _calendarHelper.listToEventMap(allPrivateSessions, allStreams),
         availableCalendarFormats: const {
           CalendarFormat.month: 'Month',
         ***REMOVED***,
@@ -486,14 +538,5 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-  ***REMOVED***
-
-  String getLengthFromInt(int length) {
-    String returnLength = '';
-    if (length > 60) {
-      returnLength = returnLength + (length ~/ 60).toString() + ' hours ';
-    ***REMOVED***
-    returnLength = returnLength + (length % 60).toString() + ' minutes';
-    return returnLength;
   ***REMOVED***
 ***REMOVED***
