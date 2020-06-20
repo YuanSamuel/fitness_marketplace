@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/models/video_info.dart';
-import 'package:fitnessmarketplace/pages/login_page.dart';
 
 class FirebaseProvider {
   static saveVideo(VideoInfo video, String title, String description, double minutes, int date, double price) async {
