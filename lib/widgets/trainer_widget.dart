@@ -1,29 +1,17 @@
-<<<<<<< HEAD
 ***REMOVED***
-import 'package:fitnessmarketplace/animations/FadeAnimationUp.dart';
-import 'package:fitnessmarketplace/models/RecordedVideo.dart';
-import 'package:fitnessmarketplace/pages/request_private_session_page.dart';
-=======
 ***REMOVED***
 import 'package:fitnessmarketplace/animations/FadeAnimationUp.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
 import 'package:fitnessmarketplace/pages/request_private_session_page.dart';
 import 'package:fitnessmarketplace/pages/session_preview_page.dart';
->>>>>>> cc496090ba55f98356968332d4768446637a6e76
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-<<<<<<< HEAD
-import 'package:validators/sanitizers.dart';
-***REMOVED***
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-=======
 import 'package:image_picker/image_picker.dart';
 import 'package:validators/sanitizers.dart';
 ***REMOVED***
->>>>>>> cc496090ba55f98356968332d4768446637a6e76
 
 class TrainerWidget extends StatefulWidget {
   const TrainerWidget({Key key, this.trainer***REMOVED***) : super(key: key);
@@ -35,21 +23,27 @@ class TrainerWidget extends StatefulWidget {
 ***REMOVED***
 
 class _TrainerWidgetState extends State<TrainerWidget> {
-<<<<<<< HEAD
-  List<RecordedVideo> trainerVideos;
+  List<DocumentSnapshot> trainerVideos;
   List<DocumentSnapshot> trainerComments;
   int commentAmount;
   double rate;
-=======
-  List<DocumentSnapshot> trainerVideos;
->>>>>>> cc496090ba55f98356968332d4768446637a6e76
 
 ***REMOVED***
 ***REMOVED***
     getRecordedVideos();
-<<<<<<< HEAD
     getRate();
 ***REMOVED***
+  ***REMOVED***
+
+  getRecordedVideos() async {
+    QuerySnapshot queryVideos = await widget.trainer.reference
+        .collection('recordedVideos')
+        .getDocuments();
+    List<DocumentSnapshot> videoData = queryVideos.documents;
+    setState(() {
+      trainerVideos = videoData;
+    ***REMOVED***);
+    setState(() {***REMOVED***);
   ***REMOVED***
 
   getRate() async {
@@ -75,42 +69,15 @@ class _TrainerWidgetState extends State<TrainerWidget> {
     ***REMOVED***,merge: true);
   ***REMOVED***
 
-  getRecordedVideos() async {
-    trainerVideos = new List<RecordedVideo>();
-=======
-***REMOVED***
-  ***REMOVED***
-
-  getRecordedVideos() async {
->>>>>>> cc496090ba55f98356968332d4768446637a6e76
-    QuerySnapshot queryVideos = await widget.trainer.reference
-        .collection('recordedVideos')
-        .getDocuments();
-    List<DocumentSnapshot> videoData = queryVideos.documents;
-<<<<<<< HEAD
-    for (int i = 0; i < videoData.length; i++) {
-      trainerVideos.add(RecordedVideo.fromSnapshot(videoData[i]));
-    ***REMOVED***
-=======
-    setState(() {
-      trainerVideos = videoData;
-    ***REMOVED***);
->>>>>>> cc496090ba55f98356968332d4768446637a6e76
-    setState(() {***REMOVED***);
-  ***REMOVED***
-
 ***REMOVED***
 ***REMOVED***
     String trainerName =
         widget.trainer.firstName + ' ' + widget.trainer.lastName;
-<<<<<<< HEAD
 
     TextEditingController _comment = new TextEditingController();
 
     int rating = 5;
 
-=======
->>>>>>> cc496090ba55f98356968332d4768446637a6e76
 ***REMOVED***
       backgroundColor: Colors.black,
       body: Hero(
@@ -132,9 +99,9 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                       child: Container(
             ***REMOVED***
                             gradient: LinearGradient(
-                          begin: Alignment.bottomRight,
-                          colors: [Colors.black, Colors.black.withOpacity(0.1)],
-          ***REMOVED***),
+                              begin: Alignment.bottomRight,
+                              colors: [Colors.black, Colors.black.withOpacity(0.1)],
+              ***REMOVED***),
                 ***REMOVED***
                 ***REMOVED***
                 ***REMOVED***
@@ -160,11 +127,11 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                       1.2,
                                       trainerVideos != null
                                           ? Text(
-                                              trainerVideos.length.toString() + ' Videos',
-                          ***REMOVED***
-                      ***REMOVED***
-                                                  fontSize: 16),
-                              ***REMOVED***
+                                        trainerVideos.length.toString() + ' Videos',
+                    ***REMOVED***
+                ***REMOVED***
+                                            fontSize: 16),
+                        ***REMOVED***
                                           : Text('loading')),
             ***REMOVED***
                                     width: 50,
@@ -206,7 +173,7 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                         return Row(
                               ***REMOVED***
                                             RatingBarIndicator(
-                                              rating: snapshot.data['rating'],
+                                              rating: toDouble(snapshot.data['rating'].toString()),
                                               itemBuilder: (context, index) => Icon(
                                                 Icons.star,
                                                 color: Colors.amber,
@@ -290,7 +257,7 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                           FadeAnimationUp(
                               1.6,
         ***REMOVED***
-                                widget.trainer.trainingTypes.toString().replaceAll('[', '').replaceAll(']', ''),
+                                widget.trainer.trainingTypes.toString(),
             ***REMOVED***color: Colors.grey),
                 ***REMOVED***),
     ***REMOVED***
@@ -310,41 +277,20 @@ class _TrainerWidgetState extends State<TrainerWidget> {
             ***REMOVED***,
                           FadeAnimationUp(
                               1.8,
-                               trainerVideos!= null
+                              trainerVideos!= null
                                   ? Container(
-                                  height: 200,
-                                  child: ListView.builder(
-                                      itemCount: trainerVideos.length,
-                                      itemBuilder: (BuildContext context, int i) {
-                                        return FadeAnimationDown(
-                                          1.2 + i / 10,
-                                          makeVideo(
-                                              image:
-                                              trainerVideos[i].data["thumbUr"],
-                                              vidReference: trainerVideos[i]),
-                                    ***REMOVED***
-                          ***REMOVED***),):CircularProgressIndicator()),
-    ***REMOVED***
-                            height: 80,
-            ***REMOVED***
-        ***REMOVED***
-        ***REMOVED***,
-      ***REMOVED***
-                  ]),
-                              Container(
                                 height: 200,
-                                child: ListView(
-                                  scrollDirection: Axis.horizontal,
-                      ***REMOVED***
-                                    makeVideo(
-                                        image:
-                                            'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg'),
-                                    makeVideo(
-                                        image:
-                                            'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg'),
-                  ***REMOVED***
-                  ***REMOVED***,
-                ***REMOVED***),
+                                child: ListView.builder(
+                                    itemCount: trainerVideos.length,
+                                    itemBuilder: (BuildContext context, int i) {
+                                      return FadeAnimationDown(
+                                        1.2 + i / 10,
+                                        makeVideo(
+                                            image:
+                                            trainerVideos[i].data["thumbUr"],
+                                            vidReference: trainerVideos[i]),
+                                  ***REMOVED***
+                                    ***REMOVED***),):CircularProgressIndicator()),
     ***REMOVED***
                             height: 80,
             ***REMOVED***,
@@ -486,23 +432,22 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                 ***REMOVED***
                                           ***REMOVED***
                                             ***REMOVED***
-                                            ***REMOVED***,
-                            ***REMOVED***,
-                                    ***REMOVED***
-                                      ***REMOVED***
+                                          ***REMOVED***,
+                          ***REMOVED***,
                                   ***REMOVED***
-                                        return SizedBox.shrink();
-                                      ***REMOVED***
-                                    ***REMOVED***,
-                    ***REMOVED***,
-                ***REMOVED***
-                ***REMOVED***,
+                                    ***REMOVED***
+                                ***REMOVED***
+                                      return SizedBox.shrink();
+                                    ***REMOVED***
+                                  ***REMOVED***,
+                  ***REMOVED***,
+              ***REMOVED***
               ***REMOVED***,
-          ***REMOVED***
-          ***REMOVED***,
+            ***REMOVED***,
         ***REMOVED***
-                    ]
-    ***REMOVED***,
+        ***REMOVED***,
+      ***REMOVED***
+                  ]),
   ***REMOVED***
   ***REMOVED***
 ***REMOVED***
@@ -522,9 +467,9 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                             color: Colors.red[700]),
                         child: Align(
         ***REMOVED***
-                          "Schedule a Meeting",
-      ***REMOVED***color: Colors.white, fontSize: 20),
-          ***REMOVED***),
+                              "Schedule a Meeting",
+          ***REMOVED***color: Colors.white, fontSize: 20),
+              ***REMOVED***),
         ***REMOVED***,
                       onTap: () {
   ***REMOVED***
@@ -560,13 +505,13 @@ class _TrainerWidgetState extends State<TrainerWidget> {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               image:
-                  DecorationImage(image: NetworkImage(image), fit: BoxFit.cover)),
+              DecorationImage(image: NetworkImage(image), fit: BoxFit.cover)),
           child: Container(
 ***REMOVED***
                 gradient: LinearGradient(begin: Alignment.bottomRight, colors: [
-              Colors.black.withOpacity(.9),
-              Colors.black.withOpacity(.3)
-            ])),
+                  Colors.black.withOpacity(.9),
+                  Colors.black.withOpacity(.3)
+                ])),
             child: Align(
               child: Icon(
                 Icons.play_arrow,
