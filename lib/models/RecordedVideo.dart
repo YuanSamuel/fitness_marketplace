@@ -24,4 +24,15 @@ class RecordedVideo {
     );
   }
 
+  Map<String, dynamic> toJson() => _RecordedVideoToJson(this);
+
+  Map<String, dynamic> _RecordedVideoToJson(RecordedVideo instance) {
+    return <String, dynamic> {
+      'name': instance.name,
+      'date': instance.date,
+      'thumbUrl': instance.videoUrl,
+      'videoID': instance.videoID
+    };
+  }
+
 }
