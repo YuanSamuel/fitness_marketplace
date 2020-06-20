@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
+import 'package:fitnessmarketplace/helpers/string_helper.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
+import 'package:fitnessmarketplace/models/Stream.dart' as models;
+import 'package:fitnessmarketplace/pages/session_preview_page.dart';
 import 'package:fitnessmarketplace/widgets/trainer_market.dart';
 import 'package:fitnessmarketplace/widgets//trainer_widget.dart';
 import 'package:fitnessmarketplace/utils/search_bar.dart';
@@ -19,6 +22,9 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
   PageController _pageController = new PageController(initialPage: 0);
   List<RecordedVideo> allVideos;
   List<Trainer> allTrainers;
+  List<models.Stream> allStreams;
+
+  StringHelper _stringHelper;
 
   List<String> trainingTypes = [
     'Weight Lifting',
@@ -29,12 +35,15 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
 
   @override
   void initState() {
+    allStreams = new List<models.Stream>();
+    _stringHelper = new StringHelper();
     setUp();
     super.initState();
   }
 
   setUp() async {
     await getRecordedVideos();
+    await getAllStreams();
     await getTrainers();
     setState(() {});
   }
@@ -64,6 +73,15 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
         allTrainers: allTrainers,
         type: trainingTypes[i],
       ));
+    }
+  }
+
+  getAllStreams() async {
+    QuerySnapshot getStreams =
+        await Firestore.instance.collection('streams').getDocuments();
+    List<DocumentSnapshot> trainerSnapshots = getStreams.documents;
+    for (int i = 0; i < trainerSnapshots.length; i++) {
+        allStreams.add(models.Stream.fromSnapshot(trainerSnapshots[i]));
     }
   }
 
@@ -210,23 +228,31 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                   )),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: allVideos != null
+                child: allStreams != null
                     ? Container(
                         height: 250,
                         child: ListView.builder(
-                            itemCount: allVideos.length,
+                            itemCount: allStreams.length,
                             itemBuilder: (BuildContext context, int i) {
+                              print(allStreams[i].title);
+                              print(allStreams[i].trainer);
                               return FadeAnimationDown(
-                                3.4 + i / 10,
+                                1.2 + i / 10,
                                 liveSession(
                                     image:
                                         'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
-                                    name: allVideos[i].name,
-                                    date: Timestamp.fromMillisecondsSinceEpoch(
-                                            allVideos[i].date)
-                                        .toDate()
-                                        .toString(),
-                                    people: "No limit"),
+                                    name: allStreams[i].title,
+                                    date: _stringHelper.dateTimeToDateString(
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                                    allStreams[i].date)
+                                                .toLocal()) +
+                                        ' at ' +
+                                        _stringHelper.dateTimeToTimeString(
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                                    allStreams[i].date)
+                                                .toLocal()),
+                                    people: "No limit",
+                                stream: allStreams[i]),
                               );
                             }))
                     : SizedBox.shrink(),
@@ -334,7 +360,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                         height: 5,
                       ),
                       Text(
-                        givenTrainer.trainingTypes.toString().replaceAll('[', '').replaceAll(']', ''),
+                        givenTrainer.trainingTypes.toString(),
                         style: TextStyle(color: Colors.grey, fontSize: 15),
                       )
                     ],
@@ -348,7 +374,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
     );
   }
 
-  Widget liveSession({image, name, date, people}) {
+  Widget liveSession({image, name, date, people, stream}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: InkWell(
@@ -414,7 +440,15 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                 child: OutlineButton(
                   child: Text('Register'),
                   borderSide: BorderSide(color: Colors.red),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SessionPreview(
+                        stream: stream,
+                        isStream: true,
+                      )),
+                    );
+                  },
                   highlightedBorderColor: Colors.red,
                   splashColor: Colors.redAccent.withOpacity(0.5),
                   color: Colors.red,

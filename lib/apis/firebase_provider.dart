@@ -4,7 +4,10 @@ import 'package:fitnessmarketplace/models/video_info.dart';
 import 'package:fitnessmarketplace/pages/login_page.dart';
 
 class FirebaseProvider {
-  static saveVideo(VideoInfo video, String title, String description, String minutes, int date) async {
+  static saveVideo(VideoInfo video, String title, String description, double minutes, int date, double price) async {
+    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    final uid = user.uid;
+
     await Firestore.instance.collection('videos').document().setData({
         'videoUrl': video.videoUrl,
         'thumbUrl': video.thumbUrl,
@@ -15,11 +18,12 @@ class FirebaseProvider {
         'minutes':minutes,
         'description':description,
         'date':date,
-        'title':title
+        'title':title,
+        'price':price,
+      'trainer': uid
       });
 
-    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    final uid = user.uid;
+
 
 
     await Firestore.instance.collection('trainers').document(uid).collection("videos").document().setData({
@@ -32,7 +36,8 @@ class FirebaseProvider {
       'minutes':minutes,
       'description':description,
       'date':date,
-      'title':title
+      'title':title,
+      'price':price
     });
   }
 
@@ -58,4 +63,7 @@ class FirebaseProvider {
       );
     }).toList();
   }
+
+
+
 }

@@ -1,13 +1,16 @@
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/apis/firebase_provider.dart';
 import 'package:fitnessmarketplace/helpers/calendar_helper.dart';
 import 'package:fitnessmarketplace/helpers/string_helper.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
+import 'package:fitnessmarketplace/models/Stream.dart' as models;
 import 'package:fitnessmarketplace/models/video_info.dart';
 import 'package:fitnessmarketplace/pages/add_new_screen.dart';
 import 'package:fitnessmarketplace/pages/add_session_page.dart';
 import 'package:fitnessmarketplace/pages/player.dart';
+import 'package:fitnessmarketplace/pages/stream_page.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -26,7 +29,10 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
   List<PrivateSession> allPrivateSessions;
   List<dynamic> privateSessions;
   List<VideoInfo> _videos = <VideoInfo>[];
+  List<models.Stream> allStreams;
+  List<dynamic> selectedStreams;
   DateTime selectedDate;
+  List<dynamic> allEvents;
 
   StringHelper _stringHelper = new StringHelper();
   CalendarHelper _calendarHelper = new CalendarHelper();
@@ -40,6 +46,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
     });
     selectedDate = DateTime.now();
     _calendarController = CalendarController();
+    allEvents = new List<dynamic>();
     setUp();
     super.initState();
   }
@@ -54,6 +61,8 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
     trainerVideos = new List<RecordedVideo>();
     allPrivateSessions = new List<PrivateSession>();
     privateSessions = new List<PrivateSession>();
+    allStreams = new List<models.Stream>();
+    selectedStreams = new List<models.Stream>();
 
     FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
     DocumentSnapshot userData = await Firestore.instance
@@ -63,6 +72,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
     currentTrainer = Trainer.fromSnapshot(userData);
 
     await getPrivateSessions();
+    await getStreams();
     await getVideos();
 
     setState(() {});
@@ -87,6 +97,16 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
     for (int i = 0; i < allPrivateSessionDocuments.length; i++) {
       allPrivateSessions
           .add(PrivateSession.fromSnapshot(allPrivateSessionDocuments[i]));
+    }
+  }
+
+  getStreams() async {
+    allStreams = new List<models.Stream>();
+    QuerySnapshot getStreams =
+        await currentTrainer.reference.collection('streams').getDocuments();
+    List<DocumentSnapshot> allStreamDocuments = getStreams.documents;
+    for (int i = 0; i < allStreamDocuments.length; i++) {
+      allStreams.add(models.Stream.fromSnapshot(allStreamDocuments[i]));
     }
   }
 
@@ -163,103 +183,128 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                         await getPrivateSessions();
                         setState(() {});
                       },
-                    )
+                    ),
                   ],
                 ),
               ),
               Container(
                 height: 250.0,
                 child: ListView.builder(
-                  itemCount: privateSessions.length,
+                  itemCount: allEvents.length,
                   itemBuilder: (BuildContext context, int i) {
-                    DateTime privateSessionDate =
-                        DateTime.fromMillisecondsSinceEpoch(
-                                privateSessions[i].date)
+                    DateTime date =
+                        DateTime.fromMillisecondsSinceEpoch(allEvents[i].date)
                             .toLocal();
-                    String privateSessionLength =
-                        getLengthFromInt(privateSessions[i].length);
 
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 15.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30.0),
-                          color: privateSessions[i].available
-                              ? Colors.blue
-                              : Color(0xff3B3B3B),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 5,
-                              blurRadius: 7,
-                              offset:
-                                  Offset(0, 3), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                        height: 100.0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 7 * MediaQuery.of(context).size.width / 10,
-                                  height: 40,
-                                  child:  Text(
-                                    privateSessions[i].available
-                                        ? 'Open Session'
-                                        : 'Private Session with: ' +
-                                        privateSessions[i].studentName,
-                                    overflow: TextOverflow.fade,
+                    bool isStream = allEvents[i] is models.Stream;
+
+                    String length = isStream
+                        ? _stringHelper
+                            .intToLengthString(allEvents[i].minutes.floor())
+                        : _stringHelper.intToLengthString(allEvents[i].length);
+
+                    return GestureDetector(
+                      onTap:() {
+
+                        // Within the `FirstRoute` widget
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => StreamPage(channelName:"HAPPY" /*currentTrainer.reference.documentID*/,role: ClientRole.Broadcaster,isTrainer: true,)),
+                        );
+
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 15.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30.0),
+                            color: isStream || allEvents[i].available
+                                ? Colors.blue
+                                : Color(0xff3B3B3B),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          height: 100.0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 7 *
+                                        MediaQuery.of(context).size.width /
+                                        10,
+                                    height: 40,
+                                    child: isStream
+                                        ? Text(
+                                            allEvents[i].title + ' - Live Class',
+                                            overflow: TextOverflow.fade,
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          )
+                                        : Text(
+                                            allEvents[i].available
+                                                ? 'Open Session'
+                                                : 'Private Session with: ' +
+                                                    allEvents[i].studentName,
+                                            overflow: TextOverflow.fade,
+                                            style: TextStyle(
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white),
+                                          ),
+                                  ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  Text(
+                                    length,
                                     style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.w600,
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.w400,
                                         color: Colors.white),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                Text(
-                                  privateSessionLength,
-                                  style: TextStyle(
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  _stringHelper
-                                      .dateTimeToDateString(privateSessionDate),
-                                  style: TextStyle(
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white),
-                                ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                Text(
-                                  _stringHelper
-                                      .dateTimeToTimeString(privateSessionDate),
-                                  style: TextStyle(
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white),
-                                ),
-                              ],
-                            )
-                          ],
+                                ],
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    _stringHelper.dateTimeToDateString(date),
+                                    style: TextStyle(
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  Text(
+                                    _stringHelper.dateTimeToTimeString(date),
+                                    style: TextStyle(
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     );
@@ -413,9 +458,16 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
       child: TableCalendar(
         rowHeight: 40.0,
         onDaySelected: (DateTime date, List<dynamic> events) {
+          for (int i = 0; i < events.length; i++) {
+            if (events[i] is PrivateSession) {
+              privateSessions.add(events[i]);
+            } else if (events[i] is models.Stream) {
+              selectedStreams.add(events[i]);
+            }
+          }
           setState(() {
             selectedDate = date;
-            privateSessions = events;
+            allEvents = events;
           });
         },
         locale: 'en_US',
@@ -424,7 +476,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
         formatAnimation: FormatAnimation.slide,
         startingDayOfWeek: StartingDayOfWeek.sunday,
         availableGestures: AvailableGestures.horizontalSwipe,
-        events: _calendarHelper.privateSessionsToEventMap(allPrivateSessions),
+        events: _calendarHelper.listToEventMap(allPrivateSessions, allStreams),
         availableCalendarFormats: const {
           CalendarFormat.month: 'Month',
         },
@@ -486,14 +538,5 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
         ),
       ),
     );
-  }
-
-  String getLengthFromInt(int length) {
-    String returnLength = '';
-    if (length > 60) {
-      returnLength = returnLength + (length ~/ 60).toString() + ' hours ';
-    }
-    returnLength = returnLength + (length % 60).toString() + ' minutes';
-    return returnLength;
   }
 }
