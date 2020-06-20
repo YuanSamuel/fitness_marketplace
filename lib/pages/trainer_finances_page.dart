@@ -9,6 +9,7 @@ import 'package:fitnessmarketplace/models/RecordTransaction.dart';
 ***REMOVED***
 import 'package:fl_chart/fl_chart.dart';
 ***REMOVED***
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class TrainerFinancesPage extends StatefulWidget {
   TrainerFinancesPage({Key key***REMOVED***) : super(key: key);
@@ -73,6 +74,7 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
           RecordTransaction.fromSnapshot(transactionList[i]);
       allTransactions.add(currentTransaction);
     ***REMOVED***
+    print(allTransactions);
     allTransactions.sort((RecordTransaction recordTransactionA,
         RecordTransaction recordTransactionB) {
       return recordTransactionA.date - recordTransactionB.date;
@@ -95,6 +97,7 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
       print(allTransactions);
       List<LineChartBarData> transactionLines = new List<LineChartBarData>();
       transactionLines = getTransactionLines();
+      print(transactionLines);
   ***REMOVED***
         body: allTransactions.length != 0
             ? Column(
@@ -155,7 +158,7 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
                               show: true,
                               bottomTitles: SideTitles(
                                 showTitles: true,
-                                interval: (endDate - startDate) ~/ 5,
+                                interval: ((endDate - startDate) ~/ 5).toDouble(),
                                 getTitles: (double givenDay) {
                                   return _calendarHelper
                                       .intToDateString(givenDay.round());
@@ -177,7 +180,8 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
                                   width: 2.0,
                   ***REMOVED***,
                 ***REMOVED***,
-              ***REMOVED***),
+              ***REMOVED***,
+          ***REMOVED***,
         ***REMOVED***,
       ***REMOVED***,
     ***REMOVED***
@@ -234,9 +238,13 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
     for (int i = 0; i < types.length; i++) {
       List<FlSpot> spots = getTransactionSpots(types[i]);
       if (spots != null && spots.length != 0) {
+        print('added');
         lineData.add(LineChartBarData(
           spots: spots,
           colors: [typeToColor[types[i]]],
+          dotData: FlDotData(
+            show: false,
+***REMOVED***
         ));
       ***REMOVED***
     ***REMOVED***
@@ -258,12 +266,18 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
       ***REMOVED***
     ***REMOVED***
     List<int> countKeys = countTransactions.keys.toList();
-    for (int i = 0; i < countKeys.length; i++) {
-      maxTransactionLine =
-          max(countTransactions[countKeys[i]], maxTransactionLine);
-      spots.add(new FlSpot(
-          countKeys[i].toDouble(), countTransactions[countKeys[i]].toDouble()));
+    print(countKeys);
+    for (int i = startDate; i <= endDate; i++) {
+      if (countKeys.contains(i)) {
+        print(countTransactions[i]);
+        spots.add(new FlSpot(i.toDouble(), countTransactions[i].toDouble()));
+        maxTransactionLine = max(countTransactions[i], maxTransactionLine);
+      ***REMOVED***
+  ***REMOVED***
+        spots.add(new FlSpot(i.toDouble(), 0.0));
+      ***REMOVED***
     ***REMOVED***
     return spots;
   ***REMOVED***
+
 ***REMOVED***
