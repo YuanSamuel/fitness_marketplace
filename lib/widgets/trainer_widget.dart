@@ -1,29 +1,17 @@
-<<<<<<< HEAD
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitnessmarketplace/animations/FadeAnimationUp.dart';
-import 'package:fitnessmarketplace/models/RecordedVideo.dart';
-import 'package:fitnessmarketplace/pages/request_private_session_page.dart';
-=======
 import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
 import 'package:fitnessmarketplace/animations/FadeAnimationUp.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
 import 'package:fitnessmarketplace/pages/request_private_session_page.dart';
 import 'package:fitnessmarketplace/pages/session_preview_page.dart';
->>>>>>> cc496090ba55f98356968332d4768446637a6e76
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-<<<<<<< HEAD
-import 'package:validators/sanitizers.dart';
-import 'package:fitnessmarketplace/models/Trainer.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-=======
 import 'package:image_picker/image_picker.dart';
 import 'package:validators/sanitizers.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
->>>>>>> cc496090ba55f98356968332d4768446637a6e76
 
 class TrainerWidget extends StatefulWidget {
   const TrainerWidget({Key key, this.trainer}) : super(key: key);
@@ -35,21 +23,27 @@ class TrainerWidget extends StatefulWidget {
 }
 
 class _TrainerWidgetState extends State<TrainerWidget> {
-<<<<<<< HEAD
-  List<RecordedVideo> trainerVideos;
+  List<DocumentSnapshot> trainerVideos;
   List<DocumentSnapshot> trainerComments;
   int commentAmount;
   double rate;
-=======
-  List<DocumentSnapshot> trainerVideos;
->>>>>>> cc496090ba55f98356968332d4768446637a6e76
 
   @override
   void initState() {
     getRecordedVideos();
-<<<<<<< HEAD
     getRate();
     super.initState();
+  }
+
+  getRecordedVideos() async {
+    QuerySnapshot queryVideos = await widget.trainer.reference
+        .collection('recordedVideos')
+        .getDocuments();
+    List<DocumentSnapshot> videoData = queryVideos.documents;
+    setState(() {
+      trainerVideos = videoData;
+    });
+    setState(() {});
   }
 
   getRate() async {
@@ -75,42 +69,15 @@ class _TrainerWidgetState extends State<TrainerWidget> {
     },merge: true);
   }
 
-  getRecordedVideos() async {
-    trainerVideos = new List<RecordedVideo>();
-=======
-    super.initState();
-  }
-
-  getRecordedVideos() async {
->>>>>>> cc496090ba55f98356968332d4768446637a6e76
-    QuerySnapshot queryVideos = await widget.trainer.reference
-        .collection('recordedVideos')
-        .getDocuments();
-    List<DocumentSnapshot> videoData = queryVideos.documents;
-<<<<<<< HEAD
-    for (int i = 0; i < videoData.length; i++) {
-      trainerVideos.add(RecordedVideo.fromSnapshot(videoData[i]));
-    }
-=======
-    setState(() {
-      trainerVideos = videoData;
-    });
->>>>>>> cc496090ba55f98356968332d4768446637a6e76
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     String trainerName =
         widget.trainer.firstName + ' ' + widget.trainer.lastName;
-<<<<<<< HEAD
 
     TextEditingController _comment = new TextEditingController();
 
     int rating = 5;
 
-=======
->>>>>>> cc496090ba55f98356968332d4768446637a6e76
     return Scaffold(
       backgroundColor: Colors.black,
       body: Hero(
@@ -132,9 +99,9 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                       child: Container(
                         decoration: BoxDecoration(
                             gradient: LinearGradient(
-                          begin: Alignment.bottomRight,
-                          colors: [Colors.black, Colors.black.withOpacity(0.1)],
-                        )),
+                              begin: Alignment.bottomRight,
+                              colors: [Colors.black, Colors.black.withOpacity(0.1)],
+                            )),
                         child: Padding(
                           padding: EdgeInsets.all(20),
                           child: Column(
@@ -160,11 +127,11 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                       1.2,
                                       trainerVideos != null
                                           ? Text(
-                                              trainerVideos.length.toString() + ' Videos',
-                                              style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 16),
-                                            )
+                                        trainerVideos.length.toString() + ' Videos',
+                                        style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 16),
+                                      )
                                           : Text('loading')),
                                   SizedBox(
                                     width: 50,
@@ -206,7 +173,7 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                         return Row(
                                           children: [
                                             RatingBarIndicator(
-                                              rating: snapshot.data['rating'],
+                                              rating: toDouble(snapshot.data['rating'].toString()),
                                               itemBuilder: (context, index) => Icon(
                                                 Icons.star,
                                                 color: Colors.amber,
@@ -290,7 +257,7 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                           FadeAnimationUp(
                               1.6,
                               Text(
-                                widget.trainer.trainingTypes.toString().replaceAll('[', '').replaceAll(']', ''),
+                                widget.trainer.trainingTypes.toString(),
                                 style: TextStyle(color: Colors.grey),
                               )),
                           SizedBox(
@@ -310,41 +277,20 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                           ),
                           FadeAnimationUp(
                               1.8,
-                               trainerVideos!= null
+                              trainerVideos!= null
                                   ? Container(
-                                  height: 200,
-                                  child: ListView.builder(
-                                      itemCount: trainerVideos.length,
-                                      itemBuilder: (BuildContext context, int i) {
-                                        return FadeAnimationDown(
-                                          1.2 + i / 10,
-                                          makeVideo(
-                                              image:
-                                              trainerVideos[i].data["thumbUr"],
-                                              vidReference: trainerVideos[i]),
-                                        );
-                          }),):CircularProgressIndicator()),
-                          SizedBox(
-                            height: 80,
-                          )
-                        ],
-                      ),
-                    )
-                  ]),
-                              Container(
                                 height: 200,
-                                child: ListView(
-                                  scrollDirection: Axis.horizontal,
-                                  children: [
-                                    makeVideo(
-                                        image:
-                                            'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg'),
-                                    makeVideo(
-                                        image:
-                                            'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg'),
-                                  ],
-                                ),
-                              )),
+                                child: ListView.builder(
+                                    itemCount: trainerVideos.length,
+                                    itemBuilder: (BuildContext context, int i) {
+                                      return FadeAnimationDown(
+                                        1.2 + i / 10,
+                                        makeVideo(
+                                            image:
+                                            trainerVideos[i].data["thumbUr"],
+                                            vidReference: trainerVideos[i]),
+                                      );
+                                    }),):CircularProgressIndicator()),
                           SizedBox(
                             height: 80,
                           ),
@@ -486,23 +432,22 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                                 ],
                                               );
                                             }
-                                            },
-                                          ),
-                                        );
-                                      }
-                                      else {
-                                        return SizedBox.shrink();
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ),
+                                          },
+                                        ),
+                                      );
+                                    }
+                                    else {
+                                      return SizedBox.shrink();
+                                    }
+                                  },
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      )
-                    ]
-                  ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ]),
                 )
               ],
             ),
@@ -522,9 +467,9 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                             color: Colors.red[700]),
                         child: Align(
                             child: Text(
-                          "Schedule a Meeting",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        )),
+                              "Schedule a Meeting",
+                              style: TextStyle(color: Colors.white, fontSize: 20),
+                            )),
                       ),
                       onTap: () {
                         Navigator.push(
@@ -560,13 +505,13 @@ class _TrainerWidgetState extends State<TrainerWidget> {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               image:
-                  DecorationImage(image: NetworkImage(image), fit: BoxFit.cover)),
+              DecorationImage(image: NetworkImage(image), fit: BoxFit.cover)),
           child: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(begin: Alignment.bottomRight, colors: [
-              Colors.black.withOpacity(.9),
-              Colors.black.withOpacity(.3)
-            ])),
+                  Colors.black.withOpacity(.9),
+                  Colors.black.withOpacity(.3)
+                ])),
             child: Align(
               child: Icon(
                 Icons.play_arrow,

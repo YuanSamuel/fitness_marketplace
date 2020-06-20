@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitnessmarketplace/pages/register_page.dart';
+import 'package:fitnessmarketplace/widgets/signup_widget.dart';
 import 'package:fitnessmarketplace/pages/trainer_navigation.dart';
 import 'package:fitnessmarketplace/pages/user_navigation.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +48,7 @@ class _RootPageState extends State<RootPage> {
     }
     else {
       if (currentUser == null) {
-        return Register();
+        return SignupWidget();
       }
       else {
         if (isTrainer) {

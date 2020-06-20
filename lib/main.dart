@@ -2,9 +2,9 @@ import 'package:fitnessmarketplace/pages/add_new_screen.dart';
 import 'package:fitnessmarketplace/pages/root_page.dart';
 
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
+import 'package:fitnessmarketplace/widgets/login_widget.dart';
+import 'package:fitnessmarketplace/widgets/signup_widget.dart';
 import 'package:flutter/material.dart';
-
-import 'package:fitnessmarketplace/pages/register.dart';
 
 
 void main() {
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       routes: {
-        '/register': (BuildContext context) => Register(),
+        '/register': (BuildContext context) => SignupWidget(),
       },
       home: RootPage(),
     );
