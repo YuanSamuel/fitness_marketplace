@@ -143,6 +143,7 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
                       ),
                     ),
                   ),
+                  //hello
                   Container(
                     width: MediaQuery.of(context).size.width,
                     child: Padding(
