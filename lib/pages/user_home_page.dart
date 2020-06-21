@@ -7,6 +7,8 @@ import 'package:fitnessmarketplace/models/RecordedVideo.dart';
 import 'package:fitnessmarketplace/models/Stream.dart' as models;
 ***REMOVED***
 ***REMOVED***
+***REMOVED***
+***REMOVED***
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:fitnessmarketplace/models/Student.dart';
@@ -20,7 +22,7 @@ class _UserHomePageState extends State<UserHomePage> {
   Student currentStudent;
   List<PrivateSession> allPrivateSessions;
   List<dynamic> selectedPrivateSessions;
-  List<RecordedVideo> recordedVideos;
+  List<dynamic> trainervideos;
   List<models.Stream> allStreams;
   List<dynamic> selectedStreams;
   DateTime selectedDate;
@@ -30,6 +32,41 @@ class _UserHomePageState extends State<UserHomePage> {
 
   StringHelper _stringHelper;
   CalendarHelper _calendarHelper;
+
+  Widget makeVideo({image, vidReference***REMOVED***) {
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Player(video: vidReference)),
+    ***REMOVED***
+      ***REMOVED***,
+      child: AspectRatio(
+        aspectRatio: 1.5 / 1,
+        child: Container(
+          margin: EdgeInsets.only(right: 20),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              image:
+              DecorationImage(image: NetworkImage(image), fit: BoxFit.cover)),
+          child: Container(
+***REMOVED***
+                gradient: LinearGradient(begin: Alignment.bottomRight, colors: [
+                  Colors.black.withOpacity(.9),
+                  Colors.black.withOpacity(.3)
+                ])),
+            child: Align(
+              child: Icon(
+                Icons.play_arrow,
+                color: Colors.white,
+                size: 70,
+***REMOVED***,
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+  ***REMOVED***
 
 ***REMOVED***
 ***REMOVED***
@@ -75,16 +112,15 @@ class _UserHomePageState extends State<UserHomePage> {
     return;
   ***REMOVED***
 
-  Future<void> getRecordedVideos() async {
-    recordedVideos = new List<RecordedVideo>();
-    QuerySnapshot allRecordedVideos =
-        await currentStudent.reference.collection('videos').getDocuments();
-    List<DocumentSnapshot> videos = allRecordedVideos.documents;
-    for (int i = 0; i < videos.length; i++) {
-      RecordedVideo currentVideo = RecordedVideo.fromSnapshot(videos[i]);
-      recordedVideos.add(currentVideo);
-    ***REMOVED***
-    return;
+  Future getRecordedVideos() async {
+    QuerySnapshot queryVideos = await currentStudent.reference
+        .collection('videos')
+        .getDocuments();
+    List<DocumentSnapshot> videoData = queryVideos.documents;
+    setState(() {
+      trainervideos = videoData;
+    ***REMOVED***);
+    setState(() {***REMOVED***);
   ***REMOVED***
 
   Future<void> getStreams() async {
@@ -96,6 +132,18 @@ class _UserHomePageState extends State<UserHomePage> {
       allStreams.add(models.Stream.fromSnapshot(streamSnapshots[i]));
     ***REMOVED***
     return;
+  ***REMOVED***
+
+
+  VideoInfo getVidInfoFromDs(DocumentSnapshot ds){
+    return VideoInfo(
+      videoUrl: ds.data['videoUrl'],
+      thumbUrl: ds.data['thumbUrl'],
+      coverUrl: ds.data['coverUrl'],
+      aspectRatio: ds.data['aspectRatio'],
+      videoName: ds.data['videoName'],
+      uploadedAt: ds.data['uploadedAt'],
+***REMOVED***
   ***REMOVED***
 
 ***REMOVED***
@@ -297,12 +345,19 @@ class _UserHomePageState extends State<UserHomePage> {
                       color: Colors.white,
                       height: 300.0,
                       child: ListView.builder(
-                        itemCount: recordedVideos.length,
+                        itemCount: trainervideos.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (BuildContext context, int i) {
+
                           return Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: GestureDetector(
+                              onTap: (){
+          ***REMOVED***
+        ***REMOVED***
+        ***REMOVED***builder: (context) => Player(video: getVidInfoFromDs(trainervideos[i]))),
+                            ***REMOVED***
+                              ***REMOVED***,
                               child: Container(
                                   height: 300.0,
                                   width: 300.0,
@@ -320,13 +375,8 @@ class _UserHomePageState extends State<UserHomePage> {
                     ***REMOVED***
                     ***REMOVED***,
                                   child: Center(
-                ***REMOVED***recordedVideos[i].name +
-                                        ' ' +
-                                        Timestamp.fromMillisecondsSinceEpoch(
-                                                recordedVideos[i].date)
-                                            .toDate()
-                                            .toString()),
-                    ***REMOVED***),
+                ***REMOVED***trainervideos[i].data["title"],
+                    ***REMOVED***),)
                               //TODO set up this so that it works with actual videos / streams
                               /*onTap: () {
           ***REMOVED***

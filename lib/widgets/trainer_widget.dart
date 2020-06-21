@@ -215,6 +215,7 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                   ? Container(
                                   height: 200,
                                   child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
                                       itemCount: trainerVideos.length,
                                       itemBuilder: (BuildContext context, int i) {
                                         print(trainerVideos.length);
