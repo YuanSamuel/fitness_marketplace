@@ -11,7 +11,7 @@ class Trainer {
   double livePrice;
   double oneOnOnePrice;
   List trainingTypes;
-
+  String uid;
 
   DocumentReference reference;
 
@@ -26,6 +26,7 @@ class Trainer {
       this.livePrice,
       this.oneOnOnePrice,
       this.trainingTypes,
+      this.uid,
       this.reference});
 
   factory Trainer.fromSnapshot(DocumentSnapshot snapshot) {
@@ -46,6 +47,7 @@ class Trainer {
       livePrice: (json['livePrice'] + 0.0) as double,
       oneOnOnePrice: (json['oneOnOnePrice'] + 0.0) as double,
       trainingTypes: json['trainingTypes'] as List,
+      uid: json['uid'] as String,
     );
   }
 
@@ -63,6 +65,7 @@ class Trainer {
       'livePrice': instance.videoPrice,
       'oneOnOnePrice': instance.oneOnOnePrice,
       'trainingTypes': instance.trainingTypes,
+      'uid': instance.uid,
     };
   }
 }
