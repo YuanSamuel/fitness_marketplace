@@ -413,7 +413,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                     child: Text(trainerVideos[i - 1].name +
                                         '  ' +
                                         Timestamp.fromMillisecondsSinceEpoch(
-                                                trainerVideos[i - 1].date)
+                                                trainerVideos[i - 1].uploadedAt)
                                             .toDate()
                                             .toString()),
                                   ),

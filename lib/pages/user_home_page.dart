@@ -323,7 +323,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                     child: Text(recordedVideos[i].name +
                                         ' ' +
                                         Timestamp.fromMillisecondsSinceEpoch(
-                                                recordedVideos[i].date)
+                                                recordedVideos[i].uploadedAt)
                                             .toDate()
                                             .toString()),
                                   )),

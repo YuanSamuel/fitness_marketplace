@@ -7,6 +7,7 @@ import 'package:fitnessmarketplace/models/Stream.dart' as models;
 import 'package:fitnessmarketplace/models/Student.dart';
 import 'package:fitnessmarketplace/pages/payment_page.dart';
 import 'package:fitnessmarketplace/pages/session_preview_page.dart';
+import 'package:fitnessmarketplace/pages/user_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -82,7 +83,8 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
 
   getTrainerStreams() async {
     streamTimes = new List<models.Stream>();
-    QuerySnapshot streams = await widget.trainer.reference.collection('streams').getDocuments();
+    QuerySnapshot streams =
+        await widget.trainer.reference.collection('streams').getDocuments();
     List<DocumentSnapshot> streamSnapshots = streams.documents;
     for (int i = 0; i < streamSnapshots.length; i++) {
       streamTimes.add(models.Stream.fromSnapshot(streamSnapshots[i]));
@@ -106,8 +108,8 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
             ),
             TableCalendar(
               calendarController: _calendarController,
-              events: _calendarHelper
-                  .listToEventMap(privateSessionTimes, streamTimes),
+              events: _calendarHelper.listToEventMap(
+                  privateSessionTimes, streamTimes),
               onDaySelected: (DateTime date, List<dynamic> givenEvents) {
                 setState(() {
                   events = givenEvents;
@@ -119,25 +121,40 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
               child: ListView.builder(
                   itemCount: events.length,
                   itemBuilder: (BuildContext context, int i) {
-
-                    String trainerName = widget.trainer.firstName + ' ' + widget.trainer.lastName;
+                    String trainerName = widget.trainer.firstName +
+                        ' ' +
+                        widget.trainer.lastName;
 
                     bool isStream = events[i] is models.Stream;
 
-                    String length = isStream ? _stringHelper.intToLengthString(events[i].minutes.floor()) : _stringHelper.intToLengthString(events[i].length);
+                    String length = isStream
+                        ? _stringHelper
+                            .intToLengthString(events[i].minutes.floor())
+                        : _stringHelper.intToLengthString(events[i].length);
 
-                    DateTime date = DateTime.fromMillisecondsSinceEpoch(events[i].date).toLocal();
+                    DateTime date =
+                        DateTime.fromMillisecondsSinceEpoch(events[i].date)
+                            .toLocal();
 
                     return GestureDetector(
                       onTap: () async {
                         if (isStream) {
+                          print('hello?');
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => SessionPreview(stream: events[i], isStream: true,isPrivate: true,)),
+                            MaterialPageRoute(builder: (context) => SessionPreview(
+                              isStream: true,
+                              stream: events[i],
+                              trainer: widget.trainer,
+                            )),
                           );
-                        }
-                        else {
-                          await events[i].reference.updateData({'available': false, 'studentName': currentStudent.firstName + ' ' + currentStudent.lastName});
+                        } else {
+                          await events[i].reference.updateData({
+                            'available': false,
+                            'studentName': currentStudent.firstName +
+                                ' ' +
+                                currentStudent.lastName
+                          });
                           await addToUserPrivateSessions(events[i]);
                         }
                         Navigator.pop(context);
@@ -155,7 +172,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                                 spreadRadius: 5,
                                 blurRadius: 7,
                                 offset:
-                                Offset(0, 3), // changes position of shadow
+                                    Offset(0, 3), // changes position of shadow
                               ),
                             ],
                           ),
@@ -175,22 +192,23 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                                     height: 40,
                                     child: isStream
                                         ? Text(
-                                      events[i].title + ' - Live Class',
-                                      overflow: TextOverflow.fade,
-                                      style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    )
+                                            events[i].title + ' - Live Class',
+                                            overflow: TextOverflow.fade,
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          )
                                         : Text(
-                                      'Private Session with: ' + trainerName,
-                                      overflow: TextOverflow.fade,
-                                      style: TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white),
-                                    ),
+                                            'Private Session with: ' +
+                                                trainerName,
+                                            overflow: TextOverflow.fade,
+                                            style: TextStyle(
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white),
+                                          ),
                                   ),
                                   SizedBox(
                                     height: 10.0,
@@ -232,7 +250,6 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                         ),
                       ),
                     );
-
                   }),
             ),
           ],
@@ -243,33 +260,31 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
 
   addToUserPrivateSessions(PrivateSession session) async {
     session.available = false;
-    session.studentName = currentStudent.firstName + ' ' + currentStudent.lastName;
-    currentStudent.reference.collection('privateSessions').add(session.toJson());
-    makeTransaction( session);
-
+    session.studentName =
+        currentStudent.firstName + ' ' + currentStudent.lastName;
+    currentStudent.reference
+        .collection('privateSessions')
+        .add(session.toJson());
+    makeTransaction(session);
   }
 
   Future makeTransaction(PrivateSession session) async {
-
-    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    final uid = user.uid;
-
-    print(uid);
-
-    await Firestore.instance.collection('students').document(uid).collection('transactions').add({
-      'type':"private",
-      'sessionID':session.reference.documentID,
-      'price':widget.trainer.oneOnOnePrice,
-      'trainer': widget.trainer.reference.documentID
+    await currentStudent.reference.collection('transactions').add({
+      'type': 'privateSession',
+      'sessionID': session.reference.documentID,
+      'price': widget.trainer.oneOnOnePrice,
+      'trainer': widget.trainer.reference.documentID,
+      'purchaseDate': DateTime.now().millisecondsSinceEpoch,
+      'sessionDate': session.date,
     });
 
-
-    await Firestore.instance.collection('trainers').document(widget.trainer.reference.documentID).collection("transactions").add({
-      'type':"private",
-      'sessionID':session.reference.documentID,
-      'price':widget.trainer.oneOnOnePrice,
-      'trainer': widget.trainer.reference.documentID
+    await widget.trainer.reference.collection('transactions').add({
+      'type': 'privateSession',
+      'sessionID': session.reference.documentID,
+      'price': widget.trainer.oneOnOnePrice,
+      'trainer': widget.trainer.reference.documentID,
+      'purchaseDate': DateTime.now().millisecondsSinceEpoch,
+      'sessionDate': session.date,
     });
-
   }
 }
