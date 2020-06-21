@@ -89,6 +89,11 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
     ***REMOVED***
   ***REMOVED***
 
+  Future doStuff(param)async{
+    await param.reference.updateData({'available': false, 'studentName': currentStudent.firstName + ' ' + currentStudent.lastName***REMOVED***);
+    await addToUserPrivateSessions(param);
+  ***REMOVED***
+
 ***REMOVED***
 ***REMOVED***
     if (privateSessionTimes == null) {
@@ -118,7 +123,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
               height: 200,
               child: ListView.builder(
                   itemCount: events.length,
-                  itemBuilder: (BuildContext context, int i) {
+                  itemBuilder: (BuildContext contexti, int i) {
 
                     String trainerName = widget.trainer.firstName + ' ' + widget.trainer.lastName;
 
@@ -129,18 +134,20 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                     DateTime date = DateTime.fromMillisecondsSinceEpoch(events[i].date).toLocal();
 
                     return GestureDetector(
-                      onTap: () async {
-                        if (isStream) {
+                      onTap: () {
+
+                        if (events[i] is models.Stream) {
+
+                          print("STUFF SHOULD BE HAPPENING?");
     ***REMOVED***
   ***REMOVED***
   ***REMOVED***builder: (context) => SessionPreview(stream: events[i], isStream: true,isPrivate: true,)),
                       ***REMOVED***
                         ***REMOVED***
                     ***REMOVED***
-                          await events[i].reference.updateData({'available': false, 'studentName': currentStudent.firstName + ' ' + currentStudent.lastName***REMOVED***);
-                          await addToUserPrivateSessions(events[i]);
+                          doStuff(events[i]);
                         ***REMOVED***
-                        Navigator.pop(context);
+                        //Navigator.pop(context);
                       ***REMOVED***,
               ***REMOVED***
                         padding: const EdgeInsets.all(8.0),
