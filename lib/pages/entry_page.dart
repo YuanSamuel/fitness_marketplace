@@ -16,9 +16,15 @@ class _EntryPageState extends State<EntryPage> {
   TextEditingController emailInputController;
   TextEditingController pwdInputController;
 
-  static PageController _controller = PageController(
-    initialPage: 0,
-  );
+  static PageController _controller;
+
+  @override
+  void initState() {
+    _controller = PageController(
+      initialPage: 0,
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,8 +118,6 @@ class _EntryPageState extends State<EntryPage> {
                         ],
                       ),
                     ),
-
-
                   ],
                 ),
               ),

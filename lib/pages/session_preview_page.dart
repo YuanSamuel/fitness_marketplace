@@ -13,8 +13,6 @@ import 'package:permission_handler/permission_handler.dart';
 
 
 class SessionPreview extends StatefulWidget {
-  //final String image;
-
   final Stream stream;
   final bool isStream;
   final Trainer trainer;

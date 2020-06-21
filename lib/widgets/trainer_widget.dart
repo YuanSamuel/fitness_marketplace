@@ -1,15 +1,11 @@
 import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
 import 'package:fitnessmarketplace/animations/FadeAnimationUp.dart';
-import 'package:fitnessmarketplace/models/RecordedVideo.dart';
 import 'package:fitnessmarketplace/pages/request_private_session_page.dart';
 import 'package:fitnessmarketplace/pages/session_preview_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:validators/sanitizers.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
 
 class TrainerWidget extends StatefulWidget {

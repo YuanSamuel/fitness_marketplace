@@ -54,45 +54,16 @@ class _SignupWidgetState extends State<SignupWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
+    return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
         child: Container(
-          //height: double.infinity,
-          //width: double.infinity,
             decoration: BoxDecoration(
-
             ),
-            //padding: const EdgeInsets.all(20.0),
-            child: SingleChildScrollView(
-                child: Form(
+            child: Form(
                   key: _signUpFormKey,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(Icons.arrow_back_ios
-                            ),
-                            onPressed: (){setState(() {
-
-                            });},
-                          ),
-                          SizedBox(width: 90.0,),
-                          Text(
-                            'Signup',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'OpenSans',
-                              fontSize: 30.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
                       Column(
-
                         children: <Widget>[
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -170,10 +141,10 @@ class _SignupWidgetState extends State<SignupWidget> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 40.0,),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
+                              SizedBox(height: 20.0,),
                               Container(
                                 alignment: Alignment.centerLeft,
                                 decoration: StyleConstants.loginBoxDecorationStyle,
@@ -203,7 +174,6 @@ class _SignupWidgetState extends State<SignupWidget> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-
                               Container(
                                 alignment: Alignment.centerLeft,
                                 decoration: StyleConstants.loginBoxDecorationStyle,
@@ -253,8 +223,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                         ],
                       ),
 
-                      //SizedBox(height: MediaQuery.of(context).size.height / 5,),
-                      SizedBox(height: 40.0,),
+                      SizedBox(height: MediaQuery.of(context).size.height / 20,),
 
                       GestureDetector(
                         onTap: () {
@@ -336,9 +305,8 @@ class _SignupWidgetState extends State<SignupWidget> {
                     ],
                   ),
                 )
-            )
+
         ),
-      ),
     );
   }
 }
