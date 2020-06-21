@@ -143,6 +143,7 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
         ***REMOVED***,
       ***REMOVED***,
     ***REMOVED***,
+                  //hello
                   Container(
                     width: MediaQuery.of(context).size.width,
             ***REMOVED***
