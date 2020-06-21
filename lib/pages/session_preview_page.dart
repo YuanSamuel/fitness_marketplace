@@ -71,7 +71,8 @@ class _SessionPreviewState extends State<SessionPreview> {
       'sessionID':widget.isStream?widget.stream.reference.documentID:widget.video.documentID,
       'price':widget.isStream?widget.stream.price:widget.video.data["price"],
       'trainer': widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID,
-      'date': DateTime.now().millisecondsSinceEpoch,
+      'purchaseDate': DateTime.now().millisecondsSinceEpoch,
+      'sessionDate': widget.isStream?widget.stream.date : DateTime.now().millisecondsSinceEpoch,
     });
 
 
@@ -80,7 +81,8 @@ class _SessionPreviewState extends State<SessionPreview> {
       'sessionID':widget.isStream?widget.stream.reference.documentID:widget.video.documentID,
       'price':widget.isStream?widget.stream.price:widget.video.data["price"],
       'trainer': widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID,
-      'date': DateTime.now().millisecondsSinceEpoch,
+      'purchaseDate': DateTime.now().millisecondsSinceEpoch,
+      'sessionDate': widget.isStream?widget.stream.date : DateTime.now().millisecondsSinceEpoch,
     });
 
     await _handleCameraAndMic();

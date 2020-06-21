@@ -1,5 +1,6 @@
 import 'package:fitnessmarketplace/pages/add_new_screen.dart';
 import 'package:fitnessmarketplace/pages/root_page.dart';
+import 'package:fitnessmarketplace/pages/session_preview_page.dart';
 
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       debugShowCheckedModeBanner: false,
-      routes: {
+      routes: <String, WidgetBuilder> {
         '/register': (BuildContext context) => Register(),
       },
       home: RootPage(),
