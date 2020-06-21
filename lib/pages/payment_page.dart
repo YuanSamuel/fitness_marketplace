@@ -2,6 +2,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
+***REMOVED***
 import 'package:fitnessmarketplace/pages/stream_page.dart';
 ***REMOVED***
 ***REMOVED***
@@ -98,14 +99,20 @@ import 'package:fitnessmarketplace/pages/stream_page.dart';
  ***REMOVED***
    ***REMOVED***
 
-  Future openVideo(){
+  Future openVideo() async{
      if (widget.isStream){
-       Navigator.push(
-         context,
-         MaterialPageRoute(builder: (context) => StreamPage(role: widget.isPrivate?ClientRole.Broadcaster:ClientRole.Audience,channelName: widget.stream,isTrainer: false,)),
-   ***REMOVED***
+
+      Navigator.push(
+           context,
+           MaterialPageRoute(builder: (context) => StreamPage(role: widget.isPrivate?ClientRole.Broadcaster:ClientRole.Audience,channelName: widget.stream,isTrainer: false,)),
+     ***REMOVED***
      ***REMOVED***
  ***REMOVED***
+   ***REMOVED***
+       final uid = user.uid;
+
+       await Firestore.instance.collection('students').document(uid).collection("videos").document().setData(widget.video.data);
+
        VideoInfo video = getVidInfoFromDs(widget.video);
        Navigator.push(
          context,
