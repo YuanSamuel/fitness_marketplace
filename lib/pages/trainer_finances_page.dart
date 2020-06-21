@@ -32,9 +32,9 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
   Map<String, MaterialColor> typeToColor = {
     'privateSession': Colors.blue,
     'stream': Colors.red,
-    'video': Colors.green
+    'ondemand': Colors.green
   };
-  List<String> types = ['privateSession', 'stream', 'video'];
+  List<String> types = ['privateSession', 'stream', 'ondemand'];
 
   @override
   void initState() {
@@ -369,7 +369,7 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
                   } else if (givenSpots[i].barIndex == 2) {
                     tooltipItems[2] = new LineTooltipItem(
                         givenSpots[i].y.toString(),
-                        TextStyle(color: typeToColor['video']));
+                        TextStyle(color: typeToColor['ondemand']));
                   }
                 }
                 return tooltipItems;
@@ -424,8 +424,8 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
                       getStuffs['stream'] = i;
                     } else if (givenColor == typeToColor['privateSession']) {
                       getStuffs['privateSession'] = i;
-                    } else if (givenColor == typeToColor['video']) {
-                      getStuffs['video'] = i;
+                    } else if (givenColor == typeToColor['ondemand']) {
+                      getStuffs['ondemand'] = i;
                     }
                   }
                   bool addedX = false;
@@ -454,18 +454,18 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
                           TextStyle(color: typeToColor['privateSession'])));
                     }
                   }
-                  if (getStuffs.containsKey('video')) {
-                    LineBarSpot videoSpot = givenSpots[getStuffs['video']];
+                  if (getStuffs.containsKey('ondemand')) {
+                    LineBarSpot videoSpot = givenSpots[getStuffs['ondemand']];
                     if (!addedX) {
                       tooltipItems.add(LineTooltipItem(
                           videoSpot.x.toStringAsFixed(2) +
                               ': ' +
                               videoSpot.y.toString(),
-                          TextStyle(color: typeToColor['video'])));
+                          TextStyle(color: typeToColor['ondemand'])));
                       addedX = true;
                     } else {
                       tooltipItems.add(LineTooltipItem(videoSpot.y.toString(),
-                          TextStyle(color: typeToColor['video'])));
+                          TextStyle(color: typeToColor['ondemand'])));
                     }
                   }
                   return tooltipItems;
