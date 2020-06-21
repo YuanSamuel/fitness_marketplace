@@ -26,13 +26,14 @@ class _TrainerWidgetState extends State<TrainerWidget> {
 
 ***REMOVED***
 ***REMOVED***
-    getRecordedVideos();
 ***REMOVED***
+
+    getRecordedVideos();
   ***REMOVED***
 
   getRecordedVideos() async {
     QuerySnapshot queryVideos = await widget.trainer.reference
-        .collection('recordedVideos')
+        .collection('videos')
         .getDocuments();
     List<DocumentSnapshot> videoData = queryVideos.documents;
     setState(() {
@@ -216,11 +217,14 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                   child: ListView.builder(
                                       itemCount: trainerVideos.length,
                                       itemBuilder: (BuildContext context, int i) {
+                                        print(trainerVideos.length);
+                                        print("TRAINER VIDS");
+                                        print(trainerVideos);
                                         return FadeAnimationDown(
                                           1.2 + i / 10,
                                           makeVideo(
                                               image:
-                                              trainerVideos[i].data["thumbUr"],
+                                              trainerVideos[i].data["thumbUrl"],
                                               vidReference: trainerVideos[i]),
                                     ***REMOVED***
                           ***REMOVED***),):CircularProgressIndicator()),
