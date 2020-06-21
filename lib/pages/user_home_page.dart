@@ -3,7 +3,6 @@
 import 'package:fitnessmarketplace/helpers/string_helper.dart';
 import 'package:fitnessmarketplace/helpers/calendar_helper.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
-import 'package:fitnessmarketplace/models/RecordedVideo.dart';
 import 'package:fitnessmarketplace/models/Stream.dart' as models;
 ***REMOVED***
 ***REMOVED***
