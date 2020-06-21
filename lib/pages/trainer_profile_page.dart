@@ -4,7 +4,6 @@ import 'package:fitnessmarketplace/pages/profile_picture.dart';
 import 'package:fitnessmarketplace/pages/trainer_register.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'login_page.dart';
 
 class TrainerProfile extends StatelessWidget {
   @override
