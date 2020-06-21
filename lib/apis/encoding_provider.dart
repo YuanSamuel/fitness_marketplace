@@ -19,7 +19,7 @@ class EncodingProvider {
     final arguments = '-y -i $videoPath ' +
         '-preset ultrafast -g 48 -sc_threshold 0 ' +
         '-map 0:0 -map 0:1 -map 0:0 -map 0:1 ' +
-        '-c:v:0 libx264 -b:v:0 600k ' +
+        '-c:v:0 libx264 -b:v:0 1000k ' +
         '-c:v:1 libx264 -b:v:1 365k ' +
         '-c:a copy ' +
         '-var_stream_map "v:0,a:0 v:1,a:1" ' +
