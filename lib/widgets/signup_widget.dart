@@ -54,45 +54,16 @@ class _SignupWidgetState extends State<SignupWidget> {
 
 ***REMOVED***
 ***REMOVED***
-***REMOVED***
-      body: Padding(
+    return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
         child: Container(
-          //height: double.infinity,
-          //width: double.infinity,
 ***REMOVED***
-
 ***REMOVED***
-            //padding: const EdgeInsets.all(20.0),
-            child: SingleChildScrollView(
-                child: Form(
+            child: Form(
                   key: _signUpFormKey,
         ***REMOVED***
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
     ***REMOVED***
-        ***REMOVED***
-        ***REMOVED***
-                          IconButton(
-                            icon: Icon(Icons.arrow_back_ios
-              ***REMOVED***,
-                            onPressed: (){setState(() {
-
-                            ***REMOVED***);***REMOVED***,
-            ***REMOVED***,
-    ***REMOVED***width: 90.0,),
-    ***REMOVED***
-                            'Signup',
-        ***REMOVED***
-                              color: Colors.black,
-                              fontFamily: 'OpenSans',
-                              fontSize: 30.0,
-  ***REMOVED***
-              ***REMOVED***,
-            ***REMOVED***,
-        ***REMOVED***
-        ***REMOVED***,
                       Column(
-
         ***REMOVED***
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -170,10 +141,10 @@ class _SignupWidgetState extends State<SignupWidget> {
                 ***REMOVED***,
             ***REMOVED***
             ***REMOVED***,
-    ***REMOVED***height: 40.0,),
                           Column(
                 ***REMOVED***
             ***REMOVED***
+        ***REMOVED***height: 20.0,),
                               Container(
                                 alignment: Alignment.centerLeft,
                                 decoration: StyleConstants.loginBoxDecorationStyle,
@@ -203,7 +174,6 @@ class _SignupWidgetState extends State<SignupWidget> {
                           Column(
                 ***REMOVED***
             ***REMOVED***
-
                               Container(
                                 alignment: Alignment.centerLeft,
                                 decoration: StyleConstants.loginBoxDecorationStyle,
@@ -253,8 +223,7 @@ class _SignupWidgetState extends State<SignupWidget> {
         ***REMOVED***
         ***REMOVED***,
 
-                      //SizedBox(height: MediaQuery.of(context).size.height / 5,),
-***REMOVED***height: 40.0,),
+***REMOVED***height: MediaQuery.of(context).size.height / 20,),
 
                       GestureDetector(
                         onTap: () {
@@ -336,8 +305,7 @@ class _SignupWidgetState extends State<SignupWidget> {
     ***REMOVED***
     ***REMOVED***,
   ***REMOVED***
-            )
-***REMOVED***
+
 ***REMOVED***
 ***REMOVED***
   ***REMOVED***

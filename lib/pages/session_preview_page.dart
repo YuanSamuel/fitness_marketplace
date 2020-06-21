@@ -13,8 +13,6 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 
 
 ***REMOVED***
-  //final String image;
-
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***

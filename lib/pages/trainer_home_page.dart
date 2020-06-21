@@ -204,14 +204,18 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                         : _stringHelper.intToLengthString(allEvents[i].length);
 
                     return GestureDetector(
-                      onTap:() {
-
+                      onTap: () {
                         // Within the `FirstRoute` widget
   ***REMOVED***
 ***REMOVED***
-***REMOVED***builder: (context) => StreamPage(channelName:currentTrainer.reference.documentID,role: ClientRole.Broadcaster,isTrainer: true,)),
+***REMOVED***
+                              builder: (context) => StreamPage(
+                                    channelName:
+                                        currentTrainer.reference.documentID,
+                                    role: ClientRole.Broadcaster,
+                                    isTrainer: true,
+                    ***REMOVED***),
                     ***REMOVED***
-
                       ***REMOVED***,
               ***REMOVED***
                         padding: const EdgeInsets.all(8.0),
@@ -248,7 +252,8 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                                     height: 40,
                                     child: isStream
                                         ? Text(
-                                            allEvents[i].title + ' - Live Class',
+                                            allEvents[i].title +
+                                                ' - Live Class',
                                             overflow: TextOverflow.fade,
                         ***REMOVED***
                                               fontSize: 20.0,

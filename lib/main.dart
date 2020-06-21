@@ -1,9 +1,8 @@
-import 'package:fitnessmarketplace/pages/register.dart';
+import 'package:fitnessmarketplace/pages/entry_page.dart';
 import 'package:fitnessmarketplace/pages/root_page.dart';
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
+import 'package:fitnessmarketplace/widgets/signup_widget.dart';
 ***REMOVED***
-
-
 
 void main() {
   runApp(MyApp());
@@ -21,7 +20,7 @@ class MyApp extends StatelessWidget {
 ***REMOVED***
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder> {
-        '/register': (BuildContext context) => Register(),
+        '/register': (BuildContext context) => EntryPage(),
       ***REMOVED***,
       home: RootPage(),
 ***REMOVED***

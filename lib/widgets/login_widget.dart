@@ -39,43 +39,15 @@ class _LoginWidgetState extends State<LoginWidget> {
 
 ***REMOVED***
 ***REMOVED***
-***REMOVED***
-      body: Padding(
+    return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
         child: Container(
-          //height: double.infinity,
-          //width: double.infinity,
-***REMOVED***
-
-***REMOVED***
-            //padding: const EdgeInsets.all(20.0),
             child: SingleChildScrollView(
                 child: Form(
                   key: _loginFormKey,
         ***REMOVED***
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
     ***REMOVED***
-        ***REMOVED***
-        ***REMOVED***
-                          IconButton(
-                            icon: Icon(Icons.arrow_back_ios
-              ***REMOVED***,
-                            onPressed: (){setState(() {
-                            ***REMOVED***);
-                            ***REMOVED***,
-            ***REMOVED***,
-    ***REMOVED***width: 90.0,),
-    ***REMOVED***
-                            'Login',
-        ***REMOVED***
-                              color: Colors.black,
-                              fontFamily: 'OpenSans',
-                              fontSize: 30.0,
-  ***REMOVED***
-              ***REMOVED***,
-            ***REMOVED***,
-        ***REMOVED***
-        ***REMOVED***,
                       Column(
 
         ***REMOVED***
@@ -187,7 +159,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     ***REMOVED***
     ***REMOVED***
   ***REMOVED***
-  ***REMOVED***builder: (context) => (SignupWidget())),
+  ***REMOVED***builder: (context) => (EntryPage())),
                       ***REMOVED***
                         ***REMOVED***,
         ***REMOVED***,
@@ -195,7 +167,6 @@ class _LoginWidgetState extends State<LoginWidget> {
     ***REMOVED***,
   ***REMOVED***
             )
-***REMOVED***
 ***REMOVED***
 ***REMOVED***
   ***REMOVED***

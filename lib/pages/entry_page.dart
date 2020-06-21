@@ -16,9 +16,15 @@ class _EntryPageState extends State<EntryPage> {
   TextEditingController emailInputController;
   TextEditingController pwdInputController;
 
-  static PageController _controller = PageController(
-    initialPage: 0,
-  );
+  static PageController _controller;
+
+***REMOVED***
+***REMOVED***
+    _controller = PageController(
+      initialPage: 0,
+***REMOVED***
+***REMOVED***
+  ***REMOVED***
 
 ***REMOVED***
 ***REMOVED***
@@ -112,8 +118,6 @@ class _EntryPageState extends State<EntryPage> {
         ***REMOVED***
         ***REMOVED***,
       ***REMOVED***,
-
-
   ***REMOVED***
   ***REMOVED***,
 ***REMOVED***,

@@ -1,5 +1,6 @@
 ***REMOVED***
 ***REMOVED***
+import 'package:fitnessmarketplace/pages/entry_page.dart';
 import 'package:fitnessmarketplace/widgets/signup_widget.dart';
 import 'package:fitnessmarketplace/pages/trainer_navigation.dart';
 import 'package:fitnessmarketplace/pages/user_navigation.dart';
@@ -48,7 +49,7 @@ class _RootPageState extends State<RootPage> {
     ***REMOVED***
 ***REMOVED***
       if (currentUser == null) {
-        return SignupWidget();
+        return EntryPage();
       ***REMOVED***
   ***REMOVED***
         if (isTrainer) {

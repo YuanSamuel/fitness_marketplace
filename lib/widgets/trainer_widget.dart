@@ -1,15 +1,11 @@
 ***REMOVED***
 import 'package:fitnessmarketplace/animations/FadeAnimationUp.dart';
-import 'package:fitnessmarketplace/models/RecordedVideo.dart';
 import 'package:fitnessmarketplace/pages/request_private_session_page.dart';
 import 'package:fitnessmarketplace/pages/session_preview_page.dart';
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:validators/sanitizers.dart';
 ***REMOVED***
 
 class TrainerWidget extends StatefulWidget {
