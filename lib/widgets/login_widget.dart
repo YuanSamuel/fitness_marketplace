@@ -3,7 +3,10 @@ import 'package:fitnessmarketplace/pages/entry_page.dart';
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 import 'package:fitnessmarketplace/utils/style_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitnessmarketplace/widgets/signup_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:fitnessmarketplace/pages/user_navigation.dart';
+import 'package:fitnessmarketplace/pages/trainer_navigation.dart';
 
 class LoginWidget extends StatefulWidget {
   @override
@@ -36,11 +39,12 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Scaffold(
+      body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
         child: Container(
-            //height: double.infinity,
-            //width: double.infinity,
+          //height: double.infinity,
+          //width: double.infinity,
             decoration: BoxDecoration(
 
             ),
@@ -51,7 +55,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      /*Row(
+                      Row(
                         children: <Widget>[
                           IconButton(
                             icon: Icon(Icons.arrow_back_ios
@@ -71,7 +75,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             ),
                           ),
                         ],
-                      ),*/
+                      ),
                       Column(
 
                         children: <Widget>[
@@ -142,21 +146,28 @@ class _LoginWidgetState extends State<LoginWidget> {
                       SizedBox(height: 40.0,),
 
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           print("LOGIN ATTEMPTED");
-                          if (_loginFormKey.currentState.validate()) {
-                            FirebaseAuth.instance.signInWithEmailAndPassword(email: emailInputController.text, password: passwordInputController.text).then(
-                                    (currentUser) {
-                                  Firestore.instance.collection('users').document(currentUser.user.uid).get().then(
-                                          (value) {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => (TrainerHomePage())),
-                                        );
-                                      });
-                                }
-                            );
-                          }
+                          FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                              email: emailInputController.text, password: passwordInputController.text)
+                              .then((currentUser) async {
+                            print(currentUser.user.uid);
+                            DocumentSnapshot snapshot = await Firestore.instance.collection('users').document(currentUser.user.uid).get();
+                            print(snapshot.data);
+                            if (snapshot.data['isTrainer']) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => TrainerNavigation()),
+                              );
+                            }
+                            else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => UserNavigation()),
+                              );
+                            }
+                          });
                         },
 
                         child: Container(
@@ -171,12 +182,21 @@ class _LoginWidgetState extends State<LoginWidget> {
                           ),
                         ),
                       ),
-
+                      FlatButton(
+                        child: Text('Register'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => (SignupWidget())),
+                          );
+                        },
+                      ),
                     ],
                   ),
                 )
             )
         ),
+      ),
     );
   }
 }
