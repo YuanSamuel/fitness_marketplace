@@ -1,5 +1,6 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/models/video_info.dart';
 import 'package:fitnessmarketplace/pages/player.dart';
 import 'package:fitnessmarketplace/pages/stream_page.dart';
@@ -98,14 +99,20 @@ import 'package:square_in_app_payments/in_app_payments.dart';
      );
    }
 
-  Future openVideo(){
+  Future openVideo() async{
      if (widget.isStream){
-       Navigator.push(
-         context,
-         MaterialPageRoute(builder: (context) => StreamPage(role: widget.isPrivate?ClientRole.Broadcaster:ClientRole.Audience,channelName: widget.stream,isTrainer: false,)),
-       );
+
+      Navigator.push(
+           context,
+           MaterialPageRoute(builder: (context) => StreamPage(role: widget.isPrivate?ClientRole.Broadcaster:ClientRole.Audience,channelName: widget.stream,isTrainer: false,)),
+         );
      }
      else{
+       final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+       final uid = user.uid;
+
+       await Firestore.instance.collection('students').document(uid).collection("videos").document().setData(widget.video.data);
+
        VideoInfo video = getVidInfoFromDs(widget.video);
        Navigator.push(
          context,
