@@ -1,7 +1,6 @@
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-import 'package:fitnessmarketplace/pages/login_page.dart';
 
 class FirebaseProvider {
   static saveVideo(VideoInfo video, String title, String description, double minutes, int date, double price) async {

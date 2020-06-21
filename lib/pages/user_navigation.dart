@@ -3,7 +3,6 @@ import 'package:fitnessmarketplace/pages/user_home_page.dart';
 import 'package:fitnessmarketplace/pages/user_marketplace_page.dart';
 import 'package:fitnessmarketplace/pages/user_profile_page.dart';
 ***REMOVED***
-import 'login_page.dart';
 
 class UserNavigation extends StatefulWidget {
 ***REMOVED***
