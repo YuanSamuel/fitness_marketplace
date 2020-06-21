@@ -1,7 +1,8 @@
 ***REMOVED***
 
 class RecordTransaction {
-  int date;
+  int purchaseDate;
+  int sessionDate;
   double price;
   String sessionID;
   String trainer;
@@ -9,7 +10,7 @@ class RecordTransaction {
 
   DocumentReference reference;
 
-  RecordTransaction({this.date, this.price, this.sessionID, this.trainer, this.type, this.reference***REMOVED***);
+  RecordTransaction({this.purchaseDate, this.sessionDate, this.price, this.sessionID, this.trainer, this.type, this.reference***REMOVED***);
 
   factory RecordTransaction.fromSnapshot(DocumentSnapshot snapshot) {
     RecordTransaction newTransaction = RecordTransaction.fromJson(snapshot.data);
@@ -19,7 +20,8 @@ class RecordTransaction {
 
   factory RecordTransaction.fromJson(Map<String, dynamic> json) {
     return RecordTransaction(
-      date: json['date'] as int,
+      purchaseDate: json['purchaseDate'] as int,
+      sessionDate: json['sessionDate'] as int,
       price: json['price'] as double,
       sessionID: json['sessionID'] as String,
       trainer: json['trainer'] as String,
@@ -31,7 +33,8 @@ class RecordTransaction {
 
   Map<String, dynamic> _RecordTransactionToJson(RecordTransaction instance) {
     return <String, dynamic> {
-      'date': instance.date,
+      'purchaseDate': instance.purchaseDate,
+      'sessionDate': instance.sessionDate,
       'price': instance.price,
       'sessionID': instance.sessionID,
       'trainer': instance.trainer,

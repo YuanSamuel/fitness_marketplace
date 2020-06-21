@@ -71,7 +71,8 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-      'date': DateTime.now().millisecondsSinceEpoch,
+***REMOVED***
+***REMOVED***
     ***REMOVED***);
 
 
@@ -80,7 +81,8 @@ import 'package:fitnessmarketplace/pages/payment_page.dart';
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
-      'date': DateTime.now().millisecondsSinceEpoch,
+***REMOVED***
+***REMOVED***
     ***REMOVED***);
 
     await _handleCameraAndMic();
