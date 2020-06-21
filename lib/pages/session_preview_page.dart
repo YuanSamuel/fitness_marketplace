@@ -5,6 +5,7 @@ import 'package:fitnessmarketplace/models/Stream.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
 import 'package:fitnessmarketplace/models/video_info.dart';
 import 'package:fitnessmarketplace/pages/payment_page.dart';
+import 'package:fitnessmarketplace/pages/player.dart';
 import 'package:fitnessmarketplace/widgets/trainer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -87,7 +88,7 @@ class _SessionPreviewState extends State<SessionPreview> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PaymentPage(isStream: widget.isStream, video: widget.video, stream: widget.stream.trainer,isPrivate:widget.isPrivate!=null)),
+      MaterialPageRoute(builder: (context) => PaymentPage(isStream: widget.isStream, video: widget.video, stream: widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID,isPrivate:widget.isPrivate!=null)),
     );
   }
 
