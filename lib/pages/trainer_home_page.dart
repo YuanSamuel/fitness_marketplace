@@ -209,7 +209,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                         // Within the `FirstRoute` widget
   ***REMOVED***
 ***REMOVED***
-***REMOVED***builder: (context) => StreamPage(channelName:"HAPPY" /*currentTrainer.reference.documentID*/,role: ClientRole.Broadcaster,isTrainer: true,)),
+***REMOVED***builder: (context) => StreamPage(channelName:currentTrainer.reference.documentID,role: ClientRole.Broadcaster,isTrainer: true,)),
                     ***REMOVED***
 
                       ***REMOVED***,
