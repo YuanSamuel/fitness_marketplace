@@ -39,43 +39,15 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
+    return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
         child: Container(
-          //height: double.infinity,
-          //width: double.infinity,
-            decoration: BoxDecoration(
-
-            ),
-            //padding: const EdgeInsets.all(20.0),
             child: SingleChildScrollView(
                 child: Form(
                   key: _loginFormKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(Icons.arrow_back_ios
-                            ),
-                            onPressed: (){setState(() {
-                            });
-                            },
-                          ),
-                          SizedBox(width: 90.0,),
-                          Text(
-                            'Login',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'OpenSans',
-                              fontSize: 30.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
                       Column(
 
                         children: <Widget>[
@@ -187,7 +159,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => (SignupWidget())),
+                            MaterialPageRoute(builder: (context) => (EntryPage())),
                           );
                         },
                       ),
@@ -196,7 +168,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                 )
             )
         ),
-      ),
     );
   }
 }
