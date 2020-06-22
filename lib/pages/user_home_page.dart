@@ -224,13 +224,15 @@ class _UserHomePageState extends State<UserHomePage> {
 
                     String time = _stringHelper.dateTimeToTimeString(eventDate);
 
+
+
                     return GestureDetector(
                       onTap: (){
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => StreamPage(
-                                channelName: allEvents[i].trainerUid,
+                                channelName: isStream?allEvents[i].trainer:allEvents[i].trainerUid,
                                 role: isStream?ClientRole.Audience:ClientRole.Broadcaster,
                                 isTrainer: true,
                               )),
