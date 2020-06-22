@@ -4,6 +4,8 @@ import 'package:select_dialog/select_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
+import 'package:square_in_app_payments/models.dart';
+import 'package:square_in_app_payments/in_app_payments.dart';
 
 class TrainerRegister extends StatefulWidget {
   @override
@@ -211,11 +213,7 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                         if (currentTrainer.description != '') {
                           Navigator.pop(context);
                         } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ProfilePic()),
-                          );
+                          _pay();
                         }
                       }
                     },
@@ -228,5 +226,33 @@ class _TrainerRegisterState extends State<TrainerRegister> {
         ),
       );
     }
+  }
+
+  void _pay() {
+    InAppPayments.setSquareApplicationId(
+        '***REMOVED***');
+    InAppPayments.startCardEntryFlow(
+      onCardNonceRequestSuccess: _onCardNonceRequestSuccess,
+      onCardEntryCancel: _onCardEntryCancel,
+    );
+  }
+
+  void _onCardEntryCancel() {}
+  void _onCardNonceRequestSuccess(CardDetails result) {
+    try {
+      currentTrainer.reference.updateData({'cardNonce': result.nonce});
+      InAppPayments.completeCardEntry(
+        onCardEntryComplete: _cardEntryComplete,
+      );
+    } on Exception catch (ex) {
+      InAppPayments.showCardNonceProcessingError(ex.toString());
+    }
+  }
+
+  void _cardEntryComplete() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ProfilePic()),
+    );
   }
 }

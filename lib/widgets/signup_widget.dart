@@ -46,8 +46,7 @@ class _SignupWidgetState extends State<SignupWidget> {
   String passwordValidator(String value) {
     if (value.length < 8) {
       return 'Password length must be longer than 8 characters';
-    }
-    else {
+    } else {
       return null;
     }
   }
@@ -55,258 +54,259 @@ class _SignupWidgetState extends State<SignupWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-        child: Container(
-            decoration: BoxDecoration(
-            ),
-            child: Form(
-                  key: _signUpFormKey,
-                  child: Column(
-                    children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(height: 40.0),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                decoration: StyleConstants.loginBoxDecorationStyle,
-                                height: 60.0,
-                                child: TextFormField(
-                                  controller: _firstNameInputController,
-                                  keyboardType: TextInputType.emailAddress,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'OpenSans',
-                                  ),
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    contentPadding: EdgeInsets.only(top: 14.0),
-                                    prefixIcon: Icon(
-                                      Icons.person,
-                                      color: Colors.black,
-                                    ),
-                                    hintText: 'First Name',
-                                    hintStyle: StyleConstants.loginHintTextStyle,
-                                  ),
-                                  validator: (input) {
-                                    if (input.trim().length < 1) {
-                                      return "Please input a valid name";
-                                    }
-                                    else {
-                                      return null;
-                                    }
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(height: 20.0),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                decoration: StyleConstants.loginBoxDecorationStyle,
-                                height: 60.0,
-                                child: TextFormField(
-                                  controller: _lastNameInputController,
-                                  keyboardType: TextInputType.emailAddress,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'OpenSans',
-                                  ),
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    contentPadding: EdgeInsets.only(top: 14.0),
-                                    prefixIcon: Icon(
-                                      Icons.person,
-                                      color: Colors.black,
-                                    ),
-                                    hintText: 'Last Name',
-                                    hintStyle: StyleConstants.loginHintTextStyle,
-                                  ),
-                                  validator: (input) {
-                                    if (input.trim().length < 1) {
-                                      return "Please input a valid name";
-                                    }
-                                    else {
-                                      return null;
-                                    }
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(height: 20.0,),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                decoration: StyleConstants.loginBoxDecorationStyle,
-                                height: 60.0,
-                                child: TextFormField(
-                                  controller: _emailInputController,
-
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'OpenSans',
-                                  ),
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    contentPadding: EdgeInsets.only(top: 14.0),
-                                    prefixIcon: Icon(
-                                      Icons.email,
-                                      color: Colors.black,
-                                    ),
-                                    hintText: 'Enter your Email',
-                                    hintStyle: StyleConstants.loginHintTextStyle,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 20.0),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                decoration: StyleConstants.loginBoxDecorationStyle,
-                                height: 60.0,
-                                child: TextFormField(
-                                  controller: _passwordInputController,
-                                  obscureText: true,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'OpenSans',
-                                  ),
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    contentPadding: EdgeInsets.only(top: 14.0),
-                                    prefixIcon: Icon(
-                                      Icons.lock,
-                                      color: Colors.black,
-                                    ),
-                                    hintText: 'Enter your Password',
-                                    hintStyle: StyleConstants.loginHintTextStyle,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          ToggleSwitch(
-                              minWidth: 170.0,
-                              cornerRadius: 20,
-                              activeBgColor: Colors.green,
-                              activeTextColor: Colors.white,
-                              inactiveBgColor: Colors.grey,
-                              inactiveTextColor: Colors.white,
-                              labels: ['Student', 'Trainer'],
-                              activeColors: [Colors.blue, Colors.green],
-                              onToggle: (index) {
-                                if (index == 0) {
-                                  _isTrainer = false;
-                                } else {
-                                  _isTrainer = true;
-                                }
-                                print('Trainer is ' + _isTrainer.toString());
-                              }
-                          ),
-                        ],
-                      ),
-
-                      SizedBox(height: MediaQuery.of(context).size.height / 20,),
-
-                      GestureDetector(
-                        onTap: () {
-                          FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
-                              email: _emailInputController.text,
-                              password: _passwordInputController.text)
-                              .then((currentUser) async {
-                            if (_isTrainer) {
-                              await Firestore.instance
-                                  .collection('users')
-                                  .document(currentUser.user.uid)
-                                  .setData({'isTrainer': true});
-                              await Firestore.instance
-                                  .collection('trainers')
-                                  .document(currentUser.user.uid)
-                                  .setData({
-                                'firstName': _firstNameInputController.text,
-                                'lastName': _lastNameInputController.text,
-                                'uid': currentUser.user.uid,
-                                'email': _emailInputController.text,
-                                'description': '',
-                                'trainingTypes': new List<String>(),
-                                'rating': 0.0,
-                                'videoPrice': 0.0,
-                                'livePrice': 0.0,
-                                'oneOnOnePrice': 0.0
-                              });
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => TrainerRegister()),
-                              );
-                            } else {
-                              await Firestore.instance
-                                  .collection('users')
-                                  .document(currentUser.user.uid)
-                                  .setData({'isTrainer': false});
-                              await Firestore.instance
-                                  .collection('students')
-                                  .document(currentUser.user.uid)
-                                  .setData({
-                                'firstName': _firstNameInputController.text,
-                                'lastName': _lastNameInputController.text,
-                                'uid': currentUser.user.uid,
-                                'email': _emailInputController.text,
-                              });
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => UserNavigation()),
-                              );
-                            }
-                          });
-                        },
-                        child: Container(
-                          height: 50,
-                          margin: EdgeInsets.symmetric(horizontal: 50),
-                          decoration: BoxDecoration(
-                              border: Border.all(
+      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+      child: Container(
+          decoration: BoxDecoration(),
+          child: Form(
+            key: _signUpFormKey,
+            child: Column(
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(height: 40.0),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          decoration: StyleConstants.loginBoxDecorationStyle,
+                          height: 60.0,
+                          child: TextFormField(
+                            controller: _firstNameInputController,
+                            keyboardType: TextInputType.emailAddress,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'OpenSans',
+                            ),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.only(top: 14.0),
+                              prefixIcon: Icon(
+                                Icons.person,
                                 color: Colors.black,
-                                width: 3.0,
                               ),
-                              borderRadius: BorderRadius.circular(50),
-                              color: Colors.white
-                          ),
-                          child: Center(
-                            child: Text("Sign Up", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+                              hintText: 'First Name',
+                              hintStyle: StyleConstants.loginHintTextStyle,
+                            ),
+                            validator: (input) {
+                              if (input.trim().length < 1) {
+                                return "Please input a valid name";
+                              } else {
+                                return null;
+                              }
+                            },
                           ),
                         ),
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(height: 20.0),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          decoration: StyleConstants.loginBoxDecorationStyle,
+                          height: 60.0,
+                          child: TextFormField(
+                            controller: _lastNameInputController,
+                            keyboardType: TextInputType.emailAddress,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'OpenSans',
+                            ),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.only(top: 14.0),
+                              prefixIcon: Icon(
+                                Icons.person,
+                                color: Colors.black,
+                              ),
+                              hintText: 'Last Name',
+                              hintStyle: StyleConstants.loginHintTextStyle,
+                            ),
+                            validator: (input) {
+                              if (input.trim().length < 1) {
+                                return "Please input a valid name";
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          decoration: StyleConstants.loginBoxDecorationStyle,
+                          height: 60.0,
+                          child: TextFormField(
+                            controller: _emailInputController,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'OpenSans',
+                            ),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.only(top: 14.0),
+                              prefixIcon: Icon(
+                                Icons.email,
+                                color: Colors.black,
+                              ),
+                              hintText: 'Enter your Email',
+                              hintStyle: StyleConstants.loginHintTextStyle,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20.0),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          decoration: StyleConstants.loginBoxDecorationStyle,
+                          height: 60.0,
+                          child: TextFormField(
+                            controller: _passwordInputController,
+                            obscureText: true,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'OpenSans',
+                            ),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.only(top: 14.0),
+                              prefixIcon: Icon(
+                                Icons.lock,
+                                color: Colors.black,
+                              ),
+                              hintText: 'Enter your Password',
+                              hintStyle: StyleConstants.loginHintTextStyle,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ToggleSwitch(
+                        minWidth: 170.0,
+                        cornerRadius: 20,
+                        activeBgColor: Colors.green,
+                        activeTextColor: Colors.white,
+                        inactiveBgColor: Colors.grey,
+                        inactiveTextColor: Colors.white,
+                        labels: ['Student', 'Trainer'],
+                        activeColors: [Colors.blue, Colors.green],
+                        onToggle: (index) {
+                          if (index == 0) {
+                            _isTrainer = false;
+                          } else {
+                            _isTrainer = true;
+                          }
+                          print('Trainer is ' + _isTrainer.toString());
+                        }),
+                  ],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 20,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    FirebaseAuth.instance
+                        .createUserWithEmailAndPassword(
+                            email: _emailInputController.text,
+                            password: _passwordInputController.text)
+                        .then((currentUser) async {
+                      if (_isTrainer) {
+                        await Firestore.instance
+                            .collection('users')
+                            .document(currentUser.user.uid)
+                            .setData({'isTrainer': true});
+                        await Firestore.instance
+                            .collection('trainers')
+                            .document(currentUser.user.uid)
+                            .setData({
+                          'firstName': _firstNameInputController.text,
+                          'lastName': _lastNameInputController.text,
+                          'uid': currentUser.user.uid,
+                          'email': _emailInputController.text,
+                          'description': '',
+                          'cardNone': '',
+                          'trainingTypes': new List<String>(),
+                          'rating': 0.0,
+                          'videoPrice': 0.0,
+                          'livePrice': 0.0,
+                          'oneOnOnePrice': 0.0
+                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TrainerRegister()),
+                        );
+                      } else {
+                        await Firestore.instance
+                            .collection('users')
+                            .document(currentUser.user.uid)
+                            .setData({'isTrainer': false});
+                        await Firestore.instance
+                            .collection('students')
+                            .document(currentUser.user.uid)
+                            .setData({
+                          'firstName': _firstNameInputController.text,
+                          'lastName': _lastNameInputController.text,
+                          'uid': currentUser.user.uid,
+                          'email': _emailInputController.text,
+                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UserNavigation()),
+                        );
+                      }
+                    });
+                  },
+                  child: Container(
+                    height: 50,
+                    margin: EdgeInsets.symmetric(horizontal: 50),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 3.0,
+                        ),
+                        borderRadius: BorderRadius.circular(50),
+                        color: Colors.white),
+                    child: Center(
+                      child: Text(
+                        "Sign Up",
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
                       ),
-                      FlatButton(
-                        child: Text('Login'),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => (LoginWidget())),
-                          );
-                        },
-                      ),
-                    ],
+                    ),
                   ),
-                )
-
-        ),
+                ),
+                FlatButton(
+                  child: Text('Login'),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => (LoginWidget())),
+                    );
+                  },
+                ),
+              ],
+            ),
+          )),
     );
   }
 }

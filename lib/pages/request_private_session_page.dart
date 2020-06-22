@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/helpers/calendar_helper.dart';
@@ -11,6 +13,8 @@ import 'package:fitnessmarketplace/models/Trainer.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:square_in_app_payments/in_app_payments.dart';
 import 'package:square_in_app_payments/models.dart';
+import 'package:http/http.dart' as http;
+import 'package:uuid/uuid.dart';
 
 class RequestPrivateSessionPage extends StatefulWidget {
   RequestPrivateSessionPage({Key key, this.trainer}) : super(key: key);
@@ -263,13 +267,33 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
     );
   }
 
-  void _onCardEntryCancel() {}
-  void _onCardNonceRequestSuccess(CardDetails result) {
-    print('result.nonce');
+  void _onCardEntryCancel() {
 
-    InAppPayments.completeCardEntry(
-      onCardEntryComplete: _cardEntryComplete,
-    );
+  }
+  void _onCardNonceRequestSuccess(CardDetails result) async {
+    try {
+      double chargeAmt = widget.trainer.oneOnOnePrice * selectedPrivateSession.length / 60;
+      var body = jsonEncode({
+        'source_id': result.nonce,
+        'idempotency_key': Uuid().v4(),
+        'amount_money': {'amount': chargeAmt.round(), 'currency': 'USD'}
+      });
+      http.Response response =
+          await http.post('https://connect.squareupsandbox.com/v2/payments',
+          headers: {
+            'content-type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization':
+            'Bearer EAAAEA7IONxb8KpegRF2XdoRLsrwl_Y9LgwwXdA3IABBB8FG4--suTtuZ2C8PsrG'
+          },
+          body: body);
+      print(response.body);
+      InAppPayments.completeCardEntry(
+        onCardEntryComplete: _cardEntryComplete,
+      );
+    } on Exception catch (ex) {
+      InAppPayments.showCardNonceProcessingError(ex.toString());
+    }
   }
 
   void _cardEntryComplete() {
