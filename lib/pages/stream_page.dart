@@ -451,10 +451,6 @@ class _StreamPageState extends State<StreamPage> {
       duration: const Duration(milliseconds: 300),
 ***REMOVED***
 
-
-
-
-
   ***REMOVED***
 
   /// Info panel to show logs
