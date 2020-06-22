@@ -230,7 +230,7 @@ class _UserHomePageState extends State<UserHomePage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => StreamPage(
-                                channelName: allEvents[i].date.toString(),
+                                channelName: allEvents[i].trainerUid,
                                 role: isStream?ClientRole.Audience:ClientRole.Broadcaster,
                                 isTrainer: true,
                               )),
