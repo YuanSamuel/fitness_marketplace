@@ -216,6 +216,7 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
       ***REMOVED*** else if (keyList[i] == 'privateSession') {
         index = 1;
       ***REMOVED***
+      print(index);
       barChartGroupData.add(BarChartGroupData(
         x: index,
         barRods: [
@@ -225,6 +226,28 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
 ***REMOVED***
         ],
       ));
+    ***REMOVED***
+    for (int i = 0; i < types.length; i++) {
+      if (!keyList.contains(types[i])) {
+        print(types[i]);
+        int index = 0;
+        if (types[i] == 'privateSession') {
+          index = 1;
+        ***REMOVED***
+        else if (types[i] == 'ondemand') {
+          index = 2;
+        ***REMOVED***
+        print(index);
+        barChartGroupData.add(BarChartGroupData(
+          x: index,
+          barRods: [
+            BarChartRodData(
+              y: 0.0,
+              color: typeToColor[types[i]],
+***REMOVED***
+          ],
+        ));
+      ***REMOVED***
     ***REMOVED***
     barChartGroupData.sort((BarChartGroupData barChartGroupDataA,
         BarChartGroupData barChartGroupDataB) {
