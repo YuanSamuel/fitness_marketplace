@@ -39,7 +39,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
     _calendarController = new CalendarController();
     _calendarHelper = new CalendarHelper();
     _stringHelper = new StringHelper();
-    events = new List<PrivateSession>();
+    events = new List<dynamic>();
     setUp();
     super.initState();
   }
@@ -147,7 +147,6 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                                 builder: (context) => SessionPreview(
                                       stream: events[i],
                                       isStream: true,
-                                      trainer: widget.trainer,
                                     )),
                           );
                         } else {
