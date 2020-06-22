@@ -22,6 +22,7 @@ class _UserNavigationState extends State<UserNavigation> {
 
   int _currentIndex = 0;
   PageController _pageController = PageController(initialPage: 0);
+
   var _pageOptions;
 
   @override

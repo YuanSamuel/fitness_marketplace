@@ -720,7 +720,11 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "0.2.15"
+=======
+    version: "0.2.16"
+>>>>>>> 0da1c1b66911ad10ce9f49bea16af94f42070130
   timeago:
     dependency: "direct main"
     description:
@@ -806,5 +810,9 @@ packages:
     source: hosted
     version: "2.2.1"
 sdks:
+<<<<<<< HEAD
   dart: ">=2.7.0 <3.0.0"
+=======
+  dart: ">=2.9.0-14.0.dev <3.0.0"
+>>>>>>> 0da1c1b66911ad10ce9f49bea16af94f42070130
   flutter: ">=1.16.0 <2.0.0"
