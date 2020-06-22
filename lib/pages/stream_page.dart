@@ -507,7 +507,14 @@ class _StreamPageState extends State<StreamPage> {
     );
   }
 
-  void _onCallEnd(BuildContext context) {
+  Future _onCallEnd(BuildContext context) async{
+    await Firestore.instance.collection("streamactions")
+        .document(widget.channelName)
+        .collection("actions").getDocuments().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.documents){
+        ds.reference.delete();
+      }
+    });
     Navigator.pop(context);
   }
 
