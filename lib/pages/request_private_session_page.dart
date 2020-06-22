@@ -5,7 +5,6 @@ import 'package:fitnessmarketplace/helpers/string_helper.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
 import 'package:fitnessmarketplace/models/Stream.dart' as models;
 import 'package:fitnessmarketplace/models/Student.dart';
-import 'package:fitnessmarketplace/pages/payment_page.dart';
 import 'package:fitnessmarketplace/pages/session_preview_page.dart';
 ***REMOVED***
 ***REMOVED***

@@ -1,4 +1,3 @@
-import 'package:fitnessmarketplace/pages/price.dart';
 import 'package:fitnessmarketplace/pages/profile_picture.dart';
 ***REMOVED***
 import 'package:select_dialog/select_dialog.dart';
@@ -7,14 +6,14 @@ import 'package:select_dialog/select_dialog.dart';
 ***REMOVED***
 
 class TrainerRegister extends StatefulWidget {
-
 ***REMOVED***
   _TrainerRegisterState createState() => _TrainerRegisterState();
 ***REMOVED***
 
 class _TrainerRegisterState extends State<TrainerRegister> {
-
   Trainer currentTrainer;
+
+  double _privateSessionPrice;
 
   TypeOfExercise(String type) {
     return Container(
@@ -22,17 +21,14 @@ class _TrainerRegisterState extends State<TrainerRegister> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(15)),
           color: Colors.black12,
-          border: Border.all(color: Colors.grey)
-***REMOVED***
+          border: Border.all(color: Colors.grey)),
       child: FlatButton(
 ***REMOVED***
           padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-          child: Text(type,
+          child: Text(
+            type,
             style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: Colors.black
-***REMOVED***
+                fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black),
 ***REMOVED***
 ***REMOVED***
         onPressed: () {
@@ -56,8 +52,10 @@ class _TrainerRegisterState extends State<TrainerRegister> {
 
   void getCurrentTrainer() async {
     FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
-    DocumentSnapshot trainerData = await Firestore.instance.collection(
-        'trainers').document(getUser.uid).get();
+    DocumentSnapshot trainerData = await Firestore.instance
+        .collection('trainers')
+        .document(getUser.uid)
+        .get();
     currentTrainer = Trainer.fromSnapshot(trainerData);
     setState(() {***REMOVED***);
   ***REMOVED***
@@ -76,8 +74,7 @@ class _TrainerRegisterState extends State<TrainerRegister> {
 ***REMOVED***
 ***REMOVED***
   ***REMOVED***
-    ***REMOVED***
-***REMOVED***
+    ***REMOVED*** else {
       _type = currentTrainer.trainingTypes;
   ***REMOVED***
         appBar: AppBar(
@@ -102,8 +99,7 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                               decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(top: -20),
                                   hintText: 'Tell us about yourself',
-                                  border: InputBorder.none
-                ***REMOVED***,
+                                  border: InputBorder.none),
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
               ***REMOVED***,
@@ -119,10 +115,7 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                         borderRadius: BorderRadius.all(Radius.circular(10)),
         ***REMOVED***,
       ***REMOVED***,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width - 20,
+                    width: MediaQuery.of(context).size.width - 20,
                     height: 400,
     ***REMOVED***,
     ***REMOVED***
@@ -134,7 +127,7 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: ListView(
             ***REMOVED***
-                          for(int i = 0; i < _type.length; i++)
+                          for (int i = 0; i < _type.length; i++)
                             Padding(
                               padding: EdgeInsets.only(right: 10),
                               child: TypeOfExercise(_type[i]),
@@ -152,8 +145,7 @@ class _TrainerRegisterState extends State<TrainerRegister> {
 ***REMOVED***
                       showDialog(
                           context: context,
-                          builder: (_) =>
-                              Scaffold(
+                          builder: (_) => Scaffold(
                                 body: SelectDialog(
                                   itemsList: [
                                     'Running',
@@ -175,10 +167,25 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                                     ***REMOVED***);
                                   ***REMOVED***,
                   ***REMOVED***,
-                ***REMOVED***
-                  ***REMOVED***
+                ***REMOVED***);
                     ***REMOVED***,
 ***REMOVED***'Select Type of Exercise'),
+    ***REMOVED***,
+                  Text(
+                    'Private Session Price (per hour): ${double.parse(_privateSessionPrice.toStringAsFixed(2))***REMOVED***',
+    ***REMOVED***,
+                  Container(
+                    width: 300,
+                    child: Slider(
+                      value: _privateSessionPrice,
+                      onChanged: (_input) {
+                  ***REMOVED***
+                          _privateSessionPrice = _input;
+                        ***REMOVED***);
+                      ***REMOVED***,
+                      min: 0,
+                      max: 150,
+      ***REMOVED***,
     ***REMOVED***,
                   FlatButton(
                     color: Colors.blue,
@@ -188,24 +195,25 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                       String _uid = _user.uid;
                       if (_type != null && _desc != null) {
                         if (_desc.text == '' || _desc.text == null) {
-                          _desc = TextEditingController(text: currentTrainer
-                              .description);
+                          _desc = TextEditingController(
+                              text: currentTrainer.description);
                         ***REMOVED***
-                        Firestore.instance.collection('trainers')
+                        Firestore.instance
+                            .collection('trainers')
                             .document(_uid)
-                            .setData({
+                            .updateData({
                           'trainingTypes': _type,
                           'rating': 0,
                           'description': _desc.text,
-                        ***REMOVED***, merge: true);
+                          'oneOnOnePrice': _privateSessionPrice,
+                        ***REMOVED***);
                         if (currentTrainer.description != '') {
                           Navigator.pop(context);
-                        ***REMOVED***
-                    ***REMOVED***
+                        ***REMOVED*** else {
     ***REMOVED***
   ***REMOVED***
-  ***REMOVED***builder: (context) =>
-                                PricePage()),
+  ***REMOVED***
+                                builder: (context) => ProfilePic()),
                       ***REMOVED***
                         ***REMOVED***
                       ***REMOVED***
