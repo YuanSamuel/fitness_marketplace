@@ -79,9 +79,9 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
   getAllStreams() async {
     QuerySnapshot getStreams =
         await Firestore.instance.collection('streams').getDocuments();
-    List<DocumentSnapshot> trainerSnapshots = getStreams.documents;
-    for (int i = 0; i < trainerSnapshots.length; i++) {
-        allStreams.add(models.Stream.fromSnapshot(trainerSnapshots[i]));
+    List<DocumentSnapshot> streamSnapshots = getStreams.documents;
+    for (int i = 0; i < streamSnapshots.length; i++) {
+        allStreams.add(models.Stream.fromSnapshot(streamSnapshots[i]));
     }
   }
 

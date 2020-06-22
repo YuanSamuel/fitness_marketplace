@@ -58,9 +58,8 @@ class _AddNewRecordingState extends State<AddNewRecording> {
     super.initState();
   }
 
-  static saveStream(
-      String title, String description, double minutes, int date, double price) async {
-
+  static saveStream(String title, String description, double minutes, int date,
+      double price) async {
     final FirebaseUser user = await FirebaseAuth.instance.currentUser();
     final uid = user.uid;
 
@@ -69,8 +68,8 @@ class _AddNewRecordingState extends State<AddNewRecording> {
       'description': description,
       'date': date,
       'title': title,
-      'price':price,
-      'trainer':uid,
+      'price': price,
+      'trainer': uid,
     });
 
     await Firestore.instance
@@ -83,7 +82,8 @@ class _AddNewRecordingState extends State<AddNewRecording> {
       'description': description,
       'date': date,
       'title': title,
-      'price':price
+      'price': price,
+      'trainer': uid,
     });
   }
 
@@ -96,10 +96,9 @@ class _AddNewRecordingState extends State<AddNewRecording> {
       await saveStream(
           namecontroller.text.toString(),
           descriptcontroller.text.toString(),
-          time*105+5,
+          time * 105 + 5,
           date,
-          price*95+5
-          );
+          price * 95 + 5);
     } else {
       await _takeVideo();
     }
@@ -113,312 +112,390 @@ class _AddNewRecordingState extends State<AddNewRecording> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
-      body: SingleChildScrollView(
-        child: _processing
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : Column(
-          children: [
-            Container(
-                //height: MediaQuery.of(context).size.height,
-                height: 1100,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [Colors.black, Colors.black87])),
-                child: Column(
+        body: SingleChildScrollView(
+            child: _processing
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Column(
                     children: [
-                      SizedBox(height: 40),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(width: 10),
-                          IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.arrow_back,
-                                color: Colors.white,
-                                size: 30,
-                              )),
-                          SizedBox(width: 20),
-                          Text(
-                            "Add a new session",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 32),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20.0,),
                       Container(
-                          height:
-                          MediaQuery.of(context).copyWith().size.height /
-                              6,
-                          width: 325.0,
+                          //height: MediaQuery.of(context).size.height,
+                          height: 1100,
                           decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(30.0)
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(30.0),
-                            child: CupertinoDatePicker(
-                              backgroundColor: Colors.white,
-                              initialDateTime: DateTime.now(),
-                              onDateTimeChanged: updateDate,
-                              use24hFormat: false,
-                              maximumDate: new DateTime(2050, 12, 30),
-                              minimumYear: 2010,
-                              maximumYear: 2030,
-                              minuteInterval: 1,
-                              mode: CupertinoDatePickerMode.dateAndTime,
-                            ),
-                          )
-                      ),
-                      SizedBox(height: 20.0,),
-                      Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(topLeft: Radius.circular(50.0), topRight: Radius.circular(50.0)),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [Colors.black, Colors.black87])),
+                          child: Column(children: [
+                            SizedBox(height: 40),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                SizedBox(height: 30.0,),
-                                Row(
-                                  children: [
-                                    Text('Session Type', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),),
-                                    Spacer(),
-                                  ],
+                                SizedBox(width: 10),
+                                IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.arrow_back,
+                                      color: Colors.white,
+                                      size: 30,
+                                    )),
+                                SizedBox(width: 20),
+                                Text(
+                                  "Add a new session",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 32),
                                 ),
-                                SizedBox(height: 15.0,),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        spreadRadius: 2,
-                                        blurRadius: 2,
-                                        offset: Offset(0, 2), // changes position of shadow
-                                      ),
-                                    ],
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ),
-                                  width: 400.0,
-                                  child: Center(
-                                    child: DropdownButton<String>(
-                                      dropdownColor: Colors.white,
-                                      value: dropdownValue,
-                                      icon: Icon(
-                                        Icons.arrow_drop_down,
-                                        color: Colors.black,
-                                      ),
-                                      iconSize: 24,
-                                      elevation: 16,
-                                      style: TextStyle(color: Colors.black),
-                                      underline: Container(
-                                        height: 1,
-                                        color: Colors.black,
-                                      ),
-                                      onChanged: (String newValue) {
-                                        setState(() {
-                                          dropdownValue = newValue;
-                                        });
-                                      },
-                                      items: <String>[
-                                        'LiveStream',
-                                        'Video Recording'
-                                      ].map<DropdownMenuItem<String>>((String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value, style: TextStyle(fontWeight: FontWeight.w400),),
-                                        );
-                                      }).toList(),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 20.0,),
-                                Row(
-                                  children: [
-                                    Text('Session Title', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),),
-                                    Spacer(),
-                                  ],
-                                ),
-                                SizedBox(height: 15.0,),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        spreadRadius: 2,
-                                        blurRadius: 2,
-                                        offset: Offset(0, 2), // changes position of shadow
-                                      ),
-                                    ],
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ),
-                                  width: 400.0,
-                                  child: Center(
-                                    child: TextFormField(
-                                      controller: namecontroller,
-                                      keyboardType: TextInputType.text,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontFamily: 'OpenSans',
-                                      ),
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        contentPadding: EdgeInsets.only(top: 14.0),
-                                        hintText: 'Enter the session title',
-                                        hintStyle: StyleConstants.loginHintTextStyle,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 20.0,),
-                                Row(
-                                  children: [
-                                    Text('Description', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),),
-                                    Spacer(),
-                                  ],
-                                ),
-                                SizedBox(height: 15.0,),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        spreadRadius: 2,
-                                        blurRadius: 2,
-                                        offset: Offset(0, 2), // changes position of shadow
-                                      ),
-                                    ],
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ),
-                                  width: 400.0,
-                                  height: 200.0,
-                                  child: Center(
-                                    child: TextFormField(
-                                      controller: descriptcontroller,
-                                      keyboardType: TextInputType.text,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontFamily: 'OpenSans',
-                                      ),
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        contentPadding: EdgeInsets.only(top: 14.0),
-                                        hintText: 'Enter the session description',
-                                        hintStyle: StyleConstants.loginHintTextStyle,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-
-                                SizedBox(height: 20.0,),
-                                Row(
-                                  children: [
-                                    Text('Duration - '+((time*115+5)).toString(), style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),),
-                                    Spacer(),
-                                  ],
-                                ),
-                                SizedBox(height: 15.0,),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        spreadRadius: 2,
-                                        blurRadius: 2,
-                                        offset: Offset(0, 2), // changes position of shadow
-                                      ),
-                                    ],
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ),
-                                  width: 400.0,
-                                  child: Center(
-                                    child: Slider(
-                                        value: time,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            time = value;
-                                          });
-                                        }),
-                                  ),
-                                ),
-
-                                SizedBox(height: 20.0,),
-                                Row(
-                                  children: [
-                                    Text('Price - '+ (price*95+5).toString(), style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),),
-                                    Spacer(),
-                                  ],
-                                ),
-                                SizedBox(height: 15.0,),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        spreadRadius: 2,
-                                        blurRadius: 2,
-                                        offset: Offset(0, 2), // changes position of shadow
-                                      ),
-                                    ],
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ),
-                                  width: 400.0,
-                                  child: Center(
-                                      child: Slider(
-                                          value: price,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              price = value;
-                                            });
-                                          }),
-                                  ),
-                                ),
-                                SizedBox(height: 50.0,),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                      color: Colors.black
-                                  ),
-                                  child: IconButton(
-                                    color: Colors.black,
-                                    icon: Icon(Icons.check, color: Colors.white,),
-                                    onPressed: (){
-                                      addSession(context);
-                                    },
-
-                                  ),
-                                )
                               ],
                             ),
-                          ),
-                        ),
-                      )
-                    ]
-                )
-            ),
-          ],
-        )
-      )
-    );
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            Container(
+                                height: MediaQuery.of(context)
+                                        .copyWith()
+                                        .size
+                                        .height /
+                                    6,
+                                width: 325.0,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius: BorderRadius.circular(30.0)),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                  child: CupertinoDatePicker(
+                                    backgroundColor: Colors.white,
+                                    initialDateTime: DateTime.now(),
+                                    onDateTimeChanged: updateDate,
+                                    use24hFormat: false,
+                                    maximumDate: new DateTime(2050, 12, 30),
+                                    minimumYear: 2010,
+                                    maximumYear: 2030,
+                                    minuteInterval: 1,
+                                    mode: CupertinoDatePickerMode.dateAndTime,
+                                  ),
+                                )),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            Expanded(
+                              child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(50.0),
+                                      topRight: Radius.circular(50.0)),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 40.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: 30.0,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Session Type',
+                                            style: TextStyle(
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          Spacer(),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 15.0,
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.3),
+                                              spreadRadius: 2,
+                                              blurRadius: 2,
+                                              offset: Offset(0,
+                                                  2), // changes position of shadow
+                                            ),
+                                          ],
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        width: 400.0,
+                                        child: Center(
+                                          child: DropdownButton<String>(
+                                            dropdownColor: Colors.white,
+                                            value: dropdownValue,
+                                            icon: Icon(
+                                              Icons.arrow_drop_down,
+                                              color: Colors.black,
+                                            ),
+                                            iconSize: 24,
+                                            elevation: 16,
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                            underline: Container(
+                                              height: 1,
+                                              color: Colors.black,
+                                            ),
+                                            onChanged: (String newValue) {
+                                              setState(() {
+                                                dropdownValue = newValue;
+                                              });
+                                            },
+                                            items: <String>[
+                                              'LiveStream',
+                                              'Video Recording'
+                                            ].map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Text(
+                                                  value,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20.0,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Session Title',
+                                            style: TextStyle(
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          Spacer(),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 15.0,
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.3),
+                                              spreadRadius: 2,
+                                              blurRadius: 2,
+                                              offset: Offset(0,
+                                                  2), // changes position of shadow
+                                            ),
+                                          ],
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        width: 400.0,
+                                        child: Center(
+                                          child: TextFormField(
+                                            controller: namecontroller,
+                                            keyboardType: TextInputType.text,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: 'OpenSans',
+                                            ),
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              contentPadding:
+                                                  EdgeInsets.only(top: 14.0),
+                                              hintText:
+                                                  'Enter the session title',
+                                              hintStyle: StyleConstants
+                                                  .loginHintTextStyle,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20.0,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Description',
+                                            style: TextStyle(
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          Spacer(),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 15.0,
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.3),
+                                              spreadRadius: 2,
+                                              blurRadius: 2,
+                                              offset: Offset(0,
+                                                  2), // changes position of shadow
+                                            ),
+                                          ],
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        width: 400.0,
+                                        height: 200.0,
+                                        child: Center(
+                                          child: TextFormField(
+                                            controller: descriptcontroller,
+                                            keyboardType: TextInputType.text,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: 'OpenSans',
+                                            ),
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              contentPadding:
+                                                  EdgeInsets.only(top: 14.0),
+                                              hintText:
+                                                  'Enter the session description',
+                                              hintStyle: StyleConstants
+                                                  .loginHintTextStyle,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20.0,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Duration - ' +
+                                                ((time * 115 + 5)).toString(),
+                                            style: TextStyle(
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          Spacer(),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 15.0,
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.3),
+                                              spreadRadius: 2,
+                                              blurRadius: 2,
+                                              offset: Offset(0,
+                                                  2), // changes position of shadow
+                                            ),
+                                          ],
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        width: 400.0,
+                                        child: Center(
+                                          child: Slider(
+                                              value: time,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  time = value;
+                                                });
+                                              }),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20.0,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Price - ' +
+                                                (price * 95 + 5).toString(),
+                                            style: TextStyle(
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          Spacer(),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 15.0,
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.3),
+                                              spreadRadius: 2,
+                                              blurRadius: 2,
+                                              offset: Offset(0,
+                                                  2), // changes position of shadow
+                                            ),
+                                          ],
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        width: 400.0,
+                                        child: Center(
+                                          child: Slider(
+                                              value: price,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  price = value;
+                                                });
+                                              }),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 50.0,
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(30.0),
+                                            color: Colors.black),
+                                        child: IconButton(
+                                          color: Colors.black,
+                                          icon: Icon(
+                                            Icons.check,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () {
+                                            addSession(context);
+                                          },
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                          ])),
+                    ],
+                  )));
   }
 
   void updateDate(DateTime dt) {
@@ -571,9 +648,9 @@ class _AddNewRecordingState extends State<AddNewRecording> {
         videoInfo,
         namecontroller.text.toString(),
         descriptcontroller.text.toString(),
-        time*105+5,
+        time * 105 + 5,
         date,
-        price*95+5);
+        price * 95 + 5);
 
     setState(() {
       _processPhase = '';
