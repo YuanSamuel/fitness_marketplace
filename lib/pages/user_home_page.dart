@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:fitnessmarketplace/models/Student.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class UserHomePage extends StatefulWidget {
   @override
@@ -76,8 +77,12 @@ class _UserHomePageState extends State<UserHomePage> {
     _stringHelper = new StringHelper();
     allEvents = new List<dynamic>();
     getCurrentStudent();
+    _handleCameraAndMic();
+
     super.initState();
   }
+
+
 
   @override
   void dispose() {
@@ -501,5 +506,10 @@ class _UserHomePageState extends State<UserHomePage> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleCameraAndMic() async {
+    await Permission.camera.request();
+    await Permission.microphone.request();
   }
 }
