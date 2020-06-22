@@ -211,7 +211,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                           MaterialPageRoute(
                               builder: (context) => StreamPage(
                                     channelName:
-                                        currentTrainer.reference.documentID,
+                                        allEvents[i].date.toString(),
                                     role: ClientRole.Broadcaster,
                                     isTrainer: true,
                                   )),
