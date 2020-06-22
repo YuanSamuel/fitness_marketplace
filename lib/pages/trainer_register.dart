@@ -46,6 +46,7 @@ class _TrainerRegisterState extends State<TrainerRegister> {
 
   @override
   void initState() {
+    _privateSessionPrice = 0;
     getCurrentTrainer();
     super.initState();
   }
