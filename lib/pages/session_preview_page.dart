@@ -31,6 +31,7 @@
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
+***REMOVED***
 
 ***REMOVED***
 ***REMOVED***
@@ -60,33 +61,10 @@
   ***REMOVED***
 
 ***REMOVED***
-
-***REMOVED***
-    final uid = user.uid;
-
-    print(uid);
-
-    await Firestore.instance.collection('students').document(uid).collection('transactions').add({
 ***REMOVED***
 ***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-    ***REMOVED***);
-
-
-    await Firestore.instance.collection('trainers').document(widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID).collection("transactions").add({
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-    ***REMOVED***);
 
     await _handleCameraAndMic();
-
 ***REMOVED***
   ***REMOVED***
 
@@ -112,6 +90,26 @@
 
   ***REMOVED***
 ***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+    ***REMOVED***);
+
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+    ***REMOVED***);
+
+
+
     Navigator.pop(context);
   ***REMOVED***
 

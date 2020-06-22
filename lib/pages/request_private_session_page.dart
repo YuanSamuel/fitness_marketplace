@@ -9,6 +9,8 @@ import 'package:fitnessmarketplace/pages/session_preview_page.dart';
 ***REMOVED***
 ***REMOVED***
 import 'package:table_calendar/table_calendar.dart';
+***REMOVED***
+***REMOVED***
 
 class RequestPrivateSessionPage extends StatefulWidget {
   RequestPrivateSessionPage({Key key, this.trainer***REMOVED***) : super(key: key);
@@ -27,6 +29,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
   List<models.Stream> streamTimes;
   DateTime selectedDate;
   List<dynamic> events;
+  PrivateSession selectedPrivateSession;
 
   CalendarHelper _calendarHelper;
   StringHelper _stringHelper;
@@ -89,12 +92,8 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
     ***REMOVED***
   ***REMOVED***
 
-  Future doStuff(param) async {
-    await param.reference.updateData({
-      'available': false,
-      'studentName': currentStudent.firstName + ' ' + currentStudent.lastName
-    ***REMOVED***);
-    await addToUserPrivateSessions(param);
+  Future doStuff() async {
+***REMOVED***
   ***REMOVED***
 
 ***REMOVED***
@@ -156,7 +155,8 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                       ***REMOVED***),
                       ***REMOVED***
                         ***REMOVED*** else {
-                          doStuff(events[i]);
+                          selectedPrivateSession = events[i];
+                          doStuff();
                         ***REMOVED***
                         //Navigator.pop(context);
                       ***REMOVED***,
@@ -259,42 +259,62 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
     ***REMOVED***
   ***REMOVED***
 
-  addToUserPrivateSessions(PrivateSession session) async {
-    session.available = false;
-    session.studentName =
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+  ***REMOVED***
+  void _onCardNonceRequestSuccess(CardDetails result){
+***REMOVED***
+
+***REMOVED***
+***REMOVED***
+***REMOVED***
+
+  ***REMOVED***
+***REMOVED***
+
+    selectedPrivateSession.reference.updateData({
+      'available': false,
+      'studentName': currentStudent.firstName + ' ' + currentStudent.lastName
+    ***REMOVED***);
+
+    selectedPrivateSession.available = false;
+    selectedPrivateSession.studentName =
         currentStudent.firstName + ' ' + currentStudent.lastName;
     currentStudent.reference
         .collection('privateSessions')
-        .add(session.toJson());
-    makeTransaction(session);
-  ***REMOVED***
+        .add(selectedPrivateSession.toJson());
 
-  Future makeTransaction(PrivateSession session) async {
-***REMOVED***
-    final uid = user.uid;
-
-    print(uid);
-
-    await Firestore.instance
-        .collection('students')
-        .document(uid)
+    currentStudent.reference
         .collection('transactions')
         .add({
-      'type': "private",
-      'sessionID': session.reference.documentID,
+      'type': "privateSession",
+      'sessionID': selectedPrivateSession.reference.documentID,
       'price': widget.trainer.oneOnOnePrice,
-      'trainer': widget.trainer.reference.documentID
+      'trainer': widget.trainer.reference.documentID,
+      'sessionDate': selectedPrivateSession.date,
+***REMOVED***
     ***REMOVED***);
 
-    await Firestore.instance
-        .collection('trainers')
-        .document(widget.trainer.reference.documentID)
+    widget.trainer.reference
         .collection("transactions")
         .add({
-      'type': "private",
-      'sessionID': session.reference.documentID,
+      'type': "privateSession",
+      'sessionID': selectedPrivateSession.reference.documentID,
       'price': widget.trainer.oneOnOnePrice,
-      'trainer': widget.trainer.reference.documentID
+      'trainer': widget.trainer.reference.documentID,
+      'sessionDate': selectedPrivateSession.date,
+***REMOVED***
     ***REMOVED***);
+
+    Navigator.pop(context);
   ***REMOVED***
+
+
 ***REMOVED***
