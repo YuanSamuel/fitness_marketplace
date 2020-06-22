@@ -39,9 +39,9 @@ class _EntryPageState extends State<EntryPage> {
         child: Column(
           children: <Widget>[
             SizedBox(height: 75.0,),
-            Text('FITNESSSSSS', style: TextStyle(color: Colors.white, fontSize: 40.0, fontWeight: FontWeight.bold),),
+            Text('PRO-FIT', style: TextStyle(color: Colors.white, fontSize: 40.0, fontWeight: FontWeight.bold),),
             SizedBox(height: 20.0,),
-            Text('FIT | NESS | FIT', style: TextStyle(color: Colors.white, fontSize: 15.0, fontWeight: FontWeight.w400),),
+            Text('Where Fitness Can Thrive', style: TextStyle(color: Colors.white, fontSize: 15.0, fontWeight: FontWeight.w400),),
             SizedBox(height: 75.0,),
             Expanded(
               child: Container(
