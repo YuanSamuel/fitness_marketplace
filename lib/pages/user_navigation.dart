@@ -13,7 +13,6 @@ class UserNavigation extends StatefulWidget {
 }
 
 class _UserNavigationState extends State<UserNavigation> {
-
   String name;
   int numClasses;
   int numPrivateSessions;
@@ -35,23 +34,32 @@ class _UserNavigationState extends State<UserNavigation> {
 
   getData() async {
     FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
-    DocumentSnapshot userData = await Firestore.instance.collection('students').document(currentUser.uid).get();
-    Student currentStudent =  Student.fromSnapshot(userData);
+    DocumentSnapshot userData = await Firestore.instance
+        .collection('students')
+        .document(currentUser.uid)
+        .get();
+    Student currentStudent = Student.fromSnapshot(userData);
     name = currentStudent.firstName + ' ' + currentStudent.lastName;
 
-    QuerySnapshot getClasses = await currentStudent.reference.collection('streams').getDocuments();
+    print(name);
+
+    QuerySnapshot getClasses =
+        await currentStudent.reference.collection('streams').getDocuments();
     numClasses = getClasses.documents.length;
 
-    QuerySnapshot getPrivateSessions = await currentStudent.reference.collection('privateSessions').getDocuments();
+    QuerySnapshot getPrivateSessions = await currentStudent.reference
+        .collection('privateSessions')
+        .getDocuments();
     numPrivateSessions = getPrivateSessions.documents.length;
 
-    QuerySnapshot getVideos = await currentStudent.reference.collection('videos').getDocuments();
+    QuerySnapshot getVideos =
+        await currentStudent.reference.collection('videos').getDocuments();
     numVideos = getVideos.documents.length;
 
     _pageOptions = [
-    UserHomePage(),
-    MarketplaceScreen(),
-    UserProfilePage(numClasses, numPrivateSessions, numVideos, name),
+      UserHomePage(),
+      MarketplaceScreen(),
+      UserProfilePage(numClasses, numPrivateSessions, numVideos, name),
     ];
 
     setState(() {
@@ -73,8 +81,7 @@ class _UserNavigationState extends State<UserNavigation> {
           child: CircularProgressIndicator(),
         ),
       );
-    }
-    else {
+    } else {
       return Scaffold(
           body: SizedBox.expand(
             child: PageView(
