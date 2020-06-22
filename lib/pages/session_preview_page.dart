@@ -63,8 +63,9 @@
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
+***REMOVED***
 
-    await _handleCameraAndMic();
+***REMOVED***
 ***REMOVED***
   ***REMOVED***
 
@@ -74,10 +75,11 @@
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
+***REMOVED***
   ***REMOVED***
 
 ***REMOVED***
-
+***REMOVED***
   ***REMOVED***
 
 
