@@ -93,9 +93,7 @@ class _SessionPreviewState extends State<SessionPreview> {
   }
   void _cardEntryComplete(){
     print('complete');
-    print(widget.stream.trainer);
-    print(widget.stream.price);
-
+    print('wowow');
 
     print(widget.isStream);
     if (widget.isStream) {
@@ -104,7 +102,6 @@ class _SessionPreviewState extends State<SessionPreview> {
     else {
       Firestore.instance.collection('students').document(uid).collection('videos').add(widget.video.data);
     }
-    Firestore.instance.collection('students').document(uid).collection(widget.isStream?'streams':'videos').document().setData(widget.video.data);
 
     Firestore.instance.collection('students').document(uid).collection('transactions').add({
       'type':widget.isStream?"stream":"ondemand",
