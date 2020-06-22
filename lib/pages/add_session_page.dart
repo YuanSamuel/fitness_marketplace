@@ -61,10 +61,8 @@ class _AddSessionPageState extends State<AddSessionPage> {
             ),
           ),
           RaisedButton(
-
             child: Text('Submit'),
             onPressed: () async {
-              _lengthController.clear();
               PrivateSession addSession = PrivateSession(
                 name: 'Do we need a name?',
                 length: int.parse(_lengthController.text),
@@ -75,6 +73,7 @@ class _AddSessionPageState extends State<AddSessionPage> {
                 trainerName: widget.currentTrainer.firstName + ' ' + widget.currentTrainer.lastName,
               );
               await widget.currentTrainer.reference.collection('privateSessions').add(addSession.toJson());
+              _lengthController.clear();
               Navigator.pop(context);
             },
           )

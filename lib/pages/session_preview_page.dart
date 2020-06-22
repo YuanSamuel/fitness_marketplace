@@ -31,6 +31,7 @@ class _SessionPreviewState extends State<SessionPreview> {
   int rating = 0;
   int comments = 0;
   Trainer t;
+  String uid;
 
   @override
   void initState() {
@@ -60,33 +61,10 @@ class _SessionPreviewState extends State<SessionPreview> {
   }
 
   Future makeTransaction(BuildContext context) async {
-
     final FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    final uid = user.uid;
-
-    print(uid);
-
-    await Firestore.instance.collection('students').document(uid).collection('transactions').add({
-      'type':widget.isStream?"stream":"ondemand",
-      'sessionID':widget.isStream?widget.stream.reference.documentID:widget.video.documentID,
-      'price':widget.isStream?widget.stream.price:widget.video.data["price"],
-      'trainer': widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID,
-      'purchaseDate': DateTime.now().millisecondsSinceEpoch,
-      'sessionDate': widget.isStream?widget.stream.date : DateTime.now().millisecondsSinceEpoch,
-    });
-
-
-    await Firestore.instance.collection('trainers').document(widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID).collection("transactions").add({
-      'type':widget.isStream?"stream":"ondemand",
-      'sessionID':widget.isStream?widget.stream.reference.documentID:widget.video.documentID,
-      'price':widget.isStream?widget.stream.price:widget.video.data["price"],
-      'trainer': widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID,
-      'purchaseDate': DateTime.now().millisecondsSinceEpoch,
-      'sessionDate': widget.isStream?widget.stream.date : DateTime.now().millisecondsSinceEpoch,
-    });
+    uid = user.uid;
 
     await _handleCameraAndMic();
-
     _pay();
   }
 
@@ -112,6 +90,26 @@ class _SessionPreviewState extends State<SessionPreview> {
 
   }
   void _cardEntryComplete(){
+    Firestore.instance.collection('students').document(uid).collection('transactions').add({
+      'type':widget.isStream?"stream":"ondemand",
+      'sessionID':widget.isStream?widget.stream.reference.documentID:widget.video.documentID,
+      'price':widget.isStream?widget.stream.price:widget.video.data["price"],
+      'trainer': widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID,
+      'purchaseDate': DateTime.now().millisecondsSinceEpoch,
+      'sessionDate': widget.isStream?widget.stream.date : DateTime.now().millisecondsSinceEpoch,
+    });
+
+    Firestore.instance.collection('trainers').document(widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID).collection("transactions").add({
+      'type':widget.isStream?"stream":"ondemand",
+      'sessionID':widget.isStream?widget.stream.reference.documentID:widget.video.documentID,
+      'price':widget.isStream?widget.stream.price:widget.video.data["price"],
+      'trainer': widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID,
+      'purchaseDate': DateTime.now().millisecondsSinceEpoch,
+      'sessionDate': widget.isStream?widget.stream.date : DateTime.now().millisecondsSinceEpoch,
+    });
+
+
+
     Navigator.pop(context);
   }
 

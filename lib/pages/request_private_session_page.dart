@@ -9,6 +9,8 @@ import 'package:fitnessmarketplace/pages/session_preview_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:square_in_app_payments/in_app_payments.dart';
+import 'package:square_in_app_payments/models.dart';
 
 class RequestPrivateSessionPage extends StatefulWidget {
   RequestPrivateSessionPage({Key key, this.trainer}) : super(key: key);
@@ -27,6 +29,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
   List<models.Stream> streamTimes;
   DateTime selectedDate;
   List<dynamic> events;
+  PrivateSession selectedPrivateSession;
 
   CalendarHelper _calendarHelper;
   StringHelper _stringHelper;
@@ -89,12 +92,8 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
     }
   }
 
-  Future doStuff(param) async {
-    await param.reference.updateData({
-      'available': false,
-      'studentName': currentStudent.firstName + ' ' + currentStudent.lastName
-    });
-    await addToUserPrivateSessions(param);
+  Future doStuff() async {
+    _pay();
   }
 
   @override
@@ -156,7 +155,8 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                                     )),
                           );
                         } else {
-                          doStuff(events[i]);
+                          selectedPrivateSession = events[i];
+                          doStuff();
                         }
                         //Navigator.pop(context);
                       },
@@ -259,42 +259,62 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
     }
   }
 
-  addToUserPrivateSessions(PrivateSession session) async {
-    session.available = false;
-    session.studentName =
+  void _pay(){
+    InAppPayments.setSquareApplicationId('***REMOVED***');
+    InAppPayments.startCardEntryFlow(
+      onCardNonceRequestSuccess: _onCardNonceRequestSuccess,
+      onCardEntryCancel: _onCardEntryCancel,
+    );
+  }
+  void _onCardEntryCancel(){
+
+  }
+  void _onCardNonceRequestSuccess(CardDetails result){
+    print('result.nonce');
+
+    InAppPayments.completeCardEntry(
+      onCardEntryComplete: _cardEntryComplete,
+    );
+
+  }
+  void _cardEntryComplete(){
+
+    selectedPrivateSession.reference.updateData({
+      'available': false,
+      'studentName': currentStudent.firstName + ' ' + currentStudent.lastName
+    });
+
+    selectedPrivateSession.available = false;
+    selectedPrivateSession.studentName =
         currentStudent.firstName + ' ' + currentStudent.lastName;
     currentStudent.reference
         .collection('privateSessions')
-        .add(session.toJson());
-    makeTransaction(session);
-  }
+        .add(selectedPrivateSession.toJson());
 
-  Future makeTransaction(PrivateSession session) async {
-    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    final uid = user.uid;
-
-    print(uid);
-
-    await Firestore.instance
-        .collection('students')
-        .document(uid)
+    currentStudent.reference
         .collection('transactions')
         .add({
-      'type': "private",
-      'sessionID': session.reference.documentID,
+      'type': "privateSession",
+      'sessionID': selectedPrivateSession.reference.documentID,
       'price': widget.trainer.oneOnOnePrice,
-      'trainer': widget.trainer.reference.documentID
+      'trainer': widget.trainer.reference.documentID,
+      'sessionDate': selectedPrivateSession.date,
+      'purchaseDate': DateTime.now().millisecondsSinceEpoch,
     });
 
-    await Firestore.instance
-        .collection('trainers')
-        .document(widget.trainer.reference.documentID)
+    widget.trainer.reference
         .collection("transactions")
         .add({
-      'type': "private",
-      'sessionID': session.reference.documentID,
+      'type': "privateSession",
+      'sessionID': selectedPrivateSession.reference.documentID,
       'price': widget.trainer.oneOnOnePrice,
-      'trainer': widget.trainer.reference.documentID
+      'trainer': widget.trainer.reference.documentID,
+      'sessionDate': selectedPrivateSession.date,
+      'purchaseDate': DateTime.now().millisecondsSinceEpoch,
     });
+
+    Navigator.pop(context);
   }
+
+
 }
