@@ -13,7 +13,8 @@ class UserProfilePage extends StatelessWidget {
   UserProfilePage(int classes, int privateSessions, int videos, String n) {
     numClasses = classes;
     numPrivateSessions = privateSessions;
-    numVideos = videos;}
+    numVideos = videos;
+  name = n;}
 
   @override
   Widget build(BuildContext context) {
