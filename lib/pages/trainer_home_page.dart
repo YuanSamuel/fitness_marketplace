@@ -164,7 +164,7 @@ class _TrainerHomePageState extends State<TrainerHomePage> {
                 child: Row(
                   children: [
                     Text(
-                      'Private Sessions',
+                      'Scheduled Sessions',
                       style: TextStyle(
                           fontSize: 25.0, fontWeight: FontWeight.bold),
                     ),
