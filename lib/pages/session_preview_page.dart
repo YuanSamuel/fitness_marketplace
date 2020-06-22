@@ -95,6 +95,7 @@ class _SessionPreviewState extends State<SessionPreview> {
     print(widget.stream.price);
 
 
+    print(widget.isStream);
     if (widget.isStream) {
       Firestore.instance.collection('students').document(uid).collection('streams').add(widget.stream.toJson());
     }
