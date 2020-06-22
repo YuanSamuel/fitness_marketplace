@@ -267,6 +267,8 @@ class _SignupWidgetState extends State<SignupWidget> {
                           'lastName': _lastNameInputController.text,
                           'uid': currentUser.user.uid,
                           'email': _emailInputController.text,
+                          'paymentNonce': '',
+                          'idempotencyKey': '',
                         });
                         Navigator.push(
                           context,

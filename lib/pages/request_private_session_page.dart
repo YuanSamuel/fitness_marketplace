@@ -259,42 +259,60 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
     }
   }
 
-  void _pay() {
+  void _pay() async {
+    print('paying');
     InAppPayments.setSquareApplicationId(
         '***REMOVED***');
-    InAppPayments.startCardEntryFlow(
-      onCardNonceRequestSuccess: _onCardNonceRequestSuccess,
-      onCardEntryCancel: _onCardEntryCancel,
-    );
+    print('nonce' + currentStudent.paymentNonce);
+    print('idempotencyKey' + currentStudent.idempotencyKey);
+    if (currentStudent.paymentNonce == null ||  currentStudent.idempotencyKey == null || currentStudent.paymentNonce == '' || currentStudent.idempotencyKey == '') {
+      InAppPayments.startCardEntryFlow(
+        onCardNonceRequestSuccess: _onCardNonceRequestSuccess,
+        onCardEntryCancel: _onCardEntryCancel,
+      );
+    } else {
+      print('else');
+      await chargeCard(currentStudent.paymentNonce, currentStudent.idempotencyKey);
+      print('charged');
+      _cardEntryComplete();
+    }
   }
 
   void _onCardEntryCancel() {
-
+    print('hello');
   }
+
   void _onCardNonceRequestSuccess(CardDetails result) async {
+    String idempotencyKey = Uuid().v4();
+    currentStudent.reference.updateData({'paymentNonce': result.nonce, 'idempotencyKey': idempotencyKey});
     try {
-      double chargeAmt = widget.trainer.oneOnOnePrice * selectedPrivateSession.length / 60 * 100;
-      var body = jsonEncode({
-        'source_id': result.nonce,
-        'idempotency_key': Uuid().v4(),
-        'amount_money': {'amount': chargeAmt.floor(), 'currency': 'USD'}
-      });
-      http.Response response =
-          await http.post('https://connect.squareupsandbox.com/v2/payments',
-          headers: {
-            'content-type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization':
-            'Bearer EAAAEA7IONxb8KpegRF2XdoRLsrwl_Y9LgwwXdA3IABBB8FG4--suTtuZ2C8PsrG'
-          },
-          body: body);
-      receivedData = jsonDecode(response.body);
+      await chargeCard(result.nonce, idempotencyKey);
       InAppPayments.completeCardEntry(
         onCardEntryComplete: _cardEntryComplete,
       );
     } on Exception catch (ex) {
       InAppPayments.showCardNonceProcessingError(ex.toString());
     }
+  }
+
+  chargeCard(String nonce, String idempotency_key) async {
+    double chargeAmt = widget.trainer.oneOnOnePrice * selectedPrivateSession.length / 60 * 100;
+    var body = jsonEncode({
+      'source_id': nonce,
+      'idempotency_key': idempotency_key,
+      'amount_money': {'amount': chargeAmt.floor(), 'currency': 'USD'}
+    });
+    http.Response response =
+    await http.post('https://connect.squareupsandbox.com/v2/payments',
+        headers: {
+          'content-type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization':
+          'Bearer EAAAEA7IONxb8KpegRF2XdoRLsrwl_Y9LgwwXdA3IABBB8FG4--suTtuZ2C8PsrG'
+        },
+        body: body);
+    print(response.body);
+    receivedData = jsonDecode(response.body);
   }
 
   void _cardEntryComplete() {

@@ -6,10 +6,12 @@ class Student {
   String lastName;
   String email;
   String uid;
+  String paymentNonce;
+  String idempotencyKey;
 
   DocumentReference reference;
 
-  Student({this.firstName, this.lastName, this.email, this.uid, this.reference});
+  Student({this.firstName, this.lastName, this.email, this.uid, this.paymentNonce, this.idempotencyKey, this.reference});
 
   factory Student.fromSnapshot(DocumentSnapshot snapshot) {
     Student newStudent = Student.fromJson(snapshot.data);
@@ -23,6 +25,8 @@ class Student {
       lastName: json['lastName'] as String,
       email: json['email'] as String,
       uid: json['uid'] as String,
+      paymentNonce: json['paymentNonce'] as String,
+      idempotencyKey: json['idempotencyKey'] as String,
     );
   }
 
@@ -34,6 +38,8 @@ class Student {
       'lastName': instance.lastName,
       'email': instance.email,
       'uid': instance.uid,
+      'paymentNonce': instance.paymentNonce,
+      'idempotencyKey': instance.idempotencyKey,
     };
   }
 

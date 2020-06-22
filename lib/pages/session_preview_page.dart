@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
 import 'package:fitnessmarketplace/models/Stream.dart';
+import 'package:fitnessmarketplace/models/Student.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
 import 'package:fitnessmarketplace/models/video_info.dart';
 import 'package:fitnessmarketplace/pages/player.dart';
@@ -41,6 +42,7 @@ class _SessionPreviewState extends State<SessionPreview> {
   int comments = 0;
   Trainer t;
   String uid;
+  Student currentStudent;
 
   var responseData;
 
@@ -84,14 +86,26 @@ class _SessionPreviewState extends State<SessionPreview> {
     _pay();
   }
 
-  void _pay() {
+  void _pay() async {
     print('paying');
     InAppPayments.setSquareApplicationId(
         '***REMOVED***');
-    InAppPayments.startCardEntryFlow(
-      onCardNonceRequestSuccess: _onCardNonceRequestSuccess,
-      onCardEntryCancel: _onCardEntryCancel,
-    );
+    DocumentSnapshot studentData =
+        await Firestore.instance.collection('students').document(uid).get();
+    currentStudent = Student.fromSnapshot(studentData);
+    print('nonce' + currentStudent.paymentNonce);
+    print('idempotencyKey' + currentStudent.idempotencyKey);
+    if (currentStudent.paymentNonce == null ||  currentStudent.idempotencyKey == null || currentStudent.paymentNonce == '' || currentStudent.idempotencyKey == '') {
+      InAppPayments.startCardEntryFlow(
+        onCardNonceRequestSuccess: _onCardNonceRequestSuccess,
+        onCardEntryCancel: _onCardEntryCancel,
+      );
+    } else {
+      print('else');
+      await chargeCard(currentStudent.paymentNonce, currentStudent.idempotencyKey);
+      print('charged');
+      _cardEntryComplete();
+    }
   }
 
   void _onCardEntryCancel() {
@@ -99,35 +113,41 @@ class _SessionPreviewState extends State<SessionPreview> {
   }
 
   void _onCardNonceRequestSuccess(CardDetails result) async {
+    String idempotencyKey = Uuid().v4();
+    currentStudent.reference.updateData({'paymentNonce': result.nonce, 'idempotencyKey': idempotencyKey});
     try {
-      double chargeAmt = 0;
-      if (widget.isStream) {
-        chargeAmt = widget.stream.price * 100;
-      }
-      else {
-        chargeAmt = widget.video.data['price'] * 100;
-      }
-      var body = jsonEncode({
-        'source_id': result.nonce,
-        'idempotency_key': Uuid().v4(),
-        'amount_money': {'amount': chargeAmt.floor(), 'currency': 'USD'}
-      });
-      http.Response response =
-          await http.post('https://connect.squareupsandbox.com/v2/payments',
-              headers: {
-                'content-type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization':
-                    'Bearer EAAAEA7IONxb8KpegRF2XdoRLsrwl_Y9LgwwXdA3IABBB8FG4--suTtuZ2C8PsrG'
-              },
-              body: body);
-      responseData = jsonDecode(response.body);
+      await chargeCard(result.nonce, idempotencyKey);
       InAppPayments.completeCardEntry(
         onCardEntryComplete: _cardEntryComplete,
       );
     } on Exception catch (ex) {
       InAppPayments.showCardNonceProcessingError(ex.toString());
     }
+  }
+
+  chargeCard(String nonce, String idempotency_key) async {
+    double chargeAmt = 0;
+    if (widget.isStream) {
+      chargeAmt = widget.stream.price * 100;
+    } else {
+      chargeAmt = widget.video.data['price'] * 100;
+    }
+    var body = jsonEncode({
+      'source_id': nonce,
+      'idempotency_key': idempotency_key,
+      'amount_money': {'amount': chargeAmt.floor(), 'currency': 'USD'}
+    });
+    http.Response response =
+        await http.post('https://connect.squareupsandbox.com/v2/payments',
+            headers: {
+              'content-type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization':
+                  'Bearer EAAAEA7IONxb8KpegRF2XdoRLsrwl_Y9LgwwXdA3IABBB8FG4--suTtuZ2C8PsrG'
+            },
+            body: body);
+    print(response.body);
+    responseData = jsonDecode(response.body);
   }
 
   void _cardEntryComplete() {
