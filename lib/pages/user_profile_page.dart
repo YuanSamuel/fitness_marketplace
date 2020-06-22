@@ -113,136 +113,137 @@ class StudentProfilePage extends StatelessWidget {
 ***REMOVED***
 ***REMOVED***
         appBar: AppBar(
-            backgroundColor: Colors.black,
-            title: Text("Student Profile"),
+        backgroundColor: Colors.black,
+        title: Text("Student Profile"),
             leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {***REMOVED***,
-            )),
-        body: StreamBuilder(
-            stream: Firestore.instance
-                .collection('Student Profile Page')
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) return const Text('Loading...');
-              return ListView(
-    ***REMOVED***
-                  Column(
-        ***REMOVED***
-                      Container(
+            icon: Icon(Icons.arrow_back),
+                onPressed: () {***REMOVED***,
+  ***REMOVED***),
+               body: StreamBuilder(
+                  stream: Firestore.instance.collection('Student Profile Page').snapshots(),
+                        builder: (context,snapshot){
+                    if(!snapshot.hasData) return const Text('Loading...');
+               return ListView(
+         ***REMOVED***
+                      Column(
+             ***REMOVED***
+                           Container(
+              ***REMOVED***
+                             gradient: LinearGradient(
+                               begin: Alignment.topLeft,
+                               end: Alignment.bottomRight,
+                               colors: [Colors.black, Colors.black87]
             ***REMOVED***
-                            gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [Colors.black, Colors.black87])),
-                        height: 400,
-                        width: 400,
+       ***REMOVED***,
+                   height: 400,
+                          width: 400,
+             ***REMOVED***
+                         mainAxisAlignment: MainAxisAlignment.end,
               ***REMOVED***
-                          mainAxisAlignment: MainAxisAlignment.end,
-              ***REMOVED***
-      ***REMOVED***height: 50),
+       ***REMOVED***height: 50),
+         ***REMOVED***
+                                  name,
+          ***REMOVED***color: Colors.white, fontSize: 26),
+                 ***REMOVED***,
       ***REMOVED***
-                              name,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 26),
-              ***REMOVED***,
+                             height: 20,
+                ***REMOVED***,
+
+                ***REMOVED***
+             ***REMOVED***
+                  ***REMOVED***
+                                 Column(children: [
+               ***REMOVED***
+                                      "$sessions",
+                                       style:
+                                 TextStyle(color: Colors.white, fontSize: 24),
+                     ***REMOVED***,
+           ***REMOVED***
+                                  "Sessions",
+                                      style:
+                                    TextStyle(color: Colors.white, fontSize: 16),
+                    ***REMOVED***,
+                                 ]),
+                            Column(children: [
+                   ***REMOVED***children: [
+             ***REMOVED***
+                                    "$rating",
+               ***REMOVED***
+           ***REMOVED*** fontSize: 24),
+                    ***REMOVED***,
+                                Icon(
+                                 Icons.star,
+                                 color: Colors.yellow,
+                 ***REMOVED***
+                               ]),
       ***REMOVED***
-                              height: 20,
+                               "Rating",
+                                 style:
+                                 TextStyle(color: Colors.white, fontSize: 16),
+                 ***REMOVED***,
+                             ]),
+                          Column(children: [
+         ***REMOVED***
+                               "$years",
+                                  style:
+                                 TextStyle(color: Colors.white, fontSize: 24),
+                ***REMOVED***,
+      ***REMOVED***
+                                 "Years",
+                                  style:
+                               TextStyle(color: Colors.white, fontSize: 16),
               ***REMOVED***,
-              ***REMOVED***
-              ***REMOVED***
-                  ***REMOVED***
-                                Column(children: [
-            ***REMOVED***
-                                    "$sessions",
-                ***REMOVED***
-                ***REMOVED*** fontSize: 24),
-                    ***REMOVED***,
-            ***REMOVED***
-                                    "Sessions",
-                ***REMOVED***
-                ***REMOVED*** fontSize: 16),
-                    ***REMOVED***,
-                                ]),
-                                Column(children: [
-                    ***REMOVED***children: [
-              ***REMOVED***
-                                      "$rating",
-                  ***REMOVED***
-                  ***REMOVED*** fontSize: 24),
-                      ***REMOVED***,
-                                    Icon(
-                                      Icons.star,
-                                      color: Colors.yellow,
-                      ***REMOVED***
-                                  ]),
-            ***REMOVED***
-                                    "Rating",
-                ***REMOVED***
-                ***REMOVED*** fontSize: 16),
-                    ***REMOVED***,
-                                ]),
-                                Column(children: [
-            ***REMOVED***
-                                    "$years",
-                ***REMOVED***
-                ***REMOVED*** fontSize: 24),
-                    ***REMOVED***,
-            ***REMOVED***
-                                    "Years",
-                ***REMOVED***
-                ***REMOVED*** fontSize: 16),
-                    ***REMOVED***,
-                                ])
-              ***REMOVED***
-              ***REMOVED***,
-      ***REMOVED***height: 20)
+                           ])
           ***REMOVED***
           ***REMOVED***,
-        ***REMOVED***,
-                      Column(
-            ***REMOVED***
-                          Card(
-                  ***REMOVED***
-                  ***REMOVED***
-                                ListTile(
-                                  leading: Icon(Icons.star),
-                                  title: Text(
-                                      "Place as many of these as you want"),
-                                  trailing: Icon(Icons.edit),
-                  ***REMOVED***,
-              ***REMOVED***
-              ***REMOVED***,
-            ***REMOVED***,
-                          Card(
-                  ***REMOVED***
-                  ***REMOVED***
-                                ListTile(
-                                  leading: Icon(Icons.star),
-                                  title:
-                ***REMOVED***"Or you can make a class for these"),
-                                  trailing: Icon(Icons.edit),
-                  ***REMOVED***,
-              ***REMOVED***
-              ***REMOVED***,
-            ***REMOVED***,
-                          Card(
-                  ***REMOVED***
-                  ***REMOVED***
-                                ListTile(
-                                  leading: Icon(Icons.star),
-                                  title: Text("Its up to you"),
-                                  trailing: Icon(Icons.edit),
-                  ***REMOVED***,
-              ***REMOVED***
-              ***REMOVED***,
-            ***REMOVED***
-        ***REMOVED***
-        ***REMOVED***
-    ***REMOVED***
+  ***REMOVED***height: 20)
+      ***REMOVED***
     ***REMOVED***,
-***REMOVED***
+  ***REMOVED***,
+                   Column(
+        ***REMOVED***
+                          Card(
+                ***REMOVED***
+              ***REMOVED***
+                            ListTile(
+                               leading: Icon(Icons.star),
+                               title: Text("Place as many of these as you want"),
+                            trailing: Icon(Icons.edit),
+            ***REMOVED***,
+         ***REMOVED***
+       ***REMOVED***,
+    ***REMOVED***,
+                 Card(
           ***REMOVED***
-            ***REMOVED***));
+           ***REMOVED***
+                         ListTile(
+                            leading: Icon(Icons.star),
+                            title: Text("Or you can make a class for these"),
+                            trailing: Icon(Icons.edit),
+          ***REMOVED***,
+     ***REMOVED***
+    ***REMOVED***,
+***REMOVED***,
+               Card(
+      ***REMOVED***
+       ***REMOVED***
+                         ListTile(
+                           leading: Icon(Icons.star),
+                           title: Text("Its up to you"),
+                           trailing: Icon(Icons.edit),
+                    ***REMOVED***,
+                 ***REMOVED***
+                ***REMOVED***,
+            ***REMOVED***
+         ***REMOVED***
+        ***REMOVED***
+   ***REMOVED***
+ ***REMOVED***,
+ ***REMOVED***
+      ***REMOVED***
+         ***REMOVED***
+       )
+
+***REMOVED***
   ***REMOVED***
 ***REMOVED***
