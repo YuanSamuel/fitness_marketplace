@@ -85,7 +85,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
   getTrainerStreams() async {
     streamTimes = new List<models.Stream>();
     QuerySnapshot streams =
-    await widget.trainer.reference.collection('streams').getDocuments();
+        await widget.trainer.reference.collection('streams').getDocuments();
     List<DocumentSnapshot> streamSnapshots = streams.documents;
     for (int i = 0; i < streamSnapshots.length; i++) {
       streamTimes.add(models.Stream.fromSnapshot(streamSnapshots[i]));
@@ -121,7 +121,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
               height: 200,
               child: ListView.builder(
                   itemCount: events.length,
-                  itemBuilder: (BuildContext contexti, int i) {
+                  itemBuilder: (BuildContext context, int i) {
                     String trainerName = widget.trainer.firstName +
                         ' ' +
                         widget.trainer.lastName;
@@ -147,8 +147,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                                 builder: (context) => SessionPreview(
                                       stream: events[i],
                                       isStream: true,
-                                      isPrivate: true,
-                                  trainer: widget.trainer,
+                                      trainer: widget.trainer,
                                     )),
                           );
                         } else {
@@ -256,26 +255,25 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
     }
   }
 
-  void _pay(){
-    InAppPayments.setSquareApplicationId('***REMOVED***');
+  void _pay() {
+    InAppPayments.setSquareApplicationId(
+        '***REMOVED***');
     InAppPayments.startCardEntryFlow(
       onCardNonceRequestSuccess: _onCardNonceRequestSuccess,
       onCardEntryCancel: _onCardEntryCancel,
     );
   }
-  void _onCardEntryCancel(){
 
-  }
-  void _onCardNonceRequestSuccess(CardDetails result){
+  void _onCardEntryCancel() {}
+  void _onCardNonceRequestSuccess(CardDetails result) {
     print('result.nonce');
 
     InAppPayments.completeCardEntry(
       onCardEntryComplete: _cardEntryComplete,
     );
-
   }
-  void _cardEntryComplete(){
 
+  void _cardEntryComplete() {
     selectedPrivateSession.reference.updateData({
       'available': false,
       'studentName': currentStudent.firstName + ' ' + currentStudent.lastName
@@ -288,9 +286,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
         .collection('privateSessions')
         .add(selectedPrivateSession.toJson());
 
-    currentStudent.reference
-        .collection('transactions')
-        .add({
+    currentStudent.reference.collection('transactions').add({
       'type': "privateSession",
       'sessionID': selectedPrivateSession.reference.documentID,
       'price': widget.trainer.oneOnOnePrice,
@@ -299,9 +295,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
       'purchaseDate': DateTime.now().millisecondsSinceEpoch,
     });
 
-    widget.trainer.reference
-        .collection("transactions")
-        .add({
+    widget.trainer.reference.collection("transactions").add({
       'type': "privateSession",
       'sessionID': selectedPrivateSession.reference.documentID,
       'price': widget.trainer.oneOnOnePrice,
@@ -312,6 +306,4 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
 
     Navigator.pop(context);
   }
-
-
 }

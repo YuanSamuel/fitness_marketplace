@@ -134,10 +134,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                               );
                             }
                             else {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => UserNavigation()),
-                              );
+                              Navigator.pushReplacementNamed(context, '/userHome');
                             }
                           });
                         },
@@ -159,7 +156,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => (EntryPage())),
+                            MaterialPageRoute(builder: (context) => EntryPage()),
                           );
                         },
                       ),
