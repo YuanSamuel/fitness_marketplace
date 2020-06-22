@@ -34,6 +34,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
   DateTime selectedDate;
   List<dynamic> events;
   PrivateSession selectedPrivateSession;
+  var receivedData;
 
   CalendarHelper _calendarHelper;
   StringHelper _stringHelper;
@@ -272,11 +273,11 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
   }
   void _onCardNonceRequestSuccess(CardDetails result) async {
     try {
-      double chargeAmt = widget.trainer.oneOnOnePrice * selectedPrivateSession.length / 60;
+      double chargeAmt = widget.trainer.oneOnOnePrice * selectedPrivateSession.length / 60 * 100;
       var body = jsonEncode({
         'source_id': result.nonce,
         'idempotency_key': Uuid().v4(),
-        'amount_money': {'amount': chargeAmt.round(), 'currency': 'USD'}
+        'amount_money': {'amount': chargeAmt.floor(), 'currency': 'USD'}
       });
       http.Response response =
           await http.post('https://connect.squareupsandbox.com/v2/payments',
@@ -287,7 +288,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
             'Bearer EAAAEA7IONxb8KpegRF2XdoRLsrwl_Y9LgwwXdA3IABBB8FG4--suTtuZ2C8PsrG'
           },
           body: body);
-      print(response.body);
+      receivedData = jsonDecode(response.body);
       InAppPayments.completeCardEntry(
         onCardEntryComplete: _cardEntryComplete,
       );
@@ -316,6 +317,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
       'trainer': widget.trainer.reference.documentID,
       'sessionDate': selectedPrivateSession.date,
       'purchaseDate': DateTime.now().millisecondsSinceEpoch,
+      'paymentID': receivedData['payment']['id'],
     });
 
     widget.trainer.reference.collection("transactions").add({
@@ -325,6 +327,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
       'trainer': widget.trainer.reference.documentID,
       'sessionDate': selectedPrivateSession.date,
       'purchaseDate': DateTime.now().millisecondsSinceEpoch,
+      'paymentID': receivedData['payment']['id'],
     });
 
     Navigator.pop(context);
