@@ -1,18 +1,18 @@
-***REMOVED***
-***REMOVED***
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'user_profile_page.dart';
 
 
 class IntroScreen extends StatefulWidget {
-***REMOVED***
+  @override
   _IntroScreen createState() => _IntroScreen();
-***REMOVED***
+}
 
 class _IntroScreen extends State<IntroScreen> {
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
     final onboardPages = [
       Container(color: Colors.pinkAccent, child: FirstScreen()),
       Container(
@@ -24,16 +24,16 @@ class _IntroScreen extends State<IntroScreen> {
                   Colors.blue[400],
                   Colors.blue[600]
                 ])),
-***REMOVED***
+        child: Padding(
             padding: EdgeInsets.symmetric(vertical: 20.0),
             child: Container(
-      ***REMOVED***
+                child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-    ***REMOVED***
+                    children: <Widget>[
                       Container(
                         alignment: Alignment.centerRight,
                         child: skipButton(context),
-        ***REMOVED***,
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(60.0),
                         child: Container(
@@ -42,28 +42,28 @@ class _IntroScreen extends State<IntroScreen> {
                           child: Image(
                               image: AssetImage('assets/images/Robot.png'),
                               fit: BoxFit.fill
-            ***REMOVED***,
-          ***REMOVED***,
-        ***REMOVED***,
+                          ),
+                        ),
+                      ),
                       Center(
-                ***REMOVED***
+                        child: Padding(
                             padding: const EdgeInsets.all(16.0),
-                  ***REMOVED***
-              ***REMOVED***
-          ***REMOVED***'Face off against our Ai',
-                ***REMOVED***
+                            child: Column(
+                              children: <Widget>[
+                                Text('Face off against our Ai',
+                                    style: TextStyle(
                                         fontSize: 25.0, fontWeight: FontWeight.bold, color: Colors.white)
-                  ***REMOVED***,
-          ***REMOVED***
+                                ),
+                                Text(
                                     'and score more points that your opponent!',
-                ***REMOVED***
+                                    style: TextStyle(
                                         fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.white)
-                  ***REMOVED***,
-              ***REMOVED***
-              ***REMOVED***),
-        ***REMOVED***,
+                                ),
+                              ],
+                            )),
+                      ),
                     ]))),
-***REMOVED***
+      ),
       Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -73,19 +73,19 @@ class _IntroScreen extends State<IntroScreen> {
                   Colors.deepPurple[300],
                   Colors.deepPurple[500]
                 ])),
-***REMOVED***
+        child: Padding(
             padding: EdgeInsets.symmetric(vertical: 20.0),
             child: Container(
-      ***REMOVED***
+                child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-    ***REMOVED***
+                    children: <Widget>[
                       Container(
                         alignment: Alignment.centerRight,
                         child: skipButton(context),
-        ***REMOVED***,
-***REMOVED***
+                      ),
+                      SizedBox(
                         height: 20.0,
-        ***REMOVED***,
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
@@ -93,35 +93,35 @@ class _IntroScreen extends State<IntroScreen> {
                           width: 200,
                           child: Image(
                             image: AssetImage('assets/images/C-3po.webp'),
-            ***REMOVED***,
-          ***REMOVED***,
-        ***REMOVED***,
-***REMOVED***
+                          ),
+                        ),
+                      ),
+                      SizedBox(
                         height: 50,
-        ***REMOVED***,
+                      ),
                       Center(
                         child: Center(
-                  ***REMOVED***
+                          child: Padding(
                             padding: const EdgeInsets.all(16.0),
-                  ***REMOVED***
-                  ***REMOVED***
-          ***REMOVED***
+                            child: Column(
+                              children: [
+                                Text(
                                     'Get points by determining',
-                ***REMOVED***
+                                    style: TextStyle(
                                         fontSize: 25.0, fontWeight: FontWeight.bold, color: Colors.white)
-                  ***REMOVED***,
-          ***REMOVED***
+                                ),
+                                Text(
                                     'if your opponent is real or not',
-                ***REMOVED***
+                                    style: TextStyle(
                                         fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.white)
-                  ***REMOVED***,
-              ***REMOVED***
-              ***REMOVED***,
-            ***REMOVED***,
-          ***REMOVED***,
-        ***REMOVED***,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ]))),
-***REMOVED***
+      ),
       Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -131,55 +131,55 @@ class _IntroScreen extends State<IntroScreen> {
                   Colors.orange[300],
                   Colors.orange[500]
                 ])),
-***REMOVED***
+        child: Padding(
             padding: EdgeInsets.symmetric(vertical: 20.0),
             child: Container(
-      ***REMOVED***
+                child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-    ***REMOVED***
+                    children: <Widget>[
                       Container(
                         alignment: Alignment.centerRight,
                         child: skipButton(context),
-        ***REMOVED***,
-***REMOVED***height: 100,),
+                      ),
+                      SizedBox(height: 100,),
                       Image.asset('assets/images/Twinkle.png',
                         height: 100,
                         width: 200,
-        ***REMOVED***,
+                      ),
                       Image.asset('assets/images/Star.png',
                         height: 250,
                         width: 200,
 
-        ***REMOVED***,
+                      ),
                       Image.asset('assets/images/Twinkle.png',
                         height: 100,
                         width: 200,
 
-        ***REMOVED***,
+                      ),
                       Center(
-                ***REMOVED***
+                        child: Padding(
                           padding: const EdgeInsets.all(16.0),
-                ***REMOVED***children: <Widget>[
-      ***REMOVED***
+                          child: Column(children: <Widget>[
+                            Text(
                                 'Conquer the leaderboards',
-            ***REMOVED***
+                                style: TextStyle(
                                     fontSize: 25.0, fontWeight: FontWeight.bold, color: Colors.white)
-              ***REMOVED***,
-      ***REMOVED***
+                            ),
+                            Text(
                                 'and become the champion!',
-            ***REMOVED***
+                                style: TextStyle(
                                     fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.white)
-              ***REMOVED***,
+                            ),
                           ]),
-          ***REMOVED***,
-        ***REMOVED***,
+                        ),
+                      ),
                     ]))),
-***REMOVED***
+      ),
       Container(
         child: FinalScreen(),
       )
     ];
-***REMOVED***
+    return Scaffold(
         body: LiquidSwipe(
           pages: onboardPages,
           fullTransitionValue: 400,
@@ -188,7 +188,7 @@ class _IntroScreen extends State<IntroScreen> {
           //positionSlideIcon: 0.8,
           waveType: WaveType.liquidReveal,
         ));
-  ***REMOVED***
+  }
 
   Widget skipButton(BuildContext context) {
     return FlatButton(
@@ -196,30 +196,30 @@ class _IntroScreen extends State<IntroScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => FinalScreen()),
-    ***REMOVED***
-      ***REMOVED***,
+        );
+      },
       child: Text(
         'Skip',
         style: TextStyle(
           color: Colors.white,
           fontSize: 20.0,
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+        ),
+      ),
+    );
+  }
+}
 
 class FinalScreen extends StatelessWidget {
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
     return Container(
         color: Colors.orangeAccent,
-***REMOVED***
+        child: Padding(
             padding: const EdgeInsets.all(40.0),
-  ***REMOVED***
+            child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-***REMOVED***
+                children: <Widget>[
                   AvatarGlow(
                     endRadius: 150,
                     duration: Duration(seconds: 2),
@@ -234,53 +234,53 @@ class FinalScreen extends StatelessWidget {
                           backgroundColor: Colors.grey[100],
                           child: FlutterLogo(
                             size: 100.0,
-            ***REMOVED***,
+                          ),
                           radius: 100.0,
-          ***REMOVED***),
-    ***REMOVED***,
+                        )),
+                  ),
                   //SizedBox(height: 100,),
                   Center(
-***REMOVED***
+                    child: Text(
                         'Start your chatter today',
-    ***REMOVED***
+                        style: TextStyle(
                             fontSize: 25.0, fontWeight: FontWeight.bold, color: Colors.white)
-      ***REMOVED***,
-    ***REMOVED***,
-    ***REMOVED***
+                    ),
+                  ),
+                  SizedBox(
                     height: 30,
-    ***REMOVED***,
+                  ),
                   IconButton(
                     color: Colors.white,
                     icon: Icon(Icons.arrow_forward_ios),
                     iconSize: 40,
                     onPressed:(){
-***REMOVED***
+                      Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => (StudentProfilePage(3,4,5,"Samuel"))),
-                  ***REMOVED***
-                    ***REMOVED***,
-    ***REMOVED***
+                      );
+                    },
+                  )
                 ])));
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 class FirstScreen extends StatefulWidget {
   final String title;
 
-  FirstScreen({Key key, this.title***REMOVED***) : super(key: key);
+  FirstScreen({Key key, this.title}) : super(key: key);
 
-***REMOVED***
+  @override
   _FirstScreen createState() => _FirstScreen();
-***REMOVED***
+}
 
 class _FirstScreen extends State<FirstScreen> {
   // Whether the green box should be visible
   bool _buttonVisible = true;
   bool _textVisible = false;
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -299,16 +299,16 @@ class _FirstScreen extends State<FirstScreen> {
 
                   child: Text(
                       'Welcome to Chatterbot',
-  ***REMOVED***
+                      style: TextStyle(
                           fontSize: 25.0, fontWeight: FontWeight.bold, color: Colors.white, fontStyle: FontStyle.italic)
-    ***REMOVED***,
-  ***REMOVED***,
-***REMOVED***,
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 

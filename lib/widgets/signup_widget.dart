@@ -1,18 +1,18 @@
-***REMOVED***
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitnessmarketplace/pages/entry_page.dart';
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 import 'package:fitnessmarketplace/utils/style_constants.dart';
-***REMOVED***
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/widgets/login_widget.dart';
-***REMOVED***
+import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:fitnessmarketplace/pages/user_navigation.dart';
 import 'package:fitnessmarketplace/pages/trainer_register.dart';
 
 class SignupWidget extends StatefulWidget {
-***REMOVED***
+  @override
   _SignupWidgetState createState() => _SignupWidgetState();
-***REMOVED***
+}
 
 class _SignupWidgetState extends State<SignupWidget> {
   final GlobalKey<FormState> _signUpFormKey = GlobalKey<FormState>();
@@ -22,54 +22,54 @@ class _SignupWidgetState extends State<SignupWidget> {
   TextEditingController _passwordInputController;
   bool _isTrainer;
 
-***REMOVED***
-***REMOVED***
+  @override
+  void initState() {
     _isTrainer = false;
     _firstNameInputController = new TextEditingController();
     _lastNameInputController = new TextEditingController();
     _emailInputController = new TextEditingController();
     _passwordInputController = new TextEditingController();
-***REMOVED***
-  ***REMOVED***
+    super.initState();
+  }
 
   String emailValidator(String value) {
     Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3***REMOVED***\.[0-9]{1,3***REMOVED***\.[0-9]{1,3***REMOVED***\.[0-9]{1,3***REMOVED***\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,***REMOVED***))$';
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value)) {
       return 'Email format is invalid';
-    ***REMOVED*** else {
+    } else {
       return null;
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
 
   String passwordValidator(String value) {
     if (value.length < 8) {
       return 'Password length must be longer than 8 characters';
-    ***REMOVED***
-***REMOVED***
+    }
+    else {
       return null;
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
 
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
         child: Container(
-***REMOVED***
-***REMOVED***
+            decoration: BoxDecoration(
+            ),
             child: Form(
                   key: _signUpFormKey,
-        ***REMOVED***
-    ***REMOVED***
+                  child: Column(
+                    children: <Widget>[
                       Column(
-        ***REMOVED***
+                        children: <Widget>[
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***height: 40.0),
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(height: 40.0),
                               Container(
                                 alignment: Alignment.centerLeft,
                                 decoration: StyleConstants.loginBoxDecorationStyle,
@@ -77,37 +77,37 @@ class _SignupWidgetState extends State<SignupWidget> {
                                 child: TextFormField(
                                   controller: _firstNameInputController,
                                   keyboardType: TextInputType.emailAddress,
-              ***REMOVED***
+                                  style: TextStyle(
                                     color: Colors.black,
                                     fontFamily: 'OpenSans',
-                    ***REMOVED***,
+                                  ),
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
                                     contentPadding: EdgeInsets.only(top: 14.0),
                                     prefixIcon: Icon(
                                       Icons.person,
                                       color: Colors.black,
-                      ***REMOVED***,
+                                    ),
                                     hintText: 'First Name',
                                     hintStyle: StyleConstants.loginHintTextStyle,
-                    ***REMOVED***,
+                                  ),
                                   validator: (input) {
                                     if (input.trim().length < 1) {
                                       return "Please input a valid name";
-                                    ***REMOVED***
-                                ***REMOVED***
+                                    }
+                                    else {
                                       return null;
-                                    ***REMOVED***
-                                  ***REMOVED***,
-                  ***REMOVED***,
-                ***REMOVED***,
-            ***REMOVED***
-            ***REMOVED***,
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***height: 20.0),
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(height: 20.0),
                               Container(
                                 alignment: Alignment.centerLeft,
                                 decoration: StyleConstants.loginBoxDecorationStyle,
@@ -115,36 +115,36 @@ class _SignupWidgetState extends State<SignupWidget> {
                                 child: TextFormField(
                                   controller: _lastNameInputController,
                                   keyboardType: TextInputType.emailAddress,
-              ***REMOVED***
+                                  style: TextStyle(
                                     color: Colors.black,
                                     fontFamily: 'OpenSans',
-                    ***REMOVED***,
+                                  ),
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
                                     contentPadding: EdgeInsets.only(top: 14.0),
                                     prefixIcon: Icon(
                                       Icons.person,
                                       color: Colors.black,
-                      ***REMOVED***,
+                                    ),
                                     hintText: 'Last Name',
                                     hintStyle: StyleConstants.loginHintTextStyle,
-                    ***REMOVED***,
+                                  ),
                                   validator: (input) {
                                     if (input.trim().length < 1) {
                                       return "Please input a valid name";
-                                    ***REMOVED***
-                                ***REMOVED***
+                                    }
+                                    else {
                                       return null;
-                                    ***REMOVED***
-                                  ***REMOVED***,
-                  ***REMOVED***,
-                ***REMOVED***,
-            ***REMOVED***
-            ***REMOVED***,
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                           Column(
-                ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***height: 20.0,),
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(height: 20.0,),
                               Container(
                                 alignment: Alignment.centerLeft,
                                 decoration: StyleConstants.loginBoxDecorationStyle,
@@ -152,28 +152,28 @@ class _SignupWidgetState extends State<SignupWidget> {
                                 child: TextFormField(
                                   controller: _emailInputController,
 
-              ***REMOVED***
+                                  style: TextStyle(
                                     color: Colors.black,
                                     fontFamily: 'OpenSans',
-                    ***REMOVED***,
+                                  ),
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
                                     contentPadding: EdgeInsets.only(top: 14.0),
                                     prefixIcon: Icon(
                                       Icons.email,
                                       color: Colors.black,
-                      ***REMOVED***,
+                                    ),
                                     hintText: 'Enter your Email',
                                     hintStyle: StyleConstants.loginHintTextStyle,
-                    ***REMOVED***,
-                  ***REMOVED***,
-                ***REMOVED***,
-            ***REMOVED***
-            ***REMOVED***,
-    ***REMOVED***height: 20.0),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20.0),
                           Column(
-                ***REMOVED***
-            ***REMOVED***
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
                               Container(
                                 alignment: Alignment.centerLeft,
                                 decoration: StyleConstants.loginBoxDecorationStyle,
@@ -181,27 +181,27 @@ class _SignupWidgetState extends State<SignupWidget> {
                                 child: TextFormField(
                                   controller: _passwordInputController,
                                   obscureText: true,
-              ***REMOVED***
+                                  style: TextStyle(
                                     color: Colors.black,
                                     fontFamily: 'OpenSans',
-                    ***REMOVED***,
+                                  ),
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
                                     contentPadding: EdgeInsets.only(top: 14.0),
                                     prefixIcon: Icon(
                                       Icons.lock,
                                       color: Colors.black,
-                      ***REMOVED***,
+                                    ),
                                     hintText: 'Enter your Password',
                                     hintStyle: StyleConstants.loginHintTextStyle,
-                    ***REMOVED***,
-                  ***REMOVED***,
-                ***REMOVED***,
-            ***REMOVED***
-            ***REMOVED***,
-    ***REMOVED***
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
                             height: 20,
-            ***REMOVED***,
+                          ),
                           ToggleSwitch(
                               minWidth: 170.0,
                               cornerRadius: 20,
@@ -214,16 +214,16 @@ class _SignupWidgetState extends State<SignupWidget> {
                               onToggle: (index) {
                                 if (index == 0) {
                                   _isTrainer = false;
-                                ***REMOVED*** else {
+                                } else {
                                   _isTrainer = true;
-                                ***REMOVED***
+                                }
                                 print('Trainer is ' + _isTrainer.toString());
-                              ***REMOVED***
-            ***REMOVED***,
-        ***REMOVED***
-        ***REMOVED***,
+                              }
+                          ),
+                        ],
+                      ),
 
-***REMOVED***height: MediaQuery.of(context).size.height / 20,),
+                      SizedBox(height: MediaQuery.of(context).size.height / 20,),
 
                       GestureDetector(
                         onTap: () {
@@ -236,7 +236,7 @@ class _SignupWidgetState extends State<SignupWidget> {
                               await Firestore.instance
                                   .collection('users')
                                   .document(currentUser.user.uid)
-                                  .setData({'isTrainer': true***REMOVED***);
+                                  .setData({'isTrainer': true});
                               await Firestore.instance
                                   .collection('trainers')
                                   .document(currentUser.user.uid)
@@ -251,16 +251,16 @@ class _SignupWidgetState extends State<SignupWidget> {
                                 'videoPrice': 0.0,
                                 'livePrice': 0.0,
                                 'oneOnOnePrice': 0.0
-                              ***REMOVED***);
-        ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***builder: (context) => TrainerRegister()),
-                          ***REMOVED***
-                            ***REMOVED*** else {
+                              });
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => TrainerRegister()),
+                              );
+                            } else {
                               await Firestore.instance
                                   .collection('users')
                                   .document(currentUser.user.uid)
-                                  .setData({'isTrainer': false***REMOVED***);
+                                  .setData({'isTrainer': false});
                               await Firestore.instance
                                   .collection('students')
                                   .document(currentUser.user.uid)
@@ -269,44 +269,44 @@ class _SignupWidgetState extends State<SignupWidget> {
                                 'lastName': _lastNameInputController.text,
                                 'uid': currentUser.user.uid,
                                 'email': _emailInputController.text,
-                              ***REMOVED***);
-        ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***builder: (context) => UserNavigation()),
-                          ***REMOVED***
-                            ***REMOVED***
-                          ***REMOVED***);
-                        ***REMOVED***,
+                              });
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => UserNavigation()),
+                              );
+                            }
+                          });
+                        },
                         child: Container(
                           height: 50,
                           margin: EdgeInsets.symmetric(horizontal: 50),
-              ***REMOVED***
+                          decoration: BoxDecoration(
                               border: Border.all(
                                 color: Colors.black,
                                 width: 3.0,
-                ***REMOVED***,
+                              ),
                               borderRadius: BorderRadius.circular(50),
                               color: Colors.white
-            ***REMOVED***,
+                          ),
                           child: Center(
-        ***REMOVED***"Sign Up", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
-            ***REMOVED***,
-          ***REMOVED***,
-        ***REMOVED***,
+                            child: Text("Sign Up", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+                          ),
+                        ),
+                      ),
                       FlatButton(
-    ***REMOVED***'Login'),
-    ***REMOVED***
-    ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***builder: (context) => (LoginWidget())),
-                      ***REMOVED***
-                        ***REMOVED***,
-        ***REMOVED***,
-    ***REMOVED***
-    ***REMOVED***,
-  ***REMOVED***
+                        child: Text('Login'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => (LoginWidget())),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                )
 
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+        ),
+    );
+  }
+}

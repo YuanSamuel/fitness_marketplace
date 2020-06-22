@@ -1,5 +1,5 @@
-***REMOVED***
-***REMOVED***
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
 import 'package:fitnessmarketplace/helpers/string_helper.dart';
 import 'package:fitnessmarketplace/models/RecordedVideo.dart';
 import 'package:fitnessmarketplace/models/Stream.dart' as models;
@@ -7,14 +7,14 @@ import 'package:fitnessmarketplace/pages/session_preview_page.dart';
 import 'package:fitnessmarketplace/widgets/trainer_market.dart';
 import 'package:fitnessmarketplace/widgets//trainer_widget.dart';
 import 'package:fitnessmarketplace/utils/search_bar.dart';
-***REMOVED***
-***REMOVED***
-***REMOVED***
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:fitnessmarketplace/models/Trainer.dart';
 
 class MarketplaceScreen extends StatefulWidget {
-***REMOVED***
+  @override
   _MarketplaceScreenState createState() => _MarketplaceScreenState();
-***REMOVED***
+}
 
 class _MarketplaceScreenState extends State<MarketplaceScreen> {
   List<Widget> pages;
@@ -33,20 +33,20 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
     'Running'
   ];
 
-***REMOVED***
-***REMOVED***
+  @override
+  void initState() {
     allStreams = new List<models.Stream>();
     _stringHelper = new StringHelper();
     setUp();
-***REMOVED***
-  ***REMOVED***
+    super.initState();
+  }
 
   setUp() async {
     await getRecordedVideos();
     await getAllStreams();
     await getTrainers();
-    setState(() {***REMOVED***);
-  ***REMOVED***
+    setState(() {});
+  }
 
   getRecordedVideos() async {
     allVideos = new List<RecordedVideo>();
@@ -55,9 +55,9 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
     List<DocumentSnapshot> allVideosDocuments = allVideosSnapshot.documents;
     for (int i = 0; i < allVideosDocuments.length; i++) {
       allVideos.add(RecordedVideo.fromSnapshot(allVideosDocuments[i]));
-    ***REMOVED***
-    setState(() {***REMOVED***);
-  ***REMOVED***
+    }
+    setState(() {});
+  }
 
   getTrainers() async {
     allTrainers = new List<Trainer>();
@@ -66,28 +66,31 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
     List<DocumentSnapshot> trainersList = trainersSnapshot.documents;
     for (int i = 0; i < trainersList.length; i++) {
       allTrainers.add(Trainer.fromSnapshot(trainersList[i]));
-    ***REMOVED***
+    }
     pages = new List<Widget>();
     for (int i = 0; i < trainingTypes.length; i++) {
       pages.add(TrainerMarket(
         allTrainers: allTrainers,
         type: trainingTypes[i],
       ));
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
 
   getAllStreams() async {
     QuerySnapshot getStreams =
         await Firestore.instance.collection('streams').getDocuments();
     List<DocumentSnapshot> streamSnapshots = getStreams.documents;
     for (int i = 0; i < streamSnapshots.length; i++) {
+      models.Stream currentStream = models.Stream.fromSnapshot(streamSnapshots[i]);
+      if (DateTime.now().millisecondsSinceEpoch < currentStream.date) {
         allStreams.add(models.Stream.fromSnapshot(streamSnapshots[i]));
-    ***REMOVED***
-  ***REMOVED***
+      }
+    }
+  }
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
         backgroundColor: Colors.grey[100],
@@ -99,24 +102,24 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
             'Fitness Marketplace',
             style: TextStyle(
                 color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25),
-***REMOVED***
-***REMOVED***
-***REMOVED***
+          ),
+        ),
+      ),
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10,
+              ),
               SearchBar(),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
-      ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***height: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 10),
                     Container(
                       height: 50,
                       child: Expanded(
@@ -130,29 +133,29 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                       isActive: true,
                                       title: trainingTypes[i],
                                       page: i));
-                            ***REMOVED***),
-        ***REMOVED***,
-      ***REMOVED***,
+                            }),
+                      ),
+                    ),
                     FadeAnimationDown(
                         1.6,
                         Padding(
                           padding:
                               EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-      ***REMOVED***
+                          child: Text(
                             "Popular Trainers",
-        ***REMOVED***
+                            style: TextStyle(
                               color: Colors.grey[700],
                               fontSize: 20,
-  ***REMOVED***
-              ***REMOVED***,
-            ***REMOVED***,
-          ***REMOVED***),
-  ***REMOVED***
-  ***REMOVED***,
-***REMOVED***,
-***REMOVED***
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )),
+                  ],
+                ),
+              ),
+              SizedBox(
                 height: 0,
-***REMOVED***,
+              ),
               Container(
                 height: MediaQuery.of(context).size.height / 3,
                 child: pages != null
@@ -160,12 +163,12 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                         children: pages,
                         controller: _pageController,
                         physics: NeverScrollableScrollPhysics(),
-        ***REMOVED***
+                      )
                     : CircularProgressIndicator(),
-***REMOVED***,
-***REMOVED***
+              ),
+              SizedBox(
                 height: 0,
-***REMOVED***,
+              ),
               FadeAnimationDown(
                   2.6,
                   Padding(
@@ -177,18 +180,18 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                         Padding(
                           padding:
                               EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-      ***REMOVED***
+                          child: Text(
                             "Trending Trainers",
-        ***REMOVED***
+                            style: TextStyle(
                               color: Colors.grey[700],
                               fontSize: 20,
-  ***REMOVED***
-              ***REMOVED***,
-            ***REMOVED***,
-          ***REMOVED***,
-        ***REMOVED***,
-      ***REMOVED***,
-    ***REMOVED***),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )),
               allTrainers != null
                   ? Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
@@ -202,9 +205,9 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                               return FadeAnimationDown(
                                 0.7,
                                 makeTrending(givenTrainer: currentTrainer),
-                          ***REMOVED***
-                            ***REMOVED***,
-            ***REMOVED***))
+                              );
+                            },
+                          )))
                   : CircularProgressIndicator(),
               FadeAnimationDown(
                   3.4,
@@ -212,20 +215,20 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: Align(
                       alignment: Alignment.center,
-              ***REMOVED***
+                      child: Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-    ***REMOVED***
+                        child: Text(
                           "Upcoming Live Sessions",
-      ***REMOVED***
-      ***REMOVED***
+                          style: TextStyle(
+                            color: Colors.red,
                             fontSize: 23,
-***REMOVED***
-            ***REMOVED***,
-          ***REMOVED***,
-        ***REMOVED***,
-      ***REMOVED***,
-    ***REMOVED***),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: allStreams != null
@@ -253,28 +256,28 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                                 .toLocal()),
                                     people: "No limit",
                                 stream: allStreams[i]),
-                          ***REMOVED***
-                            ***REMOVED***))
+                              );
+                            }))
                     : SizedBox.shrink(),
-***REMOVED***,
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
-  Widget makeTraining({isActive, title, page***REMOVED***) {
+  Widget makeTraining({isActive, title, page}) {
     return GestureDetector(
       onTap: () {
-  ***REMOVED***
+        setState(() {
           pageIndex = page;
           print(title);
           _pageController.animateToPage(pageIndex,
               duration: Duration(milliseconds: 300),
               curve: Curves.easeInOutSine);
-        ***REMOVED***);
-      ***REMOVED***,
+        });
+      },
       child: AspectRatio(
         aspectRatio: pageIndex == page ? 3 : 2.75 / 1,
         child: Container(
@@ -282,7 +285,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
           decoration: BoxDecoration(
             color: pageIndex == page ? Colors.red[700] : Colors.white,
             borderRadius: BorderRadius.circular(50),
-***REMOVED***
+          ),
           child: Align(
             child: Text(
               title,
@@ -291,15 +294,15 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                 fontSize: 18,
                 fontWeight:
                     pageIndex == page ? FontWeight.bold : FontWeight.w300,
-***REMOVED***,
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
-  Widget makeTrending({Trainer givenTrainer***REMOVED***) {
+  Widget makeTrending({Trainer givenTrainer}) {
     String trainerName = givenTrainer.firstName + ' ' + givenTrainer.lastName;
     return GestureDetector(
       onTap: () {
@@ -308,8 +311,8 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
             MaterialPageRoute(
                 builder: (context) => TrainerWidget(
                       trainer: givenTrainer,
-      ***REMOVED***));
-      ***REMOVED***,
+                    )));
+      },
       child: Hero(
         tag: trainerName,
         child: Container(
@@ -318,123 +321,123 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
           margin: EdgeInsets.only(right: 20),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-***REMOVED***
+              image: DecorationImage(
                 image: NetworkImage(givenTrainer.profileUrl),
-***REMOVED***
-***REMOVED***),
+                fit: BoxFit.cover,
+              )),
           child: Container(
-***REMOVED***
+            decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 gradient: LinearGradient(begin: Alignment.bottomCenter, stops: [
                   .2,
                   .9
-***REMOVED*** colors: [
+                ], colors: [
                   Colors.black.withOpacity(.9),
                   Colors.black.withOpacity(.3),
                 ])),
-    ***REMOVED***
+            child: Padding(
               padding: EdgeInsets.all(15),
-    ***REMOVED***
-    ***REMOVED***
-***REMOVED***
-    ***REMOVED***
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                   Align(
                     alignment: Alignment.topRight,
                     child: Icon(
                       Icons.favorite,
                       color: Colors.white,
-      ***REMOVED***,
-    ***REMOVED***,
+                    ),
+                  ),
                   Column(
-        ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
                         trainerName,
-    ***REMOVED***
-  ***REMOVED***
+                        style: TextStyle(
+                          color: Colors.white,
                           fontSize: 20,
-    ***REMOVED***,
-          ***REMOVED***,
-        ***REMOVED***,
-***REMOVED***
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
                         height: 5,
-        ***REMOVED***,
-***REMOVED***
+                      ),
+                      Text(
                         givenTrainer.trainingTypes.toString(),
-    ***REMOVED***color: Colors.grey, fontSize: 15),
-        ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***
-***REMOVED***
-***REMOVED***,
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
+                        style: TextStyle(color: Colors.grey, fontSize: 15),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
-  Widget liveSession({image, name, date, people, stream***REMOVED***) {
+  Widget liveSession({image, name, date, people, stream}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: InkWell(
-        onTap: () {***REMOVED***,
+        onTap: () {},
         child: Container(
           height: 100,
           width: 400,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
-***REMOVED***
+            children: [
               //Hero
               Container(
                 height: 100,
                 width: 60,
-    ***REMOVED***
-      ***REMOVED***
+                decoration: BoxDecoration(
+                    image: DecorationImage(
                       image: NetworkImage(image),
-      ***REMOVED***
-      ***REMOVED***,
+                      fit: BoxFit.cover,
+                    ),
                     borderRadius: BorderRadius.only(
                       topRight: Radius.circular(20),
                       bottomRight: Radius.circular(20),
-      ***REMOVED***,
+                    ),
                     boxShadow: [
                       BoxShadow(
                           offset: Offset(1, 1), blurRadius: 5, spreadRadius: 1)
                     ]),
-***REMOVED***,
-***REMOVED***
+              ),
+              SizedBox(
                 width: 30,
-***REMOVED***,
+              ),
               Expanded(
-      ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text(
                       name,
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      ***REMOVED***,
-      ***REMOVED***
+                    ),
+                    SizedBox(
                       height: 5,
-      ***REMOVED***,
+                    ),
                     Text(
                       date,
-  ***REMOVED***color: Colors.black45),
-      ***REMOVED***,
-      ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***,
+                      style: TextStyle(color: Colors.black45),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text(
                       people.toString() + " people to attend",
-  ***REMOVED***color: Colors.black45),
-      ***REMOVED***,
-  ***REMOVED***
-  ***REMOVED***,
-***REMOVED***,
+                      style: TextStyle(color: Colors.black45),
+                    ),
+                  ],
+                ),
+              ),
               Align(
                 alignment: Alignment.centerRight,
                 child: OutlineButton(
@@ -446,21 +449,21 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                       MaterialPageRoute(builder: (context) => SessionPreview(
                         stream: stream,
                         isStream: true,
-        ***REMOVED***),
-                ***REMOVED***
-                  ***REMOVED***,
+                      )),
+                    );
+                  },
                   highlightedBorderColor: Colors.red,
                   splashColor: Colors.redAccent.withOpacity(0.5),
                   color: Colors.red,
                   textColor: Colors.red,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30)),
-  ***REMOVED***,
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

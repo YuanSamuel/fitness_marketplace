@@ -1,12 +1,12 @@
-***REMOVED***
-***REMOVED***
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/apis/firebase_provider.dart';
-***REMOVED***
+import 'package:fitnessmarketplace/models/video_info.dart';
 import 'package:fitnessmarketplace/pages/trainer_navigation.dart';
 import 'package:fitnessmarketplace/utils/style_constants.dart';
 import 'package:fitnessmarketplace/widgets/customslider_widget.dart';
-***REMOVED***
-***REMOVED***
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import 'dart:io';
 import 'dart:math';
@@ -21,9 +21,9 @@ import 'package:path/path.dart' as p;
 import '../models/video_info.dart';
 
 class AddNewRecording extends StatefulWidget {
-***REMOVED***
+  @override
   _AddNewRecordingState createState() => _AddNewRecordingState();
-***REMOVED***
+}
 
 class _AddNewRecordingState extends State<AddNewRecording> {
   String dropdownValue = 'LiveStream';
@@ -34,8 +34,8 @@ class _AddNewRecordingState extends State<AddNewRecording> {
   TextEditingController descriptcontroller;
   TextEditingController minscontrolller;
 
-***REMOVED***
-***REMOVED***
+  @override
+  void initState() {
     // TODO: implement initState
     EncodingProvider.enableStatisticsCallback((int time,
         int size,
@@ -46,21 +46,21 @@ class _AddNewRecordingState extends State<AddNewRecording> {
         double videoFps) {
       if (_canceled) return;
 
-***REMOVED***
+      setState(() {
         //_progress = time / _videoDuration;
-      ***REMOVED***);
-    ***REMOVED***);
+      });
+    });
     date = DateTime.now().millisecondsSinceEpoch;
     namecontroller = new TextEditingController();
     descriptcontroller = new TextEditingController();
     minscontrolller = new TextEditingController();
 
-***REMOVED***
-  ***REMOVED***
+    super.initState();
+  }
 
   static saveStream(String title, String description, double minutes, int date,
       double price) async {
-***REMOVED***
+    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
     final uid = user.uid;
 
     await Firestore.instance.collection('streams').add({
@@ -70,7 +70,7 @@ class _AddNewRecordingState extends State<AddNewRecording> {
       'title': title,
       'price': price,
       'trainer': uid,
-    ***REMOVED***);
+    });
 
     await Firestore.instance
         .collection('trainers')
@@ -84,8 +84,8 @@ class _AddNewRecordingState extends State<AddNewRecording> {
       'title': title,
       'price': price,
       'trainer': uid,
-    ***REMOVED***);
-  ***REMOVED***
+    });
+  }
 
   double time = 0;
   double price = 0;
@@ -99,61 +99,61 @@ class _AddNewRecordingState extends State<AddNewRecording> {
           time * 105 + 5,
           date,
           price * 95 + 5);
-    ***REMOVED*** else {
+    } else {
       await _takeVideo();
-    ***REMOVED***
+    }
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => TrainerNavigation()),
-***REMOVED***
-  ***REMOVED***
+    );
+  }
 
   double _duration = 5.0;
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: SingleChildScrollView(
             child: _processing
                 ? Center(
                     child: CircularProgressIndicator(),
-    ***REMOVED***
+                  )
                 : Column(
-        ***REMOVED***
+                    children: [
                       Container(
                           //height: MediaQuery.of(context).size.height,
                           height: 1100,
-              ***REMOVED***
+                          decoration: BoxDecoration(
                               gradient: LinearGradient(
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                   colors: [Colors.black, Colors.black87])),
-                ***REMOVED***children: [
-      ***REMOVED***height: 40),
-              ***REMOVED***
+                          child: Column(children: [
+                            SizedBox(height: 40),
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.start,
-                  ***REMOVED***
-          ***REMOVED***width: 10),
+                              children: [
+                                SizedBox(width: 10),
                                 IconButton(
-                ***REMOVED******REMOVED***,
+                                    onPressed: () {},
                                     icon: Icon(
                                       Icons.arrow_back,
-              ***REMOVED***
+                                      color: Colors.white,
                                       size: 30,
-                      ***REMOVED***),
-          ***REMOVED***width: 20),
-          ***REMOVED***
+                                    )),
+                                SizedBox(width: 20),
+                                Text(
                                   "Add a new session",
-              ***REMOVED***
-              ***REMOVED***
+                                  style: TextStyle(
+                                      color: Colors.white,
                                       fontWeight: FontWeight.w600,
                                       fontSize: 32),
-                  ***REMOVED***,
-              ***REMOVED***
-              ***REMOVED***,
-      ***REMOVED***
+                                ),
+                              ],
+                            ),
+                            SizedBox(
                               height: 20.0,
-              ***REMOVED***,
+                            ),
                             Container(
                                 height: MediaQuery.of(context)
                                         .copyWith()
@@ -161,8 +161,8 @@ class _AddNewRecordingState extends State<AddNewRecording> {
                                         .height /
                                     6,
                                 width: 325.0,
-                    ***REMOVED***
-        ***REMOVED***
+                                decoration: BoxDecoration(
+                                    color: Colors.grey,
                                     borderRadius: BorderRadius.circular(30.0)),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(30.0),
@@ -176,46 +176,46 @@ class _AddNewRecordingState extends State<AddNewRecording> {
                                     maximumYear: 2030,
                                     minuteInterval: 1,
                                     mode: CupertinoDatePickerMode.dateAndTime,
-                    ***REMOVED***,
-                  ***REMOVED***),
-      ***REMOVED***
+                                  ),
+                                )),
+                            SizedBox(
                               height: 20.0,
-              ***REMOVED***,
+                            ),
                             Expanded(
                               child: Container(
                                 width: double.infinity,
-                    ***REMOVED***
-          ***REMOVED***
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
                                   borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(50.0),
                                       topRight: Radius.circular(50.0)),
-                  ***REMOVED***,
-                        ***REMOVED***
+                                ),
+                                child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 40.0),
-                        ***REMOVED***
+                                  child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
-                        ***REMOVED***
-                ***REMOVED***
+                                    children: [
+                                      SizedBox(
                                         height: 30.0,
-                        ***REMOVED***,
-                        ***REMOVED***
-                            ***REMOVED***
-                    ***REMOVED***
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
                                             'Session Type',
-                        ***REMOVED***
+                                            style: TextStyle(
                                                 fontSize: 20.0,
                                                 fontWeight: FontWeight.w400),
-                            ***REMOVED***,
+                                          ),
                                           Spacer(),
-                        ***REMOVED***
-                        ***REMOVED***,
-                ***REMOVED***
+                                        ],
+                                      ),
+                                      SizedBox(
                                         height: 15.0,
-                        ***REMOVED***,
+                                      ),
                                       Container(
-                            ***REMOVED***
+                                        decoration: BoxDecoration(
                                           boxShadow: [
                                             BoxShadow(
                                               color:
@@ -224,12 +224,12 @@ class _AddNewRecordingState extends State<AddNewRecording> {
                                               blurRadius: 2,
                                               offset: Offset(0,
                                                   2), // changes position of shadow
-                              ***REMOVED***,
-                          ***REMOVED***
-                  ***REMOVED***
+                                            ),
+                                          ],
+                                          color: Colors.white,
                                           borderRadius:
                                               BorderRadius.circular(15.0),
-                          ***REMOVED***,
+                                        ),
                                         width: 400.0,
                                         child: Center(
                                           child: DropdownButton<String>(
@@ -238,7 +238,7 @@ class _AddNewRecordingState extends State<AddNewRecording> {
                                             icon: Icon(
                                               Icons.arrow_drop_down,
                                               color: Colors.black,
-                              ***REMOVED***,
+                                            ),
                                             iconSize: 24,
                                             elevation: 16,
                                             style:
@@ -246,12 +246,12 @@ class _AddNewRecordingState extends State<AddNewRecording> {
                                             underline: Container(
                                               height: 1,
                                               color: Colors.black,
-                              ***REMOVED***,
+                                            ),
                                             onChanged: (String newValue) {
-                                        ***REMOVED***
+                                              setState(() {
                                                 dropdownValue = newValue;
-                                              ***REMOVED***);
-                                            ***REMOVED***,
+                                              });
+                                            },
                                             items: <String>[
                                               'LiveStream',
                                               'Video Recording'
@@ -259,36 +259,36 @@ class _AddNewRecordingState extends State<AddNewRecording> {
                                                 (String value) {
                                               return DropdownMenuItem<String>(
                                                 value: value,
-                            ***REMOVED***
+                                                child: Text(
                                                   value,
-                              ***REMOVED***
+                                                  style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.w400),
-                                  ***REMOVED***,
-                                          ***REMOVED***
-                                            ***REMOVED***).toList(),
-                            ***REMOVED***,
-                          ***REMOVED***,
-                        ***REMOVED***,
-                ***REMOVED***
+                                                ),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
                                         height: 20.0,
-                        ***REMOVED***,
-                        ***REMOVED***
-                            ***REMOVED***
-                    ***REMOVED***
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
                                             'Session Title',
-                        ***REMOVED***
+                                            style: TextStyle(
                                                 fontSize: 20.0,
                                                 fontWeight: FontWeight.w400),
-                            ***REMOVED***,
+                                          ),
                                           Spacer(),
-                        ***REMOVED***
-                        ***REMOVED***,
-                ***REMOVED***
+                                        ],
+                                      ),
+                                      SizedBox(
                                         height: 15.0,
-                        ***REMOVED***,
+                                      ),
                                       Container(
-                            ***REMOVED***
+                                        decoration: BoxDecoration(
                                           boxShadow: [
                                             BoxShadow(
                                               color:
@@ -297,21 +297,21 @@ class _AddNewRecordingState extends State<AddNewRecording> {
                                               blurRadius: 2,
                                               offset: Offset(0,
                                                   2), // changes position of shadow
-                              ***REMOVED***,
-                          ***REMOVED***
-                  ***REMOVED***
+                                            ),
+                                          ],
+                                          color: Colors.white,
                                           borderRadius:
                                               BorderRadius.circular(15.0),
-                          ***REMOVED***,
+                                        ),
                                         width: 400.0,
                                         child: Center(
                                           child: TextFormField(
                                             controller: namecontroller,
                                             keyboardType: TextInputType.text,
-                        ***REMOVED***
+                                            style: TextStyle(
                                               color: Colors.black,
                                               fontFamily: 'OpenSans',
-                              ***REMOVED***,
+                                            ),
                                             decoration: InputDecoration(
                                               border: InputBorder.none,
                                               contentPadding:
@@ -320,29 +320,29 @@ class _AddNewRecordingState extends State<AddNewRecording> {
                                                   'Enter the session title',
                                               hintStyle: StyleConstants
                                                   .loginHintTextStyle,
-                              ***REMOVED***,
-                            ***REMOVED***,
-                          ***REMOVED***,
-                        ***REMOVED***,
-                ***REMOVED***
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
                                         height: 20.0,
-                        ***REMOVED***,
-                        ***REMOVED***
-                            ***REMOVED***
-                    ***REMOVED***
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
                                             'Description',
-                        ***REMOVED***
+                                            style: TextStyle(
                                                 fontSize: 20.0,
                                                 fontWeight: FontWeight.w400),
-                            ***REMOVED***,
+                                          ),
                                           Spacer(),
-                        ***REMOVED***
-                        ***REMOVED***,
-                ***REMOVED***
+                                        ],
+                                      ),
+                                      SizedBox(
                                         height: 15.0,
-                        ***REMOVED***,
+                                      ),
                                       Container(
-                            ***REMOVED***
+                                        decoration: BoxDecoration(
                                           boxShadow: [
                                             BoxShadow(
                                               color:
@@ -351,22 +351,22 @@ class _AddNewRecordingState extends State<AddNewRecording> {
                                               blurRadius: 2,
                                               offset: Offset(0,
                                                   2), // changes position of shadow
-                              ***REMOVED***,
-                          ***REMOVED***
-                  ***REMOVED***
+                                            ),
+                                          ],
+                                          color: Colors.white,
                                           borderRadius:
                                               BorderRadius.circular(15.0),
-                          ***REMOVED***,
+                                        ),
                                         width: 400.0,
                                         height: 200.0,
                                         child: Center(
                                           child: TextFormField(
                                             controller: descriptcontroller,
                                             keyboardType: TextInputType.text,
-                        ***REMOVED***
+                                            style: TextStyle(
                                               color: Colors.black,
                                               fontFamily: 'OpenSans',
-                              ***REMOVED***,
+                                            ),
                                             decoration: InputDecoration(
                                               border: InputBorder.none,
                                               contentPadding:
@@ -375,30 +375,30 @@ class _AddNewRecordingState extends State<AddNewRecording> {
                                                   'Enter the session description',
                                               hintStyle: StyleConstants
                                                   .loginHintTextStyle,
-                              ***REMOVED***,
-                            ***REMOVED***,
-                          ***REMOVED***,
-                        ***REMOVED***,
-                ***REMOVED***
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
                                         height: 20.0,
-                        ***REMOVED***,
-                        ***REMOVED***
-                            ***REMOVED***
-                    ***REMOVED***
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
                                             'Duration - ' +
                                                 ((time * 115 + 5)).toString(),
-                        ***REMOVED***
+                                            style: TextStyle(
                                                 fontSize: 20.0,
                                                 fontWeight: FontWeight.w400),
-                            ***REMOVED***,
+                                          ),
                                           Spacer(),
-                        ***REMOVED***
-                        ***REMOVED***,
-                ***REMOVED***
+                                        ],
+                                      ),
+                                      SizedBox(
                                         height: 15.0,
-                        ***REMOVED***,
+                                      ),
                                       Container(
-                            ***REMOVED***
+                                        decoration: BoxDecoration(
                                           boxShadow: [
                                             BoxShadow(
                                               color:
@@ -407,43 +407,43 @@ class _AddNewRecordingState extends State<AddNewRecording> {
                                               blurRadius: 2,
                                               offset: Offset(0,
                                                   2), // changes position of shadow
-                              ***REMOVED***,
-                          ***REMOVED***
-                  ***REMOVED***
+                                            ),
+                                          ],
+                                          color: Colors.white,
                                           borderRadius:
                                               BorderRadius.circular(15.0),
-                          ***REMOVED***,
+                                        ),
                                         width: 400.0,
                                         child: Center(
                                           child: Slider(
                                               value: time,
                                               onChanged: (value) {
-                                          ***REMOVED***
+                                                setState(() {
                                                   time = value;
-                                                ***REMOVED***);
-                                              ***REMOVED***),
-                          ***REMOVED***,
-                        ***REMOVED***,
-                ***REMOVED***
+                                                });
+                                              }),
+                                        ),
+                                      ),
+                                      SizedBox(
                                         height: 20.0,
-                        ***REMOVED***,
-                        ***REMOVED***
-                            ***REMOVED***
-                    ***REMOVED***
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
                                             'Price - ' +
                                                 (price * 95 + 5).toString(),
-                        ***REMOVED***
+                                            style: TextStyle(
                                                 fontSize: 20.0,
                                                 fontWeight: FontWeight.w400),
-                            ***REMOVED***,
+                                          ),
                                           Spacer(),
-                        ***REMOVED***
-                        ***REMOVED***,
-                ***REMOVED***
+                                        ],
+                                      ),
+                                      SizedBox(
                                         height: 15.0,
-                        ***REMOVED***,
+                                      ),
                                       Container(
-                            ***REMOVED***
+                                        decoration: BoxDecoration(
                                           boxShadow: [
                                             BoxShadow(
                                               color:
@@ -452,28 +452,28 @@ class _AddNewRecordingState extends State<AddNewRecording> {
                                               blurRadius: 2,
                                               offset: Offset(0,
                                                   2), // changes position of shadow
-                              ***REMOVED***,
-                          ***REMOVED***
-                  ***REMOVED***
+                                            ),
+                                          ],
+                                          color: Colors.white,
                                           borderRadius:
                                               BorderRadius.circular(15.0),
-                          ***REMOVED***,
+                                        ),
                                         width: 400.0,
                                         child: Center(
                                           child: Slider(
                                               value: price,
                                               onChanged: (value) {
-                                          ***REMOVED***
+                                                setState(() {
                                                   price = value;
-                                                ***REMOVED***);
-                                              ***REMOVED***),
-                          ***REMOVED***,
-                        ***REMOVED***,
-                ***REMOVED***
+                                                });
+                                              }),
+                                        ),
+                                      ),
+                                      SizedBox(
                                         height: 50.0,
-                        ***REMOVED***,
+                                      ),
                                       Container(
-                            ***REMOVED***
+                                        decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(30.0),
                                             color: Colors.black),
@@ -481,26 +481,26 @@ class _AddNewRecordingState extends State<AddNewRecording> {
                                           color: Colors.black,
                                           icon: Icon(
                                             Icons.check,
-                    ***REMOVED***
-                            ***REMOVED***,
-                      ***REMOVED***
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () {
                                             addSession(context);
-                                          ***REMOVED***,
-                          ***REMOVED***,
-                        ***REMOVED***
-                    ***REMOVED***
-                    ***REMOVED***,
-                  ***REMOVED***,
-                ***REMOVED***,
-              ***REMOVED***
+                                          },
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
                           ])),
-    ***REMOVED***
-    ***REMOVED***));
-  ***REMOVED***
+                    ],
+                  )));
+  }
 
   void updateDate(DateTime dt) {
     date = dt.millisecondsSinceEpoch;
-  ***REMOVED***
+  }
 
   final thumbWidth = 100;
   final thumbHeight = 150;
@@ -517,11 +517,11 @@ class _AddNewRecordingState extends State<AddNewRecording> {
     if (event.type == StorageTaskEventType.progress) {
       final double progress =
           event.snapshot.bytesTransferred / event.snapshot.totalByteCount;
-***REMOVED***
+      setState(() {
         _progress = progress;
-      ***REMOVED***);
-    ***REMOVED***
-  ***REMOVED***
+      });
+    }
+  }
 
   Future<String> _uploadFile(filePath, folderName) async {
     final file = new File(filePath);
@@ -534,12 +534,12 @@ class _AddNewRecordingState extends State<AddNewRecording> {
     StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
     String videoUrl = await taskSnapshot.ref.getDownloadURL();
     return videoUrl;
-  ***REMOVED***
+  }
 
   String getFileExtension(String fileName) {
     final exploded = fileName.split('.');
     return exploded[exploded.length - 1];
-  ***REMOVED***
+  }
 
   void _updatePlaylistUrls(File file, String videoName) {
     final lines = file.readAsLinesSync();
@@ -549,14 +549,14 @@ class _AddNewRecordingState extends State<AddNewRecording> {
       var updatedLine = line;
       if (line.contains('.ts') || line.contains('.m3u8')) {
         updatedLine = '$videoName%2F$line?alt=media';
-      ***REMOVED***
+      }
       updatedLines.add(updatedLine);
-    ***REMOVED***
+    }
     final updatedContents =
         updatedLines.reduce((value, element) => value + '\n' + element);
 
     file.writeAsStringSync(updatedContents);
-  ***REMOVED***
+  }
 
   Future<String> _uploadHLSFiles(dirPath, videoName) async {
     final videosDir = Directory(dirPath);
@@ -570,29 +570,29 @@ class _AddNewRecordingState extends State<AddNewRecording> {
       final fileExtension = getFileExtension(fileName);
       if (fileExtension == 'm3u8') _updatePlaylistUrls(file, videoName);
 
-***REMOVED***
-        _processPhase = 'Uploading video file $i out of ${files.length***REMOVED***';
+      setState(() {
+        _processPhase = 'Uploading video file $i out of ${files.length}';
         _progress = 0.0;
-      ***REMOVED***);
+      });
 
       final downloadUrl = await _uploadFile(file.path, videoName);
 
       if (fileName == 'master.m3u8') {
         playlistUrl = downloadUrl;
-      ***REMOVED***
+      }
       i++;
-    ***REMOVED***
+    }
 
     return playlistUrl;
-  ***REMOVED***
+  }
 
   Future<void> _processVideo(File rawVideoFile) async {
     print("PROCESSING VIDEO");
-    final String rand = '${new Random().nextInt(10000)***REMOVED***';
+    final String rand = '${new Random().nextInt(10000)}';
     final videoName = 'video$rand';
     print("VIDEONAME " + videoName);
     final Directory extDir = await getApplicationDocumentsDirectory();
-    final outDirPath = '${extDir.path***REMOVED***/Videos/$videoName';
+    final outDirPath = '${extDir.path}/Videos/$videoName';
     final videosDir = new Directory(outDirPath);
 
     print("GOT OUTPUT DIRECTORY");
@@ -608,7 +608,7 @@ class _AddNewRecordingState extends State<AddNewRecording> {
       _processPhase = 'Generating thumbnail';
       //_videoDuration = EncodingProvider.getDuration(info);
       _progress = 0.0;
-    ***REMOVED***);
+    });
 
     print("GETTING THUMBNAIL");
     final thumbFilePath =
@@ -617,7 +617,7 @@ class _AddNewRecordingState extends State<AddNewRecording> {
     setState(() {
       _processPhase = 'Encoding video';
       _progress = 0.0;
-    ***REMOVED***);
+    });
 
     print("ENCODING VIDEO FOR REAL");
     final encodedFilesDir =
@@ -626,7 +626,7 @@ class _AddNewRecordingState extends State<AddNewRecording> {
     setState(() {
       _processPhase = 'Uploading thumbnail to firebase storage';
       _progress = 0.0;
-    ***REMOVED***);
+    });
     final thumbUrl = await _uploadFile(thumbFilePath, 'thumbnail');
     final videoUrl = await _uploadHLSFiles(encodedFilesDir, videoName);
 
@@ -637,12 +637,12 @@ class _AddNewRecordingState extends State<AddNewRecording> {
       //aspectRatio: aspectRatio,
       uploadedAt: DateTime.now().millisecondsSinceEpoch,
       videoName: videoName,
-***REMOVED***
+    );
 
     setState(() {
       _processPhase = 'Saving video metadata to cloud firestore';
       _progress = 0.0;
-    ***REMOVED***);
+    });
 
     await FirebaseProvider.saveVideo(
         videoInfo,
@@ -656,8 +656,8 @@ class _AddNewRecordingState extends State<AddNewRecording> {
       _processPhase = '';
       _progress = 0.0;
       _processing = false;
-    ***REMOVED***);
-  ***REMOVED***
+    });
+  }
 
   Future _takeVideo() async {
     var videoFile;
@@ -666,7 +666,7 @@ class _AddNewRecordingState extends State<AddNewRecording> {
     if (_debugMode) {
       videoFile = File(
           '/storage/emulated/0/Android/data/com.learningsomethingnew.fluttervideo.flutter_video_sharing/files/Pictures/ebbafabc-dcbe-433b-93dd-80e7777ee4704451355941378265171.mp4');
-    ***REMOVED*** else {
+    } else {
       if (_imagePickerActive) return;
 
       _imagePickerActive = true;
@@ -674,19 +674,19 @@ class _AddNewRecordingState extends State<AddNewRecording> {
       _imagePickerActive = false;
 
       if (videoFile == null) return;
-    ***REMOVED***
+    }
     setState(() {
       _processing = true;
-    ***REMOVED***);
+    });
 
     try {
       await _processVideo(videoFile);
-    ***REMOVED*** catch (e) {
-      print('${e.toString()***REMOVED***');
-    ***REMOVED*** finally {
-***REMOVED***
+    } catch (e) {
+      print('${e.toString()}');
+    } finally {
+      setState(() {
         _processing = false;
-      ***REMOVED***);
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
+      });
+    }
+  }
+}

@@ -1,4 +1,4 @@
-***REMOVED***
+import 'package:flutter/material.dart';
 
 class StyleConstants{
   static TextStyle onboardingText = TextStyle(fontSize: 20.0, color: Colors.white );
@@ -23,7 +23,7 @@ class StyleConstants{
         color: Colors.black12,
         blurRadius: 6.0,
         offset: Offset(0, 2),
-***REMOVED***
+      ),
     ],
   );
 
@@ -41,5 +41,5 @@ class StyleConstants{
     fontSize: 15,
   );
 
-***REMOVED***
+}
 

@@ -1,24 +1,24 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-***REMOVED***
-***REMOVED***
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/helpers/string_helper.dart';
 import 'package:fitnessmarketplace/helpers/calendar_helper.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
 import 'package:fitnessmarketplace/models/Stream.dart' as models;
-***REMOVED***
-***REMOVED***
+import 'package:fitnessmarketplace/models/video_info.dart';
+import 'package:fitnessmarketplace/pages/player.dart';
 import 'package:fitnessmarketplace/pages/stream_page.dart';
-***REMOVED***
-***REMOVED***
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:fitnessmarketplace/models/Student.dart';
-***REMOVED***
+import 'package:permission_handler/permission_handler.dart';
 
 class UserHomePage extends StatefulWidget {
-***REMOVED***
+  @override
   _UserHomePageState createState() => _UserHomePageState();
-***REMOVED***
+}
 
 class _UserHomePageState extends State<UserHomePage> {
   Student currentStudent;
@@ -35,14 +35,14 @@ class _UserHomePageState extends State<UserHomePage> {
   StringHelper _stringHelper;
   CalendarHelper _calendarHelper;
 
-  Widget makeVideo({image, vidReference***REMOVED***) {
+  Widget makeVideo({image, vidReference}) {
     return GestureDetector(
       onTap: (){
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => Player(video: vidReference)),
-    ***REMOVED***
-      ***REMOVED***,
+        );
+      },
       child: AspectRatio(
         aspectRatio: 1.5 / 1,
         child: Container(
@@ -52,7 +52,7 @@ class _UserHomePageState extends State<UserHomePage> {
               image:
               DecorationImage(image: NetworkImage(image), fit: BoxFit.cover)),
           child: Container(
-***REMOVED***
+            decoration: BoxDecoration(
                 gradient: LinearGradient(begin: Alignment.bottomRight, colors: [
                   Colors.black.withOpacity(.9),
                   Colors.black.withOpacity(.3)
@@ -62,16 +62,16 @@ class _UserHomePageState extends State<UserHomePage> {
                 Icons.play_arrow,
                 color: Colors.white,
                 size: 70,
-***REMOVED***,
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
-***REMOVED***
-***REMOVED***
+  @override
+  void initState() {
     _calendarController = CalendarController();
     _calendarHelper = new CalendarHelper();
     _stringHelper = new StringHelper();
@@ -79,16 +79,16 @@ class _UserHomePageState extends State<UserHomePage> {
     getCurrentStudent();
     _handleCameraAndMic();
 
-***REMOVED***
-  ***REMOVED***
+    super.initState();
+  }
 
 
 
-***REMOVED***
+  @override
   void dispose() {
     _calendarController.dispose();
     super.dispose();
-  ***REMOVED***
+  }
 
   void getCurrentStudent() async {
     FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
@@ -100,8 +100,8 @@ class _UserHomePageState extends State<UserHomePage> {
     await getPrivateSessions();
     await getRecordedVideos();
     await getStreams();
-    setState(() {***REMOVED***);
-  ***REMOVED***
+    setState(() {});
+  }
 
   Future<void> getPrivateSessions() async {
     allPrivateSessions = new List<PrivateSession>();
@@ -114,9 +114,9 @@ class _UserHomePageState extends State<UserHomePage> {
       PrivateSession currentPrivateSession =
           PrivateSession.fromSnapshot(holdPrivateSessions[i]);
       allPrivateSessions.add(currentPrivateSession);
-    ***REMOVED***
+    }
     return;
-  ***REMOVED***
+  }
 
   Future getRecordedVideos() async {
     QuerySnapshot queryVideos = await currentStudent.reference
@@ -125,9 +125,9 @@ class _UserHomePageState extends State<UserHomePage> {
     List<DocumentSnapshot> videoData = queryVideos.documents;
     setState(() {
       trainervideos = videoData;
-    ***REMOVED***);
-    setState(() {***REMOVED***);
-  ***REMOVED***
+    });
+    setState(() {});
+  }
 
   Future<void> getStreams() async {
     allStreams = new List<models.Stream>();
@@ -136,9 +136,9 @@ class _UserHomePageState extends State<UserHomePage> {
     List<DocumentSnapshot> streamSnapshots = getStreams.documents;
     for (int i = 0; i < streamSnapshots.length; i++) {
       allStreams.add(models.Stream.fromSnapshot(streamSnapshots[i]));
-    ***REMOVED***
+    }
     return;
-  ***REMOVED***
+  }
 
 
   VideoInfo getVidInfoFromDs(DocumentSnapshot ds){
@@ -149,65 +149,65 @@ class _UserHomePageState extends State<UserHomePage> {
       aspectRatio: ds.data['aspectRatio'],
       videoName: ds.data['videoName'],
       uploadedAt: ds.data['uploadedAt'],
-***REMOVED***
-  ***REMOVED***
+    );
+  }
 
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
     if (currentStudent == null) {
-  ***REMOVED***
+      return Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
-***REMOVED***
-  ***REMOVED***
-    ***REMOVED*** else {
+        ),
+      );
+    } else {
       print(allPrivateSessions);
-  ***REMOVED***
-  ***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
+      return Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
                 height: 30.0,
-***REMOVED***,
+              ),
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Row(
-        ***REMOVED***
-***REMOVED***
+                    children: [
+                      Text(
                         'Student: ' + currentStudent.firstName,
-    ***REMOVED***
+                        style: TextStyle(
                             fontSize: 30.0, fontWeight: FontWeight.w600),
-        ***REMOVED***,
+                      ),
                       Spacer(),
                       IconButton(
                         icon: Icon(Icons.account_circle),
-    ***REMOVED******REMOVED***,
-        ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***),
+                        onPressed: () {},
+                      )
+                    ],
+                  )),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: Divider(
                   height: 10.0,
                   thickness: 0.75,
-  ***REMOVED***,
-***REMOVED***,
+                ),
+              ),
               Container(child: _buildCalendar()),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: Divider(
                   height: 10.0,
                   thickness: 0.75,
-  ***REMOVED***,
-***REMOVED***,
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 15.0),
                 child: Text(
                   'Upcoming Sessions',
-***REMOVED***fontSize: 25.0, fontWeight: FontWeight.bold),
-  ***REMOVED***,
-***REMOVED***,
+                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+                ),
+              ),
               Container(
                 height: 250.0,
                 child: ListView.builder(
@@ -228,21 +228,21 @@ class _UserHomePageState extends State<UserHomePage> {
 
                     return GestureDetector(
                       onTap: (){
-  ***REMOVED***
-***REMOVED***
-***REMOVED***
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
                               builder: (context) => StreamPage(
                                 channelName: isStream?allEvents[i].trainer:allEvents[i].trainerUid,
                                 role: isStream?ClientRole.Audience:ClientRole.Broadcaster,
                                 isTrainer: true,
-                ***REMOVED***),
-                    ***REMOVED***
-                      ***REMOVED***,
-              ***REMOVED***
+                              )),
+                        );
+                      },
+                      child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
                           padding: EdgeInsets.symmetric(horizontal: 15.0),
-              ***REMOVED***
+                          decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30.0),
                             color: Color(0xff3B3B3B),
                             boxShadow: [
@@ -252,116 +252,116 @@ class _UserHomePageState extends State<UserHomePage> {
                                 blurRadius: 7,
                                 offset:
                                     Offset(0, 3), // changes position of shadow
-                ***REMOVED***,
-            ***REMOVED***
-            ***REMOVED***,
+                              ),
+                            ],
+                          ),
                           height: 100.0,
                           child: Row(
-            ***REMOVED***
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
-                ***REMOVED***
+                            children: [
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                    ***REMOVED***
-                    ***REMOVED***
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
                                   Container(
                                     width: 7 * MediaQuery.of(context).size.width / 10,
                                     height: 40,
                                     child: isStream ? Text(
                                       allEvents[i].title + ' - Live Class',
                                       overflow: TextOverflow.fade,
-                  ***REMOVED***
-                ***REMOVED***
+                                      style: TextStyle(
+                                        color: Colors.white,
                                         fontSize: 20.0,
-            ***REMOVED***
-                        ***REMOVED***,
-                      ***REMOVED*** : Text(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ) : Text(
                                       'Lesson with: ' +
                                           selectedPrivateSessions[i].trainerName,
                                       overflow: TextOverflow.fade,
-                  ***REMOVED***
+                                      style: TextStyle(
                                           fontSize: 20.0,
                                           fontWeight: FontWeight.w600,
                                           color: Colors.white),
-                      ***REMOVED***,
-                    ***REMOVED***,
-            ***REMOVED***
+                                    ),
+                                  ),
+                                  SizedBox(
                                     height: 10.0,
-                    ***REMOVED***,
-            ***REMOVED***
+                                  ),
+                                  Text(
                                     length,
-                ***REMOVED***
+                                    style: TextStyle(
                                         fontSize: 15.0,
                                         fontWeight: FontWeight.w400,
                                         color: Colors.white),
-                    ***REMOVED***,
-                ***REMOVED***
-                ***REMOVED***,
+                                  ),
+                                ],
+                              ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.end,
-                    ***REMOVED***
-            ***REMOVED***
+                                children: [
+                                  Text(
                                     date,
-                ***REMOVED***
+                                    style: TextStyle(
                                         fontSize: 12.0,
                                         fontWeight: FontWeight.w400,
                                         color: Colors.white),
-                    ***REMOVED***,
-            ***REMOVED***
+                                  ),
+                                  SizedBox(
                                     height: 10.0,
-                    ***REMOVED***,
-            ***REMOVED***
+                                  ),
+                                  Text(
                                     time,
-                ***REMOVED***
+                                    style: TextStyle(
                                         fontSize: 12.0,
                                         fontWeight: FontWeight.w400,
                                         color: Colors.white),
-                    ***REMOVED***,
-                ***REMOVED***
-                ***REMOVED***
-            ***REMOVED***
-            ***REMOVED***,
-          ***REMOVED***,
-        ***REMOVED***,
-                ***REMOVED***
-                  ***REMOVED***,
-  ***REMOVED***,
-***REMOVED***,
-***REMOVED***
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(
                 height: 10.0,
-***REMOVED***,
+              ),
               Container(
-    ***REMOVED***
+                decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.symmetric(
                       vertical: BorderSide(width: 0.5, color: Colors.black26),
-      ***REMOVED***),
-      ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***
+                    )),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
                       height: 10.0,
-      ***REMOVED***,
+                    ),
                     Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15.0),
                         child: Row(
-              ***REMOVED***
-      ***REMOVED***
+                          children: [
+                            Text(
                               'Your Videos',
-          ***REMOVED***
+                              style: TextStyle(
                                   fontSize: 25.0, fontWeight: FontWeight.bold),
-              ***REMOVED***,
+                            ),
                             Spacer(),
-      ***REMOVED***
+                            Text(
                               'See All',
-          ***REMOVED***
+                              style: TextStyle(
                                   fontSize: 15.0,
                                   fontWeight: FontWeight.w400,
                                   color: Colors.black26),
-              ***REMOVED***,
-          ***REMOVED***
-          ***REMOVED***),
+                            ),
+                          ],
+                        )),
                     Container(
                       color: Colors.white,
                       height: 300.0,
@@ -374,15 +374,15 @@ class _UserHomePageState extends State<UserHomePage> {
                             padding: const EdgeInsets.all(10.0),
                             child: GestureDetector(
                               onTap: (){
-          ***REMOVED***
-        ***REMOVED***
-        ***REMOVED***builder: (context) => Player(video: getVidInfoFromDs(trainervideos[i]))),
-                            ***REMOVED***
-                              ***REMOVED***,
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => Player(video: getVidInfoFromDs(trainervideos[i]))),
+                                );
+                              },
                               child: Container(
                                   height: 300.0,
                                   width: 300.0,
-                      ***REMOVED***
+                                  decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(30.0),
                                     color: Colors.blue,
                                     boxShadow: [
@@ -392,33 +392,33 @@ class _UserHomePageState extends State<UserHomePage> {
                                         blurRadius: 7,
                                         offset: Offset(
                                             0, 3), // changes position of shadow
-                        ***REMOVED***,
-                    ***REMOVED***
-                    ***REMOVED***,
+                                      ),
+                                    ],
+                                  ),
                                   child: Center(
-                ***REMOVED***trainervideos[i].data["title"],
-                    ***REMOVED***),)
+                                    child: Text(trainervideos[i].data["title"],
+                                  )),)
                               //TODO set up this so that it works with actual videos / streams
                               /*onTap: () {
-          ***REMOVED***
-        ***REMOVED***
-        ***REMOVED***builder: (context) => ShowVideoPage(videoDownloadUrl: recordedVideos[i].videoUrl,)),
-                            ***REMOVED***
-                              ***REMOVED***,*/
-              ***REMOVED***,
-                      ***REMOVED***
-                        ***REMOVED***,
-        ***REMOVED***,
-      ***REMOVED***,
-  ***REMOVED***
-  ***REMOVED***,
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
-    ***REMOVED***
-  ***REMOVED***
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => ShowVideoPage(videoDownloadUrl: recordedVideos[i].videoUrl,)),
+                                );
+                              },*/
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+    }
+  }
 
   Widget _buildCalendar() {
     return Container(
@@ -430,16 +430,16 @@ class _UserHomePageState extends State<UserHomePage> {
           for (int i = 0; i < events.length; i++) {
             if (events[i] is models.Stream) {
               selectedStreams.add(events[i]);
-            ***REMOVED***
-        ***REMOVED***
+            }
+            else {
               selectedPrivateSessions.add(events[i]);
-            ***REMOVED***
-          ***REMOVED***
-    ***REMOVED***
+            }
+          }
+          setState(() {
             selectedDate = date;
             allEvents = events;
-          ***REMOVED***);
-        ***REMOVED***,
+          });
+        },
         locale: 'en_US',
         events: _calendarHelper.listToEventMap(allPrivateSessions, allStreams),
         calendarController: _calendarController,
@@ -449,24 +449,24 @@ class _UserHomePageState extends State<UserHomePage> {
         availableGestures: AvailableGestures.horizontalSwipe,
         availableCalendarFormats: const {
           CalendarFormat.month: 'Month',
-        ***REMOVED***,
+        },
         calendarStyle: CalendarStyle(
           weekdayStyle: TextStyle(color: Colors.black),
           weekendStyle: TextStyle(color: Colors.red),
           outsideStyle: TextStyle(color: Colors.grey),
           unavailableStyle: TextStyle(color: Colors.grey),
           outsideWeekendStyle: TextStyle(color: Colors.grey),
-***REMOVED***
+        ),
         daysOfWeekStyle: DaysOfWeekStyle(
           dowTextBuilder: (date, locale) {
             return DateFormat.E(locale)
                 .format(date)
                 .substring(0, 3)
                 .toUpperCase();
-          ***REMOVED***,
+          },
           weekdayStyle: TextStyle(color: Colors.grey),
           weekendStyle: TextStyle(color: Colors.grey),
-***REMOVED***
+        ),
         headerVisible: true,
         headerStyle: HeaderStyle(
             titleTextStyle: TextStyle(color: Colors.black, fontSize: 20.0)),
@@ -478,40 +478,40 @@ class _UserHomePageState extends State<UserHomePage> {
                   color: Color(0xFF30A9B2),
                   //color: Color(C),
                   shape: BoxShape.circle,
-  ***REMOVED***,
+                ),
                 margin: const EdgeInsets.all(4.0),
                 width: 4,
                 height: 4,
-***REMOVED***
+              )
             ];
-          ***REMOVED***,
+          },
           selectedDayBuilder: (context, date, _) {
             return Container(
               decoration: new BoxDecoration(
                 color: Color(0xFF30A9B2),
                 shape: BoxShape.circle,
-***REMOVED***,
+              ),
               margin: const EdgeInsets.all(4.0),
               width: 100,
               height: 100,
               child: Center(
                 child: Text(
-                  '${date.day***REMOVED***',
-***REMOVED***
+                  '${date.day}',
+                  style: TextStyle(
                     fontSize: 16.0,
                     color: Colors.white,
-    ***REMOVED***,
-  ***REMOVED***,
-***REMOVED***,
-        ***REMOVED***
-          ***REMOVED***,
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+  Future<void> _handleCameraAndMic() async {
+    await Permission.camera.request();
+    await Permission.microphone.request();
+  }
+}

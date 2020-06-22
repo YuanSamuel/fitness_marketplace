@@ -1,22 +1,22 @@
-***REMOVED***
-***REMOVED***
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
 import 'package:fitnessmarketplace/animations/FadeAnimationUp.dart';
 import 'package:fitnessmarketplace/pages/request_private_session_page.dart';
 import 'package:fitnessmarketplace/pages/session_preview_page.dart';
-***REMOVED***
-***REMOVED***
-***REMOVED***
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-***REMOVED***
+import 'package:fitnessmarketplace/models/Trainer.dart';
 
 class TrainerWidget extends StatefulWidget {
-  const TrainerWidget({Key key, this.trainer***REMOVED***) : super(key: key);
+  const TrainerWidget({Key key, this.trainer}) : super(key: key);
 
-***REMOVED***
+  final Trainer trainer;
 
-***REMOVED***
+  @override
   _TrainerWidgetState createState() => _TrainerWidgetState();
-***REMOVED***
+}
 
 class _TrainerWidgetState extends State<TrainerWidget> {
   List<DocumentSnapshot> trainerVideos;
@@ -25,14 +25,14 @@ class _TrainerWidgetState extends State<TrainerWidget> {
   int commentAmount;
   double rate;
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  @override
+  void initState() {
+    super.initState();
 
     getRate();
     getRecordedVideos();
     getStreams();
-  ***REMOVED***
+  }
 
   getRecordedVideos() async {
     QuerySnapshot queryVideos =
@@ -40,8 +40,8 @@ class _TrainerWidgetState extends State<TrainerWidget> {
     List<DocumentSnapshot> videoData = queryVideos.documents;
     setState(() {
       trainerVideos = videoData;
-    ***REMOVED***);
-  ***REMOVED***
+    });
+  }
 
   getRate() async {
     QuerySnapshot rateQuery =
@@ -54,29 +54,29 @@ class _TrainerWidgetState extends State<TrainerWidget> {
         int newTotalStar = rateDoc[i].data['rating'];
         totalStar += newTotalStar;
         _amount = _amount + 1;
-      ***REMOVED***
-    ***REMOVED***
+      }
+    }
     commentAmount = _amount;
     print(1.0 * totalStar / commentAmount);
     rate = 1.0 * totalStar / commentAmount;
     if (totalStar == 0 && commentAmount == 0) {
       rate = 0;
-    ***REMOVED***
+    }
     widget.trainer.reference.updateData({
       'rating': rate,
-    ***REMOVED***);
-  ***REMOVED***
+    });
+  }
 
   getStreams() async {
     QuerySnapshot getLiveSessions =
         await Firestore.instance.collection('stream').getDocuments();
     setState(() {
       trainerStreams = getLiveSessions.documents;
-    ***REMOVED***);
-  ***REMOVED***
+    });
+  }
 
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
     String trainerName =
         widget.trainer.firstName + ' ' + widget.trainer.lastName;
 
@@ -84,7 +84,7 @@ class _TrainerWidgetState extends State<TrainerWidget> {
 
     int rating = 5;
 
-***REMOVED***
+    return Scaffold(
       backgroundColor: Colors.black,
       body: Hero(
         tag: trainerName,
@@ -98,86 +98,86 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                   flexibleSpace: FlexibleSpaceBar(
                     collapseMode: CollapseMode.pin,
                     background: Container(
-          ***REMOVED***
-            ***REMOVED***
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
                               image: NetworkImage(widget.trainer.profileUrl),
                               fit: BoxFit.cover)),
                       child: Container(
-            ***REMOVED***
+                        decoration: BoxDecoration(
                             gradient: LinearGradient(
                           begin: Alignment.bottomRight,
                           colors: [Colors.black, Colors.black.withOpacity(0.1)],
-          ***REMOVED***),
-                ***REMOVED***
-                ***REMOVED***
-                ***REMOVED***
-                ***REMOVED***
+                        )),
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.end,
-                ***REMOVED***
+                            children: [
                               FadeAnimationUp(
                                   1,
-            ***REMOVED***
+                                  Text(
                                     trainerName,
-                ***REMOVED***
-              ***REMOVED***
-          ***REMOVED***
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
                                       fontSize: 40,
-                      ***REMOVED***,
-                    ***REMOVED***),
-        ***REMOVED***
-                ***REMOVED***
-                ***REMOVED***,
-                ***REMOVED***
-                    ***REMOVED***
+                                    ),
+                                  )),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
                                   FadeAnimationUp(
                                       1.2,
                                       trainerVideos != null
                                           ? Text(
                                               trainerVideos.length.toString() +
                                                   ' Videos',
-                          ***REMOVED***
-                      ***REMOVED***
+                                              style: TextStyle(
+                                                  color: Colors.grey,
                                                   fontSize: 16),
-                              ***REMOVED***
+                                            )
                                           : Text('loading')),
-            ***REMOVED***
+                                  SizedBox(
                                     width: 50,
-                    ***REMOVED***,
+                                  ),
                                   FadeAnimationUp(
                                     1.3,
                                     trainerStreams != null
                                         ? Text(
                                             trainerStreams.length.toString() +
                                                 ' Live Sessions',
-                        ***REMOVED***
-                    ***REMOVED***
+                                            style: TextStyle(
+                                                color: Colors.grey,
                                                 fontSize: 16),
-                            ***REMOVED***
+                                          )
                                         : Text('loading'),
-                    ***REMOVED***,
-            ***REMOVED***
+                                  ),
+                                  SizedBox(
                                     height: 30,
-                    ***REMOVED***
-                ***REMOVED***
-                ***REMOVED***
-            ***REMOVED***
-            ***REMOVED***,
-          ***REMOVED***,
-        ***REMOVED***,
-      ***REMOVED***,
-    ***REMOVED***,
-  ***REMOVED***,
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 SliverList(
                   delegate: SliverChildListDelegate([
                     Padding(
-            ***REMOVED***
-            ***REMOVED***
-            ***REMOVED***
-            ***REMOVED***
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
                           FadeAnimationUp(
                               1.5,
-                ***REMOVED***
-                ***REMOVED***
+                              Row(
+                                children: <Widget>[
                                   FutureBuilder(
                                     future: Firestore.instance
                                         .collection('trainers')
@@ -186,7 +186,7 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
                                         return Row(
-                              ***REMOVED***
+                                          children: [
                                             RatingBarIndicator(
                                               rating: double.parse(snapshot
                                                   .data['rating']
@@ -195,107 +195,107 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                                   Icon(
                                                 Icons.star,
                                                 color: Colors.amber,
-                                ***REMOVED***,
+                                              ),
                                               itemCount: 5,
                                               itemSize: 15,
                                               direction: Axis.horizontal,
-                              ***REMOVED***,
-                      ***REMOVED***
+                                            ),
+                                            SizedBox(
                                               width: 10,
-                              ***REMOVED***,
-                      ***REMOVED***
+                                            ),
+                                            Text(
                                               snapshot.data['rating']
                                                   .toStringAsFixed(2),
-                          ***REMOVED***
+                                              style: TextStyle(
                                                   color: Colors.white70),
-                              ***REMOVED***,
-                          ***REMOVED***
-                                    ***REMOVED***
-                                      ***REMOVED*** else {
+                                            ),
+                                          ],
+                                        );
+                                      } else {
                                         return Row(
-                              ***REMOVED***
+                                          children: [
                                             RatingBarIndicator(
                                               rating: 0,
                                               itemBuilder: (context, index) =>
                                                   Icon(
                                                 Icons.star,
                                                 color: Colors.amber,
-                                ***REMOVED***,
+                                              ),
                                               itemCount: 5,
                                               itemSize: 15,
                                               direction: Axis.horizontal,
-                              ***REMOVED***,
-                      ***REMOVED***
+                                            ),
+                                            SizedBox(
                                               width: 10,
-                              ***REMOVED***,
-                      ***REMOVED***
+                                            ),
+                                            Text(
                                               '0',
-                          ***REMOVED***
+                                              style: TextStyle(
                                                   color: Colors.white70),
-                              ***REMOVED***,
-                          ***REMOVED***
-                                    ***REMOVED***
-                                      ***REMOVED***
-                                    ***REMOVED***,
-                    ***REMOVED***,
-            ***REMOVED***
+                                            ),
+                                          ],
+                                        );
+                                      }
+                                    },
+                                  ),
+                                  SizedBox(
                                     width: 20,
-                    ***REMOVED***,
-            ***REMOVED***
+                                  ),
+                                  Text(
                                     '($commentAmount)',
-                ***REMOVED***
+                                    style: TextStyle(
                                         color: Colors.white38, fontSize: 12),
-                    ***REMOVED***,
-                ***REMOVED***
-                ***REMOVED***),
-    ***REMOVED***
+                                  ),
+                                ],
+                              )),
+                          SizedBox(
                             height: 5,
-            ***REMOVED***,
+                          ),
                           FadeAnimationUp(
                               1.6,
-        ***REMOVED***
+                              Text(
                                 widget.trainer.description,
-            ***REMOVED***
-        ***REMOVED***
+                                style: TextStyle(
+                                    color: Colors.grey,
                                     fontSize: 14,
                                     height: 1.4),
-                ***REMOVED***),
-    ***REMOVED***
+                              )),
+                          SizedBox(
                             height: 40,
-            ***REMOVED***,
+                          ),
                           FadeAnimationUp(
                               1.6,
-        ***REMOVED***
+                              Text(
                                 "Workouts Offered",
-            ***REMOVED***
-            ***REMOVED***
+                                style: TextStyle(
+                                    color: Colors.white,
                                     fontSize: 18,
-            ***REMOVED***
-                ***REMOVED***),
-    ***REMOVED***
-            ***REMOVED***
-            ***REMOVED***,
+                                    fontWeight: FontWeight.bold),
+                              )),
+                          SizedBox(
+                            height: 10,
+                          ),
                           FadeAnimationUp(
                               1.6,
-        ***REMOVED***
+                              Text(
                                 widget.trainer.trainingTypes.toString(),
-            ***REMOVED***color: Colors.grey),
-                ***REMOVED***),
-    ***REMOVED***
+                                style: TextStyle(color: Colors.grey),
+                              )),
+                          SizedBox(
                             height: 30,
-            ***REMOVED***,
+                          ),
                           FadeAnimationUp(
                               1.6,
-        ***REMOVED***
+                              Text(
                                 "Preview Videos",
-            ***REMOVED***
-            ***REMOVED***
+                                style: TextStyle(
+                                    color: Colors.white,
                                     fontSize: 18,
-            ***REMOVED***
-                ***REMOVED***),
-    ***REMOVED***
+                                    fontWeight: FontWeight.bold),
+                              )),
+                          SizedBox(
                             height: 20,
-            ***REMOVED***,
+                          ),
                           FadeAnimationUp(
                               1.8,
                               trainerVideos != null
@@ -316,40 +316,40 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                                       .data["thumbUrl"],
                                                   vidReference:
                                                       trainerVideos[i]),
-                                        ***REMOVED***
-                                          ***REMOVED***),
-                      ***REMOVED***
+                                            );
+                                          }),
+                                    )
                                   : CircularProgressIndicator()),
-    ***REMOVED***
+                          SizedBox(
                             height: 80,
-            ***REMOVED***,
-    ***REMOVED***
+                          ),
+                          SizedBox(
                             height: MediaQuery.of(context).size.height - 50,
-                  ***REMOVED***
-                  ***REMOVED***
+                            child: Column(
+                              children: [
                                 Container(
                                   height: 100,
-                        ***REMOVED***
-                        ***REMOVED***
-                        ***REMOVED***
-                            ***REMOVED***
-                    ***REMOVED***
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          SizedBox(
                                             child: TextField(
                                               controller: _comment,
-                          ***REMOVED***
-                        ***REMOVED***
-                                ***REMOVED***,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
                                               decoration: InputDecoration(
                                                 hintText: 'Add a Comment',
                                                 enabledBorder:
                                                     UnderlineInputBorder(
-                              ***REMOVED*** BorderSide(
+                                                  borderSide: BorderSide(
                                                       color: Colors.lightBlue),
-                                  ***REMOVED***,
-                                ***REMOVED***,
-                              ***REMOVED***,
+                                                ),
+                                              ),
+                                            ),
                                             width: 300,
-                            ***REMOVED***,
+                                          ),
                                           Container(
                                             width: 50,
                                             height: 50,
@@ -357,7 +357,7 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                               child: Icon(
                                                 Icons.send,
                                                 color: Colors.lightBlue,
-                                ***REMOVED***,
+                                              ),
                                               onPressed: () async {
                                                 String currentUid;
                                                 await FirebaseAuth.instance
@@ -374,16 +374,16 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                                   'uidStudent': currentUid,
                                                   'uidTrainer':
                                                       widget.trainer.uid,
-                                                ***REMOVED***);
+                                                });
                                                 _comment.clear();
-                                              ***REMOVED***,
-                              ***REMOVED***,
-                            ***REMOVED***,
-                        ***REMOVED***
-                        ***REMOVED***,
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                       Container(
-                        ***REMOVED***
-                        ***REMOVED***,
+                                        height: 10,
+                                      ),
                                       RatingBar(
                                         initialRating: 5,
                                         minRating: 1,
@@ -392,14 +392,14 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                         itemBuilder: (context, _) => Icon(
                                           Icons.star,
                                           color: Colors.amber,
-                          ***REMOVED***,
+                                        ),
                                         onRatingUpdate: (newRating) {
                                           rating = newRating.toInt();
-                                        ***REMOVED***,
-                        ***REMOVED***,
-                    ***REMOVED***
-                    ***REMOVED***,
-                  ***REMOVED***,
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
                                 StreamBuilder(
                                   stream: Firestore.instance
                                       .collection('comments')
@@ -424,9 +424,9 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                               return Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
-                                    ***REMOVED***
-                                    ***REMOVED***
-                                        ***REMOVED***
+                                                children: [
+                                                  Row(
+                                                    children: [
                                                       FutureBuilder(
                                                         future: Firestore
                                                             .instance
@@ -448,27 +448,27 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                                                   ' ' +
                                                                   snapshot.data[
                                                                       'lastName'],
-                                          ***REMOVED***
+                                                              style: TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w500,
                                                                 color: Colors
                                                                     .white,
-                                        ***REMOVED***
-                                                ***REMOVED***,
+                                                                fontSize: 25,
+                                                              ),
                                                               textAlign:
                                                                   TextAlign
                                                                       .left,
-                                                        ***REMOVED***
-                                                          ***REMOVED*** else {
+                                                            );
+                                                          } else {
                                                             return SizedBox
                                                                 .shrink();
-                                                          ***REMOVED***
-                                                        ***REMOVED***,
-                                        ***REMOVED***,
-                                ***REMOVED***
+                                                          }
+                                                        },
+                                                      ),
+                                                      SizedBox(
                                                         width: 10,
-                                        ***REMOVED***,
+                                                      ),
                                                       RatingBarIndicator(
                                                         rating: double.parse(
                                                             commentDocs[i]
@@ -479,47 +479,47 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                                                 Icon(
                                                           Icons.star,
                                                           color: Colors.amber,
-                                          ***REMOVED***,
+                                                        ),
                                                         itemCount: 5,
                                                         itemSize: 15,
                                                         direction:
                                                             Axis.horizontal,
-                                        ***REMOVED***,
-                                    ***REMOVED***
-                                    ***REMOVED***,
-                            ***REMOVED***
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
                                                     height: 5,
-                                    ***REMOVED***,
-                            ***REMOVED***
+                                                  ),
+                                                  Text(
                                                     commentDocs[i]
                                                         .data['comment'],
-                                ***REMOVED***
+                                                    style: TextStyle(
                                                         color: Colors.white),
-                                    ***REMOVED***,
+                                                  ),
                                                   Container(
                                                     height: 25,
-                                    ***REMOVED***,
-                                ***REMOVED***
-                                          ***REMOVED***
-                                            ***REMOVED***
-                                          ***REMOVED***,
-                          ***REMOVED***,
-                                  ***REMOVED***
-                                    ***REMOVED*** else {
+                                                  ),
+                                                ],
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      );
+                                    } else {
                                       return SizedBox.shrink();
-                                    ***REMOVED***
-                                  ***REMOVED***,
-                  ***REMOVED***,
-              ***REMOVED***
-              ***REMOVED***,
-            ***REMOVED***,
-        ***REMOVED***
-        ***REMOVED***,
-      ***REMOVED***
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
                   ]),
-  ***REMOVED***
-  ***REMOVED***
-***REMOVED***
+                )
+              ],
+            ),
             Positioned.fill(
               bottom: 20,
               child: Container(
@@ -531,35 +531,35 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 30),
                         height: 50,
-            ***REMOVED***
+                        decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
                             color: Colors.red[700]),
                         child: Align(
-        ***REMOVED***
+                            child: Text(
                           "Schedule a Meeting",
-      ***REMOVED***color: Colors.white, fontSize: 20),
-          ***REMOVED***),
-        ***REMOVED***,
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        )),
+                      ),
                       onTap: () {
-  ***REMOVED***
-***REMOVED***
-***REMOVED***
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
                               builder: (context) => RequestPrivateSessionPage(
                                   trainer: widget.trainer)),
-                    ***REMOVED***
-                      ***REMOVED***,
-      ***REMOVED***,
-    ***REMOVED***,
-  ***REMOVED***,
-***REMOVED***,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
             )
           ],
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
+        ),
+      ),
+    );
+  }
 
-  Widget makeVideo({image, vidReference***REMOVED***) {
+  Widget makeVideo({image, vidReference}) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -569,19 +569,19 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                     video: vidReference,
                     isStream: false,
                     trainer: widget.trainer,
-    ***REMOVED***),
-    ***REMOVED***
-      ***REMOVED***,
+                  )),
+        );
+      },
       child: AspectRatio(
         aspectRatio: 1.5 / 1,
         child: Container(
           margin: EdgeInsets.only(right: 20),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-***REMOVED***
+              image: DecorationImage(
                   image: NetworkImage(image), fit: BoxFit.cover)),
           child: Container(
-***REMOVED***
+            decoration: BoxDecoration(
                 gradient: LinearGradient(begin: Alignment.bottomRight, colors: [
               Colors.black.withOpacity(.9),
               Colors.black.withOpacity(.3)
@@ -591,11 +591,11 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                 Icons.play_arrow,
                 color: Colors.white,
                 size: 70,
-***REMOVED***,
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

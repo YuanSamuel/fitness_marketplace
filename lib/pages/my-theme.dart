@@ -1,4 +1,4 @@
-***REMOVED***
+import 'package:flutter/material.dart';
 
 final ThemeData myTheme = ThemeData(
   primarySwatch: MaterialColor(
@@ -14,7 +14,7 @@ final ThemeData myTheme = ThemeData(
       700: Color(0xff4d4d4d),
       800: Color(0xff333333),
       900: Color(0xff191919)
-    ***REMOVED***,
+    },
   ),
   brightness: Brightness.dark,
   primaryColor: Color(0xff212121),
@@ -54,10 +54,10 @@ final ThemeData myTheme = ThemeData(
         color: Color(0xff000000),
         width: 0.0,
         style: BorderStyle.none,
-***REMOVED***
+      ),
       borderRadius: BorderRadius.all(
         Radius.circular(2.0),
-***REMOVED***
+      ),
     ),
     alignedDropdown: false,
     buttonColor: Color(0xff666666),
@@ -376,60 +376,60 @@ final ThemeData myTheme = ThemeData(
         color: Color(0xff000000),
         width: 1.0,
         style: BorderStyle.solid,
-***REMOVED***
+      ),
       borderRadius: BorderRadius.all(
         Radius.circular(4.0),
-***REMOVED***
+      ),
     ),
     focusedBorder: UnderlineInputBorder(
       borderSide: BorderSide(
         color: Color(0xff000000),
         width: 1.0,
         style: BorderStyle.solid,
-***REMOVED***
+      ),
       borderRadius: BorderRadius.all(
         Radius.circular(4.0),
-***REMOVED***
+      ),
     ),
     focusedErrorBorder: UnderlineInputBorder(
       borderSide: BorderSide(
         color: Color(0xff000000),
         width: 1.0,
         style: BorderStyle.solid,
-***REMOVED***
+      ),
       borderRadius: BorderRadius.all(
         Radius.circular(4.0),
-***REMOVED***
+      ),
     ),
     disabledBorder: UnderlineInputBorder(
       borderSide: BorderSide(
         color: Color(0xff000000),
         width: 1.0,
         style: BorderStyle.solid,
-***REMOVED***
+      ),
       borderRadius: BorderRadius.all(
         Radius.circular(4.0),
-***REMOVED***
+      ),
     ),
     enabledBorder: UnderlineInputBorder(
       borderSide: BorderSide(
         color: Color(0xff000000),
         width: 1.0,
         style: BorderStyle.solid,
-***REMOVED***
+      ),
       borderRadius: BorderRadius.all(
         Radius.circular(4.0),
-***REMOVED***
+      ),
     ),
     border: UnderlineInputBorder(
       borderSide: BorderSide(
         color: Color(0xff000000),
         width: 1.0,
         style: BorderStyle.solid,
-***REMOVED***
+      ),
       borderRadius: BorderRadius.all(
         Radius.circular(4.0),
-***REMOVED***
+      ),
     ),
   ),
   iconTheme: IconThemeData(
@@ -505,7 +505,7 @@ final ThemeData myTheme = ThemeData(
         color: Color(0xff000000),
         width: 0.0,
         style: BorderStyle.none,
-***REMOVED***
+      ),
     ),
   ),
   dialogTheme: DialogTheme(
@@ -514,10 +514,10 @@ final ThemeData myTheme = ThemeData(
         color: Color(0xff000000),
         width: 0.0,
         style: BorderStyle.none,
-***REMOVED***
+      ),
       borderRadius: BorderRadius.all(
         Radius.circular(0.0),
-***REMOVED***
+      ),
     ),
   ),
 );

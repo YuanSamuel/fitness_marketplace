@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:firebase_storage/firebase_storage.dart';
-***REMOVED***
-***REMOVED***
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -15,13 +15,13 @@ import 'package:timeago/timeago.dart' as timeago;
 
 
 class FfmpegVideosTestPage extends StatefulWidget {
-  FfmpegVideosTestPage({Key key, this.title***REMOVED***) : super(key: key);
+  FfmpegVideosTestPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
-***REMOVED***
+  @override
   _FfmpegVideosTestPageState createState() => _FfmpegVideosTestPageState();
-***REMOVED***
+}
 
 class _FfmpegVideosTestPageState extends State<FfmpegVideosTestPage> {
   final thumbWidth = 100;
@@ -35,13 +35,13 @@ class _FfmpegVideosTestPageState extends State<FfmpegVideosTestPage> {
   String _processPhase = '';
   final bool _debugMode = false;
 
-***REMOVED***
-***REMOVED***
+  @override
+  void initState() {
     FirebaseProvider.listenToVideos((newVideos) {
-***REMOVED***
+      setState(() {
         _videos = newVideos;
-      ***REMOVED***);
-    ***REMOVED***);
+      });
+    });
 
     EncodingProvider.enableStatisticsCallback((int time,
         int size,
@@ -52,23 +52,23 @@ class _FfmpegVideosTestPageState extends State<FfmpegVideosTestPage> {
         double videoFps) {
       if (_canceled) return;
 
-***REMOVED***
+      setState(() {
         //_progress = time / _videoDuration;
-      ***REMOVED***);
-    ***REMOVED***);
+      });
+    });
 
-***REMOVED***
-  ***REMOVED***
+    super.initState();
+  }
 
   void _onUploadProgress(event) {
     if (event.type == StorageTaskEventType.progress) {
       final double progress =
           event.snapshot.bytesTransferred / event.snapshot.totalByteCount;
-***REMOVED***
+      setState(() {
         _progress = progress;
-      ***REMOVED***);
-    ***REMOVED***
-  ***REMOVED***
+      });
+    }
+  }
 
   Future<String> _uploadFile(filePath, folderName) async {
     final file = new File(filePath);
@@ -81,12 +81,12 @@ class _FfmpegVideosTestPageState extends State<FfmpegVideosTestPage> {
     StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
     String videoUrl = await taskSnapshot.ref.getDownloadURL();
     return videoUrl;
-  ***REMOVED***
+  }
 
   String getFileExtension(String fileName) {
     final exploded = fileName.split('.');
     return exploded[exploded.length - 1];
-  ***REMOVED***
+  }
 
   void _updatePlaylistUrls(File file, String videoName) {
     final lines = file.readAsLinesSync();
@@ -96,14 +96,14 @@ class _FfmpegVideosTestPageState extends State<FfmpegVideosTestPage> {
       var updatedLine = line;
       if (line.contains('.ts') || line.contains('.m3u8')) {
         updatedLine = '$videoName%2F$line?alt=media';
-      ***REMOVED***
+      }
       updatedLines.add(updatedLine);
-    ***REMOVED***
+    }
     final updatedContents =
     updatedLines.reduce((value, element) => value + '\n' + element);
 
     file.writeAsStringSync(updatedContents);
-  ***REMOVED***
+  }
 
   Future<String> _uploadHLSFiles(dirPath, videoName) async {
     final videosDir = Directory(dirPath);
@@ -117,30 +117,30 @@ class _FfmpegVideosTestPageState extends State<FfmpegVideosTestPage> {
       final fileExtension = getFileExtension(fileName);
       if (fileExtension == 'm3u8') _updatePlaylistUrls(file, videoName);
 
-***REMOVED***
-        _processPhase = 'Uploading video file $i out of ${files.length***REMOVED***';
+      setState(() {
+        _processPhase = 'Uploading video file $i out of ${files.length}';
         _progress = 0.0;
-      ***REMOVED***);
+      });
 
       final downloadUrl = await _uploadFile(file.path, videoName);
 
       if (fileName == 'master.m3u8') {
         playlistUrl = downloadUrl;
-      ***REMOVED***
+      }
       i++;
-    ***REMOVED***
+    }
 
     return playlistUrl;
-  ***REMOVED***
+  }
 
   Future<void> _processVideo(File rawVideoFile) async {
 
     print("PROCESSING VIDEO");
-    final String rand = '${new Random().nextInt(10000)***REMOVED***';
+    final String rand = '${new Random().nextInt(10000)}';
     final videoName = 'video$rand';
     print("VIDEONAME "+videoName);
     final Directory extDir = await getApplicationDocumentsDirectory();
-    final outDirPath = '${extDir.path***REMOVED***/Videos/$videoName';
+    final outDirPath = '${extDir.path}/Videos/$videoName';
     final videosDir = new Directory(outDirPath);
 
     print("GOT OUTPUT DIRECTORY");
@@ -156,7 +156,7 @@ class _FfmpegVideosTestPageState extends State<FfmpegVideosTestPage> {
       _processPhase = 'Generating thumbnail';
       //_videoDuration = EncodingProvider.getDuration(info);
       _progress = 0.0;
-    ***REMOVED***);
+    });
 
     print("GETTING THUMBNAIL");
     final thumbFilePath =
@@ -165,7 +165,7 @@ class _FfmpegVideosTestPageState extends State<FfmpegVideosTestPage> {
     setState(() {
       _processPhase = 'Encoding video';
       _progress = 0.0;
-    ***REMOVED***);
+    });
 
     print("ENCODING VIDEO FOR REAL");
     final encodedFilesDir =
@@ -174,7 +174,7 @@ class _FfmpegVideosTestPageState extends State<FfmpegVideosTestPage> {
     setState(() {
       _processPhase = 'Uploading thumbnail to firebase storage';
       _progress = 0.0;
-    ***REMOVED***);
+    });
     final thumbUrl = await _uploadFile(thumbFilePath, 'thumbnail');
     final videoUrl = await _uploadHLSFiles(encodedFilesDir, videoName);
 
@@ -185,12 +185,12 @@ class _FfmpegVideosTestPageState extends State<FfmpegVideosTestPage> {
       //aspectRatio: aspectRatio,
       uploadedAt: DateTime.now().millisecondsSinceEpoch,
       videoName: videoName,
-***REMOVED***
+    );
 
     setState(() {
       _processPhase = 'Saving video metadata to cloud firestore';
       _progress = 0.0;
-    ***REMOVED***);
+    });
 
     await FirebaseProvider.saveVideo(videoInfo, null, null, null, null, null);
 
@@ -198,8 +198,8 @@ class _FfmpegVideosTestPageState extends State<FfmpegVideosTestPage> {
       _processPhase = '';
       _progress = 0.0;
       _processing = false;
-    ***REMOVED***);
-  ***REMOVED***
+    });
+  }
 
   void _takeVideo() async {
     var videoFile;
@@ -208,7 +208,7 @@ class _FfmpegVideosTestPageState extends State<FfmpegVideosTestPage> {
     if (_debugMode) {
       videoFile = File(
           '/storage/emulated/0/Android/data/com.learningsomethingnew.fluttervideo.flutter_video_sharing/files/Pictures/ebbafabc-dcbe-433b-93dd-80e7777ee4704451355941378265171.mp4');
-    ***REMOVED*** else {
+    } else {
       if (_imagePickerActive) return;
 
       _imagePickerActive = true;
@@ -216,21 +216,21 @@ class _FfmpegVideosTestPageState extends State<FfmpegVideosTestPage> {
       _imagePickerActive = false;
 
       if (videoFile == null) return;
-    ***REMOVED***
+    }
     setState(() {
       _processing = true;
-    ***REMOVED***);
+    });
 
     try {
       await _processVideo(videoFile);
-    ***REMOVED*** catch (e) {
-      print('${e.toString()***REMOVED***');
-    ***REMOVED*** finally {
-***REMOVED***
+    } catch (e) {
+      print('${e.toString()}');
+    } finally {
+      setState(() {
         _processing = false;
-      ***REMOVED***);
-    ***REMOVED***
-  ***REMOVED***
+      });
+    }
+  }
 
   _getListView() {
     return ListView.builder(
@@ -246,61 +246,61 @@ class _FfmpegVideosTestPageState extends State<FfmpegVideosTestPage> {
                   builder: (context) {
                     return Player(
                       video: video,
-                ***REMOVED***
-                  ***REMOVED***,
-  ***REMOVED***,
-          ***REMOVED***
-            ***REMOVED***,
+                    );
+                  },
+                ),
+              );
+            },
             child: Card(
               child: new Container(
                 padding: new EdgeInsets.all(10.0),
                 child: Stack(
-  ***REMOVED***
-      ***REMOVED***
-          ***REMOVED***
-      ***REMOVED***
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
                         Stack(
-          ***REMOVED***
+                          children: <Widget>[
                             Container(
                               width: thumbWidth.toDouble(),
                               height: thumbHeight.toDouble(),
                               child: Center(child: CircularProgressIndicator()),
-              ***REMOVED***,
+                            ),
                             ClipRRect(
                               borderRadius: new BorderRadius.circular(8.0),
                               child: FadeInImage.memoryNetwork(
                                 placeholder: kTransparentImage,
                                 image: video.thumbUrl,
-                ***REMOVED***,
-              ***REMOVED***,
-          ***REMOVED***
-          ***REMOVED***,
+                              ),
+                            ),
+                          ],
+                        ),
                         Expanded(
                           child: Container(
                             margin: new EdgeInsets.only(left: 20.0),
-                  ***REMOVED***
-                  ***REMOVED***
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.max,
-              ***REMOVED***
-          ***REMOVED***"${video.videoName***REMOVED***"),
+                              children: <Widget>[
+                                Text("${video.videoName}"),
                                 Container(
                                   margin: new EdgeInsets.only(top: 12.0),
-              ***REMOVED***
-                                      'Uploaded ${timeago.format(new DateTime.fromMillisecondsSinceEpoch(video.uploadedAt))***REMOVED***'),
-                  ***REMOVED***,
-              ***REMOVED***
-              ***REMOVED***,
-            ***REMOVED***,
-          ***REMOVED***,
-      ***REMOVED***
-      ***REMOVED***,
-  ***REMOVED***
-  ***REMOVED***,
-***REMOVED***,
-***REMOVED***
-      ***REMOVED***
-        ***REMOVED***);
-  ***REMOVED***
+                                  child: Text(
+                                      'Uploaded ${timeago.format(new DateTime.fromMillisecondsSinceEpoch(video.uploadedAt))}'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
 
   _getProgressBar() {
     return Container(
@@ -312,21 +312,21 @@ class _FfmpegVideosTestPageState extends State<FfmpegVideosTestPage> {
           Container(
             margin: EdgeInsets.only(bottom: 30.0),
             child: Text(_processPhase),
-***REMOVED***
+          ),
           LinearProgressIndicator(
             value: _progress,
-***REMOVED***
+          ),
         ],
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
+      ),
+    );
+  }
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       appBar: AppBar(
         title: Text("Hello"),
-***REMOVED***
+      ),
       body: Center(child: _processing ? _getProgressBar() : _getListView()),
       floatingActionButton: FloatingActionButton(
           child: _processing
@@ -335,6 +335,6 @@ class _FfmpegVideosTestPageState extends State<FfmpegVideosTestPage> {
           )
               : Icon(Icons.add),
           onPressed: _takeVideo),
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+    );
+  }
+}

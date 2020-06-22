@@ -1,4 +1,4 @@
-***REMOVED***
+import 'package:flutter/material.dart';
 
 class CustomSliderThumbRect extends SliderComponentShape {
   final double thumbRadius;
@@ -11,20 +11,20 @@ class CustomSliderThumbRect extends SliderComponentShape {
     this.thumbHeight,
     this.min,
     this.max,
-  ***REMOVED***);
+  });
 
-***REMOVED***
+  @override
   Size getPreferredSize(bool isEnabled, bool isDiscrete) {
     return Size.fromRadius(thumbRadius);
-  ***REMOVED***
+  }
 
 
 
   String getValue(double value) {
     return ((max) * (value)).round().toString();
-  ***REMOVED***
+  }
 
-***REMOVED***
+  @override
   void paint(
       PaintingContext context,
       Offset center,
@@ -35,14 +35,14 @@ class CustomSliderThumbRect extends SliderComponentShape {
         TextDirection textDirection,
         double value,
         double textScaleFactor,
-        Size sizeWithOverflow***REMOVED***) {
+        Size sizeWithOverflow}) {
     final Canvas canvas = context.canvas;
 
     final rRect = RRect.fromRectAndRadius(
       Rect.fromCenter(
           center: center, width: thumbHeight * 1.2, height: thumbHeight * .6),
       Radius.circular(thumbRadius * .4),
-***REMOVED***
+    );
 
     final paint = Paint()
       ..color = Colors.white
@@ -54,7 +54,7 @@ class CustomSliderThumbRect extends SliderComponentShape {
             fontWeight: FontWeight.w700,
             color: sliderTheme.thumbColor,
             height: 0.9),
-        text: '${getValue(value)***REMOVED***');
+        text: '${getValue(value)}');
     TextPainter tp = new TextPainter(
         text: span,
         textAlign: TextAlign.left,
@@ -66,5 +66,5 @@ class CustomSliderThumbRect extends SliderComponentShape {
     canvas.drawRRect(rRect, paint);
     tp.paint(canvas, textCenter);
     // TODO: implement paint
-  ***REMOVED***
-***REMOVED***
+  }
+}

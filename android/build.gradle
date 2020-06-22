@@ -3,35 +3,35 @@ buildscript {
     repositories {
         google()
         jcenter()
-    ***REMOVED***
+    }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.3'
-    ***REMOVED***
-***REMOVED***
+    }
+}
 
 allprojects {
     repositories {
         google()
         jcenter()
-    ***REMOVED***
-***REMOVED***
+    }
+}
 
 rootProject.buildDir = '../build'
 subprojects {
-    project.buildDir = "${rootProject.buildDir***REMOVED***/${project.name***REMOVED***"
-***REMOVED***
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
 subprojects {
     project.evaluationDependsOn(':app')
-***REMOVED***
+}
 
 ext {
     flutterFFmpegPackage = "min-gpl-lts"
-***REMOVED***
+}
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-***REMOVED***
+}
 

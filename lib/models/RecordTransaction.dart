@@ -1,4 +1,4 @@
-***REMOVED***
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RecordTransaction {
   int purchaseDate;
@@ -10,13 +10,13 @@ class RecordTransaction {
 
   DocumentReference reference;
 
-  RecordTransaction({this.purchaseDate, this.sessionDate, this.price, this.sessionID, this.trainer, this.type, this.reference***REMOVED***);
+  RecordTransaction({this.purchaseDate, this.sessionDate, this.price, this.sessionID, this.trainer, this.type, this.reference});
 
   factory RecordTransaction.fromSnapshot(DocumentSnapshot snapshot) {
     RecordTransaction newTransaction = RecordTransaction.fromJson(snapshot.data);
     newTransaction.reference = snapshot.reference;
     return newTransaction;
-  ***REMOVED***
+  }
 
   factory RecordTransaction.fromJson(Map<String, dynamic> json) {
     return RecordTransaction(
@@ -26,8 +26,8 @@ class RecordTransaction {
       sessionID: json['sessionID'] as String,
       trainer: json['trainer'] as String,
       type: json['type'] as String,
-***REMOVED***
-  ***REMOVED***
+    );
+  }
 
   Map<String, dynamic> toJson() => _RecordTransactionToJson(this);
 
@@ -39,6 +39,6 @@ class RecordTransaction {
       'sessionID': instance.sessionID,
       'trainer': instance.trainer,
       'type': instance.type,
-    ***REMOVED***;
-  ***REMOVED***
-***REMOVED***
+    };
+  }
+}

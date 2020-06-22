@@ -1,4 +1,4 @@
-***REMOVED***
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Trainer {
   String firstName;
@@ -11,7 +11,7 @@ class Trainer {
   double livePrice;
   double oneOnOnePrice;
   List trainingTypes;
-***REMOVED***
+  String uid;
 
   DocumentReference reference;
 
@@ -27,13 +27,13 @@ class Trainer {
       this.oneOnOnePrice,
       this.trainingTypes,
       this.uid,
-      this.reference***REMOVED***);
+      this.reference});
 
   factory Trainer.fromSnapshot(DocumentSnapshot snapshot) {
     Trainer newTrainer = Trainer.fromJson(snapshot.data);
     newTrainer.reference = snapshot.reference;
     return newTrainer;
-  ***REMOVED***
+  }
 
   factory Trainer.fromJson(Map<String, dynamic> json) {
     return Trainer(
@@ -48,8 +48,8 @@ class Trainer {
       oneOnOnePrice: (json['oneOnOnePrice'] + 0.0) as double,
       trainingTypes: json['trainingTypes'] as List,
       uid: json['uid'] as String,
-***REMOVED***
-  ***REMOVED***
+    );
+  }
 
   Map<String, dynamic> toJson() => _TrainerToJson(this);
 
@@ -66,6 +66,6 @@ class Trainer {
       'oneOnOnePrice': instance.oneOnOnePrice,
       'trainingTypes': instance.trainingTypes,
       'uid': instance.uid,
-    ***REMOVED***;
-  ***REMOVED***
-***REMOVED***
+    };
+  }
+}

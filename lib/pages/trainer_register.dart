@@ -1,14 +1,14 @@
 import 'package:fitnessmarketplace/pages/profile_picture.dart';
-***REMOVED***
+import 'package:flutter/material.dart';
 import 'package:select_dialog/select_dialog.dart';
-***REMOVED***
-***REMOVED***
-***REMOVED***
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitnessmarketplace/models/Trainer.dart';
 
 class TrainerRegister extends StatefulWidget {
-***REMOVED***
+  @override
   _TrainerRegisterState createState() => _TrainerRegisterState();
-***REMOVED***
+}
 
 class _TrainerRegisterState extends State<TrainerRegister> {
   Trainer currentTrainer;
@@ -23,33 +23,33 @@ class _TrainerRegisterState extends State<TrainerRegister> {
           color: Colors.black12,
           border: Border.all(color: Colors.grey)),
       child: FlatButton(
-***REMOVED***
+        child: Padding(
           padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
           child: Text(
             type,
             style: TextStyle(
                 fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black),
-***REMOVED***
-***REMOVED***
+          ),
+        ),
         onPressed: () {
           _type.remove(type);
-    ***REMOVED***
+          setState(() {
             TrainerRegister();
-          ***REMOVED***);
-        ***REMOVED***,
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
+          });
+        },
+      ),
+    );
+  }
 
   TextEditingController _desc = new TextEditingController();
   List _type = new List();
 
-***REMOVED***
-***REMOVED***
+  @override
+  void initState() {
     _privateSessionPrice = 0;
     getCurrentTrainer();
-***REMOVED***
-  ***REMOVED***
+    super.initState();
+  }
 
   void getCurrentTrainer() async {
     FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
@@ -58,43 +58,43 @@ class _TrainerRegisterState extends State<TrainerRegister> {
         .document(getUser.uid)
         .get();
     currentTrainer = Trainer.fromSnapshot(trainerData);
-    setState(() {***REMOVED***);
-  ***REMOVED***
+    setState(() {});
+  }
 
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
     if (currentTrainer == null) {
       TrainerRegister();
-  ***REMOVED***
+      return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
           child: Container(
             width: 50,
             height: 50,
             child: CircularProgressIndicator(),
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
-    ***REMOVED*** else {
+          ),
+        ),
+      );
+    } else {
       _type = currentTrainer.trainingTypes;
-  ***REMOVED***
+      return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-***REMOVED***
+        ),
         body: ListView(
           children: [
             Container(
-    ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***
+              child: Column(
+                children: [
+                  SizedBox(
                     height: 20,
-    ***REMOVED***,
-    ***REMOVED***
+                  ),
+                  SizedBox(
                     child: Container(
-              ***REMOVED***
+                      child: Padding(
                         padding: EdgeInsets.all(5),
                         child: ListView(
-              ***REMOVED***
+                          children: [
                             TextField(
                               controller: _desc,
                               decoration: InputDecoration(
@@ -103,47 +103,47 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                                   border: InputBorder.none),
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
-              ***REMOVED***,
-          ***REMOVED***
+                            ),
+                          ],
                           scrollDirection: Axis.vertical,
-          ***REMOVED***,
-        ***REMOVED***,
-          ***REMOVED***
+                        ),
+                      ),
+                      decoration: BoxDecoration(
                         border: Border.all(
                           width: 3,
                           color: Colors.blue,
-          ***REMOVED***,
+                        ),
                         borderRadius: BorderRadius.all(Radius.circular(10)),
-        ***REMOVED***,
-      ***REMOVED***,
+                      ),
+                    ),
                     width: MediaQuery.of(context).size.width - 20,
                     height: 400,
-    ***REMOVED***,
-    ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Container(
                     height: 30,
-            ***REMOVED***
+                    child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: ListView(
-            ***REMOVED***
+                        children: [
                           for (int i = 0; i < _type.length; i++)
                             Padding(
                               padding: EdgeInsets.only(right: 10),
                               child: TypeOfExercise(_type[i]),
-              ***REMOVED***,
-        ***REMOVED***
+                            ),
+                        ],
                         scrollDirection: Axis.horizontal,
-        ***REMOVED***,
-      ***REMOVED***,
-    ***REMOVED***,
+                      ),
+                    ),
+                  ),
                   Container(
                     height: 5,
-    ***REMOVED***,
+                  ),
                   FlatButton(
                     color: Colors.blue,
-***REMOVED***
+                    onPressed: () {
                       showDialog(
                           context: context,
                           builder: (_) => Scaffold(
@@ -153,44 +153,44 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                                     'Martial Arts',
                                     'Cardio',
                                     'Weight Lifting'
-                  ***REMOVED***
+                                  ],
                                   onChange: (String selected) {
-                              ***REMOVED***
+                                    setState(() {
                                       bool hasSelected = false;
                                       for (int i = 0; i < _type.length; i++) {
                                         if (selected == _type[i]) {
                                           hasSelected = true;
-                                        ***REMOVED***
-                                      ***REMOVED***
+                                        }
+                                      }
                                       if (!hasSelected) {
                                         _type.add(selected);
-                                      ***REMOVED***
-                                    ***REMOVED***);
-                                  ***REMOVED***,
-                  ***REMOVED***,
-                ***REMOVED***);
-                    ***REMOVED***,
-***REMOVED***'Select Type of Exercise'),
-    ***REMOVED***,
+                                      }
+                                    });
+                                  },
+                                ),
+                              ));
+                    },
+                    child: Text('Select Type of Exercise'),
+                  ),
                   Text(
-                    'Private Session Price (per hour): ${double.parse(_privateSessionPrice.toStringAsFixed(2))***REMOVED***',
-    ***REMOVED***,
+                    'Private Session Price (per hour): ${double.parse(_privateSessionPrice.toStringAsFixed(2))}',
+                  ),
                   Container(
                     width: 300,
                     child: Slider(
                       value: _privateSessionPrice,
                       onChanged: (_input) {
-                  ***REMOVED***
+                        setState(() {
                           _privateSessionPrice = _input;
-                        ***REMOVED***);
-                      ***REMOVED***,
+                        });
+                      },
                       min: 0,
                       max: 150,
-      ***REMOVED***,
-    ***REMOVED***,
+                    ),
+                  ),
                   FlatButton(
                     color: Colors.blue,
-***REMOVED***'Continue'),
+                    child: Text('Continue'),
                     onPressed: () async {
                       final _user = await FirebaseAuth.instance.currentUser();
                       String _uid = _user.uid;
@@ -198,7 +198,7 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                         if (_desc.text == '' || _desc.text == null) {
                           _desc = TextEditingController(
                               text: currentTrainer.description);
-                        ***REMOVED***
+                        }
                         Firestore.instance
                             .collection('trainers')
                             .document(_uid)
@@ -207,26 +207,26 @@ class _TrainerRegisterState extends State<TrainerRegister> {
                           'rating': 0,
                           'description': _desc.text,
                           'oneOnOnePrice': _privateSessionPrice,
-                        ***REMOVED***);
+                        });
                         if (currentTrainer.description != '') {
                           Navigator.pop(context);
-                        ***REMOVED*** else {
-    ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
                                 builder: (context) => ProfilePic()),
-                      ***REMOVED***
-                        ***REMOVED***
-                      ***REMOVED***
-                    ***REMOVED***,
-    ***REMOVED***
-***REMOVED***
-***REMOVED***,
-***REMOVED***
+                          );
+                        }
+                      }
+                    },
+                  )
+                ],
+              ),
+            ),
           ],
           scrollDirection: Axis.vertical,
-***REMOVED***
-  ***REMOVED***
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
+        ),
+      );
+    }
+  }
+}

@@ -1,38 +1,38 @@
-***REMOVED***
-***REMOVED***
+import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
+import 'package:fitnessmarketplace/models/Trainer.dart';
 import 'package:fitnessmarketplace/widgets//trainer_widget.dart';
-***REMOVED***
+import 'package:flutter/material.dart';
 
 class TrainerMarket extends StatefulWidget {
-  TrainerMarket({Key key, this.allTrainers, this.type***REMOVED***) : super(key: key);
+  TrainerMarket({Key key, this.allTrainers, this.type}) : super(key: key);
 
   final List<Trainer> allTrainers;
   final String type;
 
-***REMOVED***
+  @override
   _TrainerMarketState createState() => _TrainerMarketState();
-***REMOVED***
+}
 
 class _TrainerMarketState extends State<TrainerMarket> {
   List<Trainer> trainers;
 
-***REMOVED***
-***REMOVED***
+  @override
+  void initState() {
     filterTrainers();
-***REMOVED***
-  ***REMOVED***
+    super.initState();
+  }
 
   void filterTrainers() {
     trainers = new List<Trainer>();
     for (int i = 0; i < widget.allTrainers.length; i++) {
       if (widget.allTrainers[i].trainingTypes.contains(widget.type)) {
         trainers.add(widget.allTrainers[i]);
-      ***REMOVED***
-    ***REMOVED***
-  ***REMOVED***
+      }
+    }
+  }
 
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: ListView.builder(
@@ -40,9 +40,9 @@ class _TrainerMarketState extends State<TrainerMarket> {
           itemCount: trainers.length,
           itemBuilder: (BuildContext context, int i) {
             return FadeAnimationDown(1.8, makeTrainer(trainers[i]));
-          ***REMOVED***),
-***REMOVED***
-  ***REMOVED***
+          }),
+    );
+  }
 
   Widget makeTrainer(Trainer trainer) {
     String trainerName = trainer.firstName + ' ' + trainer.lastName;
@@ -55,67 +55,67 @@ class _TrainerMarketState extends State<TrainerMarket> {
               MaterialPageRoute(
                   builder: (context) => TrainerWidget(
                         trainer: trainer,
-        ***REMOVED***));
-        ***REMOVED***,
+                      )));
+        },
         child: Container(
           width: MediaQuery.of(context).size.width / 2,
           height: MediaQuery.of(context).size.height / 3,
           margin: EdgeInsets.only(right: 20),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-***REMOVED***
+              image: DecorationImage(
                 image: NetworkImage(trainer.profileUrl),
-***REMOVED***
-***REMOVED***),
+                fit: BoxFit.cover,
+              )),
           child: Container(
-***REMOVED***
+            decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 gradient: LinearGradient(begin: Alignment.bottomCenter, stops: [
                   .2,
                   .9
-***REMOVED*** colors: [
+                ], colors: [
                   Colors.black.withOpacity(.9),
                   Colors.black.withOpacity(.3),
                 ])),
-    ***REMOVED***
+            child: Padding(
               padding: EdgeInsets.all(15),
-    ***REMOVED***
-    ***REMOVED***
-***REMOVED***
-    ***REMOVED***
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                   Align(
                     alignment: Alignment.bottomRight,
                     child: Icon(
                       Icons.more_vert,
                       color: Colors.white,
-      ***REMOVED***,
-    ***REMOVED***,
+                    ),
+                  ),
                   Column(
-        ***REMOVED***
-        ***REMOVED***
-***REMOVED***
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
                         trainerName,
-    ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
-    ***REMOVED***,
-          ***REMOVED***,
-        ***REMOVED***,
-***REMOVED***
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
                         height: 5,
-        ***REMOVED***,
-***REMOVED***
+                      ),
+                      Text(
                         "\$" + trainer.oneOnOnePrice.toString(),
-    ***REMOVED***color: Colors.white, fontSize: 15),
-        ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***,
-***REMOVED***
-***REMOVED***,
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

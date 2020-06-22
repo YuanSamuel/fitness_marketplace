@@ -1,10 +1,10 @@
-***REMOVED***
-***REMOVED***
-***REMOVED***
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitnessmarketplace/models/video_info.dart';
 
 class FirebaseProvider {
   static saveVideo(VideoInfo video, String title, String description, double minutes, int date, double price) async {
-***REMOVED***
+    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
     final uid = user.uid;
 
     await Firestore.instance.collection('videos').document().setData({
@@ -20,7 +20,7 @@ class FirebaseProvider {
         'title':title,
         'price':price,
       'trainer': uid
-      ***REMOVED***);
+      });
 
 
 
@@ -37,18 +37,18 @@ class FirebaseProvider {
       'date':date,
       'title':title,
       'price':price
-    ***REMOVED***);
-  ***REMOVED***
+    });
+  }
 
   static listenToVideos(callback) async {
-***REMOVED***
+    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
     final uid = user.uid;
 
     Firestore.instance.collection('trainers').document(uid).collection('videos').snapshots().listen((qs) {
       final videos = mapQueryToVideoInfo(qs);
       callback(videos);
-    ***REMOVED***);
-  ***REMOVED***
+    });
+  }
 
   static mapQueryToVideoInfo(QuerySnapshot qs) {
     return qs.documents.map((DocumentSnapshot ds) {
@@ -59,10 +59,10 @@ class FirebaseProvider {
         aspectRatio: ds.data['aspectRatio'],
         videoName: ds.data['videoName'],
         uploadedAt: ds.data['uploadedAt'],
-  ***REMOVED***
-    ***REMOVED***).toList();
-  ***REMOVED***
+      );
+    }).toList();
+  }
 
 
 
-***REMOVED***
+}

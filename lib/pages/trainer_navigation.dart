@@ -2,14 +2,14 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:fitnessmarketplace/pages/trainer_finances_page.dart';
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 import 'package:fitnessmarketplace/pages/trainer_profile_page.dart';
-***REMOVED***
+import 'package:flutter/material.dart';
 
 
 
 class TrainerNavigation extends StatefulWidget {
-***REMOVED***
+  @override
   _TrainerNavigationState createState() => _TrainerNavigationState();
-***REMOVED***
+}
 
 class _TrainerNavigationState extends State<TrainerNavigation> {
 
@@ -23,32 +23,32 @@ class _TrainerNavigationState extends State<TrainerNavigation> {
     TrainerProfile(),
   ];
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  @override
+  void initState() {
+    super.initState();
     _pageController = PageController();
-  ***REMOVED***
+  }
 
-***REMOVED***
+  @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
-  ***REMOVED***
+  }
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
         body: SizedBox.expand(
           child: PageView(
             controller: _pageController,
             onPageChanged: (index) {
-        ***REMOVED***
+              setState(() {
                 _currentIndex = index;
-              ***REMOVED***);
-            ***REMOVED***,
+              });
+            },
             children: _pageOptions,
-***REMOVED***
-***REMOVED***
+          ),
+        ),
         bottomNavigationBar: BottomNavyBar(
           selectedIndex: _currentIndex,
           showElevation: true, // use this to remove appBar's elevation
@@ -57,25 +57,25 @@ class _TrainerNavigationState extends State<TrainerNavigation> {
           onItemSelected: (index) => setState(() {
             _currentIndex = index;
             _pageController.jumpToPage(index);
-          ***REMOVED***),
+          }),
           items: [
             BottomNavyBarItem(
               icon: Icon(Icons.home),
               title: Text('Home'),
               activeColor: Colors.red,
-***REMOVED***
+            ),
             BottomNavyBarItem(
               icon: Icon(Icons.sort),
               title: Text('Stats'),
               activeColor: Colors.orange,
-***REMOVED***
+            ),
             BottomNavyBarItem(
                 icon: Icon(Icons.settings),
                 title: Text('Settings'),
                 activeColor: Colors.black38
-***REMOVED***
+            ),
           ],
         )
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+    );
+  }
+}

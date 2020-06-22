@@ -1,4 +1,4 @@
-***REMOVED***
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RecordedVideo {
   String name;
@@ -8,21 +8,21 @@ class RecordedVideo {
 
   DocumentReference reference;
 
-  RecordedVideo({this.name, this.uploadedAt, this.videoUrl, this.reference,***REMOVED***);
+  RecordedVideo({this.name, this.uploadedAt, this.videoUrl, this.reference,});
 
   factory RecordedVideo.fromSnapshot(DocumentSnapshot snapshot) {
     RecordedVideo newRecordedVideo = RecordedVideo.fromJson(snapshot.data);
     newRecordedVideo.reference = snapshot.reference;
     return newRecordedVideo;
-  ***REMOVED***
+  }
 
   factory RecordedVideo.fromJson(Map<String, dynamic> json) {
     return RecordedVideo(
       name: json['title'] as String,
       uploadedAt: json['uploadedAt'] as int,
       videoUrl: json['thumbUrl'] as String,
-***REMOVED***
-  ***REMOVED***
+    );
+  }
 
   Map<String, dynamic> toJson() => _RecordedVideoToJson(this);
 
@@ -32,7 +32,7 @@ class RecordedVideo {
       'uploadedAt': instance.uploadedAt,
       'thumbUrl': instance.videoUrl,
       'videoID': instance.videoID
-    ***REMOVED***;
-  ***REMOVED***
+    };
+  }
 
-***REMOVED***
+}

@@ -1,15 +1,15 @@
 import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-***REMOVED***
-***REMOVED***
-***REMOVED***
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import './stream_page.dart';
 
 class StreamsPage extends StatefulWidget {
-***REMOVED***
+  @override
   State<StatefulWidget> createState() => StreamsState();
-***REMOVED***
+}
 
 class StreamsState extends State<StreamsPage> {
   /// create a channelController to retrieve text value
@@ -24,33 +24,33 @@ class StreamsState extends State<StreamsPage> {
   final Firestore _firestore = Firestore.instance;
 
 
-***REMOVED***
+  @override
   void dispose() {
     // dispose input controller
     _channelController.dispose();
     super.dispose();
-  ***REMOVED***
+  }
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       appBar: AppBar(
         title: Text('Agora Flutter QuickStart'),
-***REMOVED***
+      ),
       floatingActionButton: FloatingActionButton(
         child: IconButton(
           onPressed: addStream,
           icon: Icon(Icons.add),
-***REMOVED***
-***REMOVED***
+        ),
+      ),
       body: Center(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           height: 400,
-***REMOVED***
+          child: Column(
             children: <Widget>[
-***REMOVED***
-***REMOVED***
+              Row(
+                children: <Widget>[
                   Expanded(
                       child: TextField(
                         controller: _channelController,
@@ -58,13 +58,13 @@ class StreamsState extends State<StreamsPage> {
                           errorText:
                           _validateError ? 'Channel name is mandatory' : null,
                           border: UnderlineInputBorder(
-        ***REMOVED*** BorderSide(width: 1),
-            ***REMOVED***,
+                            borderSide: BorderSide(width: 1),
+                          ),
                           hintText: 'Channel name',
-          ***REMOVED***,
-        ***REMOVED***)
-***REMOVED***
-***REMOVED***,
+                        ),
+                      ))
+                ],
+              ),
               Expanded(
                   child: StreamBuilder<QuerySnapshot>(
                     stream: Firestore.instance
@@ -75,7 +75,7 @@ class StreamsState extends State<StreamsPage> {
                       if (!snapshot.hasData)
                         return Center(
                           child: CircularProgressIndicator(),
-                    ***REMOVED***
+                        );
 
                       List<DocumentSnapshot> docs = snapshot.data.documents;
 
@@ -87,22 +87,22 @@ class StreamsState extends State<StreamsPage> {
                               onPressed: (){
                                 selected= d.data['name'];
                                 onJoinStream();
-                              ***REMOVED***,
-          ***REMOVED***d.data['name'])
-              ***REMOVED***
-                    ***REMOVED***
-                      ***REMOVED***
+                              },
+                              child: Text(d.data['name'])
+                            )
+                        );
+                      }
                       return ListView(
                         children: messages,
-                  ***REMOVED***
-                    ***REMOVED***,
-    ***REMOVED***),
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
+                      );
+                    },
+                  )),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   Future<void> onJoinStream() async {
     // update input validation
@@ -115,14 +115,14 @@ class StreamsState extends State<StreamsPage> {
           builder: (context) => StreamPage(
             channelName:selected,
             role: _role,
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
-    ***REMOVED***
-***REMOVED***
+          ),
+        ),
+      );
+    }
+    else{
       print("YOU MUST CREATE STREAM");
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
 
   Future addStream() async{
     await _firestore.collection('streams').add({
@@ -130,12 +130,12 @@ class StreamsState extends State<StreamsPage> {
       'limit':30,
       'name':_channelController.text,
       'date':DateTime.now().millisecondsSinceEpoch
-    ***REMOVED***);
+    });
     _channelController.clear();
-  ***REMOVED***
+  }
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+  Future<void> _handleCameraAndMic() async {
+    await Permission.camera.request();
+    await Permission.microphone.request();
+  }
+}

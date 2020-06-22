@@ -1,16 +1,16 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
-***REMOVED***
-***REMOVED***
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/models/Student.dart';
 import 'package:fitnessmarketplace/pages/user_home_page.dart';
 import 'package:fitnessmarketplace/pages/user_marketplace_page.dart';
 import 'package:fitnessmarketplace/pages/user_profile_page.dart';
-***REMOVED***
+import 'package:flutter/material.dart';
 
 class UserNavigation extends StatefulWidget {
-***REMOVED***
+  @override
   _UserNavigationState createState() => _UserNavigationState();
-***REMOVED***
+}
 
 class _UserNavigationState extends State<UserNavigation> {
 
@@ -24,13 +24,13 @@ class _UserNavigationState extends State<UserNavigation> {
   PageController _pageController = PageController(initialPage: 0);
   var _pageOptions;
 
-***REMOVED***
-***REMOVED***
+  @override
+  void initState() {
     doneLoading = false;
     _pageController = PageController();
     getData();
-***REMOVED***
-  ***REMOVED***
+    super.initState();
+  }
 
   getData() async {
     FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
@@ -55,37 +55,37 @@ class _UserNavigationState extends State<UserNavigation> {
 
     setState(() {
       doneLoading = true;
-    ***REMOVED***);
-  ***REMOVED***
+    });
+  }
 
-***REMOVED***
+  @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
-  ***REMOVED***
+  }
 
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
     if (!doneLoading) {
-  ***REMOVED***
+      return Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
-***REMOVED***
-  ***REMOVED***
-    ***REMOVED***
-***REMOVED***
-  ***REMOVED***
+        ),
+      );
+    }
+    else {
+      return Scaffold(
           body: SizedBox.expand(
             child: PageView(
               controller: _pageController,
               onPageChanged: (index) {
-          ***REMOVED***
+                setState(() {
                   _currentIndex = index;
-                ***REMOVED***);
-              ***REMOVED***,
+                });
+              },
               children: _pageOptions,
-***REMOVED***
-***REMOVED***
+            ),
+          ),
           bottomNavigationBar: BottomNavyBar(
             selectedIndex: _currentIndex,
             showElevation: true, // use this to remove appBar's elevation
@@ -94,13 +94,13 @@ class _UserNavigationState extends State<UserNavigation> {
             onItemSelected: (index) => setState(() {
               _currentIndex = index;
               _pageController.jumpToPage(index);
-            ***REMOVED***),
+            }),
             items: [
               BottomNavyBarItem(
                 icon: Icon(Icons.home),
                 title: Text('Home'),
                 activeColor: Colors.red,
-***REMOVED***,
+              ),
               BottomNavyBarItem(
                   icon: Icon(Icons.shopping_cart),
                   title: Text('Marketplace'),
@@ -109,9 +109,9 @@ class _UserNavigationState extends State<UserNavigation> {
                 icon: Icon(Icons.account_circle),
                 title: Text('Profile'),
                 activeColor: Colors.blue,
-***REMOVED***
-***REMOVED***
+              )
+            ],
           ));
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
+    }
+  }
+}

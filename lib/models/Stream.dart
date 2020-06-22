@@ -1,4 +1,4 @@
-***REMOVED***
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Stream {
   int date;
@@ -10,13 +10,13 @@ class Stream {
 
   DocumentReference reference;
 
-  Stream({this.date, this.minutes, this.price, this.title, this.description, this.trainer, this.reference***REMOVED***);
+  Stream({this.date, this.minutes, this.price, this.title, this.description, this.trainer, this.reference});
 
   factory Stream.fromSnapshot(DocumentSnapshot snapshot) {
     Stream newStream = Stream.fromJson(snapshot.data);
     newStream.reference = snapshot.reference;
     return newStream;
-  ***REMOVED***
+  }
 
   factory Stream.fromJson(Map<String, dynamic> json) {
     return Stream(
@@ -26,8 +26,8 @@ class Stream {
       title: json['title'] as String,
       description: json['description'] as String,
       trainer: json['trainer'] as String,
-***REMOVED***
-  ***REMOVED***
+    );
+  }
 
   Map<String, dynamic> toJson() => _StreamToJson(this);
 
@@ -39,6 +39,6 @@ class Stream {
       'title': instance.title,
       'description': instance.description,
       'trainer': instance.trainer,
-    ***REMOVED***;
-  ***REMOVED***
-***REMOVED***
+    };
+  }
+}

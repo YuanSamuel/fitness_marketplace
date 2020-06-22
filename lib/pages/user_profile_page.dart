@@ -1,6 +1,6 @@
-***REMOVED***
-***REMOVED***
-***REMOVED***
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 //The profile system is set up so when you open the page you call either Driver or
 
@@ -15,84 +15,84 @@ class UserProfilePage extends StatelessWidget {
     numPrivateSessions = privateSessions;
     numVideos = videos;
     name = n;
-  ***REMOVED***
+  }
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
         body: ListView(
       children: [
         Column(
           children: [
             Container(
-  ***REMOVED***
+              decoration: BoxDecoration(
                   gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [Colors.black, Colors.black54])),
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-    ***REMOVED***
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
-    ***REMOVED***
+                children: [
                   //SizedBox(height: 50),
                   Text(
                     name,
-***REMOVED***color: Colors.white, fontSize: 26),
-    ***REMOVED***,
-    ***REMOVED***
+                    style: TextStyle(color: Colors.white, fontSize: 26),
+                  ),
+                  SizedBox(
                     height: 20,
-    ***REMOVED***,
-    ***REMOVED***
-    ***REMOVED***
-        ***REMOVED***
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
                       // CUSTOMERS
                       Column(children: [
-  ***REMOVED***
+                        Text(
                           numClasses.toString(),
-      ***REMOVED***color: Colors.white, fontSize: 24),
-          ***REMOVED***,
-  ***REMOVED***
+                          style: TextStyle(color: Colors.white, fontSize: 24),
+                        ),
+                        Text(
                           "Classes Registered",
-      ***REMOVED***color: Colors.white, fontSize: 12),
-          ***REMOVED***,
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        ),
                       ]),
                       // RATINGS
                       Column(children: [
-          ***REMOVED***children: [
-    ***REMOVED***
+                        Row(children: [
+                          Text(
                             numPrivateSessions.toString(),
-        ***REMOVED***color: Colors.white, fontSize: 24),
-            ***REMOVED***,
+                            style: TextStyle(color: Colors.white, fontSize: 24),
+                          ),
                         ]),
-  ***REMOVED***
+                        Text(
                           'Private Sessions',
-      ***REMOVED***color: Colors.white, fontSize: 12),
-          ***REMOVED***,
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        ),
                       ]),
                       // YEARS
                       Column(children: [
-  ***REMOVED***
+                        Text(
                           numVideos.toString(),
-      ***REMOVED***color: Colors.white, fontSize: 24),
-          ***REMOVED***,
-  ***REMOVED***
+                          style: TextStyle(color: Colors.white, fontSize: 24),
+                        ),
+                        Text(
                           "Videos Purchased",
-      ***REMOVED***color: Colors.white, fontSize: 12),
-          ***REMOVED***,
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        ),
                       ])
-    ***REMOVED***
-    ***REMOVED***,
-    ***REMOVED***height: 140)
-***REMOVED***
-***REMOVED***,
-***REMOVED***
+                    ],
+                  ),
+                  SizedBox(height: 140)
+                ],
+              ),
+            ),
           ],
-***REMOVED***
+        ),
       ],
     ));
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 //////Here is the page for students
 
@@ -107,143 +107,143 @@ class StudentProfilePage extends StatelessWidget {
     rating = rat;
     years = year;
     name = n;
-  ***REMOVED***
+  }
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
         appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text("Student Profile"),
             leading: IconButton(
             icon: Icon(Icons.arrow_back),
-                onPressed: () {***REMOVED***,
-  ***REMOVED***),
+                onPressed: () {},
+                )),
                body: StreamBuilder(
                   stream: Firestore.instance.collection('Student Profile Page').snapshots(),
                         builder: (context,snapshot){
                     if(!snapshot.hasData) return const Text('Loading...');
                return ListView(
-         ***REMOVED***
+                     children: [
                       Column(
-             ***REMOVED***
+                         children: [
                            Container(
-              ***REMOVED***
+                          decoration: BoxDecoration(
                              gradient: LinearGradient(
                                begin: Alignment.topLeft,
                                end: Alignment.bottomRight,
                                colors: [Colors.black, Colors.black87]
-            ***REMOVED***
-       ***REMOVED***,
+                          )
+                     ),
                    height: 400,
                           width: 400,
-             ***REMOVED***
+                       child: Column(
                          mainAxisAlignment: MainAxisAlignment.end,
-              ***REMOVED***
-       ***REMOVED***height: 50),
-         ***REMOVED***
+                          children: [
+                             SizedBox(height: 50),
+                               Text(
                                   name,
-          ***REMOVED***color: Colors.white, fontSize: 26),
-                 ***REMOVED***,
-      ***REMOVED***
+                              style: TextStyle(color: Colors.white, fontSize: 26),
+                               ),
+                            SizedBox(
                              height: 20,
-                ***REMOVED***,
+                              ),
 
-                ***REMOVED***
-             ***REMOVED***
-                  ***REMOVED***
+                              Row(
+                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
                                  Column(children: [
-               ***REMOVED***
+                                     Text(
                                       "$sessions",
                                        style:
                                  TextStyle(color: Colors.white, fontSize: 24),
-                     ***REMOVED***,
-           ***REMOVED***
+                                   ),
+                                 Text(
                                   "Sessions",
                                       style:
                                     TextStyle(color: Colors.white, fontSize: 16),
-                    ***REMOVED***,
+                                  ),
                                  ]),
                             Column(children: [
-                   ***REMOVED***children: [
-             ***REMOVED***
+                                 Row(children: [
+                                   Text(
                                     "$rating",
-               ***REMOVED***
-           ***REMOVED*** fontSize: 24),
-                    ***REMOVED***,
+                                   style: TextStyle(
+                                   color: Colors.white, fontSize: 24),
+                                  ),
                                 Icon(
                                  Icons.star,
                                  color: Colors.yellow,
-                 ***REMOVED***
+                               )
                                ]),
-      ***REMOVED***
+                            Text(
                                "Rating",
                                  style:
                                  TextStyle(color: Colors.white, fontSize: 16),
-                 ***REMOVED***,
+                               ),
                              ]),
                           Column(children: [
-         ***REMOVED***
+                               Text(
                                "$years",
                                   style:
                                  TextStyle(color: Colors.white, fontSize: 24),
-                ***REMOVED***,
-      ***REMOVED***
+                              ),
+                            Text(
                                  "Years",
                                   style:
                                TextStyle(color: Colors.white, fontSize: 16),
-              ***REMOVED***,
+                            ),
                            ])
-          ***REMOVED***
-          ***REMOVED***,
-  ***REMOVED***height: 20)
-      ***REMOVED***
-    ***REMOVED***,
-  ***REMOVED***,
+                          ],
+                        ),
+                SizedBox(height: 20)
+                      ],
+                  ),
+                ),
                    Column(
-        ***REMOVED***
+                    children: [
                           Card(
-                ***REMOVED***
-              ***REMOVED***
+                          child: Column(
+                          children: [
                             ListTile(
                                leading: Icon(Icons.star),
                                title: Text("Place as many of these as you want"),
                             trailing: Icon(Icons.edit),
-            ***REMOVED***,
-         ***REMOVED***
-       ***REMOVED***,
-    ***REMOVED***,
+                          ),
+                         ],
+                     ),
+                  ),
                  Card(
-          ***REMOVED***
-           ***REMOVED***
+                    child: Column(
+                       children: [
                          ListTile(
                             leading: Icon(Icons.star),
                             title: Text("Or you can make a class for these"),
                             trailing: Icon(Icons.edit),
-          ***REMOVED***,
-     ***REMOVED***
-    ***REMOVED***,
-***REMOVED***,
+                        ),
+                     ],
+                  ),
+              ),
                Card(
-      ***REMOVED***
-       ***REMOVED***
+                child: Column(
+                   children: [
                          ListTile(
                            leading: Icon(Icons.star),
                            title: Text("Its up to you"),
                            trailing: Icon(Icons.edit),
-                    ***REMOVED***,
-                 ***REMOVED***
-                ***REMOVED***,
-            ***REMOVED***
-         ***REMOVED***
-        ***REMOVED***
-   ***REMOVED***
- ***REMOVED***,
- ***REMOVED***
-      ***REMOVED***
-         ***REMOVED***
+                                  ),
+                                 ],
+                              ),
+                          )
+                         ],
+                      )
+                   ],
+               ),
+             ],
+          );
+         }
        )
 
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+    );
+  }
+}

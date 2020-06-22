@@ -1,23 +1,23 @@
-***REMOVED***
+import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import '../models/video_info.dart';
 
 class Player extends StatefulWidget {
   final VideoInfo video;
 
-  const Player({Key key, @required this.video***REMOVED***) : super(key: key);
+  const Player({Key key, @required this.video}) : super(key: key);
 
-***REMOVED***
+  @override
   State<StatefulWidget> createState() => _PlayerState();
-***REMOVED***
+}
 
 class _PlayerState extends State<Player> {
   String _error;
 
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
         children: <Widget>[
@@ -26,42 +26,42 @@ class _PlayerState extends State<Player> {
                   widget.video.videoUrl,
                   (BuildContext context, VideoPlayerController controller) =>
                       AspectRatioVideo(controller),
-  ***REMOVED***
+                )
               : Center(
                   child: Text(_error),
-  ***REMOVED***,
+                ),
           Container(
             padding: EdgeInsets.all(16.0),
             child: IconButton(
               icon: Icon(Icons.close, color: Colors.white),
               onPressed: () => Navigator.pop(context),
-***REMOVED***
-***REMOVED***
+            ),
+          ),
         ],
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+      ),
+    );
+  }
+}
 
 class VideoPlayPause extends StatefulWidget {
   VideoPlayPause(this.controller);
 
   final VideoPlayerController controller;
 
-***REMOVED***
+  @override
   State createState() {
     return _VideoPlayPauseState();
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 class _VideoPlayPauseState extends State<VideoPlayPause> {
   _VideoPlayPauseState() {
     listener = () {
       if (mounted) {
-  ***REMOVED******REMOVED***);
-      ***REMOVED***
-    ***REMOVED***;
-  ***REMOVED***
+        setState(() {});
+      }
+    };
+  }
 
   FadeAnimation imageFadeAnim =
       FadeAnimation(child: const Icon(Icons.play_arrow, size: 100.0));
@@ -69,48 +69,48 @@ class _VideoPlayPauseState extends State<VideoPlayPause> {
 
   VideoPlayerController get controller => widget.controller;
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  @override
+  void initState() {
+    super.initState();
     controller.addListener(listener);
     controller.setVolume(1.0);
     controller.play();
-  ***REMOVED***
+  }
 
-***REMOVED***
+  @override
   void deactivate() {
     controller.setVolume(0.0);
     controller.removeListener(listener);
     super.deactivate();
-  ***REMOVED***
+  }
 
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
     final List<Widget> children = <Widget>[
       GestureDetector(
         child: VideoPlayer(controller),
         onTap: () {
           if (!controller.value.initialized) {
             return;
-          ***REMOVED***
+          }
           if (controller.value.isPlaying) {
             imageFadeAnim =
                 FadeAnimation(child: const Icon(Icons.pause, size: 100.0));
             controller.pause();
-          ***REMOVED*** else {
+          } else {
             imageFadeAnim =
                 FadeAnimation(child: const Icon(Icons.play_arrow, size: 100.0));
             controller.play();
-          ***REMOVED***
-        ***REMOVED***,
-***REMOVED***
+          }
+        },
+      ),
       Align(
         alignment: Alignment.bottomCenter,
         child: VideoProgressIndicator(
           controller,
           allowScrubbing: true,
-***REMOVED***
-***REMOVED***
+        ),
+      ),
       Center(child: imageFadeAnim),
       Center(
           child: controller.value.isBuffering
@@ -121,68 +121,68 @@ class _VideoPlayPauseState extends State<VideoPlayPause> {
     return Stack(
       fit: StackFit.passthrough,
       children: children,
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+    );
+  }
+}
 
 class FadeAnimation extends StatefulWidget {
   FadeAnimation(
-      {this.child, this.duration = const Duration(milliseconds: 500)***REMOVED***);
+      {this.child, this.duration = const Duration(milliseconds: 500)});
 
   final Widget child;
   final Duration duration;
 
-***REMOVED***
+  @override
   _FadeAnimationState createState() => _FadeAnimationState();
-***REMOVED***
+}
 
 class _FadeAnimationState extends State<FadeAnimation>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  @override
+  void initState() {
+    super.initState();
     animationController =
         AnimationController(duration: widget.duration, vsync: this);
     animationController.addListener(() {
       if (mounted) {
-  ***REMOVED******REMOVED***);
-      ***REMOVED***
-    ***REMOVED***);
+        setState(() {});
+      }
+    });
     animationController.forward(from: 0.0);
-  ***REMOVED***
+  }
 
-***REMOVED***
+  @override
   void deactivate() {
     animationController.stop();
     super.deactivate();
-  ***REMOVED***
+  }
 
-***REMOVED***
+  @override
   void didUpdateWidget(FadeAnimation oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.child != widget.child) {
       animationController.forward(from: 0.0);
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
 
-***REMOVED***
+  @override
   void dispose() {
     if (animationController != null) animationController.dispose();
     super.dispose();
-  ***REMOVED***
+  }
 
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
     return animationController.isAnimating
         ? Opacity(
             opacity: 1.0 - animationController.value,
             child: widget.child,
           )
         : Container();
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 typedef Widget VideoWidgetBuilder(
     BuildContext context, VideoPlayerController controller);
@@ -192,7 +192,7 @@ abstract class PlayerLifeCycle extends StatefulWidget {
 
   final VideoWidgetBuilder childBuilder;
   final String dataSource;
-***REMOVED***
+}
 
 /// A widget connecting its life cycle to a [VideoPlayerController] using
 /// a data source from the network.
@@ -200,64 +200,64 @@ class NetworkPlayerLifeCycle extends PlayerLifeCycle {
   NetworkPlayerLifeCycle(String dataSource, VideoWidgetBuilder childBuilder)
       : super(dataSource, childBuilder);
 
-***REMOVED***
+  @override
   _NetworkPlayerLifeCycleState createState() => _NetworkPlayerLifeCycleState();
-***REMOVED***
+}
 
 abstract class _PlayerLifeCycleState extends State<PlayerLifeCycle> {
   VideoPlayerController controller;
 
-***REMOVED***
+  @override
 
   /// Subclasses should implement [createVideoPlayerController], which is used
   /// by this method.
-***REMOVED***
-***REMOVED***
+  void initState() {
+    super.initState();
     controller = createVideoPlayerController();
     controller.addListener(() {
       if (controller.value.hasError) {
-  ***REMOVED******REMOVED***);
-      ***REMOVED***
-    ***REMOVED***);
+        setState(() {});
+      }
+    });
     controller.initialize();
     controller.setLooping(false);
     controller.play();
-  ***REMOVED***
+  }
 
-***REMOVED***
+  @override
   void deactivate() {
     super.deactivate();
-  ***REMOVED***
+  }
 
-***REMOVED***
+  @override
   void dispose() {
     if (controller != null) controller.dispose();
     super.dispose();
-  ***REMOVED***
+  }
 
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
     return widget.childBuilder(context, controller);
-  ***REMOVED***
+  }
 
   VideoPlayerController createVideoPlayerController();
-***REMOVED***
+}
 
 class _NetworkPlayerLifeCycleState extends _PlayerLifeCycleState {
-***REMOVED***
+  @override
   VideoPlayerController createVideoPlayerController() {
     return VideoPlayerController.network(widget.dataSource);
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 class AspectRatioVideo extends StatefulWidget {
   AspectRatioVideo(this.controller);
 
   final VideoPlayerController controller;
 
-***REMOVED***
+  @override
   AspectRatioVideoState createState() => AspectRatioVideoState();
-***REMOVED***
+}
 
 class AspectRatioVideoState extends State<AspectRatioVideo> {
   VideoPlayerController get controller => widget.controller;
@@ -265,47 +265,47 @@ class AspectRatioVideoState extends State<AspectRatioVideo> {
 
   VoidCallback listener;
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  @override
+  void initState() {
+    super.initState();
     listener = () {
       if (!mounted) {
         return;
-      ***REMOVED***
+      }
       if (initialized != controller.value.initialized) {
         initialized = controller.value.initialized;
         if (mounted) {
-    ***REMOVED******REMOVED***);
-        ***REMOVED***
-      ***REMOVED***
-    ***REMOVED***;
+          setState(() {});
+        }
+      }
+    };
     controller.addListener(listener);
-  ***REMOVED***
+  }
 
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
     if (controller.value.hasError) {
       return Center(
-***REMOVED***
+        child: Padding(
           padding: const EdgeInsets.all(20),
           child: Text(controller.value.errorDescription,
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.bold)),
-***REMOVED***
-  ***REMOVED***
-    ***REMOVED***
+        ),
+      );
+    }
 
     if (initialized) {
       return Center(
         child: AspectRatio(
           aspectRatio: controller.value.aspectRatio,
           child: VideoPlayPause(controller),
-***REMOVED***
-  ***REMOVED***
-    ***REMOVED*** else {
+        ),
+      );
+    } else {
       return Center(child: CircularProgressIndicator());
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
+    }
+  }
+}

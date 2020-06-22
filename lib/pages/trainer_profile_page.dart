@@ -1,13 +1,13 @@
-***REMOVED***
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/pages/profile_picture.dart';
 import 'package:fitnessmarketplace/pages/trainer_register.dart';
-***REMOVED***
-***REMOVED***
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class TrainerProfile extends StatelessWidget {
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: Column(
         children: [
           RaisedButton(
@@ -15,28 +15,28 @@ class TrainerProfile extends StatelessWidget {
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
               Navigator.popAndPushNamed(context, '/register');
-            ***REMOVED***,
-***REMOVED***
+            },
+          ),
           RaisedButton(
             child: Text('Change Profile Picture'),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => (ProfilePic())),
-          ***REMOVED***
-            ***REMOVED***,
-***REMOVED***
+              );
+            },
+          ),
           RaisedButton(
             child: Text('Change Bio and Type'),
             onPressed:  () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => (TrainerRegister())),
-          ***REMOVED***
-            ***REMOVED***,
-***REMOVED***
+              );
+            },
+          ),
         ],
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+      ),
+    );
+  }
+}

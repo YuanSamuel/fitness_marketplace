@@ -1,8 +1,8 @@
-***REMOVED***
+import 'package:flutter/material.dart';
 
 class SetExercise extends StatelessWidget {
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
 
-  ***REMOVED***
-***REMOVED***
+  }
+}

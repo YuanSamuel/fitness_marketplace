@@ -1,17 +1,17 @@
-***REMOVED***
-***REMOVED***
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/pages/entry_page.dart';
 import 'package:fitnessmarketplace/widgets/signup_widget.dart';
 import 'package:fitnessmarketplace/pages/trainer_navigation.dart';
 import 'package:fitnessmarketplace/pages/user_navigation.dart';
-***REMOVED***
+import 'package:flutter/material.dart';
 
 class RootPage extends StatefulWidget {
-  RootPage({Key key***REMOVED***) : super(key: key);
+  RootPage({Key key}) : super(key: key);
 
-***REMOVED***
+  @override
   _RootPageState createState() => _RootPageState();
-***REMOVED***
+}
 
 class _RootPageState extends State<RootPage> {
 
@@ -19,46 +19,46 @@ class _RootPageState extends State<RootPage> {
   bool doneLoading;
   bool isTrainer;
 
-***REMOVED***
-***REMOVED***
+  @override
+  void initState() {
     doneLoading = false;
     isTrainer = false;
     getCurrentUser();
-***REMOVED***
-  ***REMOVED***
+    super.initState();
+  }
 
   void getCurrentUser() async {
     currentUser = await FirebaseAuth.instance.currentUser();
     if (currentUser != null) {
       DocumentSnapshot userData = await Firestore.instance.collection('users').document(currentUser.uid).get();
       isTrainer = userData.data['isTrainer'];
-    ***REMOVED***
+    }
     setState(() {
       doneLoading = true;
-    ***REMOVED***);
-  ***REMOVED***
+    });
+  }
 
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
     if (!doneLoading) {
-  ***REMOVED***
+      return Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
-***REMOVED***
-  ***REMOVED***
-    ***REMOVED***
-***REMOVED***
+        ),
+      );
+    }
+    else {
       if (currentUser == null) {
         return EntryPage();
-      ***REMOVED***
-  ***REMOVED***
+      }
+      else {
         if (isTrainer) {
           return TrainerNavigation();
-        ***REMOVED***
-    ***REMOVED***
+        }
+        else {
           return UserNavigation();
-        ***REMOVED***
-      ***REMOVED***
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
+        }
+      }
+    }
+  }
+}

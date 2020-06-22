@@ -1,26 +1,26 @@
-***REMOVED***
-***REMOVED***
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/helpers/calendar_helper.dart';
 import 'package:fitnessmarketplace/helpers/string_helper.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
 import 'package:fitnessmarketplace/models/Stream.dart' as models;
 import 'package:fitnessmarketplace/models/Student.dart';
 import 'package:fitnessmarketplace/pages/session_preview_page.dart';
-***REMOVED***
-***REMOVED***
+import 'package:flutter/material.dart';
+import 'package:fitnessmarketplace/models/Trainer.dart';
 import 'package:table_calendar/table_calendar.dart';
-***REMOVED***
-***REMOVED***
+import 'package:square_in_app_payments/in_app_payments.dart';
+import 'package:square_in_app_payments/models.dart';
 
 class RequestPrivateSessionPage extends StatefulWidget {
-  RequestPrivateSessionPage({Key key, this.trainer***REMOVED***) : super(key: key);
+  RequestPrivateSessionPage({Key key, this.trainer}) : super(key: key);
 
-***REMOVED***
+  final Trainer trainer;
 
-***REMOVED***
+  @override
   _RequestPrivateSessionPageState createState() =>
       _RequestPrivateSessionPageState();
-***REMOVED***
+}
 
 class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
   Student currentStudent;
@@ -34,27 +34,27 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
   CalendarHelper _calendarHelper;
   StringHelper _stringHelper;
 
-***REMOVED***
-***REMOVED***
+  @override
+  void initState() {
     _calendarController = new CalendarController();
     _calendarHelper = new CalendarHelper();
     _stringHelper = new StringHelper();
     events = new List<dynamic>();
     setUp();
-***REMOVED***
-  ***REMOVED***
+    super.initState();
+  }
 
   void dispose() {
     _calendarController.dispose();
     super.dispose();
-  ***REMOVED***
+  }
 
   setUp() async {
     await getCurrentUser();
     await getAvailablePrivateSessionTimes();
     await getTrainerStreams();
-    setState(() {***REMOVED***);
-  ***REMOVED***
+    setState(() {});
+  }
 
   getCurrentUser() async {
     FirebaseUser getUser = await FirebaseAuth.instance.currentUser();
@@ -63,7 +63,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
         .document(getUser.uid)
         .get();
     currentStudent = Student.fromSnapshot(userData);
-  ***REMOVED***
+  }
 
   getAvailablePrivateSessionTimes() async {
     privateSessionTimes = new List<PrivateSession>();
@@ -78,9 +78,9 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
           PrivateSession.fromSnapshot(allPrivateSessionsList[i]);
       if (currentPrivateSession.available) {
         privateSessionTimes.add(currentPrivateSession);
-      ***REMOVED***
-    ***REMOVED***
-  ***REMOVED***
+      }
+    }
+  }
 
   getTrainerStreams() async {
     streamTimes = new List<models.Stream>();
@@ -89,34 +89,34 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
     List<DocumentSnapshot> streamSnapshots = streams.documents;
     for (int i = 0; i < streamSnapshots.length; i++) {
       streamTimes.add(models.Stream.fromSnapshot(streamSnapshots[i]));
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
 
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
     if (privateSessionTimes == null) {
-  ***REMOVED***
+      return Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
-***REMOVED***
-  ***REMOVED***
-    ***REMOVED*** else {
-  ***REMOVED***
+        ),
+      );
+    } else {
+      return Scaffold(
         body: Column(
           children: [
             SizedBox(
               height: MediaQuery.of(context).size.height / 20,
-***REMOVED***
+            ),
             TableCalendar(
               calendarController: _calendarController,
               events: _calendarHelper.listToEventMap(
                   privateSessionTimes, streamTimes),
               onDaySelected: (DateTime date, List<dynamic> givenEvents) {
-          ***REMOVED***
+                setState(() {
                   events = givenEvents;
-                ***REMOVED***);
-              ***REMOVED***,
-***REMOVED***
+                });
+              },
+            ),
             Container(
               height: 200,
               child: ListView.builder(
@@ -141,25 +141,25 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                       onTap: () {
                         if (events[i] is models.Stream) {
                           print("STUFF SHOULD BE HAPPENING?");
-    ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
                                 builder: (context) => SessionPreview(
                                       stream: events[i],
                                       isStream: true,
-                      ***REMOVED***),
-                      ***REMOVED***
-                        ***REMOVED*** else {
+                                    )),
+                          );
+                        } else {
                           selectedPrivateSession = events[i];
-                      ***REMOVED***
-                        ***REMOVED***
+                          _pay();
+                        }
                         //Navigator.pop(context);
-                      ***REMOVED***,
-              ***REMOVED***
+                      },
+                      child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
                           padding: EdgeInsets.symmetric(horizontal: 15.0),
-              ***REMOVED***
+                          decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30.0),
                             color: Colors.blue,
                             boxShadow: [
@@ -169,18 +169,18 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                                 blurRadius: 7,
                                 offset:
                                     Offset(0, 3), // changes position of shadow
-                ***REMOVED***,
-            ***REMOVED***
-            ***REMOVED***,
+                              ),
+                            ],
+                          ),
                           height: 100.0,
                           child: Row(
-            ***REMOVED***
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
-                ***REMOVED***
+                            children: [
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                    ***REMOVED***
-                    ***REMOVED***
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
                                   Container(
                                     width: 7 *
                                         MediaQuery.of(context).size.width /
@@ -190,93 +190,93 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                                         ? Text(
                                             events[i].title + ' - Live Class',
                                             overflow: TextOverflow.fade,
-                        ***REMOVED***
+                                            style: TextStyle(
                                               fontSize: 20.0,
-                  ***REMOVED***
-                      ***REMOVED***
-                              ***REMOVED***,
-                            ***REMOVED***
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          )
                                         : Text(
                                             'Private Session with: ' +
                                                 trainerName,
                                             overflow: TextOverflow.fade,
-                        ***REMOVED***
+                                            style: TextStyle(
                                                 fontSize: 20.0,
                                                 fontWeight: FontWeight.w600,
                                                 color: Colors.white),
-                            ***REMOVED***,
-                    ***REMOVED***,
-            ***REMOVED***
+                                          ),
+                                  ),
+                                  SizedBox(
                                     height: 10.0,
-                    ***REMOVED***,
-            ***REMOVED***
+                                  ),
+                                  Text(
                                     length,
-                ***REMOVED***
+                                    style: TextStyle(
                                         fontSize: 15.0,
                                         fontWeight: FontWeight.w400,
                                         color: Colors.white),
-                    ***REMOVED***,
-                ***REMOVED***
-                ***REMOVED***,
+                                  ),
+                                ],
+                              ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.end,
-                    ***REMOVED***
-            ***REMOVED***
+                                children: [
+                                  Text(
                                     _stringHelper.dateTimeToDateString(date),
-                ***REMOVED***
+                                    style: TextStyle(
                                         fontSize: 12.0,
                                         fontWeight: FontWeight.w400,
                                         color: Colors.white),
-                    ***REMOVED***,
-            ***REMOVED***
+                                  ),
+                                  SizedBox(
                                     height: 10.0,
-                    ***REMOVED***,
-            ***REMOVED***
+                                  ),
+                                  Text(
                                     _stringHelper.dateTimeToTimeString(date),
-                ***REMOVED***
+                                    style: TextStyle(
                                         fontSize: 12.0,
                                         fontWeight: FontWeight.w400,
                                         color: Colors.white),
-                    ***REMOVED***,
-                ***REMOVED***
-                ***REMOVED***
-            ***REMOVED***
-            ***REMOVED***,
-          ***REMOVED***,
-        ***REMOVED***,
-                ***REMOVED***
-                  ***REMOVED***),
-***REMOVED***
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+            ),
           ],
-***REMOVED***
-  ***REMOVED***
-    ***REMOVED***
-  ***REMOVED***
+        ),
+      );
+    }
+  }
 
   void _pay() {
     InAppPayments.setSquareApplicationId(
         '***REMOVED***');
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
+    InAppPayments.startCardEntryFlow(
+      onCardNonceRequestSuccess: _onCardNonceRequestSuccess,
+      onCardEntryCancel: _onCardEntryCancel,
+    );
+  }
 
-  void _onCardEntryCancel() {***REMOVED***
+  void _onCardEntryCancel() {}
   void _onCardNonceRequestSuccess(CardDetails result) {
-***REMOVED***
+    print('result.nonce');
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
+    InAppPayments.completeCardEntry(
+      onCardEntryComplete: _cardEntryComplete,
+    );
+  }
 
   void _cardEntryComplete() {
     selectedPrivateSession.reference.updateData({
       'available': false,
       'studentName': currentStudent.firstName + ' ' + currentStudent.lastName
-    ***REMOVED***);
+    });
 
     selectedPrivateSession.available = false;
     selectedPrivateSession.studentName =
@@ -291,8 +291,8 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
       'price': widget.trainer.oneOnOnePrice,
       'trainer': widget.trainer.reference.documentID,
       'sessionDate': selectedPrivateSession.date,
-***REMOVED***
-    ***REMOVED***);
+      'purchaseDate': DateTime.now().millisecondsSinceEpoch,
+    });
 
     widget.trainer.reference.collection("transactions").add({
       'type': "privateSession",
@@ -300,9 +300,9 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
       'price': widget.trainer.oneOnOnePrice,
       'trainer': widget.trainer.reference.documentID,
       'sessionDate': selectedPrivateSession.date,
-***REMOVED***
-    ***REMOVED***);
+      'purchaseDate': DateTime.now().millisecondsSinceEpoch,
+    });
 
     Navigator.pop(context);
-  ***REMOVED***
-***REMOVED***
+  }
+}

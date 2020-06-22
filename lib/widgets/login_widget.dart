@@ -1,17 +1,17 @@
-***REMOVED***
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitnessmarketplace/pages/entry_page.dart';
 import 'package:fitnessmarketplace/pages/trainer_home_page.dart';
 import 'package:fitnessmarketplace/utils/style_constants.dart';
-***REMOVED***
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/widgets/signup_widget.dart';
-***REMOVED***
+import 'package:flutter/material.dart';
 import 'package:fitnessmarketplace/pages/user_navigation.dart';
 import 'package:fitnessmarketplace/pages/trainer_navigation.dart';
 
 class LoginWidget extends StatefulWidget {
-***REMOVED***
+  @override
   _LoginWidgetState createState() => _LoginWidgetState();
-***REMOVED***
+}
 
 class _LoginWidgetState extends State<LoginWidget> {
 
@@ -20,42 +20,42 @@ class _LoginWidgetState extends State<LoginWidget> {
   TextEditingController passwordInputController;
   final GlobalKey<FormState> _loginFormKey = new GlobalKey();
 
-***REMOVED***
-***REMOVED***
+  @override
+  void initState() {
     emailInputController = new TextEditingController();
     passwordInputController = new TextEditingController();
-  ***REMOVED***
+  }
 
   String emailValidator(String value) {
     Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3***REMOVED***\.[0-9]{1,3***REMOVED***\.[0-9]{1,3***REMOVED***\.[0-9]{1,3***REMOVED***\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,***REMOVED***))$';
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value)) {
       return 'Email format is invalid';
-    ***REMOVED*** else {
+    } else {
       return null;
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
 
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
         child: Container(
             child: SingleChildScrollView(
                 child: Form(
                   key: _loginFormKey,
-        ***REMOVED***
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-    ***REMOVED***
+                    children: <Widget>[
                       Column(
 
-        ***REMOVED***
+                        children: <Widget>[
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***height: 40.0),
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(height: 40.0),
                               Container(
                                 alignment: Alignment.centerLeft,
                                 decoration: StyleConstants.loginBoxDecorationStyle,
@@ -63,29 +63,29 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 child: TextFormField(
                                   controller: emailInputController,
                                   keyboardType: TextInputType.emailAddress,
-              ***REMOVED***
+                                  style: TextStyle(
                                     color: Colors.black,
                                     fontFamily: 'OpenSans',
-                    ***REMOVED***,
+                                  ),
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
                                     contentPadding: EdgeInsets.only(top: 14.0),
                                     prefixIcon: Icon(
                                       Icons.email,
                                       color: Colors.black,
-                      ***REMOVED***,
+                                    ),
                                     hintText: 'Enter your Email',
                                     hintStyle: StyleConstants.loginHintTextStyle,
-                    ***REMOVED***,
-                  ***REMOVED***,
-                ***REMOVED***,
-            ***REMOVED***
-            ***REMOVED***,
-    ***REMOVED***height: 20.0,),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20.0,),
                           Column(
-                ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***height: 10.0),
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(height: 10.0),
                               Container(
                                 alignment: Alignment.centerLeft,
                                 decoration: StyleConstants.loginBoxDecorationStyle,
@@ -93,29 +93,29 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 child: TextFormField(
                                   controller: passwordInputController,
                                   obscureText: true,
-              ***REMOVED***
+                                  style: TextStyle(
                                     color: Colors.black,
                                     fontFamily: 'OpenSans',
-                    ***REMOVED***,
+                                  ),
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
                                     contentPadding: EdgeInsets.only(top: 14.0),
                                     prefixIcon: Icon(
                                       Icons.lock,
                                       color: Colors.black,
-                      ***REMOVED***,
+                                    ),
                                     hintText: 'Enter your Password',
                                     hintStyle: StyleConstants.loginHintTextStyle,
-                    ***REMOVED***,
-                  ***REMOVED***,
-                ***REMOVED***,
-            ***REMOVED***
-            ***REMOVED***,
-        ***REMOVED***
-        ***REMOVED***,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
 
                       //SizedBox(height: MediaQuery.of(context).size.height / 5,),
-***REMOVED***height: 40.0,),
+                      SizedBox(height: 40.0,),
 
                       GestureDetector(
                         onTap: () async {
@@ -128,43 +128,43 @@ class _LoginWidgetState extends State<LoginWidget> {
                             DocumentSnapshot snapshot = await Firestore.instance.collection('users').document(currentUser.user.uid).get();
                             print(snapshot.data);
                             if (snapshot.data['isTrainer']) {
-        ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***builder: (context) => TrainerNavigation()),
-                          ***REMOVED***
-                            ***REMOVED***
-                        ***REMOVED***
-                          ***REMOVED***
-                            ***REMOVED***
-                          ***REMOVED***);
-                        ***REMOVED***,
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => TrainerNavigation()),
+                              );
+                            }
+                            else {
+                              Navigator.pushReplacementNamed(context, '/userHome');
+                            }
+                          });
+                        },
 
                         child: Container(
                           height: 50,
                           margin: EdgeInsets.symmetric(horizontal: 50),
-              ***REMOVED***
+                          decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(50),
                               color: Colors.black
-            ***REMOVED***,
+                          ),
                           child: Center(
-        ***REMOVED***"Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-            ***REMOVED***,
-          ***REMOVED***,
-        ***REMOVED***,
+                            child: Text("Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                          ),
+                        ),
+                      ),
                       FlatButton(
-    ***REMOVED***'Register'),
-    ***REMOVED***
-    ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***builder: (context) => EntryPage()),
-                      ***REMOVED***
-                        ***REMOVED***,
-        ***REMOVED***,
-    ***REMOVED***
-    ***REMOVED***,
-  ***REMOVED***
+                        child: Text('Register'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => EntryPage()),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                )
             )
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+        ),
+    );
+  }
+}

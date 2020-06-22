@@ -10,8 +10,8 @@ import SquareInAppPaymentsSDK
   ) -> Bool {
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_: UIApplication,
@@ -20,16 +20,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Set your Square Application ID
         SQIPInAppPaymentsSDK.squareApplicationID = "***REMOVED***"
         return true
-    ***REMOVED***
-***REMOVED***
+    }
+}
 
 extension<#YourViewController#>: UINavigationControllerDelegate {
    func navigationControllerSupportedInterfaceOrientations(
        _: UINavigationController
    ) -> UIInterfaceOrientationMask {
        return .portrait
-   ***REMOVED***
-***REMOVED***
+   }
+}
 
 
 extension <#YourViewController#> {
@@ -38,8 +38,8 @@ extension <#YourViewController#> {
         cardEntry.collectPostalCode = false
         cardEntry.delegate = self
         return cardEntry
-    ***REMOVED***
-***REMOVED***
+    }
+}
 extension<#YourViewController#>: SQIPCardEntryViewControllerDelegate {
     func cardEntryViewController(
         _: SQIPCardEntryViewController,
@@ -48,7 +48,7 @@ extension<#YourViewController#>: SQIPCardEntryViewControllerDelegate {
 
     {
         dismiss(animated: true, completion: nil)
-    ***REMOVED***
+    }
 
     func cardEntryViewController(
         _: SQIPCardEntryViewController,
@@ -59,15 +59,15 @@ extension<#YourViewController#>: SQIPCardEntryViewControllerDelegate {
     {
         if let chargeError = chargeError {
                             completionHandler(chargeError)
-                        ***REMOVED***
-                    ***REMOVED***
+                        }
+                        else {
                             completionHandler(nil)
-                        ***REMOVED***
-                    ***REMOVED***
+                        }
+                    }
 
 
     func completionHandler(nil)
-    ***REMOVED***
+    }
 
 
 

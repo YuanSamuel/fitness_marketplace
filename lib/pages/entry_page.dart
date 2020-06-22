@@ -2,12 +2,12 @@ import 'package:fitnessmarketplace/utils/fade_animation.dart';
 import 'package:fitnessmarketplace/utils/style_constants.dart';
 import 'package:fitnessmarketplace/widgets/login_widget.dart';
 import 'package:fitnessmarketplace/widgets/signup_widget.dart';
-***REMOVED***
+import 'package:flutter/material.dart';
 
 class EntryPage extends StatefulWidget {
-***REMOVED***
+  @override
   _EntryPageState createState() => _EntryPageState();
-***REMOVED***
+}
 
 class _EntryPageState extends State<EntryPage> {
   int status = 0;
@@ -18,24 +18,24 @@ class _EntryPageState extends State<EntryPage> {
 
   static PageController _controller;
 
-***REMOVED***
-***REMOVED***
+  @override
+  void initState() {
     _controller = PageController(
       initialPage: 0,
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
+    );
+    super.initState();
+  }
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/bckground.png"),
             fit: BoxFit.cover,
-***REMOVED***
-***REMOVED***
+          ),
+        ),
         child: Column(
           children: <Widget>[
             SizedBox(height: 75.0,),
@@ -45,88 +45,88 @@ class _EntryPageState extends State<EntryPage> {
             SizedBox(height: 75.0,),
             Expanded(
               child: Container(
-    ***REMOVED***
+                decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0) )
-  ***REMOVED***,
+                ),
 
                 //child: status == 0 ? _buildEntryPage() : status == 1 ? new LoginWidget() : _buildSignupPage(),
                 child: PageView(
                   physics: NeverScrollableScrollPhysics(),
                   controller: _controller,
-      ***REMOVED***
+                  children: [
                     _buildEntryPage(),
                     SingleChildScrollView(
-            ***REMOVED***
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
-            ***REMOVED***
-    ***REMOVED***height: 20.0,),
-            ***REMOVED***
-            ***REMOVED***
+                        children: [
+                          SizedBox(height: 20.0,),
+                          Row(
+                            children: <Widget>[
                               IconButton(
                                 icon: Icon(Icons.arrow_back_ios
-                  ***REMOVED***,
+                                ),
                                 onPressed: (){setState(() {
                                   _controller.jumpToPage(0);
-                                ***REMOVED***);
-                                ***REMOVED***,
-                ***REMOVED***,
-        ***REMOVED***width: 105.0,),
-        ***REMOVED***
+                                });
+                                },
+                              ),
+                              SizedBox(width: 105.0,),
+                              Text(
                                 'Login',
-            ***REMOVED***
+                                style: TextStyle(
                                   color: Colors.black,
                                   fontFamily: 'OpenSans',
                                   fontSize: 30.0,
-      ***REMOVED***
-                  ***REMOVED***,
-                ***REMOVED***,
-            ***REMOVED***
-            ***REMOVED***,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                           LoginWidget(),
-        ***REMOVED***
-        ***REMOVED***,
-      ***REMOVED***,
+                        ],
+                      ),
+                    ),
                     SingleChildScrollView(
-            ***REMOVED***
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
-            ***REMOVED***
-    ***REMOVED***height: 20.0,),
-            ***REMOVED***
-            ***REMOVED***
+                        children: [
+                          SizedBox(height: 20.0,),
+                          Row(
+                            children: <Widget>[
                               IconButton(
                                 icon: Icon(Icons.arrow_back_ios
-                  ***REMOVED***,
+                                ),
                                 onPressed: (){setState(() {
                                   _controller.jumpToPage(0);
-                                ***REMOVED***);
-                                ***REMOVED***,
-                ***REMOVED***,
-        ***REMOVED***width: 100.0,),
-        ***REMOVED***
+                                });
+                                },
+                              ),
+                              SizedBox(width: 100.0,),
+                              Text(
                                 'Signup',
-            ***REMOVED***
+                                style: TextStyle(
                                   color: Colors.black,
                                   fontFamily: 'OpenSans',
                                   fontSize: 30.0,
-      ***REMOVED***
-                  ***REMOVED***,
-                ***REMOVED***,
-            ***REMOVED***
-            ***REMOVED***,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                           SignupWidget(),
-        ***REMOVED***
-        ***REMOVED***,
-      ***REMOVED***,
-  ***REMOVED***
-  ***REMOVED***,
-***REMOVED***,
-***REMOVED***
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
+        ),
+      ),
+    );
+  }
 
   Widget _buildEntryPage(){
     return Padding(
@@ -139,79 +139,79 @@ class _EntryPageState extends State<EntryPage> {
               child: PageView(
                 controller: controller,
                 scrollDirection: Axis.horizontal,
-***REMOVED***
+                children: <Widget>[
                   Container(
                     child: Center(
                   child: Image.asset('assets/images/workout.png')
                       //child: Text('Text Description of the app 1'),
-      ***REMOVED***,
-    ***REMOVED***,
+                    ),
+                  ),
                   Container(
                     child: Center(
                       //child: Text('Text Description of the app 2'),
                         child: Image.asset('assets/images/personaltrainer.png')
-      ***REMOVED***,
-    ***REMOVED***,
+                    ),
+                  ),
                   Container(
                     child: Center(
                       //child: Text('Text Description of the app 3'),
                         child: Image.asset('assets/images/indoorbike.png')
-      ***REMOVED***,
-    ***REMOVED***,
-***REMOVED***
-***REMOVED***,
-***REMOVED***
+                    ),
+                  ),
+                ],
+              ),
+            ),
 
             SizedBox(height: 30.0,),
 
             FadeAnimation(1.6,
                 GestureDetector(
                   onTap: (){
-              ***REMOVED***
+                    setState(() {
                       status = 1;
-                    ***REMOVED***);
+                    });
                     _controller.jumpToPage(1);
-                  ***REMOVED***,
+                  },
                   child: Container(
                     height: 50,
                     margin: EdgeInsets.symmetric(horizontal: 50),
-        ***REMOVED***
+                    decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                         color: Colors.black
-      ***REMOVED***,
+                    ),
                     child: Center(
-  ***REMOVED***"Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-      ***REMOVED***,
-    ***REMOVED***,
-  ***REMOVED***),
+                      child: Text("Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                    ),
+                  ),
+                )),
             SizedBox(height: 20.0,),
             FadeAnimation(1.8, GestureDetector(
               onTap: (){
-          ***REMOVED***
+                setState(() {
                   _controller.jumpToPage(2);
-                ***REMOVED***);
-              ***REMOVED***,
+                });
+              },
               child: Container(
                 height: 50,
                 margin: EdgeInsets.symmetric(horizontal: 50),
-    ***REMOVED***
+                decoration: BoxDecoration(
                     border: Border.all(
                       color: Colors.black,
                       width: 3.0,
-      ***REMOVED***,
+                    ),
                     borderRadius: BorderRadius.circular(50),
                     color: Colors.white
-  ***REMOVED***,
+                ),
                 child: Center(
                   child: Text("Sign Up", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
-  ***REMOVED***,
-***REMOVED***,
+                ),
+              ),
             )),
           ],
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
+        ),
+      ),
+    );
+  }
 
   _buildLoginPage(){
     return Padding(
@@ -221,43 +221,43 @@ class _EntryPageState extends State<EntryPage> {
           width: double.infinity,
           decoration: BoxDecoration(
 
-***REMOVED***
+          ),
           //padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
               child: Form(
                 key: _loginFormKey,
-      ***REMOVED***
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-  ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
                         IconButton(
                           icon: Icon(Icons.arrow_back_ios
-            ***REMOVED***,
+                          ),
                           onPressed: (){setState(() {
                             status = 0;
-                          ***REMOVED***);***REMOVED***,
-          ***REMOVED***,
-  ***REMOVED***width: 90.0,),
-  ***REMOVED***
+                          });},
+                        ),
+                        SizedBox(width: 90.0,),
+                        Text(
                           'Login',
-      ***REMOVED***
+                          style: TextStyle(
                             color: Colors.black,
                             fontFamily: 'OpenSans',
                             fontSize: 30.0,
-***REMOVED***
-            ***REMOVED***,
-          ***REMOVED***,
-      ***REMOVED***
-      ***REMOVED***,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                     Column(
 
-      ***REMOVED***
+                      children: <Widget>[
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-              ***REMOVED***
-          ***REMOVED***
-      ***REMOVED***height: 40.0),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(height: 40.0),
                             Container(
                               alignment: Alignment.centerLeft,
                               decoration: StyleConstants.loginBoxDecorationStyle,
@@ -265,29 +265,29 @@ class _EntryPageState extends State<EntryPage> {
                               child: TextFormField(
                                 controller: emailInputController,
                                 keyboardType: TextInputType.emailAddress,
-            ***REMOVED***
+                                style: TextStyle(
                                   color: Colors.black,
                                   fontFamily: 'OpenSans',
-                  ***REMOVED***,
+                                ),
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   contentPadding: EdgeInsets.only(top: 14.0),
                                   prefixIcon: Icon(
                                     Icons.email,
                                     color: Colors.black,
-                    ***REMOVED***,
+                                  ),
                                   hintText: 'Enter your Email',
                                   hintStyle: StyleConstants.loginHintTextStyle,
-                  ***REMOVED***,
-                ***REMOVED***,
-              ***REMOVED***,
-          ***REMOVED***
-          ***REMOVED***,
-  ***REMOVED***height: 20.0,),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20.0,),
                         Column(
-              ***REMOVED***
-          ***REMOVED***
-      ***REMOVED***height: 10.0),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(height: 10.0),
                             Container(
                               alignment: Alignment.centerLeft,
                               decoration: StyleConstants.loginBoxDecorationStyle,
@@ -295,49 +295,49 @@ class _EntryPageState extends State<EntryPage> {
                               child: TextFormField(
                                 controller: pwdInputController,
                                 obscureText: true,
-            ***REMOVED***
-          ***REMOVED***
+                                style: TextStyle(
+                                  color: Colors.white,
                                   fontFamily: 'OpenSans',
-                  ***REMOVED***,
+                                ),
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   contentPadding: EdgeInsets.only(top: 14.0),
                                   prefixIcon: Icon(
                                     Icons.lock,
                                     color: Colors.black,
-                    ***REMOVED***,
+                                  ),
                                   hintText: 'Enter your Password',
                                   hintStyle: StyleConstants.loginHintTextStyle,
-                  ***REMOVED***,
-                ***REMOVED***,
-              ***REMOVED***,
-          ***REMOVED***
-          ***REMOVED***,
-      ***REMOVED***
-      ***REMOVED***,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
 
                     //SizedBox(height: MediaQuery.of(context).size.height / 5,),
-      ***REMOVED***height: 40.0,),
+                    SizedBox(height: 40.0,),
 
                     Container(
                       height: 50,
                       margin: EdgeInsets.symmetric(horizontal: 50),
-          ***REMOVED***
+                      decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           color: Colors.black
-        ***REMOVED***,
+                      ),
                       child: Center(
-    ***REMOVED***"Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-        ***REMOVED***,
-      ***REMOVED***,
+                        child: Text("Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                      ),
+                    ),
 
-  ***REMOVED***
-  ***REMOVED***,
-***REMOVED***
+                  ],
+                ),
+              )
           )
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
+      ),
+    );
+  }
 
   _buildSignupPage(){
     return Padding(
@@ -347,43 +347,43 @@ class _EntryPageState extends State<EntryPage> {
           width: double.infinity,
           decoration: BoxDecoration(
 
-***REMOVED***
+          ),
           //padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
               child: Form(
                 key: _loginFormKey,
-      ***REMOVED***
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-  ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
                         IconButton(
                           icon: Icon(Icons.arrow_back_ios
-            ***REMOVED***,
+                          ),
                           onPressed: (){setState(() {
                             status = 0;
-                          ***REMOVED***);***REMOVED***,
-          ***REMOVED***,
-  ***REMOVED***width: 90.0,),
-  ***REMOVED***
+                          });},
+                        ),
+                        SizedBox(width: 90.0,),
+                        Text(
                           'Signup',
-      ***REMOVED***
+                          style: TextStyle(
                             color: Colors.black,
                             fontFamily: 'OpenSans',
                             fontSize: 30.0,
-***REMOVED***
-            ***REMOVED***,
-          ***REMOVED***,
-      ***REMOVED***
-      ***REMOVED***,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                     Column(
 
-      ***REMOVED***
+                      children: <Widget>[
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-              ***REMOVED***
-          ***REMOVED***
-      ***REMOVED***height: 40.0),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(height: 40.0),
                             Container(
                               alignment: Alignment.centerLeft,
                               decoration: StyleConstants.loginBoxDecorationStyle,
@@ -391,28 +391,28 @@ class _EntryPageState extends State<EntryPage> {
                               child: TextFormField(
                                 controller: emailInputController,
                                 keyboardType: TextInputType.emailAddress,
-            ***REMOVED***
+                                style: TextStyle(
                                   color: Colors.black,
                                   fontFamily: 'OpenSans',
-                  ***REMOVED***,
+                                ),
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   contentPadding: EdgeInsets.only(top: 14.0),
                                   prefixIcon: Icon(
                                     Icons.email,
                                     color: Colors.black,
-                    ***REMOVED***,
+                                  ),
                                   hintText: 'Full Name',
                                   hintStyle: StyleConstants.loginHintTextStyle,
-                  ***REMOVED***,
-                ***REMOVED***,
-              ***REMOVED***,
-          ***REMOVED***
-          ***REMOVED***,
-  ***REMOVED***height: 20.0,),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20.0,),
                         Column(
-              ***REMOVED***
-          ***REMOVED***
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
                             Container(
                               alignment: Alignment.centerLeft,
                               decoration: StyleConstants.loginBoxDecorationStyle,
@@ -420,28 +420,28 @@ class _EntryPageState extends State<EntryPage> {
                               child: TextFormField(
                                 controller: pwdInputController,
                                 obscureText: true,
-            ***REMOVED***
-          ***REMOVED***
+                                style: TextStyle(
+                                  color: Colors.white,
                                   fontFamily: 'OpenSans',
-                  ***REMOVED***,
+                                ),
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   contentPadding: EdgeInsets.only(top: 14.0),
                                   prefixIcon: Icon(
                                     Icons.lock,
                                     color: Colors.black,
-                    ***REMOVED***,
+                                  ),
                                   hintText: 'Enter your Email',
                                   hintStyle: StyleConstants.loginHintTextStyle,
-                  ***REMOVED***,
-                ***REMOVED***,
-              ***REMOVED***,
-          ***REMOVED***
-          ***REMOVED***,
-  ***REMOVED***height: 20.0),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20.0),
                         Column(
-              ***REMOVED***
-          ***REMOVED***
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
 
                             Container(
                               alignment: Alignment.centerLeft,
@@ -450,53 +450,53 @@ class _EntryPageState extends State<EntryPage> {
                               child: TextFormField(
                                 controller: pwdInputController,
                                 obscureText: true,
-            ***REMOVED***
-          ***REMOVED***
+                                style: TextStyle(
+                                  color: Colors.white,
                                   fontFamily: 'OpenSans',
-                  ***REMOVED***,
+                                ),
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   contentPadding: EdgeInsets.only(top: 14.0),
                                   prefixIcon: Icon(
                                     Icons.lock,
                                     color: Colors.black,
-                    ***REMOVED***,
+                                  ),
                                   hintText: 'Enter your Password',
                                   hintStyle: StyleConstants.loginHintTextStyle,
-                  ***REMOVED***,
-                ***REMOVED***,
-              ***REMOVED***,
-          ***REMOVED***
-          ***REMOVED***,
-      ***REMOVED***
-      ***REMOVED***,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
 
                     //SizedBox(height: MediaQuery.of(context).size.height / 5,),
-      ***REMOVED***height: 40.0,),
+                    SizedBox(height: 40.0,),
 
                     Container(
                       height: 50,
                       margin: EdgeInsets.symmetric(horizontal: 50),
-          ***REMOVED***
+                      decoration: BoxDecoration(
                           border: Border.all(
                             color: Colors.black,
                             width: 3.0,
-            ***REMOVED***,
+                          ),
                           borderRadius: BorderRadius.circular(50),
                           color: Colors.white
-        ***REMOVED***,
+                      ),
                       child: Center(
-    ***REMOVED***"Sign Up", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
-        ***REMOVED***,
-      ***REMOVED***,
+                        child: Text("Sign Up", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+                      ),
+                    ),
 
-  ***REMOVED***
-  ***REMOVED***,
-***REMOVED***
+                  ],
+                ),
+              )
           )
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
+      ),
+    );
+  }
 
 
-***REMOVED***
+}

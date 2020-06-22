@@ -1,4 +1,4 @@
-***REMOVED***
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PrivateSession {
   String name;
@@ -12,13 +12,13 @@ class PrivateSession {
 
   DocumentReference reference;
 
-  PrivateSession({this.name, this.studentName, this.trainerName, this.photoUrl, this.trainerUid, this.available, this.length, this.date, this.reference***REMOVED***);
+  PrivateSession({this.name, this.studentName, this.trainerName, this.photoUrl, this.trainerUid, this.available, this.length, this.date, this.reference});
 
   factory PrivateSession.fromSnapshot(DocumentSnapshot snapshot) {
     PrivateSession newPrivateSession = PrivateSession.fromJson(snapshot.data);
     newPrivateSession.reference = snapshot.reference;
     return newPrivateSession;
-  ***REMOVED***
+  }
 
   factory PrivateSession.fromJson(Map<String, dynamic> json) {
     return PrivateSession(
@@ -30,8 +30,8 @@ class PrivateSession {
       available: json['available'] as bool,
       length: json['length'] as int,
       date: json['date'] as int,
-***REMOVED***
-  ***REMOVED***
+    );
+  }
 
   Map<String, dynamic> toJson() => _PrivateSessionToJson(this);
 
@@ -45,7 +45,7 @@ class PrivateSession {
       'available': instance.available,
       'length': instance.length,
       'date': instance.date
-    ***REMOVED***;
-  ***REMOVED***
+    };
+  }
 
-***REMOVED***
+}

@@ -1,31 +1,31 @@
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
-***REMOVED***
-***REMOVED***
+import 'package:fitnessmarketplace/models/Trainer.dart';
+import 'package:flutter/material.dart';
 
 class AddSessionPage extends StatefulWidget {
-  AddSessionPage({Key key, this.chosenDate, this.currentTrainer***REMOVED***) : super(key: key);
+  AddSessionPage({Key key, this.chosenDate, this.currentTrainer}) : super(key: key);
 
   final DateTime chosenDate;
   final Trainer currentTrainer;
 
-***REMOVED***
+  @override
   _AddSessionPageState createState() => _AddSessionPageState();
-***REMOVED***
+}
 
 class _AddSessionPageState extends State<AddSessionPage> {
   TextEditingController _lengthController;
   DateTime selectedDate;
 
-***REMOVED***
-***REMOVED***
+  @override
+  void initState() {
     _lengthController = new TextEditingController();
     selectedDate = widget.chosenDate;
-***REMOVED***
-  ***REMOVED***
+    super.initState();
+  }
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: Column(
         children: [
           RaisedButton(
@@ -37,29 +37,29 @@ class _AddSessionPageState extends State<AddSessionPage> {
                     firstDate: DateTime(2019, 1),
                     lastDate: DateTime(2100, 12, 31));
                 if (pickedDate != null && pickedDate != selectedDate) {
-            ***REMOVED***
+                  setState(() {
                     selectedDate = DateTime.utc(pickedDate.year, pickedDate.month, pickedDate.day, selectedDate.hour, selectedDate.minute);;
-                  ***REMOVED***);
-                ***REMOVED***
-              ***REMOVED***),
+                  });
+                }
+              }),
           RaisedButton(
             child: Text('Choose a Time'),
             onPressed: () async {
               TimeOfDay pickedTime = await showTimePicker(context: context, initialTime: TimeOfDay(hour: 12, minute: 0));
               if (pickedTime != null) {
-          ***REMOVED***
+                setState(() {
                   selectedDate = DateTime.utc(selectedDate.year, selectedDate.month, selectedDate.day, pickedTime.hour, pickedTime.minute);
-                ***REMOVED***);
-              ***REMOVED***
-            ***REMOVED***,
-***REMOVED***
+                });
+              }
+            },
+          ),
           TextField(
             controller: _lengthController,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
               hintText: 'Enter Lesson Length in minutes'
-***REMOVED***
-***REMOVED***
+            ),
+          ),
           RaisedButton(
             child: Text('Submit'),
             onPressed: () async {
@@ -72,14 +72,14 @@ class _AddSessionPageState extends State<AddSessionPage> {
                 available: true,
                 length: int.parse(_lengthController.text),
                 date: selectedDate.millisecondsSinceEpoch,
-          ***REMOVED***
+              );
               await widget.currentTrainer.reference.collection('privateSessions').add(addSession.toJson());
               _lengthController.clear();
               Navigator.pop(context);
-            ***REMOVED***,
+            },
           )
         ],
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+      ),
+    );
+  }
+}

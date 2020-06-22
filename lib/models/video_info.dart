@@ -12,5 +12,5 @@ class VideoInfo {
       this.coverUrl,
       this.aspectRatio,
       this.uploadedAt,
-      this.videoName***REMOVED***);
-***REMOVED***
+      this.videoName});
+}

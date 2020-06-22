@@ -1,4 +1,4 @@
-***REMOVED***
+import 'package:flutter/material.dart';
 
 class CurrentExerciseWidget extends StatelessWidget {
 
@@ -7,17 +7,17 @@ class CurrentExerciseWidget extends StatelessWidget {
   final int reps;
   final int mins;
 
-  const CurrentExerciseWidget({Key key, this.name, this.reps, this.mins***REMOVED***) : super(key: key);
+  const CurrentExerciseWidget({Key key, this.name, this.reps, this.mins}) : super(key: key);
 
-***REMOVED***
-***REMOVED***
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: 350.0,
       height: 100.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30.0),
         color: Colors.black87
-***REMOVED***
+      ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -28,8 +28,8 @@ class CurrentExerciseWidget extends StatelessWidget {
             Text(reps.toString()+' reps', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.white),),
             Text(mins.toString()+' minutes', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400, color: Colors.white),),
           ],
-***REMOVED***
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
+        ),
+      ),
+    );
+  }
+}
