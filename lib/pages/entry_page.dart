@@ -142,18 +142,20 @@ class _EntryPageState extends State<EntryPage> {
                 children: <Widget>[
                   Container(
                     child: Center(
-                        //child: Image.asset('assets/img/gardening.png')
-                      child: Text('Text Description of the app 1'),
+                  child: Image.asset('assets/images/workout.png')
+                      //child: Text('Text Description of the app 1'),
                     ),
                   ),
                   Container(
                     child: Center(
-                      child: Text('Text Description of the app 2'),
+                      //child: Text('Text Description of the app 2'),
+                        child: Image.asset('assets/images/personaltrainer.png')
                     ),
                   ),
                   Container(
                     child: Center(
-                      child: Text('Text Description of the app 3'),
+                      //child: Text('Text Description of the app 3'),
+                        child: Image.asset('assets/images/indoorbike.png')
                     ),
                   ),
                 ],
