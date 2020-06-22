@@ -142,18 +142,20 @@ class _EntryPageState extends State<EntryPage> {
 ***REMOVED***
                   Container(
                     child: Center(
-                        //child: Image.asset('assets/img/gardening.png')
-  ***REMOVED***'Text Description of the app 1'),
+                  child: Image.asset('assets/images/workout.png')
+                      //child: Text('Text Description of the app 1'),
       ***REMOVED***,
     ***REMOVED***,
                   Container(
                     child: Center(
-  ***REMOVED***'Text Description of the app 2'),
+                      //child: Text('Text Description of the app 2'),
+                        child: Image.asset('assets/images/personaltrainer.png')
       ***REMOVED***,
     ***REMOVED***,
                   Container(
                     child: Center(
-  ***REMOVED***'Text Description of the app 3'),
+                      //child: Text('Text Description of the app 3'),
+                        child: Image.asset('assets/images/indoorbike.png')
       ***REMOVED***,
     ***REMOVED***,
 ***REMOVED***
