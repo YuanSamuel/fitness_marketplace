@@ -1,3 +1,4 @@
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 ***REMOVED***
 ***REMOVED***
 import 'package:fitnessmarketplace/helpers/string_helper.dart';
@@ -6,6 +7,7 @@ import 'package:fitnessmarketplace/models/PrivateSession.dart';
 import 'package:fitnessmarketplace/models/Stream.dart' as models;
 ***REMOVED***
 ***REMOVED***
+import 'package:fitnessmarketplace/pages/stream_page.dart';
 ***REMOVED***
 ***REMOVED***
 import 'package:table_calendar/table_calendar.dart';
@@ -217,89 +219,102 @@ class _UserHomePageState extends State<UserHomePage> {
 
                     String time = _stringHelper.dateTimeToTimeString(eventDate);
 
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 15.0),
-            ***REMOVED***
-                          borderRadius: BorderRadius.circular(30.0),
-                          color: Color(0xff3B3B3B),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 5,
-                              blurRadius: 7,
-                              offset:
-                                  Offset(0, 3), // changes position of shadow
-              ***REMOVED***,
-          ***REMOVED***
-          ***REMOVED***,
-                        height: 100.0,
-                        child: Row(
-          ***REMOVED***
-                          crossAxisAlignment: CrossAxisAlignment.center,
-              ***REMOVED***
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                  ***REMOVED***
-                  ***REMOVED***
-                                Container(
-                                  width: 7 * MediaQuery.of(context).size.width / 10,
-                                  height: 40,
-                                  child: isStream ? Text(
-                                    allEvents[i].title + ' - Live Class',
-                                    overflow: TextOverflow.fade,
-                ***REMOVED***
-              ***REMOVED***
-                                      fontSize: 20.0,
-          ***REMOVED***
+                    return GestureDetector(
+                      onTap: (){
+  ***REMOVED***
+***REMOVED***
+***REMOVED***
+                              builder: (context) => StreamPage(
+                                channelName: allEvents[i].date.toString(),
+                                role: isStream?ClientRole.Audience:ClientRole.Broadcaster,
+                                isTrainer: true,
+                ***REMOVED***),
+                    ***REMOVED***
                       ***REMOVED***,
-                    ***REMOVED*** : Text(
-                                    'Lesson with: ' +
-                                        selectedPrivateSessions[i].trainerName,
-                                    overflow: TextOverflow.fade,
+              ***REMOVED***
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 15.0),
+              ***REMOVED***
+                            borderRadius: BorderRadius.circular(30.0),
+                            color: Color(0xff3B3B3B),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                ***REMOVED***,
+            ***REMOVED***
+            ***REMOVED***,
+                          height: 100.0,
+                          child: Row(
+            ***REMOVED***
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                ***REMOVED***
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                    ***REMOVED***
+                    ***REMOVED***
+                                  Container(
+                                    width: 7 * MediaQuery.of(context).size.width / 10,
+                                    height: 40,
+                                    child: isStream ? Text(
+                                      allEvents[i].title + ' - Live Class',
+                                      overflow: TextOverflow.fade,
+                  ***REMOVED***
                 ***REMOVED***
                                         fontSize: 20.0,
-                                        fontWeight: FontWeight.w600,
+            ***REMOVED***
+                        ***REMOVED***,
+                      ***REMOVED*** : Text(
+                                      'Lesson with: ' +
+                                          selectedPrivateSessions[i].trainerName,
+                                      overflow: TextOverflow.fade,
+                  ***REMOVED***
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white),
+                      ***REMOVED***,
+                    ***REMOVED***,
+            ***REMOVED***
+                                    height: 10.0,
+                    ***REMOVED***,
+            ***REMOVED***
+                                    length,
+                ***REMOVED***
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.w400,
                                         color: Colors.white),
                     ***REMOVED***,
-                  ***REMOVED***,
-          ***REMOVED***
-                                  height: 10.0,
-                  ***REMOVED***,
-          ***REMOVED***
-                                  length,
-              ***REMOVED***
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white),
-                  ***REMOVED***,
-              ***REMOVED***
-              ***REMOVED***,
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                  ***REMOVED***
-          ***REMOVED***
-                                  date,
-              ***REMOVED***
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white),
-                  ***REMOVED***,
-          ***REMOVED***
-                                  height: 10.0,
-                  ***REMOVED***,
-          ***REMOVED***
-                                  time,
-              ***REMOVED***
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white),
-                  ***REMOVED***,
-              ***REMOVED***
-              ***REMOVED***
-          ***REMOVED***
+                ***REMOVED***
+                ***REMOVED***,
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                    ***REMOVED***
+            ***REMOVED***
+                                    date,
+                ***REMOVED***
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white),
+                    ***REMOVED***,
+            ***REMOVED***
+                                    height: 10.0,
+                    ***REMOVED***,
+            ***REMOVED***
+                                    time,
+                ***REMOVED***
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white),
+                    ***REMOVED***,
+                ***REMOVED***
+                ***REMOVED***
+            ***REMOVED***
+            ***REMOVED***,
           ***REMOVED***,
         ***REMOVED***,
                 ***REMOVED***
