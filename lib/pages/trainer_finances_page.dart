@@ -216,6 +216,7 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
       } else if (keyList[i] == 'privateSession') {
         index = 1;
       }
+      print(index);
       barChartGroupData.add(BarChartGroupData(
         x: index,
         barRods: [
@@ -225,6 +226,28 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
           ),
         ],
       ));
+    }
+    for (int i = 0; i < types.length; i++) {
+      if (!keyList.contains(types[i])) {
+        print(types[i]);
+        int index = 0;
+        if (types[i] == 'privateSession') {
+          index = 1;
+        }
+        else if (types[i] == 'ondemand') {
+          index = 2;
+        }
+        print(index);
+        barChartGroupData.add(BarChartGroupData(
+          x: index,
+          barRods: [
+            BarChartRodData(
+              y: 0.0,
+              color: typeToColor[types[i]],
+            ),
+          ],
+        ));
+      }
     }
     barChartGroupData.sort((BarChartGroupData barChartGroupDataA,
         BarChartGroupData barChartGroupDataB) {

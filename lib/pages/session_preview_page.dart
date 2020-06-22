@@ -63,12 +63,14 @@ class _SessionPreviewState extends State<SessionPreview> {
   Future makeTransaction(BuildContext context) async {
     final FirebaseUser user = await FirebaseAuth.instance.currentUser();
     uid = user.uid;
+    print('hello');
 
-    await _handleCameraAndMic();
+    //await _handleCameraAndMic();
     _pay();
   }
 
   void _pay(){
+    print('paying');
     InAppPayments.setSquareApplicationId('***REMOVED***');
     InAppPayments.startCardEntryFlow(
       onCardNonceRequestSuccess: _onCardNonceRequestSuccess,
@@ -77,7 +79,7 @@ class _SessionPreviewState extends State<SessionPreview> {
   }
 
   void _onCardEntryCancel(){
-
+    print('hello');
   }
 
 
@@ -95,6 +97,7 @@ class _SessionPreviewState extends State<SessionPreview> {
     print(widget.stream.price);
 
 
+    print(widget.isStream);
     if (widget.isStream) {
       Firestore.instance.collection('students').document(uid).collection('streams').add(widget.stream.toJson());
     }

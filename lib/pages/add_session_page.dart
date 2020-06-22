@@ -65,12 +65,13 @@ class _AddSessionPageState extends State<AddSessionPage> {
             onPressed: () async {
               PrivateSession addSession = PrivateSession(
                 name: 'Do we need a name?',
+                studentName: '',
+                trainerName: widget.currentTrainer.firstName + ' ' + widget.currentTrainer.lastName,
+                photoUrl: '',
+                trainerUid: widget.currentTrainer.uid,
+                available: true,
                 length: int.parse(_lengthController.text),
                 date: selectedDate.millisecondsSinceEpoch,
-                available: true,
-                studentName: '',
-                photoUrl: '',
-                trainerName: widget.currentTrainer.firstName + ' ' + widget.currentTrainer.lastName,
               );
               await widget.currentTrainer.reference.collection('privateSessions').add(addSession.toJson());
               _lengthController.clear();
