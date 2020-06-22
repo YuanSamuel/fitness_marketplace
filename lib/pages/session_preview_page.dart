@@ -42,6 +42,8 @@ class _SessionPreviewState extends State<SessionPreview> {
   Trainer t;
   String uid;
 
+  var responseData;
+
   @override
   void initState() {
     super.initState();
@@ -100,18 +102,15 @@ class _SessionPreviewState extends State<SessionPreview> {
     try {
       double chargeAmt = 0;
       if (widget.isStream) {
-        chargeAmt = widget.stream.price;
-      }
-      else if (widget.isPrivate) {
-        chargeAmt = 100;
+        chargeAmt = widget.stream.price * 100;
       }
       else {
-        chargeAmt = widget.video.data['price'];
+        chargeAmt = widget.video.data['price'] * 100;
       }
       var body = jsonEncode({
         'source_id': result.nonce,
         'idempotency_key': Uuid().v4(),
-        'amount_money': {'amount': chargeAmt.round(), 'currency': 'USD'}
+        'amount_money': {'amount': chargeAmt.floor(), 'currency': 'USD'}
       });
       http.Response response =
           await http.post('https://connect.squareupsandbox.com/v2/payments',
@@ -122,7 +121,7 @@ class _SessionPreviewState extends State<SessionPreview> {
                     'Bearer EAAAEA7IONxb8KpegRF2XdoRLsrwl_Y9LgwwXdA3IABBB8FG4--suTtuZ2C8PsrG'
               },
               body: body);
-      print(response.body);
+      responseData = jsonDecode(response.body);
       InAppPayments.completeCardEntry(
         onCardEntryComplete: _cardEntryComplete,
       );
@@ -165,6 +164,7 @@ class _SessionPreviewState extends State<SessionPreview> {
       'sessionDate': widget.isStream
           ? widget.stream.date
           : DateTime.now().millisecondsSinceEpoch,
+      'paymentID': responseData['payment']['id'],
     });
 
     Firestore.instance
@@ -187,6 +187,7 @@ class _SessionPreviewState extends State<SessionPreview> {
       'sessionDate': widget.isStream
           ? widget.stream.date
           : DateTime.now().millisecondsSinceEpoch,
+      'paymentID': responseData['payment']['id'],
     });
 
     Navigator.pushReplacementNamed(context, '/userHome');
