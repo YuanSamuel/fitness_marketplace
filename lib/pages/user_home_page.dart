@@ -13,6 +13,7 @@ import 'package:fitnessmarketplace/pages/stream_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:fitnessmarketplace/models/Student.dart';
+***REMOVED***
 
 class UserHomePage extends StatefulWidget {
 ***REMOVED***
@@ -76,8 +77,12 @@ class _UserHomePageState extends State<UserHomePage> {
     _stringHelper = new StringHelper();
     allEvents = new List<dynamic>();
     getCurrentStudent();
+    _handleCameraAndMic();
+
 ***REMOVED***
   ***REMOVED***
+
+
 
 ***REMOVED***
   void dispose() {
@@ -225,7 +230,7 @@ class _UserHomePageState extends State<UserHomePage> {
 ***REMOVED***
 ***REMOVED***
                               builder: (context) => StreamPage(
-                                channelName: allEvents[i].date.toString(),
+                                channelName: allEvents[i].trainerUid,
                                 role: isStream?ClientRole.Audience:ClientRole.Broadcaster,
                                 isTrainer: true,
                 ***REMOVED***),
@@ -498,6 +503,11 @@ class _UserHomePageState extends State<UserHomePage> {
 ***REMOVED***,
         ***REMOVED***
           ***REMOVED***,
+***REMOVED***
+***REMOVED***
+***REMOVED***
+  ***REMOVED***
+
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
