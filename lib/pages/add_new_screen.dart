@@ -50,7 +50,7 @@ class _AddNewRecordingState extends State<AddNewRecording> {
         //_progress = time / _videoDuration;
       ***REMOVED***);
     ***REMOVED***);
-
+    date = DateTime.now().millisecondsSinceEpoch;
     namecontroller = new TextEditingController();
     descriptcontroller = new TextEditingController();
     minscontrolller = new TextEditingController();
@@ -72,8 +72,6 @@ class _AddNewRecordingState extends State<AddNewRecording> {
       'price':price,
       'trainer':uid,
     ***REMOVED***);
-
-
 
     await Firestore.instance
         .collection('trainers')

@@ -94,6 +94,15 @@
 ***REMOVED***
     print(widget.stream.price);
 
+
+***REMOVED***
+***REMOVED***
+    ***REMOVED***
+***REMOVED***
+***REMOVED***
+    ***REMOVED***
+    Firestore.instance.collection('students').document(uid).collection(widget.isStream?'streams':'videos').document().setData(widget.video.data);
+
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
@@ -113,9 +122,7 @@
 ***REMOVED***
     ***REMOVED***);
 
-
-
-    Navigator.pop(context);
+***REMOVED***
   ***REMOVED***
 
 ***REMOVED***

@@ -134,9 +134,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                           ***REMOVED***
                             ***REMOVED***
                         ***REMOVED***
-        ***REMOVED***
-      ***REMOVED***
-      ***REMOVED***builder: (context) => UserNavigation()),
                           ***REMOVED***
                             ***REMOVED***
                           ***REMOVED***);
@@ -159,7 +156,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     ***REMOVED***
     ***REMOVED***
   ***REMOVED***
-  ***REMOVED***builder: (context) => (EntryPage())),
+  ***REMOVED***builder: (context) => EntryPage()),
                       ***REMOVED***
                         ***REMOVED***,
         ***REMOVED***,
