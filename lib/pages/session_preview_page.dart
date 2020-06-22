@@ -94,6 +94,15 @@ class _SessionPreviewState extends State<SessionPreview> {
     print(widget.stream.trainer);
     print(widget.stream.price);
 
+
+    if (widget.isStream) {
+      Firestore.instance.collection('students').document(uid).collection('streams').add(widget.stream.toJson());
+    }
+    else {
+      Firestore.instance.collection('students').document(uid).collection('videos').add(widget.video.data);
+    }
+    Firestore.instance.collection('students').document(uid).collection(widget.isStream?'streams':'videos').document().setData(widget.video.data);
+
     Firestore.instance.collection('students').document(uid).collection('transactions').add({
       'type':widget.isStream?"stream":"ondemand",
       'sessionID':widget.isStream?widget.stream.reference.documentID:widget.video.documentID,
@@ -113,9 +122,7 @@ class _SessionPreviewState extends State<SessionPreview> {
       'sessionDate': widget.isStream?widget.stream.date : DateTime.now().millisecondsSinceEpoch,
     });
 
-
-
-    Navigator.pop(context);
+    Navigator.pushReplacementNamed(context, '/userHome');
   }
 
   Future<void> _handleCameraAndMic() async {
