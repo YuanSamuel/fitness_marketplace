@@ -5,13 +5,14 @@ class PrivateSession {
   String studentName;
   String trainerName;
   String photoUrl;
+  String trainerUid;
   bool available;
   int length;
   int date;
 
   DocumentReference reference;
 
-  PrivateSession({this.name, this.studentName, this.trainerName, this.photoUrl, this.available, this.length, this.date, this.reference});
+  PrivateSession({this.name, this.studentName, this.trainerName, this.photoUrl, this.trainerUid, this.available, this.length, this.date, this.reference});
 
   factory PrivateSession.fromSnapshot(DocumentSnapshot snapshot) {
     PrivateSession newPrivateSession = PrivateSession.fromJson(snapshot.data);
@@ -25,6 +26,7 @@ class PrivateSession {
       studentName: json['studentName'] as String,
       trainerName: json['trainerName'] as String,
       photoUrl: json['photoUrl'] as String,
+      trainerUid: json['trainerUid'] as String,
       available: json['available'] as bool,
       length: json['length'] as int,
       date: json['date'] as int,
@@ -39,6 +41,7 @@ class PrivateSession {
       'studentName': instance.studentName,
       'trainerName': instance.trainerName,
       'photoUrl': instance.photoUrl,
+      'trainerUid': instance.trainerUid,
       'available': instance.available,
       'length': instance.length,
       'date': instance.date
