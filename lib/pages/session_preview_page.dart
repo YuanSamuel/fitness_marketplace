@@ -4,12 +4,13 @@ import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
 import 'package:fitnessmarketplace/models/Stream.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
 import 'package:fitnessmarketplace/models/video_info.dart';
-import 'package:fitnessmarketplace/pages/payment_page.dart';
 import 'package:fitnessmarketplace/pages/player.dart';
 import 'package:fitnessmarketplace/widgets/trainer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:square_in_app_payments/in_app_payments.dart';
+import 'package:square_in_app_payments/models.dart';
 
 
 class SessionPreview extends StatefulWidget {
@@ -86,10 +87,32 @@ class _SessionPreviewState extends State<SessionPreview> {
 
     await _handleCameraAndMic();
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => PaymentPage(isStream: widget.isStream, video: widget.video, stream: widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID,isPrivate:widget.isPrivate!=null)),
+    _pay();
+  }
+
+  void _pay(){
+    InAppPayments.setSquareApplicationId('***REMOVED***');
+    InAppPayments.startCardEntryFlow(
+      onCardNonceRequestSuccess: _onCardNonceRequestSuccess,
+      onCardEntryCancel: _onCardEntryCancel,
     );
+  }
+
+  void _onCardEntryCancel(){
+
+  }
+
+
+  void _onCardNonceRequestSuccess(CardDetails result ){
+    print('result.nonce');
+
+    InAppPayments.completeCardEntry(
+      onCardEntryComplete: _cardEntryComplete,
+    );
+
+  }
+  void _cardEntryComplete(){
+    Navigator.pop(context);
   }
 
   Future<void> _handleCameraAndMic() async {

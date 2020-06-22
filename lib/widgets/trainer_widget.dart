@@ -21,6 +21,7 @@ class TrainerWidget extends StatefulWidget {
 class _TrainerWidgetState extends State<TrainerWidget> {
   List<DocumentSnapshot> trainerVideos;
   List<DocumentSnapshot> trainerComments;
+  List<DocumentSnapshot> trainerStreams;
   int commentAmount;
   double rate;
 
@@ -30,40 +31,48 @@ class _TrainerWidgetState extends State<TrainerWidget> {
 
     getRate();
     getRecordedVideos();
+    getStreams();
   }
 
   getRecordedVideos() async {
-    QuerySnapshot queryVideos = await widget.trainer.reference
-        .collection('videos')
-        .getDocuments();
+    QuerySnapshot queryVideos =
+        await widget.trainer.reference.collection('videos').getDocuments();
     List<DocumentSnapshot> videoData = queryVideos.documents;
     setState(() {
       trainerVideos = videoData;
     });
-    setState(() {});
   }
 
   getRate() async {
-    QuerySnapshot rateQuery = await Firestore.instance.collection('comments').getDocuments();
+    QuerySnapshot rateQuery =
+        await Firestore.instance.collection('comments').getDocuments();
     List<DocumentSnapshot> rateDoc = rateQuery.documents;
     int _amount = 0;
     int totalStar = 0;
-    for(int i=0;i<rateDoc.length;i++) {
-      if(rateDoc[i].data['uidTrainer']==widget.trainer.uid) {
+    for (int i = 0; i < rateDoc.length; i++) {
+      if (rateDoc[i].data['uidTrainer'] == widget.trainer.uid) {
         int newTotalStar = rateDoc[i].data['rating'];
-        totalStar+=newTotalStar;
+        totalStar += newTotalStar;
         _amount = _amount + 1;
       }
     }
     commentAmount = _amount;
-    print(1.0*totalStar/commentAmount);
-    rate = 1.0*totalStar/commentAmount;
-    if(totalStar==0&&commentAmount==0) {
+    print(1.0 * totalStar / commentAmount);
+    rate = 1.0 * totalStar / commentAmount;
+    if (totalStar == 0 && commentAmount == 0) {
       rate = 0;
     }
-    Firestore.instance.collection('trainers').document(widget.trainer.uid).setData({
+    widget.trainer.reference.updateData({
       'rating': rate,
-    },merge: true);
+    });
+  }
+
+  getStreams() async {
+    QuerySnapshot getLiveSessions =
+        await Firestore.instance.collection('stream').getDocuments();
+    setState(() {
+      trainerStreams = getLiveSessions.documents;
+    });
   }
 
   @override
@@ -96,9 +105,9 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                       child: Container(
                         decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              begin: Alignment.bottomRight,
-                              colors: [Colors.black, Colors.black.withOpacity(0.1)],
-                            )),
+                          begin: Alignment.bottomRight,
+                          colors: [Colors.black, Colors.black.withOpacity(0.1)],
+                        )),
                         child: Padding(
                           padding: EdgeInsets.all(20),
                           child: Column(
@@ -124,22 +133,28 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                       1.2,
                                       trainerVideos != null
                                           ? Text(
-                                        trainerVideos.length.toString() + ' Videos',
-                                        style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 16),
-                                      )
+                                              trainerVideos.length.toString() +
+                                                  ' Videos',
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 16),
+                                            )
                                           : Text('loading')),
                                   SizedBox(
                                     width: 50,
                                   ),
                                   FadeAnimationUp(
-                                      1.3,
-                                      Text(
-                                        "10000 Live Sessions",
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 16),
-                                      )),
+                                    1.3,
+                                    trainerStreams != null
+                                        ? Text(
+                                            trainerStreams.length.toString() +
+                                                ' Live Sessions',
+                                            style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 16),
+                                          )
+                                        : Text('loading'),
+                                  ),
                                   SizedBox(
                                     height: 30,
                                   )
@@ -164,14 +179,20 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                               Row(
                                 children: <Widget>[
                                   FutureBuilder(
-                                    future: Firestore.instance.collection('trainers').document(widget.trainer.uid).get(),
+                                    future: Firestore.instance
+                                        .collection('trainers')
+                                        .document(widget.trainer.uid)
+                                        .get(),
                                     builder: (context, snapshot) {
-                                      if(snapshot.hasData) {
+                                      if (snapshot.hasData) {
                                         return Row(
                                           children: [
                                             RatingBarIndicator(
-                                              rating: toDouble(snapshot.data['rating'].toString()),
-                                              itemBuilder: (context, index) => Icon(
+                                              rating: double.parse(snapshot
+                                                  .data['rating']
+                                                  .toString()),
+                                              itemBuilder: (context, index) =>
+                                                  Icon(
                                                 Icons.star,
                                                 color: Colors.amber,
                                               ),
@@ -183,18 +204,20 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                               width: 10,
                                             ),
                                             Text(
-                                              snapshot.data['rating'].toStringAsFixed(2),
-                                              style: TextStyle(color: Colors.white70),
+                                              snapshot.data['rating']
+                                                  .toStringAsFixed(2),
+                                              style: TextStyle(
+                                                  color: Colors.white70),
                                             ),
                                           ],
                                         );
-                                      }
-                                      else {
+                                      } else {
                                         return Row(
                                           children: [
                                             RatingBarIndicator(
                                               rating: 0,
-                                              itemBuilder: (context, index) => Icon(
+                                              itemBuilder: (context, index) =>
+                                                  Icon(
                                                 Icons.star,
                                                 color: Colors.amber,
                                               ),
@@ -207,7 +230,8 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                             ),
                                             Text(
                                               '0',
-                                              style: TextStyle(color: Colors.white70),
+                                              style: TextStyle(
+                                                  color: Colors.white70),
                                             ),
                                           ],
                                         );
@@ -274,29 +298,33 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                           ),
                           FadeAnimationUp(
                               1.8,
-                               trainerVideos!= null
+                              trainerVideos != null
                                   ? Container(
-                                  height: 200,
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                      itemCount: trainerVideos.length,
-                                      itemBuilder: (BuildContext context, int i) {
-                                        print(trainerVideos.length);
-                                        print("TRAINER VIDS");
-                                        print(trainerVideos);
-                                        return FadeAnimationDown(
-                                          1.2 + i / 10,
-                                          makeVideo(
-                                              image:
-                                              trainerVideos[i].data["thumbUrl"],
-                                              vidReference: trainerVideos[i]),
-                                        );
-                          }),):CircularProgressIndicator()),
+                                      height: 200,
+                                      child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: trainerVideos.length,
+                                          itemBuilder:
+                                              (BuildContext context, int i) {
+                                            print(trainerVideos.length);
+                                            print("TRAINER VIDS");
+                                            print(trainerVideos);
+                                            return FadeAnimationDown(
+                                              1.2 + i / 10,
+                                              makeVideo(
+                                                  image: trainerVideos[i]
+                                                      .data["thumbUrl"],
+                                                  vidReference:
+                                                      trainerVideos[i]),
+                                            );
+                                          }),
+                                    )
+                                  : CircularProgressIndicator()),
                           SizedBox(
                             height: 80,
                           ),
                           SizedBox(
-                            height: MediaQuery.of(context).size.height-50,
+                            height: MediaQuery.of(context).size.height - 50,
                             child: Column(
                               children: [
                                 Container(
@@ -313,10 +341,10 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                               ),
                                               decoration: InputDecoration(
                                                 hintText: 'Add a Comment',
-                                                enabledBorder: UnderlineInputBorder(
+                                                enabledBorder:
+                                                    UnderlineInputBorder(
                                                   borderSide: BorderSide(
-                                                      color: Colors.lightBlue
-                                                  ),
+                                                      color: Colors.lightBlue),
                                                 ),
                                               ),
                                             ),
@@ -332,12 +360,20 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                               ),
                                               onPressed: () async {
                                                 String currentUid;
-                                                await FirebaseAuth.instance.currentUser().then((currentUser) => currentUid = currentUser.uid);
-                                                Firestore.instance.collection('comments').document().setData({
+                                                await FirebaseAuth.instance
+                                                    .currentUser()
+                                                    .then((currentUser) =>
+                                                        currentUid =
+                                                            currentUser.uid);
+                                                Firestore.instance
+                                                    .collection('comments')
+                                                    .document()
+                                                    .setData({
                                                   'comment': _comment.text,
                                                   'rating': rating,
                                                   'uidStudent': currentUid,
-                                                  'uidTrainer': widget.trainer.uid,
+                                                  'uidTrainer':
+                                                      widget.trainer.uid,
                                                 });
                                                 _comment.clear();
                                               },
@@ -365,41 +401,68 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                   ),
                                 ),
                                 StreamBuilder(
-                                  stream: Firestore.instance.collection('comments').snapshots(),
+                                  stream: Firestore.instance
+                                      .collection('comments')
+                                      .snapshots(),
                                   builder: (context, snapshot) {
-                                    List<DocumentSnapshot> commentDocs = snapshot.data.documents;
-                                    if(snapshot.hasData) {
+                                    List<DocumentSnapshot> commentDocs =
+                                        snapshot.data.documents;
+                                    if (snapshot.hasData) {
                                       return SizedBox(
-                                        height: MediaQuery.of(context).size.height-150,
+                                        height:
+                                            MediaQuery.of(context).size.height -
+                                                150,
                                         child: ListView.builder(
                                           scrollDirection: Axis.vertical,
                                           itemCount: commentDocs.length,
                                           // ignore: missing_return
-                                          itemBuilder: (BuildContext context, int i) {
-                                            if(commentDocs[i].data['uidTrainer']==widget.trainer.uid){
+                                          itemBuilder:
+                                              (BuildContext context, int i) {
+                                            if (commentDocs[i]
+                                                    .data['uidTrainer'] ==
+                                                widget.trainer.uid) {
                                               return Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Row(
                                                     children: [
                                                       FutureBuilder(
-                                                        future: Firestore.instance.collection('students').document(commentDocs[i].data['uidStudent']).get(),
-                                                        builder: (context, snapshot) {
-                                                          if(snapshot.hasData) {
-
+                                                        future: Firestore
+                                                            .instance
+                                                            .collection(
+                                                                'students')
+                                                            .document(
+                                                                commentDocs[i]
+                                                                        .data[
+                                                                    'uidStudent'])
+                                                            .get(),
+                                                        builder: (context,
+                                                            snapshot) {
+                                                          if (snapshot
+                                                              .hasData) {
                                                             //First and Last Name of the User
                                                             return Text(
-                                                              snapshot.data['firstName']+' '+snapshot.data['lastName'],
+                                                              snapshot.data[
+                                                                      'firstName'] +
+                                                                  ' ' +
+                                                                  snapshot.data[
+                                                                      'lastName'],
                                                               style: TextStyle(
-                                                                fontWeight: FontWeight.w500,
-                                                                color: Colors.white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: Colors
+                                                                    .white,
                                                                 fontSize: 25,
                                                               ),
-                                                              textAlign: TextAlign.left,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .left,
                                                             );
-                                                          }
-                                                          else {
-                                                            return SizedBox.shrink();
+                                                          } else {
+                                                            return SizedBox
+                                                                .shrink();
                                                           }
                                                         },
                                                       ),
@@ -407,14 +470,20 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                                         width: 10,
                                                       ),
                                                       RatingBarIndicator(
-                                                        rating: toDouble(commentDocs[i].data['rating'].toString()),
-                                                        itemBuilder: (context, index) => Icon(
+                                                        rating: double.parse(
+                                                            commentDocs[i]
+                                                                .data['rating']
+                                                                .toString()),
+                                                        itemBuilder:
+                                                            (context, index) =>
+                                                                Icon(
                                                           Icons.star,
                                                           color: Colors.amber,
                                                         ),
                                                         itemCount: 5,
                                                         itemSize: 15,
-                                                        direction: Axis.horizontal,
+                                                        direction:
+                                                            Axis.horizontal,
                                                       ),
                                                     ],
                                                   ),
@@ -422,10 +491,10 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                                     height: 5,
                                                   ),
                                                   Text(
-                                                    commentDocs[i].data['comment'],
+                                                    commentDocs[i]
+                                                        .data['comment'],
                                                     style: TextStyle(
-                                                        color: Colors.white
-                                                    ),
+                                                        color: Colors.white),
                                                   ),
                                                   Container(
                                                     height: 25,
@@ -436,8 +505,7 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                                           },
                                         ),
                                       );
-                                    }
-                                    else {
+                                    } else {
                                       return SizedBox.shrink();
                                     }
                                   },
@@ -468,9 +536,9 @@ class _TrainerWidgetState extends State<TrainerWidget> {
                             color: Colors.red[700]),
                         child: Align(
                             child: Text(
-                              "Schedule a Meeting",
-                              style: TextStyle(color: Colors.white, fontSize: 20),
-                            )),
+                          "Schedule a Meeting",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        )),
                       ),
                       onTap: () {
                         Navigator.push(
@@ -493,10 +561,15 @@ class _TrainerWidgetState extends State<TrainerWidget> {
 
   Widget makeVideo({image, vidReference}) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SessionPreview(video: vidReference,isStream: false,trainer: widget.trainer,)),
+          MaterialPageRoute(
+              builder: (context) => SessionPreview(
+                    video: vidReference,
+                    isStream: false,
+                    trainer: widget.trainer,
+                  )),
         );
       },
       child: AspectRatio(
@@ -505,14 +578,14 @@ class _TrainerWidgetState extends State<TrainerWidget> {
           margin: EdgeInsets.only(right: 20),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              image:
-              DecorationImage(image: NetworkImage(image), fit: BoxFit.cover)),
+              image: DecorationImage(
+                  image: NetworkImage(image), fit: BoxFit.cover)),
           child: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(begin: Alignment.bottomRight, colors: [
-                  Colors.black.withOpacity(.9),
-                  Colors.black.withOpacity(.3)
-                ])),
+              Colors.black.withOpacity(.9),
+              Colors.black.withOpacity(.3)
+            ])),
             child: Align(
               child: Icon(
                 Icons.play_arrow,
