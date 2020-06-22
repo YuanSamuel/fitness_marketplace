@@ -13,9 +13,7 @@ class UserProfilePage extends StatelessWidget {
   UserProfilePage(int classes, int privateSessions, int videos, String n) {
     numClasses = classes;
     numPrivateSessions = privateSessions;
-    numVideos = videos;
-    name = n;
-  }
+    numVideos = videos;}
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +106,7 @@ class UserProfilePage extends StatelessWidget {
 
 //////Here is the page for students
 
+
 class StudentProfilePage extends StatelessWidget {
   int sessions;
   int rating;
@@ -164,6 +163,7 @@ class StudentProfilePage extends StatelessWidget {
                               Row(
                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
+    // CUSTOMERS
                                  Column(children: [
                                      Text(
                                       "$sessions",
@@ -176,6 +176,7 @@ class StudentProfilePage extends StatelessWidget {
                                     TextStyle(color: Colors.white, fontSize: 16),
                                   ),
                                  ]),
+    // RATINGS
                             Column(children: [
                                  Row(children: [
                                    Text(
@@ -194,6 +195,7 @@ class StudentProfilePage extends StatelessWidget {
                                  TextStyle(color: Colors.white, fontSize: 16),
                                ),
                              ]),
+    // YEARS
                           Column(children: [
                                Text(
                                "$years",

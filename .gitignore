@@ -44,5 +44,9 @@ app.*.map.json
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 /android/app/google-services.json
+<<<<<<< HEAD
 local.properties
 /lib/utils/settings.dart
+=======
+local.properties
+>>>>>>> 0da1c1b66911ad10ce9f49bea16af94f42070130
