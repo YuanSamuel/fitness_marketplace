@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +40,7 @@ class _AddSessionPageState extends State<AddSessionPage> {
                     lastDate: DateTime(2100, 12, 31));
                 if (pickedDate != null && pickedDate != selectedDate) {
                   setState(() {
-                    selectedDate = DateTime.utc(pickedDate.year, pickedDate.month, pickedDate.day, selectedDate.hour, selectedDate.minute);;
+                    selectedDate = DateTime(pickedDate.year, pickedDate.month, pickedDate.day, selectedDate.hour, selectedDate.minute);;
                   });
                 }
               }),
@@ -47,8 +49,10 @@ class _AddSessionPageState extends State<AddSessionPage> {
             onPressed: () async {
               TimeOfDay pickedTime = await showTimePicker(context: context, initialTime: TimeOfDay(hour: 12, minute: 0));
               if (pickedTime != null) {
+                print(pickedTime.hour);
+                print(pickedTime.minute);
                 setState(() {
-                  selectedDate = DateTime.utc(selectedDate.year, selectedDate.month, selectedDate.day, pickedTime.hour, pickedTime.minute);
+                  selectedDate = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, pickedTime.hour, pickedTime.minute);
                 });
               }
             },

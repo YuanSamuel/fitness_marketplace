@@ -27,7 +27,7 @@ class CalendarHelper {
   }
 
   DateTime dateTimeToOnlyDay(DateTime date) {
-    return DateTime.utc(date.year, date.month, date.day);
+    return DateTime(date.year, date.month, date.day);
   }
 
   Map<DateTime, List<dynamic>> listToEventMap(List<dynamic> allPrivateSessions, List<dynamic> allStreams) {
