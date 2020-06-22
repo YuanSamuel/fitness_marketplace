@@ -105,7 +105,7 @@ class _TrainerMarketState extends State<TrainerMarket> {
                         height: 5,
         ***REMOVED***,
 ***REMOVED***
-                        "\$" + trainer.livePrice.toString(),
+                        "\$" + trainer.oneOnOnePrice.toString(),
     ***REMOVED***color: Colors.white, fontSize: 15),
         ***REMOVED***
     ***REMOVED***
