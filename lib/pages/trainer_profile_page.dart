@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitnessmarketplace/pages/price.dart';
 import 'package:fitnessmarketplace/pages/profile_picture.dart';
 import 'package:fitnessmarketplace/pages/trainer_register.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,15 +32,6 @@ class TrainerProfile extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => (TrainerRegister())),
-              );
-            },
-          ),
-          RaisedButton(
-            child: Text('Change Price of Your Videos'),
-            onPressed:  () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => (PricePage())),
               );
             },
           ),
