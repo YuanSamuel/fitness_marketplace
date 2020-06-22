@@ -63,8 +63,9 @@
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
+***REMOVED***
 
-    await _handleCameraAndMic();
+***REMOVED***
 ***REMOVED***
   ***REMOVED***
 
@@ -74,10 +75,11 @@
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
+***REMOVED***
   ***REMOVED***
 
 ***REMOVED***
-
+***REMOVED***
   ***REMOVED***
 
 
@@ -95,6 +97,7 @@
     print(widget.stream.price);
 
 
+***REMOVED***
 ***REMOVED***
 ***REMOVED***
     ***REMOVED***
