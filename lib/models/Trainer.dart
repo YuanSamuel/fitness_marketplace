@@ -6,6 +6,7 @@ class Trainer {
   String email;
   String profileUrl;
   String description;
+  String cardNonce;
   double rating;
   double videoPrice;
   double livePrice;
@@ -21,6 +22,7 @@ class Trainer {
       this.email,
       this.profileUrl,
       this.description,
+      this.cardNonce,
       this.rating,
       this.videoPrice,
       this.livePrice,
@@ -42,6 +44,7 @@ class Trainer {
       email: json['email'] as String,
       profileUrl: json['profileUrl'] as String,
       description: json['description'] as String,
+      cardNonce: json['cardNonce'] as String,
       rating: (json['rating'] + 0.0) as double,
       videoPrice: (json['videoPrice'] + 0.0) as double,
       livePrice: (json['livePrice'] + 0.0) as double,
@@ -60,6 +63,7 @@ class Trainer {
       'email': instance.email,
       'profileUrl': instance.profileUrl,
       'description': instance.description,
+      'cardNonce': instance.cardNonce,
       'rating': instance.rating,
       'videoPrice': instance.videoPrice,
       'livePrice': instance.videoPrice,
