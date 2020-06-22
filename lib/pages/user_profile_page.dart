@@ -80,8 +80,20 @@ class UserProfilePage extends StatelessWidget {
                           "Videos Purchased",
                           style: TextStyle(color: Colors.white, fontSize: 12),
                         ),
-                      ])
+                      ]),
                     ],
+                  ),
+                  FlatButton(
+                    child: Text('Log Out', style: TextStyle(
+                      color: Colors.white,
+                    ),),
+                    onPressed: () {
+                      FirebaseAuth.instance.signOut();
+                      Navigator.popAndPushNamed(
+                        context,
+                        '/register',
+                      );
+                    },
                   ),
                   SizedBox(height: 140)
                 ],
