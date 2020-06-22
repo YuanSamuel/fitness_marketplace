@@ -183,7 +183,7 @@ class _EntryPageState extends State<EntryPage> {
                   ),
                 )),
             SizedBox(height: 20.0,),
-            FadeAnimation(1.6, GestureDetector(
+            FadeAnimation(1.8, GestureDetector(
               onTap: (){
                 setState(() {
                   _controller.jumpToPage(2);
