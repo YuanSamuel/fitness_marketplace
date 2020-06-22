@@ -47,7 +47,6 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
     maxTransactionLine = 0;
     endPrice = 0;
     maxBoughtPrice = 0;
-    screenSize = MediaQuery.of(context).size;
     setUp();
     super.initState();
   }
@@ -106,6 +105,7 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
 
   @override
   Widget build(BuildContext context) {
+    screenSize = MediaQuery.of(context).size;
     if (!doneLoading) {
       return Scaffold(
         body: Center(

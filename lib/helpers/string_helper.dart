@@ -7,6 +7,8 @@ class StringHelper {
 
   String dateTimeToTimeString(DateTime date) {
     String minute = date.minute.toString();
+    print(minute);
+    print(date.hour);
     if (date.minute < 10) {
       minute = '0' + minute;
     }
