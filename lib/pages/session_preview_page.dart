@@ -92,12 +92,17 @@
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
+    print(widget.stream.price);
+
+***REMOVED***
+***REMOVED***
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
     ***REMOVED***);
+
 
 ***REMOVED***
 ***REMOVED***

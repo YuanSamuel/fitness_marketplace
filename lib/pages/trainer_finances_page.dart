@@ -325,7 +325,7 @@ class _TrainerFinancesPageState extends State<TrainerFinancesPage> {
                 show: true,
                 bottomTitles: SideTitles(
                   showTitles: true,
-                  interval: endDate != startDate
+                  interval: (endDate - startDate) ~/ 3 != 0
                       ? ((endDate - startDate) ~/ 3).toDouble()
                       : 1,
                   getTitles: (double givenDay) {
