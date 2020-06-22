@@ -81,15 +81,19 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
 
   getTrainerStreams() async {
     streamTimes = new List<models.Stream>();
-    QuerySnapshot streams = await widget.trainer.reference.collection('streams').getDocuments();
+    QuerySnapshot streams =
+        await widget.trainer.reference.collection('streams').getDocuments();
     List<DocumentSnapshot> streamSnapshots = streams.documents;
     for (int i = 0; i < streamSnapshots.length; i++) {
       streamTimes.add(models.Stream.fromSnapshot(streamSnapshots[i]));
     ***REMOVED***
   ***REMOVED***
 
-  Future doStuff(param)async{
-    await param.reference.updateData({'available': false, 'studentName': currentStudent.firstName + ' ' + currentStudent.lastName***REMOVED***);
+  Future doStuff(param) async {
+    await param.reference.updateData({
+      'available': false,
+      'studentName': currentStudent.firstName + ' ' + currentStudent.lastName
+    ***REMOVED***);
     await addToUserPrivateSessions(param);
   ***REMOVED***
 
@@ -110,8 +114,8 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
 ***REMOVED***
             TableCalendar(
               calendarController: _calendarController,
-              events: _calendarHelper
-                  .listToEventMap(privateSessionTimes, streamTimes),
+              events: _calendarHelper.listToEventMap(
+                  privateSessionTimes, streamTimes),
               onDaySelected: (DateTime date, List<dynamic> givenEvents) {
           ***REMOVED***
                   events = givenEvents;
@@ -123,27 +127,35 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
               child: ListView.builder(
                   itemCount: events.length,
                   itemBuilder: (BuildContext contexti, int i) {
-
-                    String trainerName = widget.trainer.firstName + ' ' + widget.trainer.lastName;
+                    String trainerName = widget.trainer.firstName +
+                        ' ' +
+                        widget.trainer.lastName;
 
                     bool isStream = events[i] is models.Stream;
 
-                    String length = isStream ? _stringHelper.intToLengthString(events[i].minutes.floor()) : _stringHelper.intToLengthString(events[i].length);
+                    String length = isStream
+                        ? _stringHelper
+                            .intToLengthString(events[i].minutes.floor())
+                        : _stringHelper.intToLengthString(events[i].length);
 
-                    DateTime date = DateTime.fromMillisecondsSinceEpoch(events[i].date).toLocal();
+                    DateTime date =
+                        DateTime.fromMillisecondsSinceEpoch(events[i].date)
+                            .toLocal();
 
                     return GestureDetector(
                       onTap: () {
-
                         if (events[i] is models.Stream) {
-
                           print("STUFF SHOULD BE HAPPENING?");
     ***REMOVED***
   ***REMOVED***
-  ***REMOVED***builder: (context) => SessionPreview(stream: events[i], isStream: true,isPrivate: true,)),
+  ***REMOVED***
+                                builder: (context) => SessionPreview(
+                                      stream: events[i],
+                                      isStream: true,
+                                      isPrivate: true,
+                      ***REMOVED***),
                       ***REMOVED***
-                        ***REMOVED***
-                    ***REMOVED***
+                        ***REMOVED*** else {
                           doStuff(events[i]);
                         ***REMOVED***
                         //Navigator.pop(context);
@@ -161,7 +173,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                                 spreadRadius: 5,
                                 blurRadius: 7,
                                 offset:
-                                Offset(0, 3), // changes position of shadow
+                                    Offset(0, 3), // changes position of shadow
                 ***REMOVED***,
             ***REMOVED***
             ***REMOVED***,
@@ -181,22 +193,23 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                                     height: 40,
                                     child: isStream
                                         ? Text(
-                                      events[i].title + ' - Live Class',
-                                      overflow: TextOverflow.fade,
+                                            events[i].title + ' - Live Class',
+                                            overflow: TextOverflow.fade,
+                        ***REMOVED***
+                                              fontSize: 20.0,
                   ***REMOVED***
-                                        fontSize: 20.0,
-            ***REMOVED***
-                ***REMOVED***
-                        ***REMOVED***,
                       ***REMOVED***
+                              ***REMOVED***,
+                            ***REMOVED***
                                         : Text(
-                                      'Private Session with: ' + trainerName,
-                                      overflow: TextOverflow.fade,
-                  ***REMOVED***
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white),
-                      ***REMOVED***,
+                                            'Private Session with: ' +
+                                                trainerName,
+                                            overflow: TextOverflow.fade,
+                        ***REMOVED***
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white),
+                            ***REMOVED***,
                     ***REMOVED***,
             ***REMOVED***
                                     height: 10.0,
@@ -238,7 +251,6 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
           ***REMOVED***,
         ***REMOVED***,
                 ***REMOVED***
-
                   ***REMOVED***),
 ***REMOVED***
           ],
@@ -249,33 +261,40 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
 
   addToUserPrivateSessions(PrivateSession session) async {
     session.available = false;
-    session.studentName = currentStudent.firstName + ' ' + currentStudent.lastName;
-    currentStudent.reference.collection('privateSessions').add(session.toJson());
-    makeTransaction( session);
-
+    session.studentName =
+        currentStudent.firstName + ' ' + currentStudent.lastName;
+    currentStudent.reference
+        .collection('privateSessions')
+        .add(session.toJson());
+    makeTransaction(session);
   ***REMOVED***
 
   Future makeTransaction(PrivateSession session) async {
-
 ***REMOVED***
     final uid = user.uid;
 
     print(uid);
 
-    await Firestore.instance.collection('students').document(uid).collection('transactions').add({
-      'type':"private",
-      'sessionID':session.reference.documentID,
-      'price':widget.trainer.oneOnOnePrice,
+    await Firestore.instance
+        .collection('students')
+        .document(uid)
+        .collection('transactions')
+        .add({
+      'type': "private",
+      'sessionID': session.reference.documentID,
+      'price': widget.trainer.oneOnOnePrice,
       'trainer': widget.trainer.reference.documentID
     ***REMOVED***);
 
-
-    await Firestore.instance.collection('trainers').document(widget.trainer.reference.documentID).collection("transactions").add({
-      'type':"private",
-      'sessionID':session.reference.documentID,
-      'price':widget.trainer.oneOnOnePrice,
+    await Firestore.instance
+        .collection('trainers')
+        .document(widget.trainer.reference.documentID)
+        .collection("transactions")
+        .add({
+      'type': "private",
+      'sessionID': session.reference.documentID,
+      'price': widget.trainer.oneOnOnePrice,
       'trainer': widget.trainer.reference.documentID
     ***REMOVED***);
-
   ***REMOVED***
 ***REMOVED***

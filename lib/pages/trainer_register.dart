@@ -46,6 +46,7 @@ class _TrainerRegisterState extends State<TrainerRegister> {
 
 ***REMOVED***
 ***REMOVED***
+    _privateSessionPrice = 0;
     getCurrentTrainer();
 ***REMOVED***
   ***REMOVED***
