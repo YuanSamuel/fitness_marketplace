@@ -90,6 +90,10 @@ class _SessionPreviewState extends State<SessionPreview> {
 
   }
   void _cardEntryComplete(){
+    print('complete');
+    print(widget.stream.trainer);
+    print(widget.stream.price);
+
     Firestore.instance.collection('students').document(uid).collection('transactions').add({
       'type':widget.isStream?"stream":"ondemand",
       'sessionID':widget.isStream?widget.stream.reference.documentID:widget.video.documentID,
@@ -98,6 +102,7 @@ class _SessionPreviewState extends State<SessionPreview> {
       'purchaseDate': DateTime.now().millisecondsSinceEpoch,
       'sessionDate': widget.isStream?widget.stream.date : DateTime.now().millisecondsSinceEpoch,
     });
+
 
     Firestore.instance.collection('trainers').document(widget.isStream?widget.stream.trainer:widget.trainer.reference.documentID).collection("transactions").add({
       'type':widget.isStream?"stream":"ondemand",

@@ -85,15 +85,11 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
   getTrainerStreams() async {
     streamTimes = new List<models.Stream>();
     QuerySnapshot streams =
-        await widget.trainer.reference.collection('streams').getDocuments();
+    await widget.trainer.reference.collection('streams').getDocuments();
     List<DocumentSnapshot> streamSnapshots = streams.documents;
     for (int i = 0; i < streamSnapshots.length; i++) {
       streamTimes.add(models.Stream.fromSnapshot(streamSnapshots[i]));
     }
-  }
-
-  Future doStuff() async {
-    _pay();
   }
 
   @override
@@ -152,11 +148,12 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                                       stream: events[i],
                                       isStream: true,
                                       isPrivate: true,
+                                  trainer: widget.trainer,
                                     )),
                           );
                         } else {
                           selectedPrivateSession = events[i];
-                          doStuff();
+                          _pay();
                         }
                         //Navigator.pop(context);
                       },
