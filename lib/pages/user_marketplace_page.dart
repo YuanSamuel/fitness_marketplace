@@ -122,7 +122,6 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                     SizedBox(height: 10),
                     Container(
                       height: 50,
-                      child: Expanded(
                         child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: trainingTypes.length,
@@ -134,7 +133,6 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                                       title: trainingTypes[i],
                                       page: i));
                             }),
-                      ),
                     ),
                     FadeAnimationDown(
                         1.6,

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessmarketplace/animations/FadeAnimationDown.dart';
 import 'package:fitnessmarketplace/models/Stream.dart';
+import 'package:fitnessmarketplace/models/Student.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
 import 'package:fitnessmarketplace/models/video_info.dart';
 import 'package:fitnessmarketplace/pages/player.dart';
@@ -41,6 +42,9 @@ class _SessionPreviewState extends State<SessionPreview> {
   int comments = 0;
   Trainer t;
   String uid;
+  Student currentStudent;
+
+  var responseData;
 
   @override
   void initState() {
@@ -82,14 +86,26 @@ class _SessionPreviewState extends State<SessionPreview> {
     _pay();
   }
 
-  void _pay() {
+  void _pay() async {
     print('paying');
     InAppPayments.setSquareApplicationId(
         '***REMOVED***');
-    InAppPayments.startCardEntryFlow(
-      onCardNonceRequestSuccess: _onCardNonceRequestSuccess,
-      onCardEntryCancel: _onCardEntryCancel,
-    );
+    DocumentSnapshot studentData =
+    await Firestore.instance.collection('students').document(uid).get();
+    currentStudent = Student.fromSnapshot(studentData);
+    print('nonce' + currentStudent.paymentNonce);
+    print('idempotencyKey' + currentStudent.idempotencyKey);
+    if (currentStudent.paymentNonce == null ||  currentStudent.idempotencyKey == null || currentStudent.paymentNonce == '' || currentStudent.idempotencyKey == '') {
+      InAppPayments.startCardEntryFlow(
+        onCardNonceRequestSuccess: _onCardNonceRequestSuccess,
+        onCardEntryCancel: _onCardEntryCancel,
+      );
+    } else {
+      print('else');
+      await chargeCard(currentStudent.paymentNonce, currentStudent.idempotencyKey);
+      print('charged');
+      _cardEntryComplete();
+    }
   }
 
   void _onCardEntryCancel() {
@@ -97,38 +113,41 @@ class _SessionPreviewState extends State<SessionPreview> {
   }
 
   void _onCardNonceRequestSuccess(CardDetails result) async {
+    String idempotencyKey = Uuid().v4();
+    currentStudent.reference.updateData({'paymentNonce': result.nonce, 'idempotencyKey': idempotencyKey});
     try {
-      double chargeAmt = 0;
-      if (widget.isStream) {
-        chargeAmt = widget.stream.price;
-      }
-      else if (widget.isPrivate) {
-        chargeAmt = 100;
-      }
-      else {
-        chargeAmt = widget.video.data['price'];
-      }
-      var body = jsonEncode({
-        'source_id': result.nonce,
-        'idempotency_key': Uuid().v4(),
-        'amount_money': {'amount': chargeAmt.round(), 'currency': 'USD'}
-      });
-      http.Response response =
-          await http.post('https://connect.squareupsandbox.com/v2/payments',
-              headers: {
-                'content-type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization':
-                    'Bearer EAAAEA7IONxb8KpegRF2XdoRLsrwl_Y9LgwwXdA3IABBB8FG4--suTtuZ2C8PsrG'
-              },
-              body: body);
-      print(response.body);
+      await chargeCard(result.nonce, idempotencyKey);
       InAppPayments.completeCardEntry(
         onCardEntryComplete: _cardEntryComplete,
       );
     } on Exception catch (ex) {
       InAppPayments.showCardNonceProcessingError(ex.toString());
     }
+  }
+
+  chargeCard(String nonce, String idempotency_key) async {
+    double chargeAmt = 0;
+    if (widget.isStream) {
+      chargeAmt = widget.stream.price * 100;
+    } else {
+      chargeAmt = widget.video.data['price'] * 100;
+    }
+    var body = jsonEncode({
+      'source_id': nonce,
+      'idempotency_key': idempotency_key,
+      'amount_money': {'amount': chargeAmt.floor(), 'currency': 'USD'}
+    });
+    http.Response response =
+    await http.post('https://connect.squareupsandbox.com/v2/payments',
+        headers: {
+          'content-type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization':
+          'Bearer EAAAEA7IONxb8KpegRF2XdoRLsrwl_Y9LgwwXdA3IABBB8FG4--suTtuZ2C8PsrG'
+        },
+        body: body);
+    print(response.body);
+    responseData = jsonDecode(response.body);
   }
 
   void _cardEntryComplete() {
@@ -157,7 +176,7 @@ class _SessionPreviewState extends State<SessionPreview> {
           ? widget.stream.reference.documentID
           : widget.video.documentID,
       'price':
-          widget.isStream ? widget.stream.price : widget.video.data["price"],
+      widget.isStream ? widget.stream.price : widget.video.data["price"],
       'trainer': widget.isStream
           ? widget.stream.trainer
           : widget.trainer.reference.documentID,
@@ -165,13 +184,14 @@ class _SessionPreviewState extends State<SessionPreview> {
       'sessionDate': widget.isStream
           ? widget.stream.date
           : DateTime.now().millisecondsSinceEpoch,
+      'paymentID': responseData['payment']['id'],
     });
 
     Firestore.instance
         .collection('trainers')
         .document(widget.isStream
-            ? widget.stream.trainer
-            : widget.trainer.reference.documentID)
+        ? widget.stream.trainer
+        : widget.trainer.reference.documentID)
         .collection("transactions")
         .add({
       'type': widget.isStream ? "stream" : "ondemand",
@@ -179,7 +199,7 @@ class _SessionPreviewState extends State<SessionPreview> {
           ? widget.stream.reference.documentID
           : widget.video.documentID,
       'price':
-          widget.isStream ? widget.stream.price : widget.video.data["price"],
+      widget.isStream ? widget.stream.price : widget.video.data["price"],
       'trainer': widget.isStream
           ? widget.stream.trainer
           : widget.trainer.reference.documentID,
@@ -187,6 +207,7 @@ class _SessionPreviewState extends State<SessionPreview> {
       'sessionDate': widget.isStream
           ? widget.stream.date
           : DateTime.now().millisecondsSinceEpoch,
+      'paymentID': responseData['payment']['id'],
     });
 
     Navigator.pushReplacementNamed(context, '/userHome');
@@ -218,8 +239,8 @@ class _SessionPreviewState extends State<SessionPreview> {
                   image: DecorationImage(
                     image: widget.isStream
                         ? NetworkImage(
-                            "https://cnet1.cbsistatic.com/img/sRejNDr7D67rMcvwI11v6xrJcho=/940x0/2019/11/12/e66cc0f3-c6b8-4f6e-9561-e23e08413ce1/gettyimages-1002863304.jpg",
-                          )
+                      "https://cnet1.cbsistatic.com/img/sRejNDr7D67rMcvwI11v6xrJcho=/940x0/2019/11/12/e66cc0f3-c6b8-4f6e-9561-e23e08413ce1/gettyimages-1002863304.jpg",
+                    )
                         : NetworkImage(widget.video.data["thumbUrl"]),
                     fit: BoxFit.cover,
                   )),
@@ -308,7 +329,7 @@ class _SessionPreviewState extends State<SessionPreview> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
                         borderSide:
-                            BorderSide(width: 2, color: Colors.red.shade300),
+                        BorderSide(width: 2, color: Colors.red.shade300),
                         child: Text(
                           "View Trainer",
                           style: TextStyle(
@@ -320,8 +341,8 @@ class _SessionPreviewState extends State<SessionPreview> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => TrainerWidget(
-                                        trainer: t,
-                                      )));
+                                    trainer: t,
+                                  )));
                           //do something, maybe open up trainer page
                         },
                       )),
@@ -359,7 +380,7 @@ class _SessionPreviewState extends State<SessionPreview> {
                       ? widget.stream.description
                       : widget.video.data["description"],
                   style:
-                      TextStyle(color: Colors.grey, height: 1.5, fontSize: 14),
+                  TextStyle(color: Colors.grey, height: 1.5, fontSize: 14),
                 ),
               ),
               SizedBox(
@@ -381,16 +402,16 @@ class _SessionPreviewState extends State<SessionPreview> {
                     2.5,
                     Container(
                         child: Text(
-                      "Cost: " +
-                          (widget.isStream
+                          "Cost: " +
+                              (widget.isStream
                                   ? widget.stream.price.round()
                                   : widget.video.data["price"].round())
-                              .toString(),
-                      style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.black.withOpacity(0.8),
-                          fontWeight: FontWeight.bold),
-                    )),
+                                  .toString(),
+                          style: TextStyle(
+                              fontSize: 22,
+                              color: Colors.black.withOpacity(0.8),
+                              fontWeight: FontWeight.bold),
+                        )),
                   ),
                   FadeAnimationDown(
                     2.6,

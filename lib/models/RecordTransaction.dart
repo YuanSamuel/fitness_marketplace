@@ -7,13 +7,23 @@ class RecordTransaction {
   String sessionID;
   String trainer;
   String type;
+  String paymentID;
 
   DocumentReference reference;
 
-  RecordTransaction({this.purchaseDate, this.sessionDate, this.price, this.sessionID, this.trainer, this.type, this.reference});
+  RecordTransaction(
+      {this.purchaseDate,
+        this.sessionDate,
+        this.price,
+        this.sessionID,
+        this.trainer,
+        this.type,
+        this.paymentID,
+        this.reference});
 
   factory RecordTransaction.fromSnapshot(DocumentSnapshot snapshot) {
-    RecordTransaction newTransaction = RecordTransaction.fromJson(snapshot.data);
+    RecordTransaction newTransaction =
+    RecordTransaction.fromJson(snapshot.data);
     newTransaction.reference = snapshot.reference;
     return newTransaction;
   }
@@ -26,19 +36,21 @@ class RecordTransaction {
       sessionID: json['sessionID'] as String,
       trainer: json['trainer'] as String,
       type: json['type'] as String,
+      paymentID: json['paymentID'] as String,
     );
   }
 
   Map<String, dynamic> toJson() => _RecordTransactionToJson(this);
 
   Map<String, dynamic> _RecordTransactionToJson(RecordTransaction instance) {
-    return <String, dynamic> {
+    return <String, dynamic>{
       'purchaseDate': instance.purchaseDate,
       'sessionDate': instance.sessionDate,
       'price': instance.price,
       'sessionID': instance.sessionID,
       'trainer': instance.trainer,
       'type': instance.type,
+      'paymentID': instance.paymentID,
     };
   }
 }

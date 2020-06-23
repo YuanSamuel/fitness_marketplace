@@ -225,8 +225,8 @@ class _SignupWidgetState extends State<SignupWidget> {
                   onTap: () {
                     FirebaseAuth.instance
                         .createUserWithEmailAndPassword(
-                            email: _emailInputController.text,
-                            password: _passwordInputController.text)
+                        email: _emailInputController.text,
+                        password: _passwordInputController.text)
                         .then((currentUser) async {
                       if (_isTrainer) {
                         await Firestore.instance
@@ -267,6 +267,8 @@ class _SignupWidgetState extends State<SignupWidget> {
                           'lastName': _lastNameInputController.text,
                           'uid': currentUser.user.uid,
                           'email': _emailInputController.text,
+                          'paymentNonce': '',
+                          'idempotencyKey': '',
                         });
                         Navigator.push(
                           context,

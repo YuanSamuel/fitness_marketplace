@@ -34,6 +34,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
   DateTime selectedDate;
   List<dynamic> events;
   PrivateSession selectedPrivateSession;
+  var receivedData;
 
   CalendarHelper _calendarHelper;
   StringHelper _stringHelper;
@@ -79,7 +80,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
 
     for (int i = 0; i < allPrivateSessionsList.length; i++) {
       PrivateSession currentPrivateSession =
-          PrivateSession.fromSnapshot(allPrivateSessionsList[i]);
+      PrivateSession.fromSnapshot(allPrivateSessionsList[i]);
       if (currentPrivateSession.available) {
         privateSessionTimes.add(currentPrivateSession);
       }
@@ -89,7 +90,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
   getTrainerStreams() async {
     streamTimes = new List<models.Stream>();
     QuerySnapshot streams =
-        await widget.trainer.reference.collection('streams').getDocuments();
+    await widget.trainer.reference.collection('streams').getDocuments();
     List<DocumentSnapshot> streamSnapshots = streams.documents;
     for (int i = 0; i < streamSnapshots.length; i++) {
       streamTimes.add(models.Stream.fromSnapshot(streamSnapshots[i]));
@@ -134,12 +135,12 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
 
                     String length = isStream
                         ? _stringHelper
-                            .intToLengthString(events[i].minutes.floor())
+                        .intToLengthString(events[i].minutes.floor())
                         : _stringHelper.intToLengthString(events[i].length);
 
                     DateTime date =
-                        DateTime.fromMillisecondsSinceEpoch(events[i].date)
-                            .toLocal();
+                    DateTime.fromMillisecondsSinceEpoch(events[i].date)
+                        .toLocal();
 
                     return GestureDetector(
                       onTap: () {
@@ -149,9 +150,9 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SessionPreview(
-                                      stream: events[i],
-                                      isStream: true,
-                                    )),
+                                  stream: events[i],
+                                  isStream: true,
+                                )),
                           );
                         } else {
                           selectedPrivateSession = events[i];
@@ -172,7 +173,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                                 spreadRadius: 5,
                                 blurRadius: 7,
                                 offset:
-                                    Offset(0, 3), // changes position of shadow
+                                Offset(0, 3), // changes position of shadow
                               ),
                             ],
                           ),
@@ -192,23 +193,23 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                                     height: 40,
                                     child: isStream
                                         ? Text(
-                                            events[i].title + ' - Live Class',
-                                            overflow: TextOverflow.fade,
-                                            style: TextStyle(
-                                              fontSize: 20.0,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          )
+                                      events[i].title + ' - Live Class',
+                                      overflow: TextOverflow.fade,
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    )
                                         : Text(
-                                            'Private Session with: ' +
-                                                trainerName,
-                                            overflow: TextOverflow.fade,
-                                            style: TextStyle(
-                                                fontSize: 20.0,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.white),
-                                          ),
+                                      'Private Session with: ' +
+                                          trainerName,
+                                      overflow: TextOverflow.fade,
+                                      style: TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white),
+                                    ),
                                   ),
                                   SizedBox(
                                     height: 10.0,
@@ -258,42 +259,60 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
     }
   }
 
-  void _pay() {
+  void _pay() async {
+    print('paying');
     InAppPayments.setSquareApplicationId(
         '***REMOVED***');
-    InAppPayments.startCardEntryFlow(
-      onCardNonceRequestSuccess: _onCardNonceRequestSuccess,
-      onCardEntryCancel: _onCardEntryCancel,
-    );
+    print('nonce' + currentStudent.paymentNonce);
+    print('idempotencyKey' + currentStudent.idempotencyKey);
+    if (currentStudent.paymentNonce == null ||  currentStudent.idempotencyKey == null || currentStudent.paymentNonce == '' || currentStudent.idempotencyKey == '') {
+      InAppPayments.startCardEntryFlow(
+        onCardNonceRequestSuccess: _onCardNonceRequestSuccess,
+        onCardEntryCancel: _onCardEntryCancel,
+      );
+    } else {
+      print('else');
+      await chargeCard(currentStudent.paymentNonce, currentStudent.idempotencyKey);
+      print('charged');
+      _cardEntryComplete();
+    }
   }
 
   void _onCardEntryCancel() {
-
+    print('hello');
   }
+
   void _onCardNonceRequestSuccess(CardDetails result) async {
+    String idempotencyKey = Uuid().v4();
+    currentStudent.reference.updateData({'paymentNonce': result.nonce, 'idempotencyKey': idempotencyKey});
     try {
-      double chargeAmt = widget.trainer.oneOnOnePrice * selectedPrivateSession.length / 60;
-      var body = jsonEncode({
-        'source_id': result.nonce,
-        'idempotency_key': Uuid().v4(),
-        'amount_money': {'amount': chargeAmt.round(), 'currency': 'USD'}
-      });
-      http.Response response =
-          await http.post('https://connect.squareupsandbox.com/v2/payments',
-          headers: {
-            'content-type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization':
-            'Bearer EAAAEA7IONxb8KpegRF2XdoRLsrwl_Y9LgwwXdA3IABBB8FG4--suTtuZ2C8PsrG'
-          },
-          body: body);
-      print(response.body);
+      await chargeCard(result.nonce, idempotencyKey);
       InAppPayments.completeCardEntry(
         onCardEntryComplete: _cardEntryComplete,
       );
     } on Exception catch (ex) {
       InAppPayments.showCardNonceProcessingError(ex.toString());
     }
+  }
+
+  chargeCard(String nonce, String idempotency_key) async {
+    double chargeAmt = widget.trainer.oneOnOnePrice * selectedPrivateSession.length / 60 * 100;
+    var body = jsonEncode({
+      'source_id': nonce,
+      'idempotency_key': idempotency_key,
+      'amount_money': {'amount': chargeAmt.floor(), 'currency': 'USD'}
+    });
+    http.Response response =
+    await http.post('https://connect.squareupsandbox.com/v2/payments',
+        headers: {
+          'content-type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization':
+          'Bearer EAAAEA7IONxb8KpegRF2XdoRLsrwl_Y9LgwwXdA3IABBB8FG4--suTtuZ2C8PsrG'
+        },
+        body: body);
+    print(response.body);
+    receivedData = jsonDecode(response.body);
   }
 
   void _cardEntryComplete() {
@@ -316,6 +335,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
       'trainer': widget.trainer.reference.documentID,
       'sessionDate': selectedPrivateSession.date,
       'purchaseDate': DateTime.now().millisecondsSinceEpoch,
+      'paymentID': receivedData['payment']['id'],
     });
 
     widget.trainer.reference.collection("transactions").add({
@@ -325,8 +345,10 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
       'trainer': widget.trainer.reference.documentID,
       'sessionDate': selectedPrivateSession.date,
       'purchaseDate': DateTime.now().millisecondsSinceEpoch,
+      'paymentID': receivedData['payment']['id'],
     });
 
     Navigator.pop(context);
   }
 }
+
