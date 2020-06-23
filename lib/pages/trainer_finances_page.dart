@@ -7,7 +7,6 @@ import 'package:fitnessmarketplace/models/RecordTransaction.dart';
 import 'package:fitnessmarketplace/models/Trainer.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class TrainerFinancesPage extends StatefulWidget {
   TrainerFinancesPage({Key key}) : super(key: key);

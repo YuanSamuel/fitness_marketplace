@@ -1,6 +1,5 @@
 import 'package:fitnessmarketplace/helpers/string_helper.dart';
 import 'package:fitnessmarketplace/models/PrivateSession.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class CalendarHelper {
 
