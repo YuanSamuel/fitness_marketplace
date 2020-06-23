@@ -13,17 +13,17 @@ class RecordTransaction {
 
   RecordTransaction(
       {this.purchaseDate,
-      this.sessionDate,
-      this.price,
-      this.sessionID,
-      this.trainer,
-      this.type,
-      this.paymentID,
-      this.reference});
+        this.sessionDate,
+        this.price,
+        this.sessionID,
+        this.trainer,
+        this.type,
+        this.paymentID,
+        this.reference});
 
   factory RecordTransaction.fromSnapshot(DocumentSnapshot snapshot) {
     RecordTransaction newTransaction =
-        RecordTransaction.fromJson(snapshot.data);
+    RecordTransaction.fromJson(snapshot.data);
     newTransaction.reference = snapshot.reference;
     return newTransaction;
   }

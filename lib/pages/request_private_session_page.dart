@@ -80,7 +80,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
 
     for (int i = 0; i < allPrivateSessionsList.length; i++) {
       PrivateSession currentPrivateSession =
-          PrivateSession.fromSnapshot(allPrivateSessionsList[i]);
+      PrivateSession.fromSnapshot(allPrivateSessionsList[i]);
       if (currentPrivateSession.available) {
         privateSessionTimes.add(currentPrivateSession);
       }
@@ -90,7 +90,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
   getTrainerStreams() async {
     streamTimes = new List<models.Stream>();
     QuerySnapshot streams =
-        await widget.trainer.reference.collection('streams').getDocuments();
+    await widget.trainer.reference.collection('streams').getDocuments();
     List<DocumentSnapshot> streamSnapshots = streams.documents;
     for (int i = 0; i < streamSnapshots.length; i++) {
       streamTimes.add(models.Stream.fromSnapshot(streamSnapshots[i]));
@@ -135,12 +135,12 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
 
                     String length = isStream
                         ? _stringHelper
-                            .intToLengthString(events[i].minutes.floor())
+                        .intToLengthString(events[i].minutes.floor())
                         : _stringHelper.intToLengthString(events[i].length);
 
                     DateTime date =
-                        DateTime.fromMillisecondsSinceEpoch(events[i].date)
-                            .toLocal();
+                    DateTime.fromMillisecondsSinceEpoch(events[i].date)
+                        .toLocal();
 
                     return GestureDetector(
                       onTap: () {
@@ -150,9 +150,9 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SessionPreview(
-                                      stream: events[i],
-                                      isStream: true,
-                                    )),
+                                  stream: events[i],
+                                  isStream: true,
+                                )),
                           );
                         } else {
                           selectedPrivateSession = events[i];
@@ -173,7 +173,7 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                                 spreadRadius: 5,
                                 blurRadius: 7,
                                 offset:
-                                    Offset(0, 3), // changes position of shadow
+                                Offset(0, 3), // changes position of shadow
                               ),
                             ],
                           ),
@@ -193,23 +193,23 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
                                     height: 40,
                                     child: isStream
                                         ? Text(
-                                            events[i].title + ' - Live Class',
-                                            overflow: TextOverflow.fade,
-                                            style: TextStyle(
-                                              fontSize: 20.0,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          )
+                                      events[i].title + ' - Live Class',
+                                      overflow: TextOverflow.fade,
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    )
                                         : Text(
-                                            'Private Session with: ' +
-                                                trainerName,
-                                            overflow: TextOverflow.fade,
-                                            style: TextStyle(
-                                                fontSize: 20.0,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.white),
-                                          ),
+                                      'Private Session with: ' +
+                                          trainerName,
+                                      overflow: TextOverflow.fade,
+                                      style: TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white),
+                                    ),
                                   ),
                                   SizedBox(
                                     height: 10.0,
@@ -351,3 +351,4 @@ class _RequestPrivateSessionPageState extends State<RequestPrivateSessionPage> {
     Navigator.pop(context);
   }
 }
+

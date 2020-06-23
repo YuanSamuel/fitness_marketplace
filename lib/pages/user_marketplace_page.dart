@@ -81,8 +81,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
         await Firestore.instance.collection('streams').getDocuments();
     List<DocumentSnapshot> streamSnapshots = getStreams.documents;
     for (int i = 0; i < streamSnapshots.length; i++) {
-      models.Stream currentStream =
-          models.Stream.fromSnapshot(streamSnapshots[i]);
+      models.Stream currentStream = models.Stream.fromSnapshot(streamSnapshots[i]);
       if (DateTime.now().millisecondsSinceEpoch < currentStream.date) {
         allStreams.add(models.Stream.fromSnapshot(streamSnapshots[i]));
       }
@@ -106,159 +105,161 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 10,
-            ),
-            SearchBar(),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10),
-                  Container(
-                    height: 50,
-                    width: double.infinity,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: trainingTypes.length,
-                        itemBuilder: (BuildContext context, int i) {
-                          return FadeAnimationDown(
-                              1 + i * 0.2,
-                              makeTraining(
-                                  isActive: true,
-                                  title: trainingTypes[i],
-                                  page: i));
-                        }),
-                  ),
-                  FadeAnimationDown(
-                      1.6,
-                      Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-                        child: Text(
-                          "Popular Trainers",
-                          style: TextStyle(
-                            color: Colors.grey[700],
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      )),
-                ],
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10,
               ),
-            ),
-            SizedBox(
-              height: 0,
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height / 3,
-              child: pages != null
-                  ? PageView(
-                      children: pages,
-                      controller: _pageController,
-                      physics: NeverScrollableScrollPhysics(),
-                    )
+              SearchBar(),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 10),
+                    Container(
+                      height: 50,
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: trainingTypes.length,
+                            itemBuilder: (BuildContext context, int i) {
+                              return FadeAnimationDown(
+                                  1 + i * 0.2,
+                                  makeTraining(
+                                      isActive: true,
+                                      title: trainingTypes[i],
+                                      page: i));
+                            }),
+                    ),
+                    FadeAnimationDown(
+                        1.6,
+                        Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+                          child: Text(
+                            "Popular Trainers",
+                            style: TextStyle(
+                              color: Colors.grey[700],
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 0,
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height / 3,
+                child: pages != null
+                    ? PageView(
+                        children: pages,
+                        controller: _pageController,
+                        physics: NeverScrollableScrollPhysics(),
+                      )
+                    : CircularProgressIndicator(),
+              ),
+              SizedBox(
+                height: 0,
+              ),
+              FadeAnimationDown(
+                  2.6,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: FadeAnimationDown(
+                        0.7,
+                        Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+                          child: Text(
+                            "Trending Trainers",
+                            style: TextStyle(
+                              color: Colors.grey[700],
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )),
+              allTrainers != null
+                  ? Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Container(
+                          height: 200,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: allTrainers.length,
+                            itemBuilder: (BuildContext context, int i) {
+                              Trainer currentTrainer = allTrainers[i];
+                              return FadeAnimationDown(
+                                0.7,
+                                makeTrending(givenTrainer: currentTrainer),
+                              );
+                            },
+                          )))
                   : CircularProgressIndicator(),
-            ),
-            SizedBox(
-              height: 0,
-            ),
-            FadeAnimationDown(
-                2.6,
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: FadeAnimationDown(
-                      0.7,
-                      Padding(
+              FadeAnimationDown(
+                  3.4,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 5, vertical: 15),
                         child: Text(
-                          "Trending Trainers",
+                          "Upcoming Live Sessions",
                           style: TextStyle(
-                            color: Colors.grey[700],
-                            fontSize: 20,
+                            color: Colors.red,
+                            fontSize: 23,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                     ),
-                  ),
-                )),
-            allTrainers != null
-                ? Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Container(
-                        height: 200,
+                  )),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: allStreams != null
+                    ? Container(
+                        height: 250,
                         child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: allTrainers.length,
-                          itemBuilder: (BuildContext context, int i) {
-                            Trainer currentTrainer = allTrainers[i];
-                            return FadeAnimationDown(
-                              0.7,
-                              makeTrending(givenTrainer: currentTrainer),
-                            );
-                          },
-                        )))
-                : CircularProgressIndicator(),
-            FadeAnimationDown(
-                3.4,
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-                      child: Text(
-                        "Upcoming Live Sessions",
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 23,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                )),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: allStreams != null
-                  ? Container(
-                      height: 250,
-                      child: ListView.builder(
-                          itemCount: allStreams.length,
-                          itemBuilder: (BuildContext context, int i) {
-                            print(allStreams[i].title);
-                            print(allStreams[i].trainer);
-                            return FadeAnimationDown(
-                              1.2 + i / 10,
-                              liveSession(
-                                  image:
-                                      'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
-                                  name: allStreams[i].title,
-                                  date: _stringHelper.dateTimeToDateString(
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                                  allStreams[i].date)
-                                              .toLocal()) +
-                                      ' at ' +
-                                      _stringHelper.dateTimeToTimeString(
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                                  allStreams[i].date)
-                                              .toLocal()),
-                                  people: "No limit",
-                                  stream: allStreams[i]),
-                            );
-                          }))
-                  : SizedBox.shrink(),
-            ),
-          ],
+                            itemCount: allStreams.length,
+                            itemBuilder: (BuildContext context, int i) {
+                              print(allStreams[i].title);
+                              print(allStreams[i].trainer);
+                              return FadeAnimationDown(
+                                1.2 + i / 10,
+                                liveSession(
+                                    image:
+                                        'https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg',
+                                    name: allStreams[i].title,
+                                    date: _stringHelper.dateTimeToDateString(
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                                    allStreams[i].date)
+                                                .toLocal()) +
+                                        ' at ' +
+                                        _stringHelper.dateTimeToTimeString(
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                                    allStreams[i].date)
+                                                .toLocal()),
+                                    people: "No limit",
+                                stream: allStreams[i]),
+                              );
+                            }))
+                    : SizedBox.shrink(),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -443,11 +444,10 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => SessionPreview(
-                                stream: stream,
-                                isStream: true,
-                              )),
+                      MaterialPageRoute(builder: (context) => SessionPreview(
+                        stream: stream,
+                        isStream: true,
+                      )),
                     );
                   },
                   highlightedBorderColor: Colors.red,
